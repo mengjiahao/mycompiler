@@ -125,9 +125,9 @@ extern int yylineno;
 program_start
         :translation_unit
         { /*global scope*/
-			NodeAst *p = new ProgramStartAst(NodeAst::T_CPROGRAMSTART_TRANSUNIT);
-			p->addChild1($1);
-			$$ = p;
+		NodeAst *p = new ProgramStartAst(NodeAst::T_CPROGRAMSTART_TRANSUNIT);
+		p->addChild1($1);
+		$$ = p;
         }
         ;
 
@@ -505,7 +505,7 @@ struct_declarator
 	}
 	;
 
-/***************************class**************************************/
+/************************************class**************************************/
 
 class_specifier
 	: CLASS IDENTIFIER '{' class_declaration_list '}'
@@ -649,7 +649,9 @@ declarator
 direct_declarator
 	: IDENTIFIER
 	{
-		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CDIRDECTOR_ID, $1);
+		NodeAst *p = new DirDectorAst(NodeAst::T_CDIRDECTOR_ID);
+		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CDIRDECTOR_ID, $1);
+		p->addChild1(t);
 		$$ = p;
 	}
 
@@ -810,7 +812,7 @@ initializer
 	| '{' initializer_list '}'
 	{ /*init value*/
 		NodeAst *p = new InitzerAst(NodeAst::T_CINITZER_CINITZERLIST);
-		p->addChild1($1);
+		p->addChild1($2);
 		$$ = p;
 	}
 	;
@@ -824,7 +826,7 @@ initializer_list
 	| initializer_list ',' initializer
 	{
 		NodeAst *p = new InitzerListAst(NodeAst::T_CINITZERLIST_INITZERLIST_INITZER);
-		p->addChild2($1, $2);
+		p->addChild2($1, $3);
 		$$ = p;
 	}
 	;
@@ -944,363 +946,678 @@ statement
 
 labeled_statement
 	: IDENTIFIER ':' statement
-	{  }
+	{
+		NodeAst *p = new LabeledStmAst(NodeAst::T_CLABSTM_ID_STM);
+		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CLABSTM_ID_STM, $1);
+        p->addChild2(t, $3);
+        $$ = p;
+	}
 
 	| CASE constant_expression ':' statement
-	{  }
+	{
+		NodeAst *p = new LabeledStmAst(NodeAst::T_CLABSTM_CASE_CONSTEXP_STM);
+        p->addChild2($2, $4);
+        $$ = p;
+	}
 
 	| DEFAULT ':' statement
-	{  }
+	{
+		NodeAst *p = new LabeledStmAst(NodeAst::T_CLABSTM_DEFAULT_STM);
+        p->addChild1($3);
+        $$ = p;
+	}
 	;
 
 expression_statement
 	: ';'
-	{  }
+	{
+		NodeAst *p = new ExpStmAst(NodeAst::T_CEXPSTM_VOID);
+        $$ = p;
+	}
 
 	| expression ';'
-	{  }
+	{
+		NodeAst *p = new ExpStmAst(NodeAst::T_CEXPSTM_EXP);
+		p->addChild1($1)
+        $$ = p;
+	}
 	;
 
 compound_statement
 	: '{' '}'
-	{ /*local scope*/ }
+	{ /*local scope*/
+		NodeAst *p = new CompoundStmAst(NodeAst::T_CCOMPSTM_VOID);
+        $$ = p;
+	}
 
 	| '{' statement_list '}'
-	{ /*local scope*/ }
+	{ /*local scope*/
+		NodeAst *p = new CompoundStmAst(NodeAst::T_CCOMPSTM_STMLIST);
+		p->addChild1($2);
+        $$ = p;
+	}
 
 	| '{' declaration_list '}'
-	{ /*local scope*/ }
+	{ /*local scope*/
+		NodeAst *p = new CompoundStmAst(NodeAst::T_CCOMPSTM_DECTION_LIST);
+		p->addChild1($2);
+        $$ = p;
+	}
 
 	| '{' declaration_list statement_list '}'
-	{ /*local scope*/ }
+	{ /*local scope*/
+		NodeAst *p = new CompoundStmAst(NodeAst::T_CCOMPSTM_DECTIONLIST_STMLIST);
+		p->addChild2($2, $3);
+        $$ = p;
+	}
 	;
 
 statement_list
 	: statement
-	{ /*directly return the child node*/ }
+	{ /*directly return the child node*/
+		$$ = $1;
+	}
 
 	| statement_list statement
-	{  }
+	{
+		NodeAst *p = new StmListAst(NodeAst::T_CSTMLIST_STMLIST_STM);
+		p->addChild2($1, $2);
+        $$ = p;
+	}
 	;
 
 selection_statement
 	: IF '(' expression ')' statement %prec LOWER_THAN_ELSE
-	{   }
+	{
+		NodeAst *p = new SelectionStmAst(NodeAst::T_CSELSTM_IF_EXP_STM);
+		p->addChild2($3, $5);
+        $$ = p;
+	}
 
 	| IF '(' expression ')' statement ELSE statement
-	{   }
+	{
+		NodeAst *p = new SelectionStmAst(NodeAst::T_CSELSTM_IF_EXP_STM_ELSE_STM);
+		p->addChild3($3, $5, $7);
+        $$ = p;
+	}
 
 	| SWITCH '(' expression ')' statement
-	{  }
+	{
+		NodeAst *p = new SelectionStmAst(NodeAst::T_CSELSTM_IF_EXP_STM_ELSE_STM);
+		p->addChild2($3, $5);
+        $$ = p;
+	}
 	;
 
 iteration_statement
 	: WHILE '(' expression ')' statement
-	{   }
+	{
+		NodeAst *p = new IterationStmAst(NodeAst::T_CITRSTM_WHILE_EXP_STM);
+		p->addChild2($3, $5);
+        $$ = p;
+	}
 
 	| DO statement WHILE '(' expression ')' ';'
-	{   }
+	{
+		NodeAst *p = new IterationStmAst(NodeAst::T_CITRSTM_DO_STM_WHILE_EXP);
+		p->addChild2($2, $5);
+        $$ = p;
+	}
 
 	| FOR '(' expression_statement expression_statement expression ')' statement
-	{  }
+	{
+		NodeAst *p = new IterationStmAst(NodeAst::T_CITRSTM_FOR_EXPSTM_EXPSTM_EXP_STM);
+		p->addChild4($3, $4, $5, $7);
+        $$ = p;
+	}
 	;
 
 jump_statement
 	: GOTO IDENTIFIER ';'
-	{   }
+	{
+		NodeAst *p = new JumpStmAst(NodeAst::T_CJUMPSTM_GOTO_ID);
+		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CJUMPSTM_GOTO_ID);
+		p->addChild1(t);
+        $$ = p;
+	}
 
 	| CONTINUE ';'
-	{   }
+	{
+		NodeAst *p = new JumpStmAst(NodeAst::T_CJUMPSTM_CONTINUE);
+        $$ = p;
+	}
 
 	| BREAK ';'
-	{   }
+	{
+		NodeAst *p = new JumpStmAst(NodeAst::T_CJUMPSTM_BREAK);
+        $$ = p;
+	}
 
 	| RETURN ';'
-	{  }
+	{
+		NodeAst *p = new JumpStmAst(NodeAst::T_CJUMPSTM_RETURN);
+        $$ = p;
+	}
 
 	| RETURN expression ';'
-	{   }
+	{
+		NodeAst *p = new JumpStmAst(NodeAst::T_CJUMPSTM_RETURN_EXP);
+		p->addChild1($2);
+        $$ = p;
+	}
 	;
 
 /*******************************expression********************************/
 
 expression
 	: assignment_expression
-	{/*directly return the child node*/  }
+	{ /*directly return the child node*/
+		$$ = $1;
+	}
 
 	| expression ',' assignment_expression
-	{ }
+	{
+		NodeAst *p = new ExpAst(NodeAst::T_CEXP_EXP_ASSIGNEXP);
+		p->addChild2($1, $3);
+        $$ = p;
+	}
 	;
 
 assignment_expression
 	: conditional_expression
-	{ }
+	{
+		NodeAst *p = new AssignExpAst(NodeAst::T_CASSIGNEXP_CONDITIONALEXP);
+		p->addChild1($1);
+        $$ = p;
+	}
 
 	| unary_expression assignment_operator assignment_expression
-	{  }
+	{
+		NodeAst *p = new AssignExpAst(NodeAst::T_CASSIGNEXP_UNARYEXP_ASSIGN_OP_ASSIGNEXP);
+		p->addChild3($1, $2, $3);
+        $$ = p;
+	}
 	;
 
 assignment_operator
 	: '='
-	{ /*directly return the child node*/ }
+	{
+		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CASSIGN_OP_ASSIGN);
+        $$ = p;
+	}
 
 	| MUL_ASSIGN
-	{ /*directly return the child node*/ }
+	{
+		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CASSIGN_OP_MUL_ASSIGN);
+        $$ = p;
+	}
 
 	| DIV_ASSIGN
-	{ /*directly return the child node*/ }
+	{
+		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CASSIGN_OP_DIV_ASSIGN);
+        $$ = p;
+	}
 
 	| MOD_ASSIGN
-	{ /*directly return the child node*/ }
+	{
+        $$ = NULL;
+	}
 
 	| ADD_ASSIGN
-	{ /*directly return the child node*/ }
+	{
+        NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CASSIGN_OP_ADD_ASSIGN);
+        $$ = p;
+	}
 
 	| SUB_ASSIGN
-	{ /*directly return the child node*/ }
+	{
+		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CASSIGN_OP_SUB_ASSIGN);
+        $$ = p;
+	}
 
 	| LEFT_ASSIGN
-	{ /*directly return the child node*/ }
+	{
+		$$ = NULL;
+	}
 
 	| RIGHT_ASSIGN
-	{ /*directly return the child node*/ }
+	{
+		$$ = NULL;
+	}
 
 	| AND_ASSIGN
-	{ /*directly return the child node*/ }
+	{
+		$$ = NULL;
+	}
 
 	| XOR_ASSIGN
-	{ /*directly return the child node*/ }
+	{
+		$$ = NULL;
+	}
 
 	| OR_ASSIGN
-	{ /*directly return the child node*/ }
+	{
+		$$ = NULL;
+	}
 	;
 
 conditional_expression
 	: logical_or_expression
-	{ /*directly return the child node*/ }
+	{ /*directly return the child node*/
+		$$ = $1;
+	}
 	;
 
 constant_expression
 	: conditional_expression
-	{ /*directly return the child node*/ }
+	{ /*directly return the child node*/
+		$$ = $1;
+	}
 	;
 
 logical_or_expression
 	: logical_and_expression
-	{ /*directly return the child node*/ }
+	{ /*directly return the child node*/
+		$$ = $1;
+	}
 
 	| logical_or_expression OR_OP logical_and_expression
-	{  }
+	{
+		NodeAst *p = new LogicalOrExpAst(NodeAst::T_CLOGOREXP_LOGOREXP_OR_OP_LOGANDEXP);
+		p->addChild2($1, $3);
+        $$ = p;
+	}
 	;
 
 logical_and_expression
 	: equality_expression
-	{ /*directly return the child node*/ }
+	{ /*directly return the child node*/
+		$$ = $1;
+	}
 
 	| logical_and_expression AND_OP equality_expression
-	{  }
+	{
+		NodeAst *p = new LogicalAndExpAst(NodeAst::T_CLOGANDEXP_LOGANDEXP_AND_OP_EQUALEXP);
+		p->addChild2($1, $3);
+        $$ = p;
+	}
 	;
 
 /*************************inclusive or exclusive or and_exp***************************
 inclusive_or_expression
 	: exclusive_or_expression
-	{ }
+	{
+		$$ = NULL;
+	}
 
 	| inclusive_or_expression '|' exclusive_or_expression
-	{  }
+	{
+		$$ = NULL;
+	}
 	;
 
 exclusive_or_expression
 	: and_expression
-	{ }
+	{
+		$$ = NULL;
+	}
 
 	| exclusive_or_expression '^' and_expression
-	{  }
+	{
+		$$ = NULL;
+	}
 	;
 
 and_expression
 	: equality_expression
-	{  }
+	{
+		$$ = NULL;
+	}
 
 	| and_expression '&' equality_expression
-	{  }
+	{
+		$$ = NULL;
+	}
 	;
+
 **************************************************************************/
 
 equality_expression
 	: relational_expression
-	{ /*directly return the child node*/ }
+	{ /*directly return the child node*/
+		$$ = $1;
+	}
 
 	| equality_expression EQ_OP relational_expression
-	{  }
+	{
+		NodeAst *p = new EqualExpAst(NodeAst::T_CEQUALEXP_EQUALEXP_EQ_OP_RELEXP);
+		p->addChild2($1, $3);
+        $$ = p;
+	}
 
 	| equality_expression NE_OP relational_expression
-	{  }
+	{
+		NodeAst *p = new EqualExpAst(NodeAst::T_CEQUALEXP_EQUALEXP_NE_OP_RELEXP);
+		p->addChild2($1, $3);
+        $$ = p;
+	}
 	;
 
 relational_expression
 	: additive_expression
-	{ /*directly return the child node*/ }
+	{ /*directly return the child node*/
+		$$ = $1;
+	}
 
 	| relational_expression '<' additive_expression
-	{ }
+	{
+		NodeAst *p = new RelationExpAst(NodeAst::T_CRELEXP_RELEXP_L_OP_ADDEXP);
+		p->addChild2($1, $3);
+        $$ = p;
+	}
 
 	| relational_expression '>' additive_expression
-	{ }
+	{
+		NodeAst *p = new RelationExpAst(NodeAst::T_CRELEXP_RELEXP_G_OP_ADDEXP);
+		p->addChild2($1, $3);
+        $$ = p;
+	}
 
 	| relational_expression LE_OP additive_expression
-	{ }
+	{
+		NodeAst *p = new RelationExpAst(NodeAst::T_CRELEXP_RELEXP_LE_OP_ADDEXP);
+		p->addChild2($1, $3);
+        $$ = p;
+	}
 
 	| relational_expression GE_OP additive_expression
-	{ }
+	{
+		NodeAst *p = new RelationExpAst(NodeAst::T_CRELEXP_RELEXP_GE_OP_ADDEXP);
+		p->addChild2($1, $3);
+        $$ = p;
+	}
 	;
 
 /**********************shift_expression*****************************
 shift_expression
 	: additive_expression
-	{ }
+	{
+		$$ = NULL;
+	}
 
 	| shift_expression LEFT_OP additive_expression
-	{ }
+	{
+		$$ = NULL;
+	}
 
 	| shift_expression RIGHT_OP additive_expression
-	{ }
+	{
+		$$ = NULL;
+	}
 	;
 ************************************************************************/
 
 additive_expression
 	: multiplicative_expression
-	{ /*directly return the child node*/ }
+	{ /*directly return the child node*/
+		$$ = $1;
+	}
 
 	| additive_expression '+' multiplicative_expression
-	{ }
+	{
+		NodeAst *p = new AddExpAst(NodeAst::T_CADDEXP_ADDEXP_ADD_OP_MULEXP);
+		p->addChild2($1, $3);
+        $$ = p;
+	}
 
 	| additive_expression '-' multiplicative_expression
-	{ }
+	{
+		NodeAst *p = new AddExpAst(NodeAst::T_CADDEXP_ADDEXP_SUB_OP_MULEXP);
+		p->addChild2($1, $3);
+        $$ = p;
+	}
 	;
 
 multiplicative_expression
 	: cast_expression
-	{ /*directly return the child node*/ }
+	{ /*directly return the child node*/
+		$$ = $1;
+	}
 
 	| multiplicative_expression '*' cast_expression
-	{  }
+	{
+		NodeAst *p = new MulExpAst(NodeAst::T_CMULEXP_MULEXP_MUL_OP_CASTEXP);
+		p->addChild2($1, $3);
+        $$ = p;
+	}
 
 	| multiplicative_expression '/' cast_expression
-	{  }
+	{
+		NodeAst *p = new MulExpAst(NodeAst::T_CMULEXP_MULEXP_DIV_OP_CASTEXP);
+		p->addChild2($1, $3);
+        $$ = p;
+	}
 
 	| multiplicative_expression '%' cast_expression
-	{  }
+	{
+		$$ = NULL;
+	}
 	;
 
 cast_expression
 	: unary_expression
-	{ /*directly return the child node*/ }
+	{ /*directly return the child node*/
+		$$ = $1;
+	}
 
 	| '(' type_name ')' cast_expression
-	{  }
+	{
+		$$ = NULL;
+	}
 	;
 
 unary_expression
 	: postfix_expression
-	{ /*directly return the child node*/ }
+	{ /*directly return the child node*/
+		$$ = $1;
+	}
 
 	| INC_OP unary_expression
-	{  }
+	{
+		NodeAst *p = new UnaryExpAst(NodeAst::T_CUNARYEXP_INC_OP_UNARAYEXP);
+		p->addChild1($2);
+        $$ = p;
+	}
 
 	| DEC_OP unary_expression
-	{  }
+	{
+		NodeAst *p = new UnaryExpAst(NodeAst::T_CUNARYEXP_DEC_OP_UNARYEXP);
+		p->addChild1($2);
+        $$ = p;
+	}
 
 	| unary_operator cast_expression
-	{  }
+	{
+		NodeAst *p = new UnaryExpAst(NodeAst::T_CUNARYEXP_UNARY_OP_CASTEXP);
+		p->addChild2($1, $2);
+        $$ = p;
+	}
 
 	| SIZEOF unary_expression
-	{  }
+	{
+		$$ = NULL;
+	}
 	;
 
 unary_operator
 	: '&'
-	{ /*directly return the child node*/ }
+	{
+		$$ = NULL;
+	}
 
 	| '*'
-	{ /*directly return the child node*/ }
+	{
+		$$ = NULL;
+	}
 
 	| '+'
-	{ /*directly return the child node*/  }
+	{
+		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CUNARY_OP_ADD_OP, $1);
+		$$ = p;
+	}
 
 	| '-'
-	{ /*directly return the child node*/ }
+	{
+		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CUNARY_OP_SUB_OP, $1);
+		$$ = p;
+	}
 
 	| '~'
-	{ /*directly return the child node*/ }
+	{
+		$$ = NULL;
+	}
 
 	| '!'
-	{ /*directly return the child node*/ }
+	{
+		$$ = NULL;
+	}
 	;
 
 postfix_expression
 	: primary_expression
-	{ /*directly return the child node*/ }
+	{ /*directly return the child node*/
+		$$ = $1;
+	}
 
 	| postfix_expression '[' expression ']'
-	{ }
+	{
+		NodeAst *p = new PostfixExpAst(NodeAst::T_CPOSTEXP_POSTEXP_ARRAY_EXP);
+		p->addChild2($1, $3);
+        $$ = p;
+	}
 
 	| postfix_expression '(' ')'
-	{ }
+	{
+		NodeAst *p = new PostfixExpAst(NodeAst::T_CPOSTEXP_POSTEXP_CALL_VOID);
+		p->addChild1($1);
+        $$ = p;
+	}
 
 	| postfix_expression '(' argument_expression_list ')'
-	{ /*call the func callee*/ }
+	{ /*call the func callee*/
+		NodeAst *p = new PostfixExpAst(NodeAst::T_CPOSTEXP_POSTEXP_CALL_ARGEXPLIST);
+		p->addChild2($1, $3);
+        $$ = p;
+	}
 
 	| postfix_expression '.' IDENTIFIER
-	{ }
+	{
+		NodeAst *p = new PostfixExpAst(NodeAst::T_CPOSTEXP_POSTEXP_REF_ID);
+		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CPOSTEXP_POSTEXP_REF_ID, $3);
+		p->addChild2($1, t);
+        $$ = p;
+	}
 
 	| postfix_expression PTR_OP IDENTIFIER
-	{ }
+	{
+		$$ = NULL;
+	}
 
 	| postfix_expression INC_OP
-	{ }
+	{
+		NodeAst *p = new PostfixExpAst(NodeAst::T_CPOSTEXP_POSTEXP_INC_OP);
+		p->addChild1($1);
+        $$ = p;
+	}
 
 	| postfix_expression DEC_OP
-	{ }
+	{
+		NodeAst *p = new PostfixExpAst(NodeAst::T_CPOSTEXP_POSTEXP_DEC_OP);
+		p->addChild1($1);
+        $$ = p;
+	}
 
 	| NEW_OP IDENTIFIER '(' ')'
-	{ }
+	{
+		NodeAst *p = new PostfixExpAst(NodeAst::T_CPOSTEXP_NEW_ID_VOID);
+		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CPOSTEXP_NEW_ID_VOID, $2);
+		p->addChild1(t);
+        $$ = p;
+	}
 
 	| DELETE_OP IDENTIFIER
-	{ }
+	{
+		NodeAst *p = new PostfixExpAst(NodeAst::T_CPOSTEXP_DELETE_ID);
+		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CPOSTEXP_DELETE_ID, $2);
+		p->addChild1(t);
+        $$ = p;
+	}
 	;
 
 primary_expression
 	: IDENTIFIER
-	{  }
+	{
+		NodeAst *p = new PrimaryExpAst(NodeAst::T_CPRIMEXP_ID);
+		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CPRIMEXP_ID, $1);
+		p->addChild1(t);
+		$$ = p;
+	}
 
 	| constant_value
-	{  }
+	{
+		NodeAst *p = new PrimaryExpAst(NodeAst::T_CPRIMEXP_CONST);
+		p->addChild1($1);
+        $$ = p;
+	}
 
 	| STRING_LITERAL
-	{  }
+	{
+		NodeAst *p = new PrimaryExpAst(NodeAst::T_CPRIMEXP_STR);
+		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CPRIMEXP_STR, $1);
+		p->addChild1(t);
+		$$ = p;
+	}
 
 	| '(' expression ')'
-	{  }
+	{
+		NodeAst *p = new PrimaryExpAst(NodeAst::T_CPRIMEXP_EXP);
+		p->addChild1($2);
+        $$ = p;
+	}
 	;
 
 argument_expression_list
 	: assignment_expression
-	{ /*directly return the child node*/ }
+	{ /*directly return the child node*/
+		$$ = $1;
+	}
 
 	| argument_expression_list ',' assignment_expression
-	{ }
+	{
+		NodeAst *p = new ArgExpListAst(NodeAst::T_CARGEXPLIST_ARGEXPLIST_ASSGEXP);
+		p->addChild2($1, $3);
+        $$ = p;
+	}
 	;
 
 constant_value
         : INTEGER_CONSTANT
-        { /*directly return the child node*/ }
+        {
+			NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CCONSTVAR_INT_CONST, $1);
+			$$ = p;
+        }
 
         | CHARACTER_CONSTANT
-        { /*directly return the child node*/ }
+        {
+			NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CCONSTVAR_CHAR_CONST, $1);
+			$$ = p;
+        }
 
         | FLOATING_CONSTANT
-        { /*directly return the child node*/ }
+        {
+			NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CCONSTVAR_FLOAT_CONST, $1);
+			$$ = p;
+        }
         ;
 
 %%
@@ -1315,15 +1632,12 @@ int yyerror(const char *msg)
 	return 0;
 }
 
-list<NodeTag *> NodeTag::s_nodeList;
-map< string, list<SymbolElm> >  NodeTag::s_symbolMap;
 
 int main() {
 
    yyparse();
 
    cout << "yylineno" << yylineno <<endl;
-   NodeTag::freeNodeList();
    return 0;
 }
 
