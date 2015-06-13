@@ -29,7 +29,7 @@ extern int yylineno;
 %token<yystring> XOR_ASSIGN OR_ASSIGN TYPE_NAME
 
 %token<yystring> TYPEDEF EXTERN STATIC AUTO REGISTER
-%token<yystring> CHAR SHORT INT LONG SIGNED UNSIGNED FLOAT DOUBLE CONST VOLATILE VOID
+%token<yystring> CHAR SHORT INT LONG SIGNED UNSIGNED FLOAT DOUBLE CONST VOLATILE VOID VIRTUAL
 %token<yystring> STRUCT UNION CLASS ENUM ELLIPSIS
 
 %token<yystring> CASE DEFAULT IF ELSE SWITCH WHILE DO FOR GOTO CONTINUE BREAK RETURN
@@ -49,12 +49,14 @@ extern int yylineno;
 %type<pnode>  init_declarator_list
 %type<pnode>  init_declarator
 %type<pnode>  specifier_qualifier_list
+/************************************
 %type<pnode>  struct_or_union_specifier
 %type<pnode>  struct_or_union
 %type<pnode>  struct_declaration_list
 %type<pnode>  struct_declaration
 %type<pnode>  struct_declarator_list
 %type<pnode>  struct_declarator
+***************************************/
 %type<pnode>  class_specifier
 %type<pnode>  class_declaration_list
 %type<pnode>  class_declaration
@@ -165,18 +167,10 @@ external_declaration
 	;
 
 function_definition
-	:
-	| declaration_specifiers declarator compound_statement
+	: declaration_specifiers declarator compound_statement
 	{ /*func scope*/
 		NodeAst *p = new FuncDefAst(NodeAst::T_CFUNCDEF_DECTIONSFS_DECTOR_COMPSTM);
 		p->addChild3($1, $2, $3);
-		$$ = p;
-	}
-
-	| declarator compound_statement
-	{ /*this func can be the Constructor or Destructor*/
-		NodeAst *p = new FuncDefAst(NodeAst::T_CFUNCDEF_DECTOR_COMPSTM);
-		p->addChild2($1, $2);
 		$$ = p;
 	}
 	;
@@ -221,7 +215,7 @@ declaration_specifiers
 
 	| storage_class_specifier declaration_specifiers
 	{
-		NodeAst *p = new DectionSpecifiersAst(NodeAst::T_CDECTIONSF_STORCLASSSF_DECTIONSF);
+		NodeAst *p = new DectionSpecifiersAst(NodeAst::T_CDECTIONSF_STORCLASSSF_DECTIONSFS);
 		p->addChild2($1, $2);
 		$$ = p;
 	}
@@ -233,7 +227,7 @@ declaration_specifiers
 
 	| type_specifier declaration_specifiers
 	{
-		NodeAst *p = new DectionSpecifiersAst(NodeAst::T_CDECTIONSF_TYPESF_DECTIONSF);
+		NodeAst *p = new DectionSpecifiersAst(NodeAst::T_CDECTIONSF_TYPESF_DECTIONSFS);
 		p->addChild2($1, $2);
 		$$ = p;
 	}
@@ -245,7 +239,7 @@ declaration_specifiers
 
 	| type_qualifier declaration_specifiers
 	{
-		NodeAst *p = new DectionSpecifiersAst(NodeAst::T_CDECTIONSF_TYPEQF_DECTIONSF);
+		NodeAst *p = new DectionSpecifiersAst(NodeAst::T_CDECTIONSF_TYPEQF_DECTIONSFS);
 		p->addChild2($1, $2);
 		$$ = p;
 	}
@@ -338,10 +332,10 @@ type_specifier
 		$$ = p;
 	}
 
-	| struct_or_union_specifier
-	{ /*directly return the child node*/
+	/*| struct_or_union_specifier
+	{ 
 		$$ = $1;
-	}
+	}*/
 
 	| class_specifier
 	{ /*directly return the child node*/
@@ -391,7 +385,7 @@ init_declarator
 		$$ = p;
 	}
 
-	: declarator '=' initializer
+	| declarator '=' initializer
 	{
 		NodeAst *p = new InitDectorAst(NodeAst::T_CINITDECTOR_ASSGIN_INITZER);
 		p->addChild2($1, $3);
@@ -425,7 +419,7 @@ specifier_qualifier_list
 	}
 	;
 
-/****************************struct***************************************/
+/****************************struct***************************************
 
 struct_or_union_specifier
 	: struct_or_union IDENTIFIER '{' struct_declaration_list '}'
@@ -504,6 +498,7 @@ struct_declarator
 		$$ = NULL;
 	}
 	;
+***************************************************************/
 
 /************************************class**************************************/
 
@@ -517,7 +512,7 @@ class_specifier
 	}
 
 	| CLASS IDENTIFIER ':' identifier_list '{' class_declaration_list '}'
-	{ /*class scope def*/
+	{ //class scope def
 		NodeAst *p = new ClassSpecifierAst(NodeAst::T_CCLASSSF_CLASS_ID_IDLIST_CLASSDECTIONLIST);
 		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CCLASSSF_CLASS_ID_IDLIST_CLASSDECTIONLIST, $2);
 		p->addChild4($1, t, $4, $6);
@@ -555,10 +550,17 @@ class_declaration
 		$$ = p;
 	}
 
-	: function_definition
+	| specifier_qualifier_list class_declarator compound_statement
 	{
-		NodeAst *p = new ClassDectionAst(NodeAst::T_CCLASSDECTION_FUNCDEF);
-		p->addChild1($1);
+		NodeAst *p = new ClassDectionAst(NodeAst::T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST_COMPSTM);
+		p->addChild3($1, $2, $3);
+		$$ = p;
+	}
+	
+	| class_declarator compound_statement
+	{ /*this func can be the Constructor or Destructor*/
+		NodeAst *p = new ClassDectionAst(NodeAst::T_CCLASSDECTION_CLASSDECTORLIST_COMPSTM);
+		p->addChild2($1, $2);
 		$$ = p;
 	}
 	;
@@ -657,7 +659,7 @@ direct_declarator
 
 	| '(' declarator ')'
 	{ /*directly return the child node*/
-		$$ = $1;
+		$$ = $2;
 	}
 
 	| direct_declarator '[' constant_expression ']'
@@ -949,22 +951,22 @@ labeled_statement
 	{
 		NodeAst *p = new LabeledStmAst(NodeAst::T_CLABSTM_ID_STM);
 		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CLABSTM_ID_STM, $1);
-        p->addChild2(t, $3);
-        $$ = p;
+        	p->addChild2(t, $3);
+        	$$ = p;
 	}
 
 	| CASE constant_expression ':' statement
 	{
 		NodeAst *p = new LabeledStmAst(NodeAst::T_CLABSTM_CASE_CONSTEXP_STM);
-        p->addChild2($2, $4);
-        $$ = p;
+        	p->addChild2($2, $4);
+        	$$ = p;
 	}
 
 	| DEFAULT ':' statement
 	{
 		NodeAst *p = new LabeledStmAst(NodeAst::T_CLABSTM_DEFAULT_STM);
-        p->addChild1($3);
-        $$ = p;
+        	p->addChild1($3);
+        	$$ = p;
 	}
 	;
 
@@ -972,14 +974,14 @@ expression_statement
 	: ';'
 	{
 		NodeAst *p = new ExpStmAst(NodeAst::T_CEXPSTM_VOID);
-        $$ = p;
+       		$$ = p;
 	}
 
 	| expression ';'
 	{
 		NodeAst *p = new ExpStmAst(NodeAst::T_CEXPSTM_EXP);
 		p->addChild1($1)
-        $$ = p;
+        	$$ = p;
 	}
 	;
 
@@ -987,28 +989,28 @@ compound_statement
 	: '{' '}'
 	{ /*local scope*/
 		NodeAst *p = new CompoundStmAst(NodeAst::T_CCOMPSTM_VOID);
-        $$ = p;
+        	$$ = p;
 	}
 
 	| '{' statement_list '}'
 	{ /*local scope*/
 		NodeAst *p = new CompoundStmAst(NodeAst::T_CCOMPSTM_STMLIST);
 		p->addChild1($2);
-        $$ = p;
+        	$$ = p;
 	}
 
 	| '{' declaration_list '}'
 	{ /*local scope*/
 		NodeAst *p = new CompoundStmAst(NodeAst::T_CCOMPSTM_DECTION_LIST);
 		p->addChild1($2);
-        $$ = p;
+        	$$ = p;
 	}
 
 	| '{' declaration_list statement_list '}'
 	{ /*local scope*/
 		NodeAst *p = new CompoundStmAst(NodeAst::T_CCOMPSTM_DECTIONLIST_STMLIST);
 		p->addChild2($2, $3);
-        $$ = p;
+        	$$ = p;
 	}
 	;
 
@@ -1022,7 +1024,7 @@ statement_list
 	{
 		NodeAst *p = new StmListAst(NodeAst::T_CSTMLIST_STMLIST_STM);
 		p->addChild2($1, $2);
-        $$ = p;
+        	$$ = p;
 	}
 	;
 
@@ -1031,21 +1033,21 @@ selection_statement
 	{
 		NodeAst *p = new SelectionStmAst(NodeAst::T_CSELSTM_IF_EXP_STM);
 		p->addChild2($3, $5);
-        $$ = p;
+        	$$ = p;
 	}
 
 	| IF '(' expression ')' statement ELSE statement
 	{
 		NodeAst *p = new SelectionStmAst(NodeAst::T_CSELSTM_IF_EXP_STM_ELSE_STM);
 		p->addChild3($3, $5, $7);
-        $$ = p;
+        	$$ = p;
 	}
 
 	| SWITCH '(' expression ')' statement
 	{
-		NodeAst *p = new SelectionStmAst(NodeAst::T_CSELSTM_IF_EXP_STM_ELSE_STM);
+		NodeAst *p = new SelectionStmAst(NodeAst::T_CSELSTM_SWITCH_EXP_STM);
 		p->addChild2($3, $5);
-        $$ = p;
+        	$$ = p;
 	}
 	;
 
@@ -1054,21 +1056,21 @@ iteration_statement
 	{
 		NodeAst *p = new IterationStmAst(NodeAst::T_CITRSTM_WHILE_EXP_STM);
 		p->addChild2($3, $5);
-        $$ = p;
+        	$$ = p;
 	}
 
 	| DO statement WHILE '(' expression ')' ';'
 	{
 		NodeAst *p = new IterationStmAst(NodeAst::T_CITRSTM_DO_STM_WHILE_EXP);
 		p->addChild2($2, $5);
-        $$ = p;
+        	$$ = p;
 	}
 
 	| FOR '(' expression_statement expression_statement expression ')' statement
 	{
 		NodeAst *p = new IterationStmAst(NodeAst::T_CITRSTM_FOR_EXPSTM_EXPSTM_EXP_STM);
 		p->addChild4($3, $4, $5, $7);
-        $$ = p;
+        	$$ = p;
 	}
 	;
 
@@ -1076,34 +1078,34 @@ jump_statement
 	: GOTO IDENTIFIER ';'
 	{
 		NodeAst *p = new JumpStmAst(NodeAst::T_CJUMPSTM_GOTO_ID);
-		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CJUMPSTM_GOTO_ID);
+		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CJUMPSTM_GOTO_ID, $2);
 		p->addChild1(t);
-        $$ = p;
+        	$$ = p;
 	}
 
 	| CONTINUE ';'
 	{
 		NodeAst *p = new JumpStmAst(NodeAst::T_CJUMPSTM_CONTINUE);
-        $$ = p;
+        	$$ = p;
 	}
 
 	| BREAK ';'
 	{
 		NodeAst *p = new JumpStmAst(NodeAst::T_CJUMPSTM_BREAK);
-        $$ = p;
+        	$$ = p;
 	}
 
 	| RETURN ';'
 	{
 		NodeAst *p = new JumpStmAst(NodeAst::T_CJUMPSTM_RETURN);
-        $$ = p;
+        	$$ = p;
 	}
 
 	| RETURN expression ';'
 	{
 		NodeAst *p = new JumpStmAst(NodeAst::T_CJUMPSTM_RETURN_EXP);
 		p->addChild1($2);
-        $$ = p;
+        	$$ = p;
 	}
 	;
 
@@ -1119,7 +1121,7 @@ expression
 	{
 		NodeAst *p = new ExpAst(NodeAst::T_CEXP_EXP_ASSIGNEXP);
 		p->addChild2($1, $3);
-        $$ = p;
+        	$$ = p;
 	}
 	;
 
@@ -1128,51 +1130,51 @@ assignment_expression
 	{
 		NodeAst *p = new AssignExpAst(NodeAst::T_CASSIGNEXP_CONDITIONALEXP);
 		p->addChild1($1);
-        $$ = p;
+       		$$ = p;
 	}
 
 	| unary_expression assignment_operator assignment_expression
 	{
 		NodeAst *p = new AssignExpAst(NodeAst::T_CASSIGNEXP_UNARYEXP_ASSIGN_OP_ASSIGNEXP);
 		p->addChild3($1, $2, $3);
-        $$ = p;
+        	$$ = p;
 	}
 	;
 
 assignment_operator
 	: '='
 	{
-		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CASSIGN_OP_ASSIGN);
-        $$ = p;
+		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CASSIGN_OP_ASSIGN, "=");
+        	$$ = p;
 	}
 
 	| MUL_ASSIGN
 	{
-		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CASSIGN_OP_MUL_ASSIGN);
-        $$ = p;
+		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CASSIGN_OP_MUL_ASSIGN, $1);
+        	$$ = p;
 	}
 
 	| DIV_ASSIGN
 	{
-		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CASSIGN_OP_DIV_ASSIGN);
-        $$ = p;
+		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CASSIGN_OP_DIV_ASSIGN, $1);
+        	$$ = p;
 	}
 
 	| MOD_ASSIGN
 	{
-        $$ = NULL;
+        	$$ = NULL;
 	}
 
 	| ADD_ASSIGN
 	{
-        NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CASSIGN_OP_ADD_ASSIGN);
-        $$ = p;
+        	NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CASSIGN_OP_ADD_ASSIGN, $1);
+        	$$ = p;
 	}
 
 	| SUB_ASSIGN
 	{
-		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CASSIGN_OP_SUB_ASSIGN);
-        $$ = p;
+		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CASSIGN_OP_SUB_ASSIGN, $1);
+        	$$ = p;
 	}
 
 	| LEFT_ASSIGN
@@ -1225,7 +1227,7 @@ logical_or_expression
 	{
 		NodeAst *p = new LogicalOrExpAst(NodeAst::T_CLOGOREXP_LOGOREXP_OR_OP_LOGANDEXP);
 		p->addChild2($1, $3);
-        $$ = p;
+        	$$ = p;
 	}
 	;
 
@@ -1239,7 +1241,7 @@ logical_and_expression
 	{
 		NodeAst *p = new LogicalAndExpAst(NodeAst::T_CLOGANDEXP_LOGANDEXP_AND_OP_EQUALEXP);
 		p->addChild2($1, $3);
-        $$ = p;
+        	$$ = p;
 	}
 	;
 
@@ -1292,14 +1294,14 @@ equality_expression
 	{
 		NodeAst *p = new EqualExpAst(NodeAst::T_CEQUALEXP_EQUALEXP_EQ_OP_RELEXP);
 		p->addChild2($1, $3);
-        $$ = p;
+       		$$ = p;
 	}
 
 	| equality_expression NE_OP relational_expression
 	{
 		NodeAst *p = new EqualExpAst(NodeAst::T_CEQUALEXP_EQUALEXP_NE_OP_RELEXP);
 		p->addChild2($1, $3);
-        $$ = p;
+        	$$ = p;
 	}
 	;
 
@@ -1313,28 +1315,28 @@ relational_expression
 	{
 		NodeAst *p = new RelationExpAst(NodeAst::T_CRELEXP_RELEXP_L_OP_ADDEXP);
 		p->addChild2($1, $3);
-        $$ = p;
+        	$$ = p;
 	}
 
 	| relational_expression '>' additive_expression
 	{
 		NodeAst *p = new RelationExpAst(NodeAst::T_CRELEXP_RELEXP_G_OP_ADDEXP);
 		p->addChild2($1, $3);
-        $$ = p;
+        	$$ = p;
 	}
 
 	| relational_expression LE_OP additive_expression
 	{
 		NodeAst *p = new RelationExpAst(NodeAst::T_CRELEXP_RELEXP_LE_OP_ADDEXP);
 		p->addChild2($1, $3);
-        $$ = p;
+        	$$ = p;
 	}
 
 	| relational_expression GE_OP additive_expression
 	{
 		NodeAst *p = new RelationExpAst(NodeAst::T_CRELEXP_RELEXP_GE_OP_ADDEXP);
 		p->addChild2($1, $3);
-        $$ = p;
+       		$$ = p;
 	}
 	;
 
@@ -1367,14 +1369,14 @@ additive_expression
 	{
 		NodeAst *p = new AddExpAst(NodeAst::T_CADDEXP_ADDEXP_ADD_OP_MULEXP);
 		p->addChild2($1, $3);
-        $$ = p;
+        	$$ = p;
 	}
 
 	| additive_expression '-' multiplicative_expression
 	{
 		NodeAst *p = new AddExpAst(NodeAst::T_CADDEXP_ADDEXP_SUB_OP_MULEXP);
 		p->addChild2($1, $3);
-        $$ = p;
+        	$$ = p;
 	}
 	;
 
@@ -1388,14 +1390,14 @@ multiplicative_expression
 	{
 		NodeAst *p = new MulExpAst(NodeAst::T_CMULEXP_MULEXP_MUL_OP_CASTEXP);
 		p->addChild2($1, $3);
-        $$ = p;
+        	$$ = p;
 	}
 
 	| multiplicative_expression '/' cast_expression
 	{
 		NodeAst *p = new MulExpAst(NodeAst::T_CMULEXP_MULEXP_DIV_OP_CASTEXP);
 		p->addChild2($1, $3);
-        $$ = p;
+        	$$ = p;
 	}
 
 	| multiplicative_expression '%' cast_expression
@@ -1426,21 +1428,21 @@ unary_expression
 	{
 		NodeAst *p = new UnaryExpAst(NodeAst::T_CUNARYEXP_INC_OP_UNARAYEXP);
 		p->addChild1($2);
-        $$ = p;
+        	$$ = p;
 	}
 
 	| DEC_OP unary_expression
 	{
 		NodeAst *p = new UnaryExpAst(NodeAst::T_CUNARYEXP_DEC_OP_UNARYEXP);
 		p->addChild1($2);
-        $$ = p;
+        	$$ = p;
 	}
 
 	| unary_operator cast_expression
 	{
 		NodeAst *p = new UnaryExpAst(NodeAst::T_CUNARYEXP_UNARY_OP_CASTEXP);
 		p->addChild2($1, $2);
-        $$ = p;
+        	$$ = p;
 	}
 
 	| SIZEOF unary_expression
@@ -1462,13 +1464,13 @@ unary_operator
 
 	| '+'
 	{
-		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CUNARY_OP_ADD_OP, $1);
+		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CUNARY_OP_ADD_OP, "+");
 		$$ = p;
 	}
 
 	| '-'
 	{
-		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CUNARY_OP_SUB_OP, $1);
+		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CUNARY_OP_SUB_OP, "-");
 		$$ = p;
 	}
 
@@ -1493,21 +1495,21 @@ postfix_expression
 	{
 		NodeAst *p = new PostfixExpAst(NodeAst::T_CPOSTEXP_POSTEXP_ARRAY_EXP);
 		p->addChild2($1, $3);
-        $$ = p;
+        	$$ = p;
 	}
 
 	| postfix_expression '(' ')'
 	{
 		NodeAst *p = new PostfixExpAst(NodeAst::T_CPOSTEXP_POSTEXP_CALL_VOID);
 		p->addChild1($1);
-        $$ = p;
+        	$$ = p;
 	}
 
 	| postfix_expression '(' argument_expression_list ')'
 	{ /*call the func callee*/
 		NodeAst *p = new PostfixExpAst(NodeAst::T_CPOSTEXP_POSTEXP_CALL_ARGEXPLIST);
 		p->addChild2($1, $3);
-        $$ = p;
+        	$$ = p;
 	}
 
 	| postfix_expression '.' IDENTIFIER
@@ -1515,7 +1517,7 @@ postfix_expression
 		NodeAst *p = new PostfixExpAst(NodeAst::T_CPOSTEXP_POSTEXP_REF_ID);
 		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CPOSTEXP_POSTEXP_REF_ID, $3);
 		p->addChild2($1, t);
-        $$ = p;
+       		$$ = p;
 	}
 
 	| postfix_expression PTR_OP IDENTIFIER
@@ -1527,14 +1529,14 @@ postfix_expression
 	{
 		NodeAst *p = new PostfixExpAst(NodeAst::T_CPOSTEXP_POSTEXP_INC_OP);
 		p->addChild1($1);
-        $$ = p;
+        	$$ = p;
 	}
 
 	| postfix_expression DEC_OP
 	{
 		NodeAst *p = new PostfixExpAst(NodeAst::T_CPOSTEXP_POSTEXP_DEC_OP);
 		p->addChild1($1);
-        $$ = p;
+        	$$ = p;
 	}
 
 	| NEW_OP IDENTIFIER '(' ')'
@@ -1542,7 +1544,7 @@ postfix_expression
 		NodeAst *p = new PostfixExpAst(NodeAst::T_CPOSTEXP_NEW_ID_VOID);
 		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CPOSTEXP_NEW_ID_VOID, $2);
 		p->addChild1(t);
-        $$ = p;
+        	$$ = p;
 	}
 
 	| DELETE_OP IDENTIFIER
@@ -1550,7 +1552,7 @@ postfix_expression
 		NodeAst *p = new PostfixExpAst(NodeAst::T_CPOSTEXP_DELETE_ID);
 		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CPOSTEXP_DELETE_ID, $2);
 		p->addChild1(t);
-        $$ = p;
+        	$$ = p;
 	}
 	;
 
@@ -1567,7 +1569,7 @@ primary_expression
 	{
 		NodeAst *p = new PrimaryExpAst(NodeAst::T_CPRIMEXP_CONST);
 		p->addChild1($1);
-        $$ = p;
+       		$$ = p;
 	}
 
 	| STRING_LITERAL
@@ -1582,7 +1584,7 @@ primary_expression
 	{
 		NodeAst *p = new PrimaryExpAst(NodeAst::T_CPRIMEXP_EXP);
 		p->addChild1($2);
-        $$ = p;
+        	$$ = p;
 	}
 	;
 
@@ -1596,7 +1598,7 @@ argument_expression_list
 	{
 		NodeAst *p = new ArgExpListAst(NodeAst::T_CARGEXPLIST_ARGEXPLIST_ASSGEXP);
 		p->addChild2($1, $3);
-        $$ = p;
+        	$$ = p;
 	}
 	;
 
