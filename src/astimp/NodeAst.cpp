@@ -328,7 +328,7 @@ const char* NodeAst::s_nodeTypeString[] = {
 };
 LogiMsg* NodeAst::s_logiMsg = NULL;
 list<NodeAst *> NodeAst::s_nodeList;
-NodeAst *root = NULL;
+NodeAst *NodeAst::s_root = NULL;
 
 
 NodeAst::NodeAst()

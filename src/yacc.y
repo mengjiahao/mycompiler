@@ -1644,6 +1644,7 @@ int main() {
    cout << "yylineno" << yylineno <<endl;
 
    NodeAst::printNodeTree(NodeAst::getNodeTreeRoot(), 0);
+
    NodeAst::freeNodeList();
 
    return 0;
