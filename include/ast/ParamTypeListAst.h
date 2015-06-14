@@ -3,7 +3,6 @@
 
 #include "NodeAst.h"
 
-using namespace std;
 
 class  ParamTypeListAst: public NodeAst {
 	public:
@@ -11,6 +10,6 @@ class  ParamTypeListAst: public NodeAst {
 	public:
 		ParamTypeListAst(NodeAst::NodeType nodeType_t);
 
-}
+};
 
 #endif

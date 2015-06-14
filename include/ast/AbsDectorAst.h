@@ -3,14 +3,12 @@
 
 #include "NodeAst.h"
 
-using namespace std;
-
 class  AbsDectorAst: public NodeAst {
 	public:
 
 	public:
 		AbsDectorAst(NodeAst::NodeType nodeType_t);
 
-}
+};
 
 #endif

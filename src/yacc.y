@@ -333,7 +333,7 @@ type_specifier
 	}
 
 	/*| struct_or_union_specifier
-	{ 
+	{
 		$$ = $1;
 	}*/
 
@@ -556,7 +556,7 @@ class_declaration
 		p->addChild3($1, $2, $3);
 		$$ = p;
 	}
-	
+
 	| class_declarator compound_statement
 	{ /*this func can be the Constructor or Destructor*/
 		NodeAst *p = new ClassDectionAst(NodeAst::T_CCLASSDECTION_CLASSDECTORLIST_COMPSTM);
@@ -1640,6 +1640,10 @@ int main() {
    yyparse();
 
    cout << "yylineno" << yylineno <<endl;
+
+   NodeAst::printNodeTree(NodeAst::getNodeTreeRoot(), 0);
+   NodeAst::freeNodeList();
+
    return 0;
 }
 

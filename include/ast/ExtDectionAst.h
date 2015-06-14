@@ -11,6 +11,6 @@ class  ExtDectionAst: public NodeAst {
 	public:
 		ExtDectionAst(NodeAst::NodeType nodeType_t);
 
-}
+};
 
 #endif

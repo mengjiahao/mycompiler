@@ -12,7 +12,6 @@ COMMENTS                {COMMENTS1}|{COMMENTS2}
 %{
 #include <cstdio>
 #include <cstring>
-#include "node.h"
 #include "y.tab.h"
 #include <string>
 
@@ -37,41 +36,41 @@ extern int yyerror(const char *msg);
 %%
 {COMMENTS}		{  }
 
-"auto"			{ count(); return(AUTO); }
-"break"			{ count(); return(BREAK); }
-"case"			{ count(); return(CASE); }
-"char"			{ count(); return(CHAR); }
-"const"			{ count(); return(CONST); }
-"continue"		{ count(); return(CONTINUE); }
-"default"		{ count(); return(DEFAULT); }
-"do"			{ count(); return(DO); }
-"double"		{ count(); return(DOUBLE); }
-"else"			{ count(); return(ELSE); }
-"enum"			{ count(); return(ENUM); }
-"extern"		{ count(); return(EXTERN); }
-"float"			{ count(); return(FLOAT); }
-"for"			{ count(); return(FOR); }
-"goto"			{ count(); return(GOTO); }
-"if"			{ count(); return(IF); }
-"int"			{ count(); return(INT); }
-"long"			{ count(); return(LONG); }
-"register"		{ count(); return(REGISTER); }
-"return"		{ count(); return(RETURN); }
-"short"			{ count(); return(SHORT); }
-"signed"		{ count(); return(SIGNED); }
-"sizeof"		{ count(); return(SIZEOF); }
-"static"		{ count(); return(STATIC); }
-"struct"		{ count(); return(STRUCT); }
-"class"                 { count(); return(CLASS); }
-"switch"		{ count(); return(SWITCH); }
-"typedef"		{ count(); return(TYPEDEF); }
-"union"			{ count(); return(UNION); }
-"unsigned"		{ count(); return(UNSIGNED); }
-"void"			{ count(); return(VOID); }
-"volatile"		{ count(); return(VOLATILE); }
-"while"			{ count(); return(WHILE); }
-"new"                   { count(); return(NEW_OP); }
-"delete"                { count(); return(DELETE_OP); }
+"auto"			{ count(); inityylval(yytext); return(AUTO); }
+"break"			{ count(); inityylval(yytext); return(BREAK); }
+"case"			{ count(); inityylval(yytext); return(CASE); }
+"char"			{ count(); inityylval(yytext); return(CHAR); }
+"const"			{ count(); inityylval(yytext); return(CONST); }
+"continue"		{ count(); inityylval(yytext); return(CONTINUE); }
+"default"		{ count(); inityylval(yytext); return(DEFAULT); }
+"do"			{ count(); inityylval(yytext); return(DO); }
+"double"		{ count(); inityylval(yytext); return(DOUBLE); }
+"else"			{ count(); inityylval(yytext); return(ELSE); }
+"enum"			{ count(); inityylval(yytext); return(ENUM); }
+"extern"		{ count(); inityylval(yytext); return(EXTERN); }
+"float"			{ count(); inityylval(yytext); return(FLOAT); }
+"for"			{ count(); inityylval(yytext); return(FOR); }
+"goto"			{ count(); inityylval(yytext); return(GOTO); }
+"if"			{ count(); inityylval(yytext); return(IF); }
+"int"			{ count(); inityylval(yytext); return(INT); }
+"long"			{ count(); inityylval(yytext); return(LONG); }
+"register"		{ count(); inityylval(yytext); return(REGISTER); }
+"return"		{ count(); inityylval(yytext); return(RETURN); }
+"short"			{ count(); inityylval(yytext); return(SHORT); }
+"signed"		{ count(); inityylval(yytext); return(SIGNED); }
+"sizeof"		{ count(); inityylval(yytext); return(SIZEOF); }
+"static"		{ count(); inityylval(yytext); return(STATIC); }
+"struct"		{ count(); inityylval(yytext); return(STRUCT); }
+"class"                 { count(); inityylval(yytext); return(CLASS); }
+"switch"		{ count(); inityylval(yytext); return(SWITCH); }
+"typedef"		{ count(); inityylval(yytext); return(TYPEDEF); }
+"union"			{ count(); inityylval(yytext); return(UNION); }
+"unsigned"		{ count(); inityylval(yytext); return(UNSIGNED); }
+"void"			{ count(); inityylval(yytext); return(VOID); }
+"volatile"		{ count(); inityylval(yytext); return(VOLATILE); }
+"while"			{ count(); inityylval(yytext); return(WHILE); }
+"new"                   { count(); inityylval(yytext); return(NEW_OP); }
+"delete"                { count(); inityylval(yytext); return(DELETE_OP); }
 
 (_|{L})(_|{L}|{D})*	{ count(); inityylval(yytext); return(IDENTIFIER); }
 
@@ -86,28 +85,28 @@ L?'(\\.|[^\\'])+'	{ count(); inityylval(yytext); return(CHARACTER_CONSTANT); }
 
 L?\"(\\.|[^\\"])*\"	{ count(); inityylval(yytext); return(STRING_LITERAL); }
 
-"..."			{ count(); return(ELLIPSIS); }
-">>="			{ count(); return(RIGHT_ASSIGN); }
-"<<="			{ count(); return(LEFT_ASSIGN); }
-"+="			{ count(); return(ADD_ASSIGN); }
-"-="			{ count(); return(SUB_ASSIGN); }
-"*="			{ count(); return(MUL_ASSIGN); }
-"/="			{ count(); return(DIV_ASSIGN); }
-"%="			{ count(); return(MOD_ASSIGN); }
-"&="			{ count(); return(AND_ASSIGN); }
-"^="			{ count(); return(XOR_ASSIGN); }
-"|="			{ count(); return(OR_ASSIGN); }
-">>"			{ count(); return(RIGHT_OP); }
-"<<"			{ count(); return(LEFT_OP); }
-"++"			{ count(); return(INC_OP); }
-"--"			{ count(); return(DEC_OP); }
-"->"			{ count(); return(PTR_OP); }
-"&&"			{ count(); return(AND_OP); }
-"||"			{ count(); return(OR_OP); }
-"<="			{ count(); return(LE_OP); }
-">="			{ count(); return(GE_OP); }
-"=="			{ count(); return(EQ_OP); }
-"!="			{ count(); return(NE_OP); }
+"..."			{ count(); inityylval(yytext); return(ELLIPSIS); }
+">>="			{ count(); inityylval(yytext); return(RIGHT_ASSIGN); }
+"<<="			{ count(); inityylval(yytext); return(LEFT_ASSIGN); }
+"+="			{ count(); inityylval(yytext); return(ADD_ASSIGN); }
+"-="			{ count(); inityylval(yytext); return(SUB_ASSIGN); }
+"*="			{ count(); inityylval(yytext); return(MUL_ASSIGN); }
+"/="			{ count(); inityylval(yytext); return(DIV_ASSIGN); }
+"%="			{ count(); inityylval(yytext); return(MOD_ASSIGN); }
+"&="			{ count(); inityylval(yytext); return(AND_ASSIGN); }
+"^="			{ count(); inityylval(yytext); return(XOR_ASSIGN); }
+"|="			{ count(); inityylval(yytext); return(OR_ASSIGN); }
+">>"			{ count(); inityylval(yytext); return(RIGHT_OP); }
+"<<"			{ count(); inityylval(yytext); return(LEFT_OP); }
+"++"			{ count(); inityylval(yytext); return(INC_OP); }
+"--"			{ count(); inityylval(yytext); return(DEC_OP); }
+"->"			{ count(); inityylval(yytext); return(PTR_OP); }
+"&&"			{ count(); inityylval(yytext); return(AND_OP); }
+"||"			{ count(); inityylval(yytext); return(OR_OP); }
+"<="			{ count(); inityylval(yytext); return(LE_OP); }
+">="			{ count(); inityylval(yytext); return(GE_OP); }
+"=="			{ count(); inityylval(yytext); return(EQ_OP); }
+"!="			{ count(); inityylval(yytext); return(NE_OP); }
 ";"			{ count(); return(';'); }
 ("{"|"<%")		{ count(); return('{'); }
 ("}"|"%>")		{ count(); return('}'); }
@@ -139,7 +138,7 @@ L?\"(\\.|[^\\"])*\"	{ count(); inityylval(yytext); return(STRING_LITERAL); }
 %%
 
 void inityylval(char *yytext) {
-    yylval.yystring = NodeTag::cloneString(yytext);
+    yylval.yystring = yytext;
 }
 
 int yywrap()

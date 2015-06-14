@@ -3,13 +3,12 @@
 
 #include "NodeAst.h"
 
-using namespace std;
 
 class  ExpStmAst: public NodeAst {
 	public:
 	public:
 		ExpStmAst(NodeAst::NodeType nodeType_t);
 
-}
+};
 
 #endif

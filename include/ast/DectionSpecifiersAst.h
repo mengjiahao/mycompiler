@@ -10,6 +10,6 @@ class  DectionSpecifiersAst: public NodeAst {
 	public:
 		DectionSpecifiersAst(NodeAst::NodeType nodeType_t);
 
-}
+};
 
 #endif

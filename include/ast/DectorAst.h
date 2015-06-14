@@ -3,7 +3,6 @@
 
 #include "NodeAst.h"
 
-using namespace std;
 
 class  DectorAst: public NodeAst {
 	public:
@@ -11,6 +10,6 @@ class  DectorAst: public NodeAst {
 	public:
 		DectorAst(NodeAst::NodeType nodeType_t);
 
-}
+};
 
 #endif

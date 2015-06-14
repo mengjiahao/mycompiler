@@ -3,7 +3,7 @@
 
 #include "NodeAst.h"
 
-using namespace std;
+
 
 class  PrimaryExpAst: public NodeAst {
     public:
@@ -11,7 +11,7 @@ class  PrimaryExpAst: public NodeAst {
 	public:
         PrimaryExpAst(NodeAst::nodeType nodeType_t);
 
-}
+};
 
 
 

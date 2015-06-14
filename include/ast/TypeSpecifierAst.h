@@ -3,13 +3,12 @@
 
 #include "NodeAst.h"
 
-using namespace std;
 
 class  TypeSpecifierAst: public NodeAst {
 	public:
 	public:
 		TypeSpecifierAst(NodeAst::NodeType nodeType_t);
 
-}
+};
 
 #endif

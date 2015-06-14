@@ -3,7 +3,6 @@
 
 #include "NodeAst.h"
 
-using namespace std;
 class ConstantExpAst: public NodeAst {
 	public:
 
@@ -11,6 +10,6 @@ class ConstantExpAst: public NodeAst {
 	public:
 		ConstantExpAst(NodeAst::NodeType nodeType_t);
 
-}
+};
 
 #endif

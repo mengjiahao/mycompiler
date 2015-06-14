@@ -3,14 +3,12 @@
 
 #include "NodeAst.h"
 
-using namespace std;
-
 class  InitzerAst: public NodeAst {
 	public:
 
 	public:
 		InitzerAst(NodeAst::NodeType nodeType_t);
 
-}
+};
 
 #endif

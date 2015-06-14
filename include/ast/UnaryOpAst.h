@@ -3,7 +3,6 @@
 
 #include "NodeAst.h"
 
-using namespace std;
 
 class  UnaryOpAst: public NodeAst {
 	public:
@@ -11,6 +10,6 @@ class  UnaryOpAst: public NodeAst {
 	public:
 	   UnaryOpAst(NodeAst::nodeType nodeType_t);
 
-}
+};
 
 #endif

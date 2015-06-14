@@ -3,13 +3,13 @@
 
 #include "NodeAst.h"
 
-using namespace std;
+
 
 class  TypeNameAst: public NodeAst {
 	public:
 	public:
 		TypeNameAst(NodeAst::NodeType nodeType_t);
 
-}
+};
 
 #endif

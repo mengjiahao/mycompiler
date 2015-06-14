@@ -3,7 +3,7 @@
 
 #include "NodeAst.h"
 
-using namespace std;
+
 
 class  ProgramStartAst: public NodeAst {
 	public:
@@ -11,6 +11,6 @@ class  ProgramStartAst: public NodeAst {
 	public:
 		ProgramStartAst(NodeAst::NodeType nodeType_t);
 
-}
+};
 
 #endif

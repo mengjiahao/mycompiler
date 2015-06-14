@@ -3,13 +3,12 @@
 
 #include "NodeAst.h"
 
-using namespace std;
 
 class  StorageClassSpecifierAst: public NodeAst {
 	public:
 	public:
 		StorageClassSpecifierAst(NodeAst::NodeType nodeType_t);
 
-}
+};
 
 #endif

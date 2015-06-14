@@ -3,8 +3,7 @@
 
 #include "NodeAst.h"
 
-using namespace std;
-/*{	T_CCONDITIONALEXP_LOGOREXP }*/
+
 class ConditionalExpAst: public NodeAst {
 	public:
 
@@ -12,6 +11,6 @@ class ConditionalExpAst: public NodeAst {
 	public:
 		ConditionalExpAst(NodeAst::NodeType nodeType_t);
 
-}
+};
 
 #endif

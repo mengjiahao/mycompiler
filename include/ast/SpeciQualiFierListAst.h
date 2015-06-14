@@ -3,7 +3,6 @@
 
 #include "NodeAst.h"
 
-using namespace std;
 
 class  SpeciQualiFierListAst: public NodeAst {
 	public:
@@ -11,6 +10,6 @@ class  SpeciQualiFierListAst: public NodeAst {
 	public:
 		SpeciQualiFierListAst(NodeAst::NodeType nodeType_t);
 
-}
+};
 
 #endif

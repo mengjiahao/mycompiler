@@ -3,15 +3,12 @@
 
 #include "NodeAst.h"
 
-using namespace std;
-
-/*{ T_CLOGANDEXP_LOGANDEXP_AND_EQUALEXP }*/
 class  LogicalAndExpAst: public NodeAst {
 	public:
 	public:
 		LogicalAndExpAst(NodeAst::NodeType nodeType_t);
 
-}
+};
 
 
 #endif

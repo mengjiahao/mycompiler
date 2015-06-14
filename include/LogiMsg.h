@@ -3,17 +3,12 @@
 
 #include <string>
 
-using namespace std;
-
 class LogiMsg {
     public:
         string log;
 
         void attachLogiMsg(char *log_t);
 
-
-
-
-}
+};
 
 #endif

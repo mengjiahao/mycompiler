@@ -11,6 +11,6 @@ class  ClassSpecifierAst: public NodeAst {
 	public:
         ClassSpecifierAst(NodeAst::NodeType nodeType_t);
 
-}
+};
 
 #endif

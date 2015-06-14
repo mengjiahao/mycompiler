@@ -3,13 +3,12 @@
 
 #include "NodeAst.h"
 
-using namespace std;
 
 class  TranslationUnitAst: public NodeAst {
 	public:
 	public:
 		TranslationUnitAst(NodeAst::NodeType nodeType_t);
 
-}
+};
 
 #endif

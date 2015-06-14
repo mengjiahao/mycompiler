@@ -3,7 +3,6 @@
 
 #include "NodeAst.h"
 
-using namespace std;
 
 class CompoundStmAst: public NodeAst {
 	public:
@@ -12,6 +11,6 @@ class CompoundStmAst: public NodeAst {
 	public:
 		CompoundStmAst(NodeAst::NodeType nodeType_t);
 
-}
+};
 
 #endif

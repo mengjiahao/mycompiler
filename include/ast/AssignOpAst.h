@@ -11,7 +11,7 @@ class AssignOpAst: public NodeAst {
 	public:
         AssignOpAst(NodeAst::NodeType nodeType_t);
 
-}
+};
 
 
 #endif

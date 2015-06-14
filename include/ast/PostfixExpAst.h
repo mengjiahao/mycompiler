@@ -3,8 +3,7 @@
 
 #include "NodeAst.h"
 
-using namespace std;
-/*{ T_CPOSTEXP_POSTEXP_ARRAYEXP, T_CPOSTEXP_POSTEXP_CALLVOID, T_CPOSTEXP_POSTEXP_CALLARGEXPLIST, T_CPOSTEXP_POSTEXP_REF_ID, T_CPOSTEXP_POSTEXP_PTR_ID, T_CPOSTEXP_POSTEXP_INC, T_CPOSTEXP_POSTEXP_DEC, T_CPOSTEXP_NEW_ID_VOID, T_CPOSTEXP_DELETE_ID }*/
+
 
 class  PostfixExpAst: public NodeAst {
 	public:
@@ -12,6 +11,6 @@ class  PostfixExpAst: public NodeAst {
 	public:
 		PostfixExpAst(NodeAst::nodeType nodeType_t);
 
-}
+};
 
 #endif

@@ -1,7 +1,7 @@
 #ifndef INCLUDE_NODEAST_H
 #define INCLUDE_NODEAST_H
 
-#include <list>
+#include <vector>
 #include <string>
 #include "../LogiMsg.h"
 
@@ -330,39 +330,56 @@ class NodeAst {
 			T_ERROR
 		};
 
+		int nodeId;
 		int lineno;
-		list<NodeAst *> childs;
 		int childsNo;
+		vector<NodeAst *> childs;
 		NodeType nodeType;
-		static const int nodeTypeNo;
-		static const char *nodeTypeString[];
-		static LogiMsg *logiMsg;
+		string token;
 
+		static const int s_nodeTypeNo;
+		static const char *s_nodeTypeString[];
+		static LogiMsg *s_logiMsg;
+		static list<NodeAst *> s_nodeList;
+		static NodeAst *s_root;
 
 	public:
 		NodeAst(NodeAst::NodeType nodeType_t);
+		NodeAst();
 		virtual ~NodeAst();
+
+		static void addToNodeList(NodeAst *node_t);
+		static void freeNodeList();
+
+		virtual void setNodeId();
+		virtual int getNodeId();
 
 		virtual void setLineno(int lineno_t);
 		virtual int getLineno();
 
-		virtual void setChildNo(int childNo_t);
-		virtual int getChildNo();
+		virtual void setChildsNo(int childNo_t);
+		virtual int getChildsNo();
 
 		virtual void setNodeType(NodeAst::NodeType nodeType_t);
 		virtual NodeAst::NodeType getNodeType();
 		virtual void printNodetype();
+		static void printNodeTree(NodeAst *root, int depth);
 
-		virtual int addChild1(NodeAst *child1);
-		virtual int addChild2(NodeAst *child1, NodeAst *child2);
-		virtual int addChild3(NodeAst *child1, NodeAst *child2, NodeAst *child3);
-		virtual int addChild4(NodeAst *child1, NodeAst *child2, NodeAst *child3, NodeAst *child4);
-		virtual int addChild5(NodeAst *child1, NodeAst *child2, NodeAst *child3, NodeAst *child4, NodeAst *child5);
+		virtual void setToken(string token_t);
+		virtual string getToken();
 
+		virtual int addChild1(NodeAst *child1_t);
+		virtual int addChild2(NodeAst *child1_t, NodeAst *child2_t);
+		virtual int addChild3(NodeAst *child1_t, NodeAst *child2_t, NodeAst *child3_t);
+		virtual int addChild4(NodeAst *child1_t, NodeAst *child2_t, NodeAst *child3_t, NodeAst *child4_t);
+		virtual int addChild5(NodeAst *child1_t, NodeAst *child2_t, NodeAst *child3_t, NodeAst *child4_t, NodeAst *child5_t);
+
+		static void setNodeTreeRoot(NodeAst *root_t);
+		static NodeAst *getNodeTreeRoot();
 		static LogiMsg *getSingletonLogiMsg();
 
 
-}
+};
 
 
 

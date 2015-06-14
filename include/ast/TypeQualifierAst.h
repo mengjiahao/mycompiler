@@ -3,7 +3,7 @@
 
 #include "NodeAst.h"
 
-using namespace std;
+
 
 class  TypeQualifierAst: public NodeAst {
 	public:
@@ -11,6 +11,6 @@ class  TypeQualifierAst: public NodeAst {
 	public:
 		TypeQualifierAst(NodeAst::NodeType nodeType_t);
 
-}
+};
 
 #endif

@@ -5,10 +5,10 @@ class Coordinate{
 	public:
 		int row;
 		int cloumn;
-	
+
 	public:
 		Coordinate(row_t, column_t) :row(row_t), cloumn(column_t) { }
-}
+};
 
 
 

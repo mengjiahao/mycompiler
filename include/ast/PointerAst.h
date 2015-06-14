@@ -3,7 +3,6 @@
 
 #include "NodeAst.h"
 
-using namespace std;
 
 class  PointerAst: public NodeAst {
 	public:
@@ -11,6 +10,6 @@ class  PointerAst: public NodeAst {
 	public:
 		PointerAst(NodeAst::NodeType nodeType_t);
 
-}
+};
 
 #endif
