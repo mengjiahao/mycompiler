@@ -379,6 +379,8 @@ class NodeAst {
 		static NodeAst *getNodeTreeRoot();
 		static LogiMsg *getSingletonLogiMsg();
 
+		static void dotBfsNodeTree(NodeAst *root_t);
+
 
 };
 

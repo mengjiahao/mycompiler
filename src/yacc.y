@@ -1593,8 +1593,10 @@ primary_expression
 
 argument_expression_list
 	: assignment_expression
-	{ /*directly return the child node*/
-		$$ = $1;
+	{
+		NodeAst *p = new ArgExpListAst(NodeAst::T_CARGEXPLIST_ASSGEXP);
+		p->addChild1($1);
+		$$ = p;
 	}
 
 	| argument_expression_list ',' assignment_expression
@@ -1644,6 +1646,8 @@ int main() {
    cout << "yylineno" << yylineno <<endl;
 
    NodeAst::printNodeTree(NodeAst::getNodeTreeRoot(), 0);
+
+   NodeAst::dotBfsNodeTree(NodeAst::getNodeTreeRoot());
 
    NodeAst::freeNodeList();
 

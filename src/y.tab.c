@@ -598,8 +598,8 @@ static const yytype_uint16 yyrline[] =
     1317,  1324,  1331,  1338,  1366,  1371,  1378,  1387,  1392,  1399,
     1406,  1413,  1418,  1425,  1430,  1437,  1444,  1451,  1458,  1463,
     1468,  1474,  1480,  1485,  1492,  1497,  1504,  1511,  1518,  1526,
-    1531,  1538,  1545,  1553,  1563,  1571,  1578,  1586,  1595,  1600,
-    1609,  1615,  1621
+    1531,  1538,  1545,  1553,  1563,  1571,  1578,  1586,  1595,  1602,
+    1611,  1617,  1623
 };
 #endif
 
@@ -3494,51 +3494,53 @@ yyreduce:
 
   case 188:
 #line 1596 "yacc.y" /* yacc.c:1646  */
-    { /*directly return the child node*/
-		(yyval.pnode) = (yyvsp[0].pnode);
+    {
+		NodeAst *p = new ArgExpListAst(NodeAst::T_CARGEXPLIST_ASSGEXP);
+		p->addChild1((yyvsp[0].pnode));
+		(yyval.pnode) = p;
 	}
-#line 3501 "y.tab.c" /* yacc.c:1646  */
+#line 3503 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 189:
-#line 1601 "yacc.y" /* yacc.c:1646  */
+#line 1603 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new ArgExpListAst(NodeAst::T_CARGEXPLIST_ARGEXPLIST_ASSGEXP);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
         	(yyval.pnode) = p;
 	}
-#line 3511 "y.tab.c" /* yacc.c:1646  */
+#line 3513 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 190:
-#line 1610 "yacc.y" /* yacc.c:1646  */
+#line 1612 "yacc.y" /* yacc.c:1646  */
     {
 			NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CCONSTVAR_INT_CONST, (yyvsp[0].yystring));
 			(yyval.pnode) = p;
         }
-#line 3520 "y.tab.c" /* yacc.c:1646  */
+#line 3522 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 191:
-#line 1616 "yacc.y" /* yacc.c:1646  */
+#line 1618 "yacc.y" /* yacc.c:1646  */
     {
 			NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CCONSTVAR_CHAR_CONST, (yyvsp[0].yystring));
 			(yyval.pnode) = p;
         }
-#line 3529 "y.tab.c" /* yacc.c:1646  */
+#line 3531 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 192:
-#line 1622 "yacc.y" /* yacc.c:1646  */
+#line 1624 "yacc.y" /* yacc.c:1646  */
     {
 			NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CCONSTVAR_FLOAT_CONST, (yyvsp[0].yystring));
 			(yyval.pnode) = p;
         }
-#line 3538 "y.tab.c" /* yacc.c:1646  */
+#line 3540 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 3542 "y.tab.c" /* yacc.c:1646  */
+#line 3544 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -3766,7 +3768,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 1628 "yacc.y" /* yacc.c:1906  */
+#line 1630 "yacc.y" /* yacc.c:1906  */
 
 
 
@@ -3786,6 +3788,9 @@ int main() {
    cout << "yylineno" << yylineno <<endl;
 
    NodeAst::printNodeTree(NodeAst::getNodeTreeRoot(), 0);
+
+   NodeAst::dotBfsNodeTree(NodeAst::getNodeTreeRoot());
+
    NodeAst::freeNodeList();
 
    return 0;

@@ -1,9 +1,14 @@
 
 #include <iostream>
+#include <fstream>
+#include <queue>
+#include <string>
 #include "../../include/ast/NodeAst.h"
 
 
 using namespace std;
+
+static const char *demoAstDotFilename = "demoAst.dot";
 
 const int NodeAst::s_nodeTypeNo = 206;
 const char* NodeAst::s_nodeTypeString[] = {
@@ -351,7 +356,8 @@ NodeAst::NodeAst(NodeAst::NodeType nodeType_t)
     setChildsNo(0);
     setNodeType(nodeType_t);
     setToken(s_nodeTypeString[nodeType_t]);
-    printNodetype();
+
+    //printNodetype();
 
     addToNodeList(this);
     setNodeTreeRoot(this);
@@ -543,6 +549,85 @@ LogiMsg* NodeAst::getSingletonLogiMsg()
     }
     return s_logiMsg = new LogiMsg();
 }
+
+void NodeAst::dotBfsNodeTree(NodeAst* root_t)
+{
+    if (NULL == root_t)
+        return;
+
+    ofstream ofs;
+    ofs.open(demoAstDotFilename);
+
+    queue<NodeAst *> nodeQueue;
+    NodeAst *node = NULL;
+
+    string s1("digraph hierarchy {\n");
+    ofs << s1;
+
+    //node
+    nodeQueue.push(root_t);
+
+    while(!nodeQueue.empty()) {
+
+        node = nodeQueue.front();
+        nodeQueue.pop();
+
+        s1 = node->getToken();
+
+        if (NodeAst::T_CTERMINATE_CPRIMEXP_STR == node->nodeType) {
+           s1.replace(s1.length()-1, 1, "\\\"");
+           ofs << node->getNodeId() << " [label=" << "\"\\" << s1 << "\"" << "]\n";
+        } else {
+           ofs << node->getNodeId() << " [label=" << "\"" << s1 << "\"" <<"]\n";
+        }
+
+
+        if ( (-1 == node->childsNo) || (0 == node->childsNo)
+        || (1 == node->childsNo && NULL == node->childs[0]) )  {
+                 continue ;
+        }
+
+        for(int i = 0; i < node->childsNo; ++i) {
+
+            if (NULL != node->childs[i]) {
+
+                nodeQueue.push(node->childs[i]);
+            }
+        }
+
+    }
+
+    //edge
+    nodeQueue.push(root_t);
+
+    while(!nodeQueue.empty()) {
+
+        node = nodeQueue.front();
+        nodeQueue.pop();
+
+
+        if ( (-1 == node->childsNo) || (0 == node->childsNo)
+        || (1 == node->childsNo && NULL == node->childs[0]) )  {
+                 continue ;
+        }
+
+        for(int i = 0; i < node->childsNo; ++i) {
+
+            if (NULL != node->childs[i]) {
+
+                ofs << node->getNodeId() << " -> " << node->childs[i]->getNodeId() << ";\n";
+
+                nodeQueue.push(node->childs[i]);
+            }
+        }
+
+    }
+
+    ofs << "}";
+    ofs.close();
+
+}
+
 
 
 
