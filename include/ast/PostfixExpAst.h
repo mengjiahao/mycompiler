@@ -9,7 +9,7 @@ class  PostfixExpAst: public NodeAst {
 	public:
 
 	public:
-		PostfixExpAst(NodeAst::nodeType nodeType_t);
+		PostfixExpAst(NodeAst::NodeType nodeType_t);
 
 };
 

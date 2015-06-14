@@ -4,8 +4,7 @@
 #include "NodeAst.h"
 
 
-
-class  TypeQualifierListAst: public NodeAst {
+class TypeQualifierListAst: public NodeAst {
 	public:
 
 	public:

@@ -9,7 +9,7 @@ class  PrimaryExpAst: public NodeAst {
     public:
 
 	public:
-        PrimaryExpAst(NodeAst::nodeType nodeType_t);
+        PrimaryExpAst(NodeAst::NodeType nodeType_t);
 
 };
 

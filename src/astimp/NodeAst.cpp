@@ -1,4 +1,7 @@
+
+#include <iostream>
 #include "../../include/ast/NodeAst.h"
+
 
 using namespace std;
 

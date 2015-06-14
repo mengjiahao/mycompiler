@@ -1,6 +1,8 @@
 %{
-#include "../include/AstHead.h"
+
+#include <iostream>
 #include <string>
+#include "../include/AstHead.h"
 
 using namespace std;
 
@@ -17,7 +19,7 @@ extern int yylineno;
 
 %union {
    string yystring;
-   NodeAst *pnode;
+   NodeAst* pnode;
 }
 
 /**********************Terminator******************************/
@@ -507,7 +509,7 @@ class_specifier
 	{ /*class scope def*/
 		NodeAst *p = new ClassSpecifierAst(NodeAst::T_CCLASSSF_CLASS_ID_CLASSDECTIONLIST);
 		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CCLASSSF_CLASS_ID_CLASSDECTIONLIST, $2);
-		p->addChild3($1, t, $4);
+		p->addChild2(t, $4);
 		$$ = p;
 	}
 
@@ -515,7 +517,7 @@ class_specifier
 	{ //class scope def
 		NodeAst *p = new ClassSpecifierAst(NodeAst::T_CCLASSSF_CLASS_ID_IDLIST_CLASSDECTIONLIST);
 		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CCLASSSF_CLASS_ID_IDLIST_CLASSDECTIONLIST, $2);
-		p->addChild4($1, t, $4, $6);
+		p->addChild3(t, $4, $6);
 		$$ = p;
 	}
 
@@ -523,7 +525,7 @@ class_specifier
 	{ /*class declaration*/
 		NodeAst *p = new ClassSpecifierAst(NodeAst::T_CCLASSSF_CLASS_ID);
 		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CCLASSSF_CLASS_ID, $2);
-		p->addChild2($1, t);
+		p->addChild1(t);
 		$$ = p;
 	}
 	;
@@ -980,8 +982,8 @@ expression_statement
 	| expression ';'
 	{
 		NodeAst *p = new ExpStmAst(NodeAst::T_CEXPSTM_EXP);
-		p->addChild1($1)
-        	$$ = p;
+		p->addChild1($1);
+		$$ = p;
 	}
 	;
 
@@ -1629,8 +1631,7 @@ constant_value
 
 int yyerror(const char *msg)
 {
-	fflush(stdout);
-	printf("\n%*s\n%*s\n", yycolumn, "^", yycolumn, msg);
+
 	return 0;
 }
 

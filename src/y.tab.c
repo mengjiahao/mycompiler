@@ -64,8 +64,10 @@
 /* Copy the first part of user declarations.  */
 #line 1 "yacc.y" /* yacc.c:339  */
 
-#include "../include/AstHead.h"
+
+#include <iostream>
 #include <string>
+#include "../include/AstHead.h"
 
 using namespace std;
 
@@ -78,7 +80,7 @@ int yywrap(void);
 extern int yycolumn;
 extern int yylineno;
 
-#line 82 "y.tab.c" /* yacc.c:339  */
+#line 84 "y.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -254,12 +256,12 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 18 "yacc.y" /* yacc.c:355  */
+#line 20 "yacc.y" /* yacc.c:355  */
 
    string yystring;
-   NodeAst *pnode;
+   NodeAst* pnode;
 
-#line 263 "y.tab.c" /* yacc.c:355  */
+#line 265 "y.tab.c" /* yacc.c:355  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
@@ -274,7 +276,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 278 "y.tab.c" /* yacc.c:358  */
+#line 280 "y.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -578,26 +580,26 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,   128,   128,   137,   142,   154,   161,   170,   179,   186,
-     195,   200,   211,   216,   223,   228,   235,   240,   249,   255,
-     261,   267,   273,   281,   287,   293,   299,   305,   311,   317,
-     323,   329,   340,   347,   353,   359,   367,   372,   381,   388,
-     397,   404,   409,   416,   506,   514,   522,   532,   537,   546,
-     553,   560,   569,   574,   583,   638,   645,   652,   660,   665,
-     672,   679,   686,   693,   704,   709,   714,   719,   726,   731,
-     742,   747,   754,   759,   768,   775,   780,   791,   797,   807,
-     814,   823,   828,   838,   843,   852,   857,   862,   869,   874,
-     879,   884,   889,   894,   899,   904,   909,   918,   923,   928,
-     933,   938,   943,   950,   958,   965,   974,   980,   989,   995,
-    1002,  1009,  1018,  1023,  1032,  1039,  1046,  1055,  1062,  1069,
-    1078,  1086,  1092,  1098,  1104,  1115,  1120,  1129,  1136,  1145,
-    1151,  1157,  1163,  1168,  1174,  1180,  1185,  1190,  1195,  1200,
-    1207,  1214,  1221,  1226,  1235,  1240,  1288,  1293,  1300,  1309,
-    1314,  1321,  1328,  1335,  1363,  1368,  1375,  1384,  1389,  1396,
-    1403,  1410,  1415,  1422,  1427,  1434,  1441,  1448,  1455,  1460,
-    1465,  1471,  1477,  1482,  1489,  1494,  1501,  1508,  1515,  1523,
-    1528,  1535,  1542,  1550,  1560,  1568,  1575,  1583,  1592,  1597,
-    1606,  1612,  1618
+       0,   130,   130,   139,   144,   156,   163,   172,   181,   188,
+     197,   202,   213,   218,   225,   230,   237,   242,   251,   257,
+     263,   269,   275,   283,   289,   295,   301,   307,   313,   319,
+     325,   331,   342,   349,   355,   361,   369,   374,   383,   390,
+     399,   406,   411,   418,   508,   516,   524,   534,   539,   548,
+     555,   562,   571,   576,   585,   640,   647,   654,   662,   667,
+     674,   681,   688,   695,   706,   711,   716,   721,   728,   733,
+     744,   749,   756,   761,   770,   777,   782,   793,   799,   809,
+     816,   825,   830,   840,   845,   854,   859,   864,   871,   876,
+     881,   886,   891,   896,   901,   906,   911,   920,   925,   930,
+     935,   940,   945,   952,   960,   967,   976,   982,   991,   997,
+    1004,  1011,  1020,  1025,  1034,  1041,  1048,  1057,  1064,  1071,
+    1080,  1088,  1094,  1100,  1106,  1117,  1122,  1131,  1138,  1147,
+    1153,  1159,  1165,  1170,  1176,  1182,  1187,  1192,  1197,  1202,
+    1209,  1216,  1223,  1228,  1237,  1242,  1290,  1295,  1302,  1311,
+    1316,  1323,  1330,  1337,  1365,  1370,  1377,  1386,  1391,  1398,
+    1405,  1412,  1417,  1424,  1429,  1436,  1443,  1450,  1457,  1462,
+    1467,  1473,  1479,  1484,  1491,  1496,  1503,  1510,  1517,  1525,
+    1530,  1537,  1544,  1552,  1562,  1570,  1577,  1585,  1594,  1599,
+    1608,  1614,  1620
 };
 #endif
 
@@ -1789,1754 +1791,1754 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 129 "yacc.y" /* yacc.c:1646  */
+#line 131 "yacc.y" /* yacc.c:1646  */
     { /*global scope*/
 		NodeAst *p = new ProgramStartAst(NodeAst::T_CPROGRAMSTART_TRANSUNIT);
 		p->addChild1((yyvsp[0].pnode));
 		(yyval.pnode) = p;
         }
-#line 1799 "y.tab.c" /* yacc.c:1646  */
+#line 1801 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 138 "yacc.y" /* yacc.c:1646  */
+#line 140 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
-#line 1807 "y.tab.c" /* yacc.c:1646  */
+#line 1809 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 143 "yacc.y" /* yacc.c:1646  */
+#line 145 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TranslationUnitAst(NodeAst::T_CTRANSUNIT_TRANSUNIT_EXTDECTION);
 		p->addChild2((yyvsp[-1].pnode), (yyvsp[0].pnode));
 		(yyval.pnode) = p;
 	}
-#line 1817 "y.tab.c" /* yacc.c:1646  */
+#line 1819 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 155 "yacc.y" /* yacc.c:1646  */
+#line 157 "yacc.y" /* yacc.c:1646  */
     { /*global scope func*/
 		NodeAst *p = new ExtDectionAst(NodeAst::T_CEXTDECTION_FUNCDEF);
 		p->addChild1((yyvsp[0].pnode));
 		(yyval.pnode) = p;
 	}
-#line 1827 "y.tab.c" /* yacc.c:1646  */
+#line 1829 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 162 "yacc.y" /* yacc.c:1646  */
+#line 164 "yacc.y" /* yacc.c:1646  */
     { /*global scope var*/
 		NodeAst *p = new ExtDectionAst(NodeAst::T_CEXTDECTION_DECTION);
 		p->addChild1((yyvsp[0].pnode));
 		(yyval.pnode) = p;
 	}
-#line 1837 "y.tab.c" /* yacc.c:1646  */
+#line 1839 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 171 "yacc.y" /* yacc.c:1646  */
+#line 173 "yacc.y" /* yacc.c:1646  */
     { /*func scope*/
 		NodeAst *p = new FuncDefAst(NodeAst::T_CFUNCDEF_DECTIONSFS_DECTOR_COMPSTM);
 		p->addChild3((yyvsp[-2].pnode), (yyvsp[-1].pnode), (yyvsp[0].pnode));
 		(yyval.pnode) = p;
 	}
-#line 1847 "y.tab.c" /* yacc.c:1646  */
+#line 1849 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 180 "yacc.y" /* yacc.c:1646  */
+#line 182 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new DectionAst(NodeAst::T_CDECTION_DECTIONSFS);
 		p->addChild1((yyvsp[-1].pnode));
 		(yyval.pnode) = p;
 	}
-#line 1857 "y.tab.c" /* yacc.c:1646  */
+#line 1859 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 187 "yacc.y" /* yacc.c:1646  */
+#line 189 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new DectionAst(NodeAst::T_CDECTION_DECTIONSFS_INITDECTORLIST);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[-1].pnode));
 		(yyval.pnode) = p;
 	}
-#line 1867 "y.tab.c" /* yacc.c:1646  */
+#line 1869 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 196 "yacc.y" /* yacc.c:1646  */
+#line 198 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
-#line 1875 "y.tab.c" /* yacc.c:1646  */
+#line 1877 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 201 "yacc.y" /* yacc.c:1646  */
+#line 203 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new DectionListAst(NodeAst::T_CDECTIONLIST_DECTIONLIST_DECTION);
 		p->addChild2((yyvsp[-1].pnode), (yyvsp[0].pnode));
 		(yyval.pnode) = p;
 	}
-#line 1885 "y.tab.c" /* yacc.c:1646  */
+#line 1887 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 212 "yacc.y" /* yacc.c:1646  */
+#line 214 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
-#line 1893 "y.tab.c" /* yacc.c:1646  */
+#line 1895 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 217 "yacc.y" /* yacc.c:1646  */
+#line 219 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new DectionSpecifiersAst(NodeAst::T_CDECTIONSF_STORCLASSSF_DECTIONSFS);
 		p->addChild2((yyvsp[-1].pnode), (yyvsp[0].pnode));
 		(yyval.pnode) = p;
 	}
-#line 1903 "y.tab.c" /* yacc.c:1646  */
+#line 1905 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 224 "yacc.y" /* yacc.c:1646  */
+#line 226 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
-#line 1911 "y.tab.c" /* yacc.c:1646  */
+#line 1913 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 229 "yacc.y" /* yacc.c:1646  */
+#line 231 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new DectionSpecifiersAst(NodeAst::T_CDECTIONSF_TYPESF_DECTIONSFS);
 		p->addChild2((yyvsp[-1].pnode), (yyvsp[0].pnode));
 		(yyval.pnode) = p;
 	}
-#line 1921 "y.tab.c" /* yacc.c:1646  */
+#line 1923 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 236 "yacc.y" /* yacc.c:1646  */
+#line 238 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
-#line 1929 "y.tab.c" /* yacc.c:1646  */
+#line 1931 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 241 "yacc.y" /* yacc.c:1646  */
+#line 243 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new DectionSpecifiersAst(NodeAst::T_CDECTIONSF_TYPEQF_DECTIONSFS);
 		p->addChild2((yyvsp[-1].pnode), (yyvsp[0].pnode));
 		(yyval.pnode) = p;
 	}
-#line 1939 "y.tab.c" /* yacc.c:1646  */
+#line 1941 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 250 "yacc.y" /* yacc.c:1646  */
+#line 252 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CSTORCLASSSF_TYPEDEF, (yyvsp[0].yystring));
 		(yyval.pnode) = p;
 	}
-#line 1948 "y.tab.c" /* yacc.c:1646  */
+#line 1950 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 256 "yacc.y" /* yacc.c:1646  */
+#line 258 "yacc.y" /* yacc.c:1646  */
     {
 	    NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CSTORCLASSSF_EXTERN, (yyvsp[0].yystring));
 		(yyval.pnode) = p;
 	}
-#line 1957 "y.tab.c" /* yacc.c:1646  */
+#line 1959 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 262 "yacc.y" /* yacc.c:1646  */
+#line 264 "yacc.y" /* yacc.c:1646  */
     {
 	    NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CSTORCLASSSF_STATIC, (yyvsp[0].yystring));
 		(yyval.pnode) = p;
 	}
-#line 1966 "y.tab.c" /* yacc.c:1646  */
+#line 1968 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 268 "yacc.y" /* yacc.c:1646  */
+#line 270 "yacc.y" /* yacc.c:1646  */
     {
 	    NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CSTORCLASSSF_AUTO, (yyvsp[0].yystring));
 		(yyval.pnode) = p;
 	}
-#line 1975 "y.tab.c" /* yacc.c:1646  */
+#line 1977 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 274 "yacc.y" /* yacc.c:1646  */
+#line 276 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CSTORCLASSSF_REGISITER, (yyvsp[0].yystring));
 		(yyval.pnode) = p;
 	}
-#line 1984 "y.tab.c" /* yacc.c:1646  */
+#line 1986 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 282 "yacc.y" /* yacc.c:1646  */
+#line 284 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPESF_VOID, (yyvsp[0].yystring));
 		(yyval.pnode) = p;
 	}
-#line 1993 "y.tab.c" /* yacc.c:1646  */
+#line 1995 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 288 "yacc.y" /* yacc.c:1646  */
+#line 290 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPESF_CHAR, (yyvsp[0].yystring));
 		(yyval.pnode) = p;
 	}
-#line 2002 "y.tab.c" /* yacc.c:1646  */
+#line 2004 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 294 "yacc.y" /* yacc.c:1646  */
+#line 296 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPESF_SHORT, (yyvsp[0].yystring));
 		(yyval.pnode) = p;
 	}
-#line 2011 "y.tab.c" /* yacc.c:1646  */
+#line 2013 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 300 "yacc.y" /* yacc.c:1646  */
+#line 302 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPESF_INT, (yyvsp[0].yystring));
 		(yyval.pnode) = p;
 	}
-#line 2020 "y.tab.c" /* yacc.c:1646  */
+#line 2022 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 306 "yacc.y" /* yacc.c:1646  */
+#line 308 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPESF_LONG, (yyvsp[0].yystring));
 		(yyval.pnode) = p;
 	}
-#line 2029 "y.tab.c" /* yacc.c:1646  */
+#line 2031 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 312 "yacc.y" /* yacc.c:1646  */
+#line 314 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPESF_FLOAT, (yyvsp[0].yystring));
 		(yyval.pnode) = p;
 	}
-#line 2038 "y.tab.c" /* yacc.c:1646  */
+#line 2040 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 318 "yacc.y" /* yacc.c:1646  */
+#line 320 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPESF_DOUBLE, (yyvsp[0].yystring));
 		(yyval.pnode) = p;
 	}
-#line 2047 "y.tab.c" /* yacc.c:1646  */
+#line 2049 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 324 "yacc.y" /* yacc.c:1646  */
+#line 326 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPESF_SIGNED, (yyvsp[0].yystring));
 		(yyval.pnode) = p;
 	}
-#line 2056 "y.tab.c" /* yacc.c:1646  */
+#line 2058 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 330 "yacc.y" /* yacc.c:1646  */
+#line 332 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPESF_UNSIGNED, (yyvsp[0].yystring));
 		(yyval.pnode) = p;
 	}
-#line 2065 "y.tab.c" /* yacc.c:1646  */
+#line 2067 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 341 "yacc.y" /* yacc.c:1646  */
+#line 343 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
-#line 2073 "y.tab.c" /* yacc.c:1646  */
+#line 2075 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 348 "yacc.y" /* yacc.c:1646  */
+#line 350 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPEQF_CONST, (yyvsp[0].yystring));
 		(yyval.pnode) = p;
 	}
-#line 2082 "y.tab.c" /* yacc.c:1646  */
+#line 2084 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 354 "yacc.y" /* yacc.c:1646  */
+#line 356 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPEQF_VOLATILE, (yyvsp[0].yystring));
 		(yyval.pnode) = p;
 	}
-#line 2091 "y.tab.c" /* yacc.c:1646  */
+#line 2093 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 360 "yacc.y" /* yacc.c:1646  */
+#line 362 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPEQF_VIRTUAL, (yyvsp[0].yystring));
 		(yyval.pnode) = p;
 	}
-#line 2100 "y.tab.c" /* yacc.c:1646  */
+#line 2102 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 368 "yacc.y" /* yacc.c:1646  */
+#line 370 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
-#line 2108 "y.tab.c" /* yacc.c:1646  */
+#line 2110 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 37:
-#line 373 "yacc.y" /* yacc.c:1646  */
+#line 375 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new InitDectorListAst(NodeAst::T_CINITDECTORLIST_INITDECTORLIST_INITDECTOR);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
 		(yyval.pnode) = p;
 	}
-#line 2118 "y.tab.c" /* yacc.c:1646  */
+#line 2120 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 38:
-#line 382 "yacc.y" /* yacc.c:1646  */
+#line 384 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new InitDectorAst(NodeAst::T_CINITDECTOR_DECTOR);
 		p->addChild1((yyvsp[0].pnode));
 		(yyval.pnode) = p;
 	}
-#line 2128 "y.tab.c" /* yacc.c:1646  */
+#line 2130 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 389 "yacc.y" /* yacc.c:1646  */
+#line 391 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new InitDectorAst(NodeAst::T_CINITDECTOR_ASSGIN_INITZER);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
 		(yyval.pnode) = p;
 	}
-#line 2138 "y.tab.c" /* yacc.c:1646  */
+#line 2140 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 40:
-#line 398 "yacc.y" /* yacc.c:1646  */
+#line 400 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new SpeciQualiFierListAst(NodeAst::T_CSQFLIST_TYPESF_SQFLIST);
 		p->addChild2((yyvsp[-1].pnode), (yyvsp[0].pnode));
 		(yyval.pnode) = p;
 	}
-#line 2148 "y.tab.c" /* yacc.c:1646  */
+#line 2150 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 41:
-#line 405 "yacc.y" /* yacc.c:1646  */
+#line 407 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
-#line 2156 "y.tab.c" /* yacc.c:1646  */
+#line 2158 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 42:
-#line 410 "yacc.y" /* yacc.c:1646  */
+#line 412 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new SpeciQualiFierListAst(NodeAst::T_CSQFLIST_TYPEQF_SQFLIST);
 		p->addChild2((yyvsp[-1].pnode), (yyvsp[0].pnode));
 		(yyval.pnode) = p;
 	}
-#line 2166 "y.tab.c" /* yacc.c:1646  */
+#line 2168 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 43:
-#line 417 "yacc.y" /* yacc.c:1646  */
+#line 419 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
-#line 2174 "y.tab.c" /* yacc.c:1646  */
+#line 2176 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 44:
-#line 507 "yacc.y" /* yacc.c:1646  */
+#line 509 "yacc.y" /* yacc.c:1646  */
     { /*class scope def*/
 		NodeAst *p = new ClassSpecifierAst(NodeAst::T_CCLASSSF_CLASS_ID_CLASSDECTIONLIST);
 		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CCLASSSF_CLASS_ID_CLASSDECTIONLIST, (yyvsp[-3].yystring));
-		p->addChild3((yyvsp[-4].yystring), t, (yyvsp[-1].pnode));
+		p->addChild2(t, (yyvsp[-1].pnode));
 		(yyval.pnode) = p;
 	}
-#line 2185 "y.tab.c" /* yacc.c:1646  */
+#line 2187 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 45:
-#line 515 "yacc.y" /* yacc.c:1646  */
+#line 517 "yacc.y" /* yacc.c:1646  */
     { //class scope def
 		NodeAst *p = new ClassSpecifierAst(NodeAst::T_CCLASSSF_CLASS_ID_IDLIST_CLASSDECTIONLIST);
 		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CCLASSSF_CLASS_ID_IDLIST_CLASSDECTIONLIST, (yyvsp[-5].yystring));
-		p->addChild4((yyvsp[-6].yystring), t, (yyvsp[-3].pnode), (yyvsp[-1].pnode));
+		p->addChild3(t, (yyvsp[-3].pnode), (yyvsp[-1].pnode));
 		(yyval.pnode) = p;
 	}
-#line 2196 "y.tab.c" /* yacc.c:1646  */
+#line 2198 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 46:
-#line 523 "yacc.y" /* yacc.c:1646  */
+#line 525 "yacc.y" /* yacc.c:1646  */
     { /*class declaration*/
 		NodeAst *p = new ClassSpecifierAst(NodeAst::T_CCLASSSF_CLASS_ID);
 		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CCLASSSF_CLASS_ID, (yyvsp[0].yystring));
-		p->addChild2((yyvsp[-1].yystring), t);
+		p->addChild1(t);
 		(yyval.pnode) = p;
 	}
-#line 2207 "y.tab.c" /* yacc.c:1646  */
+#line 2209 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 47:
-#line 533 "yacc.y" /* yacc.c:1646  */
+#line 535 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
-#line 2215 "y.tab.c" /* yacc.c:1646  */
+#line 2217 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 48:
-#line 538 "yacc.y" /* yacc.c:1646  */
+#line 540 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new ClassDectionListAst(NodeAst::T_CCLASSDECTIONLIST_CLASSDECTIONLIST_CLASSDECTION);
 		p->addChild2((yyvsp[-1].pnode), (yyvsp[0].pnode));
 		(yyval.pnode) = p;
 	}
-#line 2225 "y.tab.c" /* yacc.c:1646  */
+#line 2227 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 49:
-#line 547 "yacc.y" /* yacc.c:1646  */
+#line 549 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new ClassDectionAst(NodeAst::T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[-1].pnode));
 		(yyval.pnode) = p;
 	}
-#line 2235 "y.tab.c" /* yacc.c:1646  */
+#line 2237 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 50:
-#line 554 "yacc.y" /* yacc.c:1646  */
+#line 556 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new ClassDectionAst(NodeAst::T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST_COMPSTM);
 		p->addChild3((yyvsp[-2].pnode), (yyvsp[-1].pnode), (yyvsp[0].pnode));
 		(yyval.pnode) = p;
 	}
-#line 2245 "y.tab.c" /* yacc.c:1646  */
+#line 2247 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 51:
-#line 561 "yacc.y" /* yacc.c:1646  */
+#line 563 "yacc.y" /* yacc.c:1646  */
     { /*this func can be the Constructor or Destructor*/
 		NodeAst *p = new ClassDectionAst(NodeAst::T_CCLASSDECTION_CLASSDECTORLIST_COMPSTM);
 		p->addChild2((yyvsp[-1].pnode), (yyvsp[0].pnode));
 		(yyval.pnode) = p;
 	}
-#line 2255 "y.tab.c" /* yacc.c:1646  */
+#line 2257 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 52:
-#line 570 "yacc.y" /* yacc.c:1646  */
+#line 572 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
-#line 2263 "y.tab.c" /* yacc.c:1646  */
+#line 2265 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 53:
-#line 575 "yacc.y" /* yacc.c:1646  */
+#line 577 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new ClassDectorListAst(NodeAst::T_CCLASSDECTORLIST_CLASSDECTORLIST_CLASSDECTOR);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
 		(yyval.pnode) = p;
 	}
-#line 2273 "y.tab.c" /* yacc.c:1646  */
+#line 2275 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 54:
-#line 584 "yacc.y" /* yacc.c:1646  */
+#line 586 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new ClassDectorAst(NodeAst::T_CCLASSDECTOR_DECTOR);
 		p->addChild1((yyvsp[0].pnode));
 		(yyval.pnode) = p;
 	}
-#line 2283 "y.tab.c" /* yacc.c:1646  */
+#line 2285 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 55:
-#line 639 "yacc.y" /* yacc.c:1646  */
+#line 641 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new DectorAst(NodeAst::T_CDECTOR_POINTER_DIRDECTOR);
 		p->addChild2((yyvsp[-1].pnode), (yyvsp[0].pnode));
 		(yyval.pnode) = p;
 	}
-#line 2293 "y.tab.c" /* yacc.c:1646  */
+#line 2295 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 56:
-#line 646 "yacc.y" /* yacc.c:1646  */
+#line 648 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
-#line 2301 "y.tab.c" /* yacc.c:1646  */
+#line 2303 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 57:
-#line 653 "yacc.y" /* yacc.c:1646  */
+#line 655 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new DirDectorAst(NodeAst::T_CDIRDECTOR_ID);
 		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CDIRDECTOR_ID, (yyvsp[0].yystring));
 		p->addChild1(t);
 		(yyval.pnode) = p;
 	}
-#line 2312 "y.tab.c" /* yacc.c:1646  */
+#line 2314 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 58:
-#line 661 "yacc.y" /* yacc.c:1646  */
+#line 663 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[-1].pnode);
 	}
-#line 2320 "y.tab.c" /* yacc.c:1646  */
+#line 2322 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 59:
-#line 666 "yacc.y" /* yacc.c:1646  */
+#line 668 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new DirDectorAst(NodeAst::T_CDIRDECTOR_DIRDECTOR_ARRAY_CONSTEXP);
 		p->addChild2((yyvsp[-3].pnode), (yyvsp[-1].pnode));
 		(yyval.pnode) = p;
 	}
-#line 2330 "y.tab.c" /* yacc.c:1646  */
+#line 2332 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 60:
-#line 673 "yacc.y" /* yacc.c:1646  */
+#line 675 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new DirDectorAst(NodeAst::T_CDIRDECTOR_DIRDECTOR_ARRAY_VOID);
 		p->addChild1((yyvsp[-2].pnode));
 		(yyval.pnode) = p;
 	}
-#line 2340 "y.tab.c" /* yacc.c:1646  */
+#line 2342 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 61:
-#line 680 "yacc.y" /* yacc.c:1646  */
+#line 682 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new DirDectorAst(NodeAst::T_CDIRDECTOR_DIRDECTOR_CALL_PARAMTYPELIST);
 		p->addChild2((yyvsp[-3].pnode), (yyvsp[-1].pnode));
 		(yyval.pnode) = p;
 	}
-#line 2350 "y.tab.c" /* yacc.c:1646  */
+#line 2352 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 62:
-#line 687 "yacc.y" /* yacc.c:1646  */
+#line 689 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new DirDectorAst(NodeAst::T_CDIRDECTOR_DIRDECTOR_CALL_EXP);
 		p->addChild2((yyvsp[-3].pnode), (yyvsp[-1].pnode));
 		(yyval.pnode) = p;
 	}
-#line 2360 "y.tab.c" /* yacc.c:1646  */
+#line 2362 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 63:
-#line 694 "yacc.y" /* yacc.c:1646  */
+#line 696 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new DirDectorAst(NodeAst::T_CDIRDECTOR_DIRDECTOR_CALL_VOID);
 		p->addChild1((yyvsp[-2].pnode));
 		(yyval.pnode) = p;
 	}
-#line 2370 "y.tab.c" /* yacc.c:1646  */
+#line 2372 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 64:
-#line 705 "yacc.y" /* yacc.c:1646  */
+#line 707 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
-#line 2378 "y.tab.c" /* yacc.c:1646  */
+#line 2380 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 65:
-#line 710 "yacc.y" /* yacc.c:1646  */
+#line 712 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
-#line 2386 "y.tab.c" /* yacc.c:1646  */
+#line 2388 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 66:
-#line 715 "yacc.y" /* yacc.c:1646  */
+#line 717 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
-#line 2394 "y.tab.c" /* yacc.c:1646  */
+#line 2396 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 67:
-#line 720 "yacc.y" /* yacc.c:1646  */
+#line 722 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
-#line 2402 "y.tab.c" /* yacc.c:1646  */
+#line 2404 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 68:
-#line 727 "yacc.y" /* yacc.c:1646  */
+#line 729 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
-#line 2410 "y.tab.c" /* yacc.c:1646  */
+#line 2412 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 69:
-#line 732 "yacc.y" /* yacc.c:1646  */
+#line 734 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TypeQualifierListAst(NodeAst::T_CTYPEQFLIST_TYPEQFLIST_TYPEQF);
 		p->addChild2((yyvsp[-1].pnode), (yyvsp[0].pnode));
 		(yyval.pnode) = p;
 	}
-#line 2420 "y.tab.c" /* yacc.c:1646  */
+#line 2422 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 70:
-#line 743 "yacc.y" /* yacc.c:1646  */
+#line 745 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
-#line 2428 "y.tab.c" /* yacc.c:1646  */
+#line 2430 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 71:
-#line 748 "yacc.y" /* yacc.c:1646  */
+#line 750 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
-#line 2436 "y.tab.c" /* yacc.c:1646  */
+#line 2438 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 72:
-#line 755 "yacc.y" /* yacc.c:1646  */
+#line 757 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
-#line 2444 "y.tab.c" /* yacc.c:1646  */
+#line 2446 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 73:
-#line 760 "yacc.y" /* yacc.c:1646  */
+#line 762 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new ParamTypeListAst(NodeAst::T_CPARAMLIST_PARAMLIST_PARAMDECTION);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
 		(yyval.pnode) = p;
 	}
-#line 2454 "y.tab.c" /* yacc.c:1646  */
+#line 2456 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 74:
-#line 769 "yacc.y" /* yacc.c:1646  */
+#line 771 "yacc.y" /* yacc.c:1646  */
     { /*this declaration may exist in func def*/
 		NodeAst *p = new ParamDectionAst(NodeAst::T_CPARAMDECTION_DECTIONSFS_DECTOR);
 		p->addChild2((yyvsp[-1].pnode), (yyvsp[0].pnode));
 		(yyval.pnode) = p;
 	}
-#line 2464 "y.tab.c" /* yacc.c:1646  */
+#line 2466 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 75:
-#line 776 "yacc.y" /* yacc.c:1646  */
+#line 778 "yacc.y" /* yacc.c:1646  */
     { /*this declaration may exist in func declaration*/
 		(yyval.pnode) = NULL;
 	}
-#line 2472 "y.tab.c" /* yacc.c:1646  */
+#line 2474 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 76:
-#line 781 "yacc.y" /* yacc.c:1646  */
+#line 783 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new ParamDectionAst(NodeAst::T_CPARAMDECTION_DECTIONSFS);
 		p->addChild1((yyvsp[0].pnode));
 		(yyval.pnode) = p;
 	}
-#line 2482 "y.tab.c" /* yacc.c:1646  */
+#line 2484 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 77:
-#line 792 "yacc.y" /* yacc.c:1646  */
+#line 794 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CIDLIST_ID, (yyvsp[0].yystring));
 		(yyval.pnode) = p;
 	}
-#line 2491 "y.tab.c" /* yacc.c:1646  */
+#line 2493 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 78:
-#line 798 "yacc.y" /* yacc.c:1646  */
+#line 800 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new IdentifierListAst(NodeAst::T_CIDLIST_IDLIST_ID);
 		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CIDLIST_IDLIST_ID, (yyvsp[0].yystring));
 		p->addChild2((yyvsp[-2].pnode), t);
 		(yyval.pnode) = p;
 	}
-#line 2502 "y.tab.c" /* yacc.c:1646  */
+#line 2504 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 79:
-#line 808 "yacc.y" /* yacc.c:1646  */
+#line 810 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new InitzerAst(NodeAst::T_CINITZER_ASSIGNEXP);
 		p->addChild1((yyvsp[0].pnode));
 		(yyval.pnode) = p;
 	}
-#line 2512 "y.tab.c" /* yacc.c:1646  */
+#line 2514 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 80:
-#line 815 "yacc.y" /* yacc.c:1646  */
+#line 817 "yacc.y" /* yacc.c:1646  */
     { /*init value*/
 		NodeAst *p = new InitzerAst(NodeAst::T_CINITZER_CINITZERLIST);
 		p->addChild1((yyvsp[-1].pnode));
 		(yyval.pnode) = p;
 	}
-#line 2522 "y.tab.c" /* yacc.c:1646  */
+#line 2524 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 81:
-#line 824 "yacc.y" /* yacc.c:1646  */
+#line 826 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
-#line 2530 "y.tab.c" /* yacc.c:1646  */
+#line 2532 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 82:
-#line 829 "yacc.y" /* yacc.c:1646  */
+#line 831 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new InitzerListAst(NodeAst::T_CINITZERLIST_INITZERLIST_INITZER);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
 		(yyval.pnode) = p;
 	}
-#line 2540 "y.tab.c" /* yacc.c:1646  */
+#line 2542 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 83:
-#line 839 "yacc.y" /* yacc.c:1646  */
+#line 841 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
-#line 2548 "y.tab.c" /* yacc.c:1646  */
+#line 2550 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 84:
-#line 844 "yacc.y" /* yacc.c:1646  */
+#line 846 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
-#line 2556 "y.tab.c" /* yacc.c:1646  */
+#line 2558 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 85:
-#line 853 "yacc.y" /* yacc.c:1646  */
+#line 855 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
-#line 2564 "y.tab.c" /* yacc.c:1646  */
+#line 2566 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 86:
-#line 858 "yacc.y" /* yacc.c:1646  */
+#line 860 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
-#line 2572 "y.tab.c" /* yacc.c:1646  */
+#line 2574 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 87:
-#line 863 "yacc.y" /* yacc.c:1646  */
+#line 865 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
-#line 2580 "y.tab.c" /* yacc.c:1646  */
+#line 2582 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 88:
-#line 870 "yacc.y" /* yacc.c:1646  */
+#line 872 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
-#line 2588 "y.tab.c" /* yacc.c:1646  */
+#line 2590 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 89:
-#line 875 "yacc.y" /* yacc.c:1646  */
+#line 877 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
-#line 2596 "y.tab.c" /* yacc.c:1646  */
+#line 2598 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 90:
-#line 880 "yacc.y" /* yacc.c:1646  */
+#line 882 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
-#line 2604 "y.tab.c" /* yacc.c:1646  */
+#line 2606 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 91:
-#line 885 "yacc.y" /* yacc.c:1646  */
+#line 887 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
-#line 2612 "y.tab.c" /* yacc.c:1646  */
+#line 2614 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 92:
-#line 890 "yacc.y" /* yacc.c:1646  */
+#line 892 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
-#line 2620 "y.tab.c" /* yacc.c:1646  */
+#line 2622 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 93:
-#line 895 "yacc.y" /* yacc.c:1646  */
+#line 897 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
-#line 2628 "y.tab.c" /* yacc.c:1646  */
+#line 2630 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 94:
-#line 900 "yacc.y" /* yacc.c:1646  */
+#line 902 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
-#line 2636 "y.tab.c" /* yacc.c:1646  */
+#line 2638 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 95:
-#line 905 "yacc.y" /* yacc.c:1646  */
+#line 907 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
-#line 2644 "y.tab.c" /* yacc.c:1646  */
+#line 2646 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 96:
-#line 910 "yacc.y" /* yacc.c:1646  */
+#line 912 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
-#line 2652 "y.tab.c" /* yacc.c:1646  */
+#line 2654 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 97:
-#line 919 "yacc.y" /* yacc.c:1646  */
+#line 921 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
-#line 2660 "y.tab.c" /* yacc.c:1646  */
+#line 2662 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 98:
-#line 924 "yacc.y" /* yacc.c:1646  */
+#line 926 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
-#line 2668 "y.tab.c" /* yacc.c:1646  */
+#line 2670 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 99:
-#line 929 "yacc.y" /* yacc.c:1646  */
+#line 931 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
-#line 2676 "y.tab.c" /* yacc.c:1646  */
+#line 2678 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 100:
-#line 934 "yacc.y" /* yacc.c:1646  */
+#line 936 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
-#line 2684 "y.tab.c" /* yacc.c:1646  */
+#line 2686 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 101:
-#line 939 "yacc.y" /* yacc.c:1646  */
+#line 941 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
-#line 2692 "y.tab.c" /* yacc.c:1646  */
+#line 2694 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 102:
-#line 944 "yacc.y" /* yacc.c:1646  */
+#line 946 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
-#line 2700 "y.tab.c" /* yacc.c:1646  */
+#line 2702 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 103:
-#line 951 "yacc.y" /* yacc.c:1646  */
+#line 953 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new LabeledStmAst(NodeAst::T_CLABSTM_ID_STM);
 		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CLABSTM_ID_STM, (yyvsp[-2].yystring));
         	p->addChild2(t, (yyvsp[0].pnode));
         	(yyval.pnode) = p;
 	}
-#line 2711 "y.tab.c" /* yacc.c:1646  */
+#line 2713 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 104:
-#line 959 "yacc.y" /* yacc.c:1646  */
+#line 961 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new LabeledStmAst(NodeAst::T_CLABSTM_CASE_CONSTEXP_STM);
         	p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
         	(yyval.pnode) = p;
 	}
-#line 2721 "y.tab.c" /* yacc.c:1646  */
+#line 2723 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 105:
-#line 966 "yacc.y" /* yacc.c:1646  */
+#line 968 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new LabeledStmAst(NodeAst::T_CLABSTM_DEFAULT_STM);
         	p->addChild1((yyvsp[0].pnode));
         	(yyval.pnode) = p;
 	}
-#line 2731 "y.tab.c" /* yacc.c:1646  */
+#line 2733 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 106:
-#line 975 "yacc.y" /* yacc.c:1646  */
+#line 977 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new ExpStmAst(NodeAst::T_CEXPSTM_VOID);
        		(yyval.pnode) = p;
 	}
-#line 2740 "y.tab.c" /* yacc.c:1646  */
+#line 2742 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 107:
-#line 981 "yacc.y" /* yacc.c:1646  */
+#line 983 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new ExpStmAst(NodeAst::T_CEXPSTM_EXP);
-		p->addChild1((yyvsp[-1].pnode))
-        	(yyval.pnode) = p;
+		p->addChild1((yyvsp[-1].pnode));
+		(yyval.pnode) = p;
 	}
-#line 2750 "y.tab.c" /* yacc.c:1646  */
+#line 2752 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 108:
-#line 990 "yacc.y" /* yacc.c:1646  */
+#line 992 "yacc.y" /* yacc.c:1646  */
     { /*local scope*/
 		NodeAst *p = new CompoundStmAst(NodeAst::T_CCOMPSTM_VOID);
         	(yyval.pnode) = p;
 	}
-#line 2759 "y.tab.c" /* yacc.c:1646  */
+#line 2761 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 109:
-#line 996 "yacc.y" /* yacc.c:1646  */
+#line 998 "yacc.y" /* yacc.c:1646  */
     { /*local scope*/
 		NodeAst *p = new CompoundStmAst(NodeAst::T_CCOMPSTM_STMLIST);
 		p->addChild1((yyvsp[-1].pnode));
         	(yyval.pnode) = p;
 	}
-#line 2769 "y.tab.c" /* yacc.c:1646  */
+#line 2771 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 110:
-#line 1003 "yacc.y" /* yacc.c:1646  */
+#line 1005 "yacc.y" /* yacc.c:1646  */
     { /*local scope*/
 		NodeAst *p = new CompoundStmAst(NodeAst::T_CCOMPSTM_DECTION_LIST);
 		p->addChild1((yyvsp[-1].pnode));
         	(yyval.pnode) = p;
 	}
-#line 2779 "y.tab.c" /* yacc.c:1646  */
+#line 2781 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 111:
-#line 1010 "yacc.y" /* yacc.c:1646  */
+#line 1012 "yacc.y" /* yacc.c:1646  */
     { /*local scope*/
 		NodeAst *p = new CompoundStmAst(NodeAst::T_CCOMPSTM_DECTIONLIST_STMLIST);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[-1].pnode));
         	(yyval.pnode) = p;
 	}
-#line 2789 "y.tab.c" /* yacc.c:1646  */
+#line 2791 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 112:
-#line 1019 "yacc.y" /* yacc.c:1646  */
+#line 1021 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
-#line 2797 "y.tab.c" /* yacc.c:1646  */
+#line 2799 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 113:
-#line 1024 "yacc.y" /* yacc.c:1646  */
+#line 1026 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new StmListAst(NodeAst::T_CSTMLIST_STMLIST_STM);
 		p->addChild2((yyvsp[-1].pnode), (yyvsp[0].pnode));
         	(yyval.pnode) = p;
 	}
-#line 2807 "y.tab.c" /* yacc.c:1646  */
+#line 2809 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 114:
-#line 1033 "yacc.y" /* yacc.c:1646  */
+#line 1035 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new SelectionStmAst(NodeAst::T_CSELSTM_IF_EXP_STM);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
         	(yyval.pnode) = p;
 	}
-#line 2817 "y.tab.c" /* yacc.c:1646  */
+#line 2819 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 115:
-#line 1040 "yacc.y" /* yacc.c:1646  */
+#line 1042 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new SelectionStmAst(NodeAst::T_CSELSTM_IF_EXP_STM_ELSE_STM);
 		p->addChild3((yyvsp[-4].pnode), (yyvsp[-2].pnode), (yyvsp[0].pnode));
         	(yyval.pnode) = p;
 	}
-#line 2827 "y.tab.c" /* yacc.c:1646  */
+#line 2829 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 116:
-#line 1047 "yacc.y" /* yacc.c:1646  */
+#line 1049 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new SelectionStmAst(NodeAst::T_CSELSTM_SWITCH_EXP_STM);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
         	(yyval.pnode) = p;
 	}
-#line 2837 "y.tab.c" /* yacc.c:1646  */
+#line 2839 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 117:
-#line 1056 "yacc.y" /* yacc.c:1646  */
+#line 1058 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new IterationStmAst(NodeAst::T_CITRSTM_WHILE_EXP_STM);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
         	(yyval.pnode) = p;
 	}
-#line 2847 "y.tab.c" /* yacc.c:1646  */
+#line 2849 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 118:
-#line 1063 "yacc.y" /* yacc.c:1646  */
+#line 1065 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new IterationStmAst(NodeAst::T_CITRSTM_DO_STM_WHILE_EXP);
 		p->addChild2((yyvsp[-5].pnode), (yyvsp[-2].pnode));
         	(yyval.pnode) = p;
 	}
-#line 2857 "y.tab.c" /* yacc.c:1646  */
+#line 2859 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 119:
-#line 1070 "yacc.y" /* yacc.c:1646  */
+#line 1072 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new IterationStmAst(NodeAst::T_CITRSTM_FOR_EXPSTM_EXPSTM_EXP_STM);
 		p->addChild4((yyvsp[-4].pnode), (yyvsp[-3].pnode), (yyvsp[-2].pnode), (yyvsp[0].pnode));
         	(yyval.pnode) = p;
 	}
-#line 2867 "y.tab.c" /* yacc.c:1646  */
+#line 2869 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 120:
-#line 1079 "yacc.y" /* yacc.c:1646  */
+#line 1081 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new JumpStmAst(NodeAst::T_CJUMPSTM_GOTO_ID);
 		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CJUMPSTM_GOTO_ID, (yyvsp[-1].yystring));
 		p->addChild1(t);
         	(yyval.pnode) = p;
 	}
-#line 2878 "y.tab.c" /* yacc.c:1646  */
+#line 2880 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 121:
-#line 1087 "yacc.y" /* yacc.c:1646  */
+#line 1089 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new JumpStmAst(NodeAst::T_CJUMPSTM_CONTINUE);
         	(yyval.pnode) = p;
 	}
-#line 2887 "y.tab.c" /* yacc.c:1646  */
+#line 2889 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 122:
-#line 1093 "yacc.y" /* yacc.c:1646  */
+#line 1095 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new JumpStmAst(NodeAst::T_CJUMPSTM_BREAK);
         	(yyval.pnode) = p;
 	}
-#line 2896 "y.tab.c" /* yacc.c:1646  */
+#line 2898 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 123:
-#line 1099 "yacc.y" /* yacc.c:1646  */
+#line 1101 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new JumpStmAst(NodeAst::T_CJUMPSTM_RETURN);
         	(yyval.pnode) = p;
 	}
-#line 2905 "y.tab.c" /* yacc.c:1646  */
+#line 2907 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 124:
-#line 1105 "yacc.y" /* yacc.c:1646  */
+#line 1107 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new JumpStmAst(NodeAst::T_CJUMPSTM_RETURN_EXP);
 		p->addChild1((yyvsp[-1].pnode));
         	(yyval.pnode) = p;
 	}
-#line 2915 "y.tab.c" /* yacc.c:1646  */
+#line 2917 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 125:
-#line 1116 "yacc.y" /* yacc.c:1646  */
+#line 1118 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
-#line 2923 "y.tab.c" /* yacc.c:1646  */
+#line 2925 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 126:
-#line 1121 "yacc.y" /* yacc.c:1646  */
+#line 1123 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new ExpAst(NodeAst::T_CEXP_EXP_ASSIGNEXP);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
         	(yyval.pnode) = p;
 	}
-#line 2933 "y.tab.c" /* yacc.c:1646  */
+#line 2935 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 127:
-#line 1130 "yacc.y" /* yacc.c:1646  */
+#line 1132 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new AssignExpAst(NodeAst::T_CASSIGNEXP_CONDITIONALEXP);
 		p->addChild1((yyvsp[0].pnode));
        		(yyval.pnode) = p;
 	}
-#line 2943 "y.tab.c" /* yacc.c:1646  */
+#line 2945 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 128:
-#line 1137 "yacc.y" /* yacc.c:1646  */
+#line 1139 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new AssignExpAst(NodeAst::T_CASSIGNEXP_UNARYEXP_ASSIGN_OP_ASSIGNEXP);
 		p->addChild3((yyvsp[-2].pnode), (yyvsp[-1].pnode), (yyvsp[0].pnode));
         	(yyval.pnode) = p;
 	}
-#line 2953 "y.tab.c" /* yacc.c:1646  */
+#line 2955 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 129:
-#line 1146 "yacc.y" /* yacc.c:1646  */
+#line 1148 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CASSIGN_OP_ASSIGN, "=");
         	(yyval.pnode) = p;
 	}
-#line 2962 "y.tab.c" /* yacc.c:1646  */
+#line 2964 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 130:
-#line 1152 "yacc.y" /* yacc.c:1646  */
+#line 1154 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CASSIGN_OP_MUL_ASSIGN, (yyvsp[0].yystring));
         	(yyval.pnode) = p;
 	}
-#line 2971 "y.tab.c" /* yacc.c:1646  */
+#line 2973 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 131:
-#line 1158 "yacc.y" /* yacc.c:1646  */
+#line 1160 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CASSIGN_OP_DIV_ASSIGN, (yyvsp[0].yystring));
         	(yyval.pnode) = p;
 	}
-#line 2980 "y.tab.c" /* yacc.c:1646  */
+#line 2982 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 132:
-#line 1164 "yacc.y" /* yacc.c:1646  */
+#line 1166 "yacc.y" /* yacc.c:1646  */
     {
         	(yyval.pnode) = NULL;
 	}
-#line 2988 "y.tab.c" /* yacc.c:1646  */
+#line 2990 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 133:
-#line 1169 "yacc.y" /* yacc.c:1646  */
+#line 1171 "yacc.y" /* yacc.c:1646  */
     {
         	NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CASSIGN_OP_ADD_ASSIGN, (yyvsp[0].yystring));
         	(yyval.pnode) = p;
 	}
-#line 2997 "y.tab.c" /* yacc.c:1646  */
+#line 2999 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 134:
-#line 1175 "yacc.y" /* yacc.c:1646  */
+#line 1177 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CASSIGN_OP_SUB_ASSIGN, (yyvsp[0].yystring));
         	(yyval.pnode) = p;
 	}
-#line 3006 "y.tab.c" /* yacc.c:1646  */
+#line 3008 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 135:
-#line 1181 "yacc.y" /* yacc.c:1646  */
+#line 1183 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
-#line 3014 "y.tab.c" /* yacc.c:1646  */
+#line 3016 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 136:
-#line 1186 "yacc.y" /* yacc.c:1646  */
+#line 1188 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
-#line 3022 "y.tab.c" /* yacc.c:1646  */
+#line 3024 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 137:
-#line 1191 "yacc.y" /* yacc.c:1646  */
+#line 1193 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
-#line 3030 "y.tab.c" /* yacc.c:1646  */
+#line 3032 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 138:
-#line 1196 "yacc.y" /* yacc.c:1646  */
+#line 1198 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
-#line 3038 "y.tab.c" /* yacc.c:1646  */
+#line 3040 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 139:
-#line 1201 "yacc.y" /* yacc.c:1646  */
+#line 1203 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
-#line 3046 "y.tab.c" /* yacc.c:1646  */
+#line 3048 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 140:
-#line 1208 "yacc.y" /* yacc.c:1646  */
+#line 1210 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
-#line 3054 "y.tab.c" /* yacc.c:1646  */
+#line 3056 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 141:
-#line 1215 "yacc.y" /* yacc.c:1646  */
+#line 1217 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
-#line 3062 "y.tab.c" /* yacc.c:1646  */
+#line 3064 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 142:
-#line 1222 "yacc.y" /* yacc.c:1646  */
+#line 1224 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
-#line 3070 "y.tab.c" /* yacc.c:1646  */
+#line 3072 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 143:
-#line 1227 "yacc.y" /* yacc.c:1646  */
+#line 1229 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new LogicalOrExpAst(NodeAst::T_CLOGOREXP_LOGOREXP_OR_OP_LOGANDEXP);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
         	(yyval.pnode) = p;
 	}
-#line 3080 "y.tab.c" /* yacc.c:1646  */
+#line 3082 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 144:
-#line 1236 "yacc.y" /* yacc.c:1646  */
+#line 1238 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
-#line 3088 "y.tab.c" /* yacc.c:1646  */
+#line 3090 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 145:
-#line 1241 "yacc.y" /* yacc.c:1646  */
+#line 1243 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new LogicalAndExpAst(NodeAst::T_CLOGANDEXP_LOGANDEXP_AND_OP_EQUALEXP);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
         	(yyval.pnode) = p;
 	}
-#line 3098 "y.tab.c" /* yacc.c:1646  */
+#line 3100 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 146:
-#line 1289 "yacc.y" /* yacc.c:1646  */
+#line 1291 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
-#line 3106 "y.tab.c" /* yacc.c:1646  */
+#line 3108 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 147:
-#line 1294 "yacc.y" /* yacc.c:1646  */
+#line 1296 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new EqualExpAst(NodeAst::T_CEQUALEXP_EQUALEXP_EQ_OP_RELEXP);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
        		(yyval.pnode) = p;
 	}
-#line 3116 "y.tab.c" /* yacc.c:1646  */
+#line 3118 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 148:
-#line 1301 "yacc.y" /* yacc.c:1646  */
+#line 1303 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new EqualExpAst(NodeAst::T_CEQUALEXP_EQUALEXP_NE_OP_RELEXP);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
         	(yyval.pnode) = p;
 	}
-#line 3126 "y.tab.c" /* yacc.c:1646  */
+#line 3128 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 149:
-#line 1310 "yacc.y" /* yacc.c:1646  */
+#line 1312 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
-#line 3134 "y.tab.c" /* yacc.c:1646  */
+#line 3136 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 150:
-#line 1315 "yacc.y" /* yacc.c:1646  */
+#line 1317 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new RelationExpAst(NodeAst::T_CRELEXP_RELEXP_L_OP_ADDEXP);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
         	(yyval.pnode) = p;
 	}
-#line 3144 "y.tab.c" /* yacc.c:1646  */
+#line 3146 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 151:
-#line 1322 "yacc.y" /* yacc.c:1646  */
+#line 1324 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new RelationExpAst(NodeAst::T_CRELEXP_RELEXP_G_OP_ADDEXP);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
         	(yyval.pnode) = p;
 	}
-#line 3154 "y.tab.c" /* yacc.c:1646  */
+#line 3156 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 152:
-#line 1329 "yacc.y" /* yacc.c:1646  */
+#line 1331 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new RelationExpAst(NodeAst::T_CRELEXP_RELEXP_LE_OP_ADDEXP);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
         	(yyval.pnode) = p;
 	}
-#line 3164 "y.tab.c" /* yacc.c:1646  */
+#line 3166 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 153:
-#line 1336 "yacc.y" /* yacc.c:1646  */
+#line 1338 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new RelationExpAst(NodeAst::T_CRELEXP_RELEXP_GE_OP_ADDEXP);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
        		(yyval.pnode) = p;
 	}
-#line 3174 "y.tab.c" /* yacc.c:1646  */
+#line 3176 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 154:
-#line 1364 "yacc.y" /* yacc.c:1646  */
+#line 1366 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
-#line 3182 "y.tab.c" /* yacc.c:1646  */
+#line 3184 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 155:
-#line 1369 "yacc.y" /* yacc.c:1646  */
+#line 1371 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new AddExpAst(NodeAst::T_CADDEXP_ADDEXP_ADD_OP_MULEXP);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
         	(yyval.pnode) = p;
 	}
-#line 3192 "y.tab.c" /* yacc.c:1646  */
+#line 3194 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 156:
-#line 1376 "yacc.y" /* yacc.c:1646  */
+#line 1378 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new AddExpAst(NodeAst::T_CADDEXP_ADDEXP_SUB_OP_MULEXP);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
         	(yyval.pnode) = p;
 	}
-#line 3202 "y.tab.c" /* yacc.c:1646  */
+#line 3204 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 157:
-#line 1385 "yacc.y" /* yacc.c:1646  */
+#line 1387 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
-#line 3210 "y.tab.c" /* yacc.c:1646  */
+#line 3212 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 158:
-#line 1390 "yacc.y" /* yacc.c:1646  */
+#line 1392 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new MulExpAst(NodeAst::T_CMULEXP_MULEXP_MUL_OP_CASTEXP);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
         	(yyval.pnode) = p;
 	}
-#line 3220 "y.tab.c" /* yacc.c:1646  */
+#line 3222 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 159:
-#line 1397 "yacc.y" /* yacc.c:1646  */
+#line 1399 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new MulExpAst(NodeAst::T_CMULEXP_MULEXP_DIV_OP_CASTEXP);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
         	(yyval.pnode) = p;
 	}
-#line 3230 "y.tab.c" /* yacc.c:1646  */
+#line 3232 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 160:
-#line 1404 "yacc.y" /* yacc.c:1646  */
+#line 1406 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
-#line 3238 "y.tab.c" /* yacc.c:1646  */
+#line 3240 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 161:
-#line 1411 "yacc.y" /* yacc.c:1646  */
+#line 1413 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
-#line 3246 "y.tab.c" /* yacc.c:1646  */
+#line 3248 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 162:
-#line 1416 "yacc.y" /* yacc.c:1646  */
+#line 1418 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
-#line 3254 "y.tab.c" /* yacc.c:1646  */
+#line 3256 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 163:
-#line 1423 "yacc.y" /* yacc.c:1646  */
+#line 1425 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
-#line 3262 "y.tab.c" /* yacc.c:1646  */
+#line 3264 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 164:
-#line 1428 "yacc.y" /* yacc.c:1646  */
+#line 1430 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new UnaryExpAst(NodeAst::T_CUNARYEXP_INC_OP_UNARAYEXP);
 		p->addChild1((yyvsp[0].pnode));
         	(yyval.pnode) = p;
 	}
-#line 3272 "y.tab.c" /* yacc.c:1646  */
+#line 3274 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 165:
-#line 1435 "yacc.y" /* yacc.c:1646  */
+#line 1437 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new UnaryExpAst(NodeAst::T_CUNARYEXP_DEC_OP_UNARYEXP);
 		p->addChild1((yyvsp[0].pnode));
         	(yyval.pnode) = p;
 	}
-#line 3282 "y.tab.c" /* yacc.c:1646  */
+#line 3284 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 166:
-#line 1442 "yacc.y" /* yacc.c:1646  */
+#line 1444 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new UnaryExpAst(NodeAst::T_CUNARYEXP_UNARY_OP_CASTEXP);
 		p->addChild2((yyvsp[-1].pnode), (yyvsp[0].pnode));
         	(yyval.pnode) = p;
 	}
-#line 3292 "y.tab.c" /* yacc.c:1646  */
+#line 3294 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 167:
-#line 1449 "yacc.y" /* yacc.c:1646  */
+#line 1451 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
-#line 3300 "y.tab.c" /* yacc.c:1646  */
+#line 3302 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 168:
-#line 1456 "yacc.y" /* yacc.c:1646  */
+#line 1458 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
-#line 3308 "y.tab.c" /* yacc.c:1646  */
+#line 3310 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 169:
-#line 1461 "yacc.y" /* yacc.c:1646  */
+#line 1463 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
-#line 3316 "y.tab.c" /* yacc.c:1646  */
+#line 3318 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 170:
-#line 1466 "yacc.y" /* yacc.c:1646  */
+#line 1468 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CUNARY_OP_ADD_OP, "+");
 		(yyval.pnode) = p;
 	}
-#line 3325 "y.tab.c" /* yacc.c:1646  */
+#line 3327 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 171:
-#line 1472 "yacc.y" /* yacc.c:1646  */
+#line 1474 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CUNARY_OP_SUB_OP, "-");
 		(yyval.pnode) = p;
 	}
-#line 3334 "y.tab.c" /* yacc.c:1646  */
+#line 3336 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 172:
-#line 1478 "yacc.y" /* yacc.c:1646  */
+#line 1480 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
-#line 3342 "y.tab.c" /* yacc.c:1646  */
+#line 3344 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 173:
-#line 1483 "yacc.y" /* yacc.c:1646  */
+#line 1485 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
-#line 3350 "y.tab.c" /* yacc.c:1646  */
+#line 3352 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 174:
-#line 1490 "yacc.y" /* yacc.c:1646  */
+#line 1492 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
-#line 3358 "y.tab.c" /* yacc.c:1646  */
+#line 3360 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 175:
-#line 1495 "yacc.y" /* yacc.c:1646  */
+#line 1497 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new PostfixExpAst(NodeAst::T_CPOSTEXP_POSTEXP_ARRAY_EXP);
 		p->addChild2((yyvsp[-3].pnode), (yyvsp[-1].pnode));
         	(yyval.pnode) = p;
 	}
-#line 3368 "y.tab.c" /* yacc.c:1646  */
+#line 3370 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 176:
-#line 1502 "yacc.y" /* yacc.c:1646  */
+#line 1504 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new PostfixExpAst(NodeAst::T_CPOSTEXP_POSTEXP_CALL_VOID);
 		p->addChild1((yyvsp[-2].pnode));
         	(yyval.pnode) = p;
 	}
-#line 3378 "y.tab.c" /* yacc.c:1646  */
+#line 3380 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 177:
-#line 1509 "yacc.y" /* yacc.c:1646  */
+#line 1511 "yacc.y" /* yacc.c:1646  */
     { /*call the func callee*/
 		NodeAst *p = new PostfixExpAst(NodeAst::T_CPOSTEXP_POSTEXP_CALL_ARGEXPLIST);
 		p->addChild2((yyvsp[-3].pnode), (yyvsp[-1].pnode));
         	(yyval.pnode) = p;
 	}
-#line 3388 "y.tab.c" /* yacc.c:1646  */
+#line 3390 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 178:
-#line 1516 "yacc.y" /* yacc.c:1646  */
+#line 1518 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new PostfixExpAst(NodeAst::T_CPOSTEXP_POSTEXP_REF_ID);
 		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CPOSTEXP_POSTEXP_REF_ID, (yyvsp[0].yystring));
 		p->addChild2((yyvsp[-2].pnode), t);
        		(yyval.pnode) = p;
 	}
-#line 3399 "y.tab.c" /* yacc.c:1646  */
+#line 3401 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 179:
-#line 1524 "yacc.y" /* yacc.c:1646  */
+#line 1526 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
-#line 3407 "y.tab.c" /* yacc.c:1646  */
+#line 3409 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 180:
-#line 1529 "yacc.y" /* yacc.c:1646  */
+#line 1531 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new PostfixExpAst(NodeAst::T_CPOSTEXP_POSTEXP_INC_OP);
 		p->addChild1((yyvsp[-1].pnode));
         	(yyval.pnode) = p;
 	}
-#line 3417 "y.tab.c" /* yacc.c:1646  */
+#line 3419 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 181:
-#line 1536 "yacc.y" /* yacc.c:1646  */
+#line 1538 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new PostfixExpAst(NodeAst::T_CPOSTEXP_POSTEXP_DEC_OP);
 		p->addChild1((yyvsp[-1].pnode));
         	(yyval.pnode) = p;
 	}
-#line 3427 "y.tab.c" /* yacc.c:1646  */
+#line 3429 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 182:
-#line 1543 "yacc.y" /* yacc.c:1646  */
+#line 1545 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new PostfixExpAst(NodeAst::T_CPOSTEXP_NEW_ID_VOID);
 		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CPOSTEXP_NEW_ID_VOID, (yyvsp[-2].yystring));
 		p->addChild1(t);
         	(yyval.pnode) = p;
 	}
-#line 3438 "y.tab.c" /* yacc.c:1646  */
+#line 3440 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 183:
-#line 1551 "yacc.y" /* yacc.c:1646  */
+#line 1553 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new PostfixExpAst(NodeAst::T_CPOSTEXP_DELETE_ID);
 		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CPOSTEXP_DELETE_ID, (yyvsp[0].yystring));
 		p->addChild1(t);
         	(yyval.pnode) = p;
 	}
-#line 3449 "y.tab.c" /* yacc.c:1646  */
+#line 3451 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 184:
-#line 1561 "yacc.y" /* yacc.c:1646  */
+#line 1563 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new PrimaryExpAst(NodeAst::T_CPRIMEXP_ID);
 		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CPRIMEXP_ID, (yyvsp[0].yystring));
 		p->addChild1(t);
 		(yyval.pnode) = p;
 	}
-#line 3460 "y.tab.c" /* yacc.c:1646  */
+#line 3462 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 185:
-#line 1569 "yacc.y" /* yacc.c:1646  */
+#line 1571 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new PrimaryExpAst(NodeAst::T_CPRIMEXP_CONST);
 		p->addChild1((yyvsp[0].pnode));
        		(yyval.pnode) = p;
 	}
-#line 3470 "y.tab.c" /* yacc.c:1646  */
+#line 3472 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 186:
-#line 1576 "yacc.y" /* yacc.c:1646  */
+#line 1578 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new PrimaryExpAst(NodeAst::T_CPRIMEXP_STR);
 		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CPRIMEXP_STR, (yyvsp[0].yystring));
 		p->addChild1(t);
 		(yyval.pnode) = p;
 	}
-#line 3481 "y.tab.c" /* yacc.c:1646  */
+#line 3483 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 187:
-#line 1584 "yacc.y" /* yacc.c:1646  */
+#line 1586 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new PrimaryExpAst(NodeAst::T_CPRIMEXP_EXP);
 		p->addChild1((yyvsp[-1].pnode));
         	(yyval.pnode) = p;
 	}
-#line 3491 "y.tab.c" /* yacc.c:1646  */
+#line 3493 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 188:
-#line 1593 "yacc.y" /* yacc.c:1646  */
+#line 1595 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
-#line 3499 "y.tab.c" /* yacc.c:1646  */
+#line 3501 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 189:
-#line 1598 "yacc.y" /* yacc.c:1646  */
+#line 1600 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new ArgExpListAst(NodeAst::T_CARGEXPLIST_ARGEXPLIST_ASSGEXP);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
         	(yyval.pnode) = p;
 	}
-#line 3509 "y.tab.c" /* yacc.c:1646  */
+#line 3511 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 190:
-#line 1607 "yacc.y" /* yacc.c:1646  */
+#line 1609 "yacc.y" /* yacc.c:1646  */
     {
 			NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CCONSTVAR_INT_CONST, (yyvsp[0].yystring));
 			(yyval.pnode) = p;
         }
-#line 3518 "y.tab.c" /* yacc.c:1646  */
+#line 3520 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 191:
-#line 1613 "yacc.y" /* yacc.c:1646  */
+#line 1615 "yacc.y" /* yacc.c:1646  */
     {
 			NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CCONSTVAR_CHAR_CONST, (yyvsp[0].yystring));
 			(yyval.pnode) = p;
         }
-#line 3527 "y.tab.c" /* yacc.c:1646  */
+#line 3529 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 192:
-#line 1619 "yacc.y" /* yacc.c:1646  */
+#line 1621 "yacc.y" /* yacc.c:1646  */
     {
 			NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CCONSTVAR_FLOAT_CONST, (yyvsp[0].yystring));
 			(yyval.pnode) = p;
         }
-#line 3536 "y.tab.c" /* yacc.c:1646  */
+#line 3538 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 3540 "y.tab.c" /* yacc.c:1646  */
+#line 3542 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -3764,7 +3766,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 1625 "yacc.y" /* yacc.c:1906  */
+#line 1627 "yacc.y" /* yacc.c:1906  */
 
 
 
@@ -3772,8 +3774,7 @@ yyreturn:
 
 int yyerror(const char *msg)
 {
-	fflush(stdout);
-	printf("\n%*s\n%*s\n", yycolumn, "^", yycolumn, msg);
+
 	return 0;
 }
 
@@ -3783,6 +3784,10 @@ int main() {
    yyparse();
 
    cout << "yylineno" << yylineno <<endl;
+
+   NodeAst::printNodeTree(NodeAst::getNodeTreeRoot(), 0);
+   NodeAst::freeNodeList();
+
    return 0;
 }
 

@@ -3,11 +3,12 @@
 
 #include <vector>
 #include <string>
+#include <list>
 #include "../LogiMsg.h"
 
 using namespace std;
 
-class NodeAst {
+struct NodeAst {
 	public:
 
 		enum NodeType {

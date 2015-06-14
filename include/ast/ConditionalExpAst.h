@@ -4,7 +4,7 @@
 #include "NodeAst.h"
 
 
-class ConditionalExpAst: public NodeAst {
+class ConditionalExpAst : public NodeAst {
 	public:
 
 

@@ -7,7 +7,7 @@ class Coordinate{
 		int cloumn;
 
 	public:
-		Coordinate(row_t, column_t) :row(row_t), cloumn(column_t) { }
+		Coordinate(int row_t, int column_t) :row(row_t), cloumn(column_t) { }
 };
 
 

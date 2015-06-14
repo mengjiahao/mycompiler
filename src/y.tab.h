@@ -186,10 +186,10 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 18 "yacc.y" /* yacc.c:1909  */
+#line 20 "yacc.y" /* yacc.c:1909  */
 
    string yystring;
-   NodeAst *pnode;
+   NodeAst* pnode;
 
 #line 195 "y.tab.h" /* yacc.c:1909  */
 };

@@ -3,7 +3,7 @@
 
 #include "NodeAst.h"
 
-class ConstantExpAst: public NodeAst {
+class ConstantExpAst : public NodeAst {
 	public:
 
 

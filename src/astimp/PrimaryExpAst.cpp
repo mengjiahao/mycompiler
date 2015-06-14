@@ -1,6 +1,6 @@
 
 #include "../../include/ast/PrimaryExpAst.h"
 
-PrimaryExpAst::PrimaryExpAst(NodeAst::nodeType nodeType_t) : NodeAst(nodeType_t) {
+PrimaryExpAst::PrimaryExpAst(NodeAst::NodeType nodeType_t) : NodeAst(nodeType_t) {
 
 }

@@ -8,7 +8,7 @@ class  UnaryOpAst: public NodeAst {
 	public:
 
 	public:
-	   UnaryOpAst(NodeAst::nodeType nodeType_t);
+	   UnaryOpAst(NodeAst::NodeType nodeType_t);
 
 };
 
