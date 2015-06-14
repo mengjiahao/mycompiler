@@ -12,6 +12,7 @@ COMMENTS                {COMMENTS1}|{COMMENTS2}
 %{
 #include <cstdio>
 #include <cstring>
+#include "../include/AstHead.h"
 #include "y.tab.h"
 #include <string>
 
@@ -138,7 +139,7 @@ L?\"(\\.|[^\\"])*\"	{ count(); inityylval(yytext); return(STRING_LITERAL); }
 %%
 
 void inityylval(char *yytext) {
-    yylval.yystring = yytext;
+    yylval.yystring = new string(yytext);
 }
 
 int yywrap()

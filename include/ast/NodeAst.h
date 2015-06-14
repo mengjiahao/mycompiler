@@ -8,7 +8,7 @@
 
 using namespace std;
 
-struct NodeAst {
+class NodeAst {
 	public:
 
 		enum NodeType {
@@ -381,7 +381,6 @@ struct NodeAst {
 
 
 };
-
 
 
 

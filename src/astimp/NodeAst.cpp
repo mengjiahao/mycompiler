@@ -347,9 +347,9 @@ NodeAst::NodeAst()
 
 NodeAst::NodeAst(NodeAst::NodeType nodeType_t)
 {
-    nodeId = setNodeId();
-    childsNo = setChildsNo(0);
-    nodeType = setNodeType(nodeType_t);
+    setNodeId();
+    setChildsNo(0);
+    setNodeType(nodeType_t);
     setToken(s_nodeTypeString[nodeType_t]);
     printNodetype();
 
@@ -390,7 +390,7 @@ void NodeAst::freeNodeList()
 
 void NodeAst::setNodeId()
 {
-    static s_nodeId = -1;
+    static int s_nodeId = -1;
     nodeId = ++s_nodeId;
 }
 
@@ -443,7 +443,7 @@ void NodeAst::printNodeTree(NodeAst* root, int depth)
     for(i = 0; i < depth; ++i) {
         cout << ' ';
     }
-    cout << "|_" <<;
+    cout << "|_";
     root->printNodetype();
 
     for(i = 0; i < root->childsNo; ++i) {

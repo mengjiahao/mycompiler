@@ -69,7 +69,7 @@
 #include <string>
 #include "../include/AstHead.h"
 
-using namespace std;
+/*using namespace std;*/
 
 extern "C"{
 int yyparse(void);
@@ -256,9 +256,9 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 20 "yacc.y" /* yacc.c:355  */
+#line 21 "yacc.y" /* yacc.c:355  */
 
-   string yystring;
+   string* yystring;
    NodeAst* pnode;
 
 #line 265 "y.tab.c" /* yacc.c:355  */
@@ -580,26 +580,26 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,   130,   130,   139,   144,   156,   163,   172,   181,   188,
-     197,   202,   213,   218,   225,   230,   237,   242,   251,   257,
-     263,   269,   275,   283,   289,   295,   301,   307,   313,   319,
-     325,   331,   342,   349,   355,   361,   369,   374,   383,   390,
-     399,   406,   411,   418,   508,   516,   524,   534,   539,   548,
-     555,   562,   571,   576,   585,   640,   647,   654,   662,   667,
-     674,   681,   688,   695,   706,   711,   716,   721,   728,   733,
-     744,   749,   756,   761,   770,   777,   782,   793,   799,   809,
-     816,   825,   830,   840,   845,   854,   859,   864,   871,   876,
-     881,   886,   891,   896,   901,   906,   911,   920,   925,   930,
-     935,   940,   945,   952,   960,   967,   976,   982,   991,   997,
-    1004,  1011,  1020,  1025,  1034,  1041,  1048,  1057,  1064,  1071,
-    1080,  1088,  1094,  1100,  1106,  1117,  1122,  1131,  1138,  1147,
-    1153,  1159,  1165,  1170,  1176,  1182,  1187,  1192,  1197,  1202,
-    1209,  1216,  1223,  1228,  1237,  1242,  1290,  1295,  1302,  1311,
-    1316,  1323,  1330,  1337,  1365,  1370,  1377,  1386,  1391,  1398,
-    1405,  1412,  1417,  1424,  1429,  1436,  1443,  1450,  1457,  1462,
-    1467,  1473,  1479,  1484,  1491,  1496,  1503,  1510,  1517,  1525,
-    1530,  1537,  1544,  1552,  1562,  1570,  1577,  1585,  1594,  1599,
-    1608,  1614,  1620
+       0,   131,   131,   140,   145,   157,   164,   173,   182,   189,
+     198,   203,   214,   219,   226,   231,   238,   243,   252,   258,
+     264,   270,   276,   284,   290,   296,   302,   308,   314,   320,
+     326,   332,   343,   350,   356,   362,   370,   375,   384,   391,
+     400,   407,   412,   419,   509,   517,   525,   535,   540,   549,
+     556,   563,   572,   577,   586,   641,   648,   655,   663,   668,
+     675,   682,   689,   696,   707,   712,   717,   722,   729,   734,
+     745,   750,   757,   762,   771,   778,   783,   794,   800,   810,
+     817,   826,   831,   841,   846,   855,   860,   865,   872,   877,
+     882,   887,   892,   897,   902,   907,   912,   921,   926,   931,
+     936,   941,   946,   953,   961,   968,   977,   983,   992,   998,
+    1005,  1012,  1021,  1026,  1035,  1042,  1049,  1058,  1065,  1072,
+    1081,  1089,  1095,  1101,  1107,  1118,  1123,  1132,  1139,  1148,
+    1154,  1160,  1166,  1171,  1177,  1183,  1188,  1193,  1198,  1203,
+    1210,  1217,  1224,  1229,  1238,  1243,  1291,  1296,  1303,  1312,
+    1317,  1324,  1331,  1338,  1366,  1371,  1378,  1387,  1392,  1399,
+    1406,  1413,  1418,  1425,  1430,  1437,  1444,  1451,  1458,  1463,
+    1468,  1474,  1480,  1485,  1492,  1497,  1504,  1511,  1518,  1526,
+    1531,  1538,  1545,  1553,  1563,  1571,  1578,  1586,  1595,  1600,
+    1609,  1615,  1621
 };
 #endif
 
@@ -1791,7 +1791,7 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 131 "yacc.y" /* yacc.c:1646  */
+#line 132 "yacc.y" /* yacc.c:1646  */
     { /*global scope*/
 		NodeAst *p = new ProgramStartAst(NodeAst::T_CPROGRAMSTART_TRANSUNIT);
 		p->addChild1((yyvsp[0].pnode));
@@ -1801,7 +1801,7 @@ yyreduce:
     break;
 
   case 3:
-#line 140 "yacc.y" /* yacc.c:1646  */
+#line 141 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
@@ -1809,7 +1809,7 @@ yyreduce:
     break;
 
   case 4:
-#line 145 "yacc.y" /* yacc.c:1646  */
+#line 146 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TranslationUnitAst(NodeAst::T_CTRANSUNIT_TRANSUNIT_EXTDECTION);
 		p->addChild2((yyvsp[-1].pnode), (yyvsp[0].pnode));
@@ -1819,7 +1819,7 @@ yyreduce:
     break;
 
   case 5:
-#line 157 "yacc.y" /* yacc.c:1646  */
+#line 158 "yacc.y" /* yacc.c:1646  */
     { /*global scope func*/
 		NodeAst *p = new ExtDectionAst(NodeAst::T_CEXTDECTION_FUNCDEF);
 		p->addChild1((yyvsp[0].pnode));
@@ -1829,7 +1829,7 @@ yyreduce:
     break;
 
   case 6:
-#line 164 "yacc.y" /* yacc.c:1646  */
+#line 165 "yacc.y" /* yacc.c:1646  */
     { /*global scope var*/
 		NodeAst *p = new ExtDectionAst(NodeAst::T_CEXTDECTION_DECTION);
 		p->addChild1((yyvsp[0].pnode));
@@ -1839,7 +1839,7 @@ yyreduce:
     break;
 
   case 7:
-#line 173 "yacc.y" /* yacc.c:1646  */
+#line 174 "yacc.y" /* yacc.c:1646  */
     { /*func scope*/
 		NodeAst *p = new FuncDefAst(NodeAst::T_CFUNCDEF_DECTIONSFS_DECTOR_COMPSTM);
 		p->addChild3((yyvsp[-2].pnode), (yyvsp[-1].pnode), (yyvsp[0].pnode));
@@ -1849,7 +1849,7 @@ yyreduce:
     break;
 
   case 8:
-#line 182 "yacc.y" /* yacc.c:1646  */
+#line 183 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new DectionAst(NodeAst::T_CDECTION_DECTIONSFS);
 		p->addChild1((yyvsp[-1].pnode));
@@ -1859,7 +1859,7 @@ yyreduce:
     break;
 
   case 9:
-#line 189 "yacc.y" /* yacc.c:1646  */
+#line 190 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new DectionAst(NodeAst::T_CDECTION_DECTIONSFS_INITDECTORLIST);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[-1].pnode));
@@ -1869,7 +1869,7 @@ yyreduce:
     break;
 
   case 10:
-#line 198 "yacc.y" /* yacc.c:1646  */
+#line 199 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
@@ -1877,7 +1877,7 @@ yyreduce:
     break;
 
   case 11:
-#line 203 "yacc.y" /* yacc.c:1646  */
+#line 204 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new DectionListAst(NodeAst::T_CDECTIONLIST_DECTIONLIST_DECTION);
 		p->addChild2((yyvsp[-1].pnode), (yyvsp[0].pnode));
@@ -1887,7 +1887,7 @@ yyreduce:
     break;
 
   case 12:
-#line 214 "yacc.y" /* yacc.c:1646  */
+#line 215 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
@@ -1895,7 +1895,7 @@ yyreduce:
     break;
 
   case 13:
-#line 219 "yacc.y" /* yacc.c:1646  */
+#line 220 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new DectionSpecifiersAst(NodeAst::T_CDECTIONSF_STORCLASSSF_DECTIONSFS);
 		p->addChild2((yyvsp[-1].pnode), (yyvsp[0].pnode));
@@ -1905,7 +1905,7 @@ yyreduce:
     break;
 
   case 14:
-#line 226 "yacc.y" /* yacc.c:1646  */
+#line 227 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
@@ -1913,7 +1913,7 @@ yyreduce:
     break;
 
   case 15:
-#line 231 "yacc.y" /* yacc.c:1646  */
+#line 232 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new DectionSpecifiersAst(NodeAst::T_CDECTIONSF_TYPESF_DECTIONSFS);
 		p->addChild2((yyvsp[-1].pnode), (yyvsp[0].pnode));
@@ -1923,7 +1923,7 @@ yyreduce:
     break;
 
   case 16:
-#line 238 "yacc.y" /* yacc.c:1646  */
+#line 239 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
@@ -1931,7 +1931,7 @@ yyreduce:
     break;
 
   case 17:
-#line 243 "yacc.y" /* yacc.c:1646  */
+#line 244 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new DectionSpecifiersAst(NodeAst::T_CDECTIONSF_TYPEQF_DECTIONSFS);
 		p->addChild2((yyvsp[-1].pnode), (yyvsp[0].pnode));
@@ -1941,7 +1941,7 @@ yyreduce:
     break;
 
   case 18:
-#line 252 "yacc.y" /* yacc.c:1646  */
+#line 253 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CSTORCLASSSF_TYPEDEF, (yyvsp[0].yystring));
 		(yyval.pnode) = p;
@@ -1950,7 +1950,7 @@ yyreduce:
     break;
 
   case 19:
-#line 258 "yacc.y" /* yacc.c:1646  */
+#line 259 "yacc.y" /* yacc.c:1646  */
     {
 	    NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CSTORCLASSSF_EXTERN, (yyvsp[0].yystring));
 		(yyval.pnode) = p;
@@ -1959,7 +1959,7 @@ yyreduce:
     break;
 
   case 20:
-#line 264 "yacc.y" /* yacc.c:1646  */
+#line 265 "yacc.y" /* yacc.c:1646  */
     {
 	    NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CSTORCLASSSF_STATIC, (yyvsp[0].yystring));
 		(yyval.pnode) = p;
@@ -1968,7 +1968,7 @@ yyreduce:
     break;
 
   case 21:
-#line 270 "yacc.y" /* yacc.c:1646  */
+#line 271 "yacc.y" /* yacc.c:1646  */
     {
 	    NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CSTORCLASSSF_AUTO, (yyvsp[0].yystring));
 		(yyval.pnode) = p;
@@ -1977,7 +1977,7 @@ yyreduce:
     break;
 
   case 22:
-#line 276 "yacc.y" /* yacc.c:1646  */
+#line 277 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CSTORCLASSSF_REGISITER, (yyvsp[0].yystring));
 		(yyval.pnode) = p;
@@ -1986,7 +1986,7 @@ yyreduce:
     break;
 
   case 23:
-#line 284 "yacc.y" /* yacc.c:1646  */
+#line 285 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPESF_VOID, (yyvsp[0].yystring));
 		(yyval.pnode) = p;
@@ -1995,7 +1995,7 @@ yyreduce:
     break;
 
   case 24:
-#line 290 "yacc.y" /* yacc.c:1646  */
+#line 291 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPESF_CHAR, (yyvsp[0].yystring));
 		(yyval.pnode) = p;
@@ -2004,7 +2004,7 @@ yyreduce:
     break;
 
   case 25:
-#line 296 "yacc.y" /* yacc.c:1646  */
+#line 297 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPESF_SHORT, (yyvsp[0].yystring));
 		(yyval.pnode) = p;
@@ -2013,7 +2013,7 @@ yyreduce:
     break;
 
   case 26:
-#line 302 "yacc.y" /* yacc.c:1646  */
+#line 303 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPESF_INT, (yyvsp[0].yystring));
 		(yyval.pnode) = p;
@@ -2022,7 +2022,7 @@ yyreduce:
     break;
 
   case 27:
-#line 308 "yacc.y" /* yacc.c:1646  */
+#line 309 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPESF_LONG, (yyvsp[0].yystring));
 		(yyval.pnode) = p;
@@ -2031,7 +2031,7 @@ yyreduce:
     break;
 
   case 28:
-#line 314 "yacc.y" /* yacc.c:1646  */
+#line 315 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPESF_FLOAT, (yyvsp[0].yystring));
 		(yyval.pnode) = p;
@@ -2040,7 +2040,7 @@ yyreduce:
     break;
 
   case 29:
-#line 320 "yacc.y" /* yacc.c:1646  */
+#line 321 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPESF_DOUBLE, (yyvsp[0].yystring));
 		(yyval.pnode) = p;
@@ -2049,7 +2049,7 @@ yyreduce:
     break;
 
   case 30:
-#line 326 "yacc.y" /* yacc.c:1646  */
+#line 327 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPESF_SIGNED, (yyvsp[0].yystring));
 		(yyval.pnode) = p;
@@ -2058,7 +2058,7 @@ yyreduce:
     break;
 
   case 31:
-#line 332 "yacc.y" /* yacc.c:1646  */
+#line 333 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPESF_UNSIGNED, (yyvsp[0].yystring));
 		(yyval.pnode) = p;
@@ -2067,7 +2067,7 @@ yyreduce:
     break;
 
   case 32:
-#line 343 "yacc.y" /* yacc.c:1646  */
+#line 344 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
@@ -2075,7 +2075,7 @@ yyreduce:
     break;
 
   case 33:
-#line 350 "yacc.y" /* yacc.c:1646  */
+#line 351 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPEQF_CONST, (yyvsp[0].yystring));
 		(yyval.pnode) = p;
@@ -2084,7 +2084,7 @@ yyreduce:
     break;
 
   case 34:
-#line 356 "yacc.y" /* yacc.c:1646  */
+#line 357 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPEQF_VOLATILE, (yyvsp[0].yystring));
 		(yyval.pnode) = p;
@@ -2093,7 +2093,7 @@ yyreduce:
     break;
 
   case 35:
-#line 362 "yacc.y" /* yacc.c:1646  */
+#line 363 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPEQF_VIRTUAL, (yyvsp[0].yystring));
 		(yyval.pnode) = p;
@@ -2102,7 +2102,7 @@ yyreduce:
     break;
 
   case 36:
-#line 370 "yacc.y" /* yacc.c:1646  */
+#line 371 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
@@ -2110,7 +2110,7 @@ yyreduce:
     break;
 
   case 37:
-#line 375 "yacc.y" /* yacc.c:1646  */
+#line 376 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new InitDectorListAst(NodeAst::T_CINITDECTORLIST_INITDECTORLIST_INITDECTOR);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
@@ -2120,7 +2120,7 @@ yyreduce:
     break;
 
   case 38:
-#line 384 "yacc.y" /* yacc.c:1646  */
+#line 385 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new InitDectorAst(NodeAst::T_CINITDECTOR_DECTOR);
 		p->addChild1((yyvsp[0].pnode));
@@ -2130,7 +2130,7 @@ yyreduce:
     break;
 
   case 39:
-#line 391 "yacc.y" /* yacc.c:1646  */
+#line 392 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new InitDectorAst(NodeAst::T_CINITDECTOR_ASSGIN_INITZER);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
@@ -2140,7 +2140,7 @@ yyreduce:
     break;
 
   case 40:
-#line 400 "yacc.y" /* yacc.c:1646  */
+#line 401 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new SpeciQualiFierListAst(NodeAst::T_CSQFLIST_TYPESF_SQFLIST);
 		p->addChild2((yyvsp[-1].pnode), (yyvsp[0].pnode));
@@ -2150,7 +2150,7 @@ yyreduce:
     break;
 
   case 41:
-#line 407 "yacc.y" /* yacc.c:1646  */
+#line 408 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
@@ -2158,7 +2158,7 @@ yyreduce:
     break;
 
   case 42:
-#line 412 "yacc.y" /* yacc.c:1646  */
+#line 413 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new SpeciQualiFierListAst(NodeAst::T_CSQFLIST_TYPEQF_SQFLIST);
 		p->addChild2((yyvsp[-1].pnode), (yyvsp[0].pnode));
@@ -2168,7 +2168,7 @@ yyreduce:
     break;
 
   case 43:
-#line 419 "yacc.y" /* yacc.c:1646  */
+#line 420 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
@@ -2176,7 +2176,7 @@ yyreduce:
     break;
 
   case 44:
-#line 509 "yacc.y" /* yacc.c:1646  */
+#line 510 "yacc.y" /* yacc.c:1646  */
     { /*class scope def*/
 		NodeAst *p = new ClassSpecifierAst(NodeAst::T_CCLASSSF_CLASS_ID_CLASSDECTIONLIST);
 		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CCLASSSF_CLASS_ID_CLASSDECTIONLIST, (yyvsp[-3].yystring));
@@ -2187,7 +2187,7 @@ yyreduce:
     break;
 
   case 45:
-#line 517 "yacc.y" /* yacc.c:1646  */
+#line 518 "yacc.y" /* yacc.c:1646  */
     { //class scope def
 		NodeAst *p = new ClassSpecifierAst(NodeAst::T_CCLASSSF_CLASS_ID_IDLIST_CLASSDECTIONLIST);
 		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CCLASSSF_CLASS_ID_IDLIST_CLASSDECTIONLIST, (yyvsp[-5].yystring));
@@ -2198,7 +2198,7 @@ yyreduce:
     break;
 
   case 46:
-#line 525 "yacc.y" /* yacc.c:1646  */
+#line 526 "yacc.y" /* yacc.c:1646  */
     { /*class declaration*/
 		NodeAst *p = new ClassSpecifierAst(NodeAst::T_CCLASSSF_CLASS_ID);
 		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CCLASSSF_CLASS_ID, (yyvsp[0].yystring));
@@ -2209,7 +2209,7 @@ yyreduce:
     break;
 
   case 47:
-#line 535 "yacc.y" /* yacc.c:1646  */
+#line 536 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
@@ -2217,7 +2217,7 @@ yyreduce:
     break;
 
   case 48:
-#line 540 "yacc.y" /* yacc.c:1646  */
+#line 541 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new ClassDectionListAst(NodeAst::T_CCLASSDECTIONLIST_CLASSDECTIONLIST_CLASSDECTION);
 		p->addChild2((yyvsp[-1].pnode), (yyvsp[0].pnode));
@@ -2227,7 +2227,7 @@ yyreduce:
     break;
 
   case 49:
-#line 549 "yacc.y" /* yacc.c:1646  */
+#line 550 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new ClassDectionAst(NodeAst::T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[-1].pnode));
@@ -2237,7 +2237,7 @@ yyreduce:
     break;
 
   case 50:
-#line 556 "yacc.y" /* yacc.c:1646  */
+#line 557 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new ClassDectionAst(NodeAst::T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST_COMPSTM);
 		p->addChild3((yyvsp[-2].pnode), (yyvsp[-1].pnode), (yyvsp[0].pnode));
@@ -2247,7 +2247,7 @@ yyreduce:
     break;
 
   case 51:
-#line 563 "yacc.y" /* yacc.c:1646  */
+#line 564 "yacc.y" /* yacc.c:1646  */
     { /*this func can be the Constructor or Destructor*/
 		NodeAst *p = new ClassDectionAst(NodeAst::T_CCLASSDECTION_CLASSDECTORLIST_COMPSTM);
 		p->addChild2((yyvsp[-1].pnode), (yyvsp[0].pnode));
@@ -2257,7 +2257,7 @@ yyreduce:
     break;
 
   case 52:
-#line 572 "yacc.y" /* yacc.c:1646  */
+#line 573 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
@@ -2265,7 +2265,7 @@ yyreduce:
     break;
 
   case 53:
-#line 577 "yacc.y" /* yacc.c:1646  */
+#line 578 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new ClassDectorListAst(NodeAst::T_CCLASSDECTORLIST_CLASSDECTORLIST_CLASSDECTOR);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
@@ -2275,7 +2275,7 @@ yyreduce:
     break;
 
   case 54:
-#line 586 "yacc.y" /* yacc.c:1646  */
+#line 587 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new ClassDectorAst(NodeAst::T_CCLASSDECTOR_DECTOR);
 		p->addChild1((yyvsp[0].pnode));
@@ -2285,7 +2285,7 @@ yyreduce:
     break;
 
   case 55:
-#line 641 "yacc.y" /* yacc.c:1646  */
+#line 642 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new DectorAst(NodeAst::T_CDECTOR_POINTER_DIRDECTOR);
 		p->addChild2((yyvsp[-1].pnode), (yyvsp[0].pnode));
@@ -2295,7 +2295,7 @@ yyreduce:
     break;
 
   case 56:
-#line 648 "yacc.y" /* yacc.c:1646  */
+#line 649 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
@@ -2303,7 +2303,7 @@ yyreduce:
     break;
 
   case 57:
-#line 655 "yacc.y" /* yacc.c:1646  */
+#line 656 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new DirDectorAst(NodeAst::T_CDIRDECTOR_ID);
 		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CDIRDECTOR_ID, (yyvsp[0].yystring));
@@ -2314,7 +2314,7 @@ yyreduce:
     break;
 
   case 58:
-#line 663 "yacc.y" /* yacc.c:1646  */
+#line 664 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[-1].pnode);
 	}
@@ -2322,7 +2322,7 @@ yyreduce:
     break;
 
   case 59:
-#line 668 "yacc.y" /* yacc.c:1646  */
+#line 669 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new DirDectorAst(NodeAst::T_CDIRDECTOR_DIRDECTOR_ARRAY_CONSTEXP);
 		p->addChild2((yyvsp[-3].pnode), (yyvsp[-1].pnode));
@@ -2332,7 +2332,7 @@ yyreduce:
     break;
 
   case 60:
-#line 675 "yacc.y" /* yacc.c:1646  */
+#line 676 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new DirDectorAst(NodeAst::T_CDIRDECTOR_DIRDECTOR_ARRAY_VOID);
 		p->addChild1((yyvsp[-2].pnode));
@@ -2342,7 +2342,7 @@ yyreduce:
     break;
 
   case 61:
-#line 682 "yacc.y" /* yacc.c:1646  */
+#line 683 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new DirDectorAst(NodeAst::T_CDIRDECTOR_DIRDECTOR_CALL_PARAMTYPELIST);
 		p->addChild2((yyvsp[-3].pnode), (yyvsp[-1].pnode));
@@ -2352,7 +2352,7 @@ yyreduce:
     break;
 
   case 62:
-#line 689 "yacc.y" /* yacc.c:1646  */
+#line 690 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new DirDectorAst(NodeAst::T_CDIRDECTOR_DIRDECTOR_CALL_EXP);
 		p->addChild2((yyvsp[-3].pnode), (yyvsp[-1].pnode));
@@ -2362,7 +2362,7 @@ yyreduce:
     break;
 
   case 63:
-#line 696 "yacc.y" /* yacc.c:1646  */
+#line 697 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new DirDectorAst(NodeAst::T_CDIRDECTOR_DIRDECTOR_CALL_VOID);
 		p->addChild1((yyvsp[-2].pnode));
@@ -2372,7 +2372,7 @@ yyreduce:
     break;
 
   case 64:
-#line 707 "yacc.y" /* yacc.c:1646  */
+#line 708 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
@@ -2380,7 +2380,7 @@ yyreduce:
     break;
 
   case 65:
-#line 712 "yacc.y" /* yacc.c:1646  */
+#line 713 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
@@ -2388,7 +2388,7 @@ yyreduce:
     break;
 
   case 66:
-#line 717 "yacc.y" /* yacc.c:1646  */
+#line 718 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
@@ -2396,7 +2396,7 @@ yyreduce:
     break;
 
   case 67:
-#line 722 "yacc.y" /* yacc.c:1646  */
+#line 723 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
@@ -2404,7 +2404,7 @@ yyreduce:
     break;
 
   case 68:
-#line 729 "yacc.y" /* yacc.c:1646  */
+#line 730 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
@@ -2412,7 +2412,7 @@ yyreduce:
     break;
 
   case 69:
-#line 734 "yacc.y" /* yacc.c:1646  */
+#line 735 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TypeQualifierListAst(NodeAst::T_CTYPEQFLIST_TYPEQFLIST_TYPEQF);
 		p->addChild2((yyvsp[-1].pnode), (yyvsp[0].pnode));
@@ -2422,7 +2422,7 @@ yyreduce:
     break;
 
   case 70:
-#line 745 "yacc.y" /* yacc.c:1646  */
+#line 746 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
@@ -2430,7 +2430,7 @@ yyreduce:
     break;
 
   case 71:
-#line 750 "yacc.y" /* yacc.c:1646  */
+#line 751 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
@@ -2438,7 +2438,7 @@ yyreduce:
     break;
 
   case 72:
-#line 757 "yacc.y" /* yacc.c:1646  */
+#line 758 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
@@ -2446,7 +2446,7 @@ yyreduce:
     break;
 
   case 73:
-#line 762 "yacc.y" /* yacc.c:1646  */
+#line 763 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new ParamTypeListAst(NodeAst::T_CPARAMLIST_PARAMLIST_PARAMDECTION);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
@@ -2456,7 +2456,7 @@ yyreduce:
     break;
 
   case 74:
-#line 771 "yacc.y" /* yacc.c:1646  */
+#line 772 "yacc.y" /* yacc.c:1646  */
     { /*this declaration may exist in func def*/
 		NodeAst *p = new ParamDectionAst(NodeAst::T_CPARAMDECTION_DECTIONSFS_DECTOR);
 		p->addChild2((yyvsp[-1].pnode), (yyvsp[0].pnode));
@@ -2466,7 +2466,7 @@ yyreduce:
     break;
 
   case 75:
-#line 778 "yacc.y" /* yacc.c:1646  */
+#line 779 "yacc.y" /* yacc.c:1646  */
     { /*this declaration may exist in func declaration*/
 		(yyval.pnode) = NULL;
 	}
@@ -2474,7 +2474,7 @@ yyreduce:
     break;
 
   case 76:
-#line 783 "yacc.y" /* yacc.c:1646  */
+#line 784 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new ParamDectionAst(NodeAst::T_CPARAMDECTION_DECTIONSFS);
 		p->addChild1((yyvsp[0].pnode));
@@ -2484,7 +2484,7 @@ yyreduce:
     break;
 
   case 77:
-#line 794 "yacc.y" /* yacc.c:1646  */
+#line 795 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CIDLIST_ID, (yyvsp[0].yystring));
 		(yyval.pnode) = p;
@@ -2493,7 +2493,7 @@ yyreduce:
     break;
 
   case 78:
-#line 800 "yacc.y" /* yacc.c:1646  */
+#line 801 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new IdentifierListAst(NodeAst::T_CIDLIST_IDLIST_ID);
 		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CIDLIST_IDLIST_ID, (yyvsp[0].yystring));
@@ -2504,7 +2504,7 @@ yyreduce:
     break;
 
   case 79:
-#line 810 "yacc.y" /* yacc.c:1646  */
+#line 811 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new InitzerAst(NodeAst::T_CINITZER_ASSIGNEXP);
 		p->addChild1((yyvsp[0].pnode));
@@ -2514,7 +2514,7 @@ yyreduce:
     break;
 
   case 80:
-#line 817 "yacc.y" /* yacc.c:1646  */
+#line 818 "yacc.y" /* yacc.c:1646  */
     { /*init value*/
 		NodeAst *p = new InitzerAst(NodeAst::T_CINITZER_CINITZERLIST);
 		p->addChild1((yyvsp[-1].pnode));
@@ -2524,7 +2524,7 @@ yyreduce:
     break;
 
   case 81:
-#line 826 "yacc.y" /* yacc.c:1646  */
+#line 827 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
@@ -2532,7 +2532,7 @@ yyreduce:
     break;
 
   case 82:
-#line 831 "yacc.y" /* yacc.c:1646  */
+#line 832 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new InitzerListAst(NodeAst::T_CINITZERLIST_INITZERLIST_INITZER);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
@@ -2542,7 +2542,7 @@ yyreduce:
     break;
 
   case 83:
-#line 841 "yacc.y" /* yacc.c:1646  */
+#line 842 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
@@ -2550,7 +2550,7 @@ yyreduce:
     break;
 
   case 84:
-#line 846 "yacc.y" /* yacc.c:1646  */
+#line 847 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
@@ -2558,7 +2558,7 @@ yyreduce:
     break;
 
   case 85:
-#line 855 "yacc.y" /* yacc.c:1646  */
+#line 856 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
@@ -2566,7 +2566,7 @@ yyreduce:
     break;
 
   case 86:
-#line 860 "yacc.y" /* yacc.c:1646  */
+#line 861 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
@@ -2574,7 +2574,7 @@ yyreduce:
     break;
 
   case 87:
-#line 865 "yacc.y" /* yacc.c:1646  */
+#line 866 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
@@ -2582,7 +2582,7 @@ yyreduce:
     break;
 
   case 88:
-#line 872 "yacc.y" /* yacc.c:1646  */
+#line 873 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
@@ -2590,7 +2590,7 @@ yyreduce:
     break;
 
   case 89:
-#line 877 "yacc.y" /* yacc.c:1646  */
+#line 878 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
@@ -2598,7 +2598,7 @@ yyreduce:
     break;
 
   case 90:
-#line 882 "yacc.y" /* yacc.c:1646  */
+#line 883 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
@@ -2606,7 +2606,7 @@ yyreduce:
     break;
 
   case 91:
-#line 887 "yacc.y" /* yacc.c:1646  */
+#line 888 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
@@ -2614,7 +2614,7 @@ yyreduce:
     break;
 
   case 92:
-#line 892 "yacc.y" /* yacc.c:1646  */
+#line 893 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
@@ -2622,7 +2622,7 @@ yyreduce:
     break;
 
   case 93:
-#line 897 "yacc.y" /* yacc.c:1646  */
+#line 898 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
@@ -2630,7 +2630,7 @@ yyreduce:
     break;
 
   case 94:
-#line 902 "yacc.y" /* yacc.c:1646  */
+#line 903 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
@@ -2638,7 +2638,7 @@ yyreduce:
     break;
 
   case 95:
-#line 907 "yacc.y" /* yacc.c:1646  */
+#line 908 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
@@ -2646,7 +2646,7 @@ yyreduce:
     break;
 
   case 96:
-#line 912 "yacc.y" /* yacc.c:1646  */
+#line 913 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
@@ -2654,7 +2654,7 @@ yyreduce:
     break;
 
   case 97:
-#line 921 "yacc.y" /* yacc.c:1646  */
+#line 922 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
@@ -2662,7 +2662,7 @@ yyreduce:
     break;
 
   case 98:
-#line 926 "yacc.y" /* yacc.c:1646  */
+#line 927 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
@@ -2670,7 +2670,7 @@ yyreduce:
     break;
 
   case 99:
-#line 931 "yacc.y" /* yacc.c:1646  */
+#line 932 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
@@ -2678,7 +2678,7 @@ yyreduce:
     break;
 
   case 100:
-#line 936 "yacc.y" /* yacc.c:1646  */
+#line 937 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
@@ -2686,7 +2686,7 @@ yyreduce:
     break;
 
   case 101:
-#line 941 "yacc.y" /* yacc.c:1646  */
+#line 942 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
@@ -2694,7 +2694,7 @@ yyreduce:
     break;
 
   case 102:
-#line 946 "yacc.y" /* yacc.c:1646  */
+#line 947 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
@@ -2702,7 +2702,7 @@ yyreduce:
     break;
 
   case 103:
-#line 953 "yacc.y" /* yacc.c:1646  */
+#line 954 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new LabeledStmAst(NodeAst::T_CLABSTM_ID_STM);
 		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CLABSTM_ID_STM, (yyvsp[-2].yystring));
@@ -2713,7 +2713,7 @@ yyreduce:
     break;
 
   case 104:
-#line 961 "yacc.y" /* yacc.c:1646  */
+#line 962 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new LabeledStmAst(NodeAst::T_CLABSTM_CASE_CONSTEXP_STM);
         	p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
@@ -2723,7 +2723,7 @@ yyreduce:
     break;
 
   case 105:
-#line 968 "yacc.y" /* yacc.c:1646  */
+#line 969 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new LabeledStmAst(NodeAst::T_CLABSTM_DEFAULT_STM);
         	p->addChild1((yyvsp[0].pnode));
@@ -2733,7 +2733,7 @@ yyreduce:
     break;
 
   case 106:
-#line 977 "yacc.y" /* yacc.c:1646  */
+#line 978 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new ExpStmAst(NodeAst::T_CEXPSTM_VOID);
        		(yyval.pnode) = p;
@@ -2742,7 +2742,7 @@ yyreduce:
     break;
 
   case 107:
-#line 983 "yacc.y" /* yacc.c:1646  */
+#line 984 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new ExpStmAst(NodeAst::T_CEXPSTM_EXP);
 		p->addChild1((yyvsp[-1].pnode));
@@ -2752,7 +2752,7 @@ yyreduce:
     break;
 
   case 108:
-#line 992 "yacc.y" /* yacc.c:1646  */
+#line 993 "yacc.y" /* yacc.c:1646  */
     { /*local scope*/
 		NodeAst *p = new CompoundStmAst(NodeAst::T_CCOMPSTM_VOID);
         	(yyval.pnode) = p;
@@ -2761,7 +2761,7 @@ yyreduce:
     break;
 
   case 109:
-#line 998 "yacc.y" /* yacc.c:1646  */
+#line 999 "yacc.y" /* yacc.c:1646  */
     { /*local scope*/
 		NodeAst *p = new CompoundStmAst(NodeAst::T_CCOMPSTM_STMLIST);
 		p->addChild1((yyvsp[-1].pnode));
@@ -2771,7 +2771,7 @@ yyreduce:
     break;
 
   case 110:
-#line 1005 "yacc.y" /* yacc.c:1646  */
+#line 1006 "yacc.y" /* yacc.c:1646  */
     { /*local scope*/
 		NodeAst *p = new CompoundStmAst(NodeAst::T_CCOMPSTM_DECTION_LIST);
 		p->addChild1((yyvsp[-1].pnode));
@@ -2781,7 +2781,7 @@ yyreduce:
     break;
 
   case 111:
-#line 1012 "yacc.y" /* yacc.c:1646  */
+#line 1013 "yacc.y" /* yacc.c:1646  */
     { /*local scope*/
 		NodeAst *p = new CompoundStmAst(NodeAst::T_CCOMPSTM_DECTIONLIST_STMLIST);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[-1].pnode));
@@ -2791,7 +2791,7 @@ yyreduce:
     break;
 
   case 112:
-#line 1021 "yacc.y" /* yacc.c:1646  */
+#line 1022 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
@@ -2799,7 +2799,7 @@ yyreduce:
     break;
 
   case 113:
-#line 1026 "yacc.y" /* yacc.c:1646  */
+#line 1027 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new StmListAst(NodeAst::T_CSTMLIST_STMLIST_STM);
 		p->addChild2((yyvsp[-1].pnode), (yyvsp[0].pnode));
@@ -2809,7 +2809,7 @@ yyreduce:
     break;
 
   case 114:
-#line 1035 "yacc.y" /* yacc.c:1646  */
+#line 1036 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new SelectionStmAst(NodeAst::T_CSELSTM_IF_EXP_STM);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
@@ -2819,7 +2819,7 @@ yyreduce:
     break;
 
   case 115:
-#line 1042 "yacc.y" /* yacc.c:1646  */
+#line 1043 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new SelectionStmAst(NodeAst::T_CSELSTM_IF_EXP_STM_ELSE_STM);
 		p->addChild3((yyvsp[-4].pnode), (yyvsp[-2].pnode), (yyvsp[0].pnode));
@@ -2829,7 +2829,7 @@ yyreduce:
     break;
 
   case 116:
-#line 1049 "yacc.y" /* yacc.c:1646  */
+#line 1050 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new SelectionStmAst(NodeAst::T_CSELSTM_SWITCH_EXP_STM);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
@@ -2839,7 +2839,7 @@ yyreduce:
     break;
 
   case 117:
-#line 1058 "yacc.y" /* yacc.c:1646  */
+#line 1059 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new IterationStmAst(NodeAst::T_CITRSTM_WHILE_EXP_STM);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
@@ -2849,7 +2849,7 @@ yyreduce:
     break;
 
   case 118:
-#line 1065 "yacc.y" /* yacc.c:1646  */
+#line 1066 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new IterationStmAst(NodeAst::T_CITRSTM_DO_STM_WHILE_EXP);
 		p->addChild2((yyvsp[-5].pnode), (yyvsp[-2].pnode));
@@ -2859,7 +2859,7 @@ yyreduce:
     break;
 
   case 119:
-#line 1072 "yacc.y" /* yacc.c:1646  */
+#line 1073 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new IterationStmAst(NodeAst::T_CITRSTM_FOR_EXPSTM_EXPSTM_EXP_STM);
 		p->addChild4((yyvsp[-4].pnode), (yyvsp[-3].pnode), (yyvsp[-2].pnode), (yyvsp[0].pnode));
@@ -2869,7 +2869,7 @@ yyreduce:
     break;
 
   case 120:
-#line 1081 "yacc.y" /* yacc.c:1646  */
+#line 1082 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new JumpStmAst(NodeAst::T_CJUMPSTM_GOTO_ID);
 		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CJUMPSTM_GOTO_ID, (yyvsp[-1].yystring));
@@ -2880,7 +2880,7 @@ yyreduce:
     break;
 
   case 121:
-#line 1089 "yacc.y" /* yacc.c:1646  */
+#line 1090 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new JumpStmAst(NodeAst::T_CJUMPSTM_CONTINUE);
         	(yyval.pnode) = p;
@@ -2889,7 +2889,7 @@ yyreduce:
     break;
 
   case 122:
-#line 1095 "yacc.y" /* yacc.c:1646  */
+#line 1096 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new JumpStmAst(NodeAst::T_CJUMPSTM_BREAK);
         	(yyval.pnode) = p;
@@ -2898,7 +2898,7 @@ yyreduce:
     break;
 
   case 123:
-#line 1101 "yacc.y" /* yacc.c:1646  */
+#line 1102 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new JumpStmAst(NodeAst::T_CJUMPSTM_RETURN);
         	(yyval.pnode) = p;
@@ -2907,7 +2907,7 @@ yyreduce:
     break;
 
   case 124:
-#line 1107 "yacc.y" /* yacc.c:1646  */
+#line 1108 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new JumpStmAst(NodeAst::T_CJUMPSTM_RETURN_EXP);
 		p->addChild1((yyvsp[-1].pnode));
@@ -2917,7 +2917,7 @@ yyreduce:
     break;
 
   case 125:
-#line 1118 "yacc.y" /* yacc.c:1646  */
+#line 1119 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
@@ -2925,7 +2925,7 @@ yyreduce:
     break;
 
   case 126:
-#line 1123 "yacc.y" /* yacc.c:1646  */
+#line 1124 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new ExpAst(NodeAst::T_CEXP_EXP_ASSIGNEXP);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
@@ -2935,7 +2935,7 @@ yyreduce:
     break;
 
   case 127:
-#line 1132 "yacc.y" /* yacc.c:1646  */
+#line 1133 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new AssignExpAst(NodeAst::T_CASSIGNEXP_CONDITIONALEXP);
 		p->addChild1((yyvsp[0].pnode));
@@ -2945,7 +2945,7 @@ yyreduce:
     break;
 
   case 128:
-#line 1139 "yacc.y" /* yacc.c:1646  */
+#line 1140 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new AssignExpAst(NodeAst::T_CASSIGNEXP_UNARYEXP_ASSIGN_OP_ASSIGNEXP);
 		p->addChild3((yyvsp[-2].pnode), (yyvsp[-1].pnode), (yyvsp[0].pnode));
@@ -2955,7 +2955,7 @@ yyreduce:
     break;
 
   case 129:
-#line 1148 "yacc.y" /* yacc.c:1646  */
+#line 1149 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CASSIGN_OP_ASSIGN, "=");
         	(yyval.pnode) = p;
@@ -2964,7 +2964,7 @@ yyreduce:
     break;
 
   case 130:
-#line 1154 "yacc.y" /* yacc.c:1646  */
+#line 1155 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CASSIGN_OP_MUL_ASSIGN, (yyvsp[0].yystring));
         	(yyval.pnode) = p;
@@ -2973,7 +2973,7 @@ yyreduce:
     break;
 
   case 131:
-#line 1160 "yacc.y" /* yacc.c:1646  */
+#line 1161 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CASSIGN_OP_DIV_ASSIGN, (yyvsp[0].yystring));
         	(yyval.pnode) = p;
@@ -2982,7 +2982,7 @@ yyreduce:
     break;
 
   case 132:
-#line 1166 "yacc.y" /* yacc.c:1646  */
+#line 1167 "yacc.y" /* yacc.c:1646  */
     {
         	(yyval.pnode) = NULL;
 	}
@@ -2990,7 +2990,7 @@ yyreduce:
     break;
 
   case 133:
-#line 1171 "yacc.y" /* yacc.c:1646  */
+#line 1172 "yacc.y" /* yacc.c:1646  */
     {
         	NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CASSIGN_OP_ADD_ASSIGN, (yyvsp[0].yystring));
         	(yyval.pnode) = p;
@@ -2999,7 +2999,7 @@ yyreduce:
     break;
 
   case 134:
-#line 1177 "yacc.y" /* yacc.c:1646  */
+#line 1178 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CASSIGN_OP_SUB_ASSIGN, (yyvsp[0].yystring));
         	(yyval.pnode) = p;
@@ -3008,7 +3008,7 @@ yyreduce:
     break;
 
   case 135:
-#line 1183 "yacc.y" /* yacc.c:1646  */
+#line 1184 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
@@ -3016,7 +3016,7 @@ yyreduce:
     break;
 
   case 136:
-#line 1188 "yacc.y" /* yacc.c:1646  */
+#line 1189 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
@@ -3024,7 +3024,7 @@ yyreduce:
     break;
 
   case 137:
-#line 1193 "yacc.y" /* yacc.c:1646  */
+#line 1194 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
@@ -3032,7 +3032,7 @@ yyreduce:
     break;
 
   case 138:
-#line 1198 "yacc.y" /* yacc.c:1646  */
+#line 1199 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
@@ -3040,7 +3040,7 @@ yyreduce:
     break;
 
   case 139:
-#line 1203 "yacc.y" /* yacc.c:1646  */
+#line 1204 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
@@ -3048,7 +3048,7 @@ yyreduce:
     break;
 
   case 140:
-#line 1210 "yacc.y" /* yacc.c:1646  */
+#line 1211 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
@@ -3056,7 +3056,7 @@ yyreduce:
     break;
 
   case 141:
-#line 1217 "yacc.y" /* yacc.c:1646  */
+#line 1218 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
@@ -3064,7 +3064,7 @@ yyreduce:
     break;
 
   case 142:
-#line 1224 "yacc.y" /* yacc.c:1646  */
+#line 1225 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
@@ -3072,7 +3072,7 @@ yyreduce:
     break;
 
   case 143:
-#line 1229 "yacc.y" /* yacc.c:1646  */
+#line 1230 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new LogicalOrExpAst(NodeAst::T_CLOGOREXP_LOGOREXP_OR_OP_LOGANDEXP);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
@@ -3082,7 +3082,7 @@ yyreduce:
     break;
 
   case 144:
-#line 1238 "yacc.y" /* yacc.c:1646  */
+#line 1239 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
@@ -3090,7 +3090,7 @@ yyreduce:
     break;
 
   case 145:
-#line 1243 "yacc.y" /* yacc.c:1646  */
+#line 1244 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new LogicalAndExpAst(NodeAst::T_CLOGANDEXP_LOGANDEXP_AND_OP_EQUALEXP);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
@@ -3100,7 +3100,7 @@ yyreduce:
     break;
 
   case 146:
-#line 1291 "yacc.y" /* yacc.c:1646  */
+#line 1292 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
@@ -3108,7 +3108,7 @@ yyreduce:
     break;
 
   case 147:
-#line 1296 "yacc.y" /* yacc.c:1646  */
+#line 1297 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new EqualExpAst(NodeAst::T_CEQUALEXP_EQUALEXP_EQ_OP_RELEXP);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
@@ -3118,7 +3118,7 @@ yyreduce:
     break;
 
   case 148:
-#line 1303 "yacc.y" /* yacc.c:1646  */
+#line 1304 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new EqualExpAst(NodeAst::T_CEQUALEXP_EQUALEXP_NE_OP_RELEXP);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
@@ -3128,7 +3128,7 @@ yyreduce:
     break;
 
   case 149:
-#line 1312 "yacc.y" /* yacc.c:1646  */
+#line 1313 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
@@ -3136,7 +3136,7 @@ yyreduce:
     break;
 
   case 150:
-#line 1317 "yacc.y" /* yacc.c:1646  */
+#line 1318 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new RelationExpAst(NodeAst::T_CRELEXP_RELEXP_L_OP_ADDEXP);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
@@ -3146,7 +3146,7 @@ yyreduce:
     break;
 
   case 151:
-#line 1324 "yacc.y" /* yacc.c:1646  */
+#line 1325 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new RelationExpAst(NodeAst::T_CRELEXP_RELEXP_G_OP_ADDEXP);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
@@ -3156,7 +3156,7 @@ yyreduce:
     break;
 
   case 152:
-#line 1331 "yacc.y" /* yacc.c:1646  */
+#line 1332 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new RelationExpAst(NodeAst::T_CRELEXP_RELEXP_LE_OP_ADDEXP);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
@@ -3166,7 +3166,7 @@ yyreduce:
     break;
 
   case 153:
-#line 1338 "yacc.y" /* yacc.c:1646  */
+#line 1339 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new RelationExpAst(NodeAst::T_CRELEXP_RELEXP_GE_OP_ADDEXP);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
@@ -3176,7 +3176,7 @@ yyreduce:
     break;
 
   case 154:
-#line 1366 "yacc.y" /* yacc.c:1646  */
+#line 1367 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
@@ -3184,7 +3184,7 @@ yyreduce:
     break;
 
   case 155:
-#line 1371 "yacc.y" /* yacc.c:1646  */
+#line 1372 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new AddExpAst(NodeAst::T_CADDEXP_ADDEXP_ADD_OP_MULEXP);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
@@ -3194,7 +3194,7 @@ yyreduce:
     break;
 
   case 156:
-#line 1378 "yacc.y" /* yacc.c:1646  */
+#line 1379 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new AddExpAst(NodeAst::T_CADDEXP_ADDEXP_SUB_OP_MULEXP);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
@@ -3204,7 +3204,7 @@ yyreduce:
     break;
 
   case 157:
-#line 1387 "yacc.y" /* yacc.c:1646  */
+#line 1388 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
@@ -3212,7 +3212,7 @@ yyreduce:
     break;
 
   case 158:
-#line 1392 "yacc.y" /* yacc.c:1646  */
+#line 1393 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new MulExpAst(NodeAst::T_CMULEXP_MULEXP_MUL_OP_CASTEXP);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
@@ -3222,7 +3222,7 @@ yyreduce:
     break;
 
   case 159:
-#line 1399 "yacc.y" /* yacc.c:1646  */
+#line 1400 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new MulExpAst(NodeAst::T_CMULEXP_MULEXP_DIV_OP_CASTEXP);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
@@ -3232,7 +3232,7 @@ yyreduce:
     break;
 
   case 160:
-#line 1406 "yacc.y" /* yacc.c:1646  */
+#line 1407 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
@@ -3240,7 +3240,7 @@ yyreduce:
     break;
 
   case 161:
-#line 1413 "yacc.y" /* yacc.c:1646  */
+#line 1414 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
@@ -3248,7 +3248,7 @@ yyreduce:
     break;
 
   case 162:
-#line 1418 "yacc.y" /* yacc.c:1646  */
+#line 1419 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
@@ -3256,7 +3256,7 @@ yyreduce:
     break;
 
   case 163:
-#line 1425 "yacc.y" /* yacc.c:1646  */
+#line 1426 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
@@ -3264,7 +3264,7 @@ yyreduce:
     break;
 
   case 164:
-#line 1430 "yacc.y" /* yacc.c:1646  */
+#line 1431 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new UnaryExpAst(NodeAst::T_CUNARYEXP_INC_OP_UNARAYEXP);
 		p->addChild1((yyvsp[0].pnode));
@@ -3274,7 +3274,7 @@ yyreduce:
     break;
 
   case 165:
-#line 1437 "yacc.y" /* yacc.c:1646  */
+#line 1438 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new UnaryExpAst(NodeAst::T_CUNARYEXP_DEC_OP_UNARYEXP);
 		p->addChild1((yyvsp[0].pnode));
@@ -3284,7 +3284,7 @@ yyreduce:
     break;
 
   case 166:
-#line 1444 "yacc.y" /* yacc.c:1646  */
+#line 1445 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new UnaryExpAst(NodeAst::T_CUNARYEXP_UNARY_OP_CASTEXP);
 		p->addChild2((yyvsp[-1].pnode), (yyvsp[0].pnode));
@@ -3294,7 +3294,7 @@ yyreduce:
     break;
 
   case 167:
-#line 1451 "yacc.y" /* yacc.c:1646  */
+#line 1452 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
@@ -3302,7 +3302,7 @@ yyreduce:
     break;
 
   case 168:
-#line 1458 "yacc.y" /* yacc.c:1646  */
+#line 1459 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
@@ -3310,7 +3310,7 @@ yyreduce:
     break;
 
   case 169:
-#line 1463 "yacc.y" /* yacc.c:1646  */
+#line 1464 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
@@ -3318,7 +3318,7 @@ yyreduce:
     break;
 
   case 170:
-#line 1468 "yacc.y" /* yacc.c:1646  */
+#line 1469 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CUNARY_OP_ADD_OP, "+");
 		(yyval.pnode) = p;
@@ -3327,7 +3327,7 @@ yyreduce:
     break;
 
   case 171:
-#line 1474 "yacc.y" /* yacc.c:1646  */
+#line 1475 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CUNARY_OP_SUB_OP, "-");
 		(yyval.pnode) = p;
@@ -3336,7 +3336,7 @@ yyreduce:
     break;
 
   case 172:
-#line 1480 "yacc.y" /* yacc.c:1646  */
+#line 1481 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
@@ -3344,7 +3344,7 @@ yyreduce:
     break;
 
   case 173:
-#line 1485 "yacc.y" /* yacc.c:1646  */
+#line 1486 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
@@ -3352,7 +3352,7 @@ yyreduce:
     break;
 
   case 174:
-#line 1492 "yacc.y" /* yacc.c:1646  */
+#line 1493 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
@@ -3360,7 +3360,7 @@ yyreduce:
     break;
 
   case 175:
-#line 1497 "yacc.y" /* yacc.c:1646  */
+#line 1498 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new PostfixExpAst(NodeAst::T_CPOSTEXP_POSTEXP_ARRAY_EXP);
 		p->addChild2((yyvsp[-3].pnode), (yyvsp[-1].pnode));
@@ -3370,7 +3370,7 @@ yyreduce:
     break;
 
   case 176:
-#line 1504 "yacc.y" /* yacc.c:1646  */
+#line 1505 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new PostfixExpAst(NodeAst::T_CPOSTEXP_POSTEXP_CALL_VOID);
 		p->addChild1((yyvsp[-2].pnode));
@@ -3380,7 +3380,7 @@ yyreduce:
     break;
 
   case 177:
-#line 1511 "yacc.y" /* yacc.c:1646  */
+#line 1512 "yacc.y" /* yacc.c:1646  */
     { /*call the func callee*/
 		NodeAst *p = new PostfixExpAst(NodeAst::T_CPOSTEXP_POSTEXP_CALL_ARGEXPLIST);
 		p->addChild2((yyvsp[-3].pnode), (yyvsp[-1].pnode));
@@ -3390,7 +3390,7 @@ yyreduce:
     break;
 
   case 178:
-#line 1518 "yacc.y" /* yacc.c:1646  */
+#line 1519 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new PostfixExpAst(NodeAst::T_CPOSTEXP_POSTEXP_REF_ID);
 		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CPOSTEXP_POSTEXP_REF_ID, (yyvsp[0].yystring));
@@ -3401,7 +3401,7 @@ yyreduce:
     break;
 
   case 179:
-#line 1526 "yacc.y" /* yacc.c:1646  */
+#line 1527 "yacc.y" /* yacc.c:1646  */
     {
 		(yyval.pnode) = NULL;
 	}
@@ -3409,7 +3409,7 @@ yyreduce:
     break;
 
   case 180:
-#line 1531 "yacc.y" /* yacc.c:1646  */
+#line 1532 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new PostfixExpAst(NodeAst::T_CPOSTEXP_POSTEXP_INC_OP);
 		p->addChild1((yyvsp[-1].pnode));
@@ -3419,7 +3419,7 @@ yyreduce:
     break;
 
   case 181:
-#line 1538 "yacc.y" /* yacc.c:1646  */
+#line 1539 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new PostfixExpAst(NodeAst::T_CPOSTEXP_POSTEXP_DEC_OP);
 		p->addChild1((yyvsp[-1].pnode));
@@ -3429,7 +3429,7 @@ yyreduce:
     break;
 
   case 182:
-#line 1545 "yacc.y" /* yacc.c:1646  */
+#line 1546 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new PostfixExpAst(NodeAst::T_CPOSTEXP_NEW_ID_VOID);
 		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CPOSTEXP_NEW_ID_VOID, (yyvsp[-2].yystring));
@@ -3440,7 +3440,7 @@ yyreduce:
     break;
 
   case 183:
-#line 1553 "yacc.y" /* yacc.c:1646  */
+#line 1554 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new PostfixExpAst(NodeAst::T_CPOSTEXP_DELETE_ID);
 		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CPOSTEXP_DELETE_ID, (yyvsp[0].yystring));
@@ -3451,7 +3451,7 @@ yyreduce:
     break;
 
   case 184:
-#line 1563 "yacc.y" /* yacc.c:1646  */
+#line 1564 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new PrimaryExpAst(NodeAst::T_CPRIMEXP_ID);
 		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CPRIMEXP_ID, (yyvsp[0].yystring));
@@ -3462,7 +3462,7 @@ yyreduce:
     break;
 
   case 185:
-#line 1571 "yacc.y" /* yacc.c:1646  */
+#line 1572 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new PrimaryExpAst(NodeAst::T_CPRIMEXP_CONST);
 		p->addChild1((yyvsp[0].pnode));
@@ -3472,7 +3472,7 @@ yyreduce:
     break;
 
   case 186:
-#line 1578 "yacc.y" /* yacc.c:1646  */
+#line 1579 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new PrimaryExpAst(NodeAst::T_CPRIMEXP_STR);
 		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CPRIMEXP_STR, (yyvsp[0].yystring));
@@ -3483,7 +3483,7 @@ yyreduce:
     break;
 
   case 187:
-#line 1586 "yacc.y" /* yacc.c:1646  */
+#line 1587 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new PrimaryExpAst(NodeAst::T_CPRIMEXP_EXP);
 		p->addChild1((yyvsp[-1].pnode));
@@ -3493,7 +3493,7 @@ yyreduce:
     break;
 
   case 188:
-#line 1595 "yacc.y" /* yacc.c:1646  */
+#line 1596 "yacc.y" /* yacc.c:1646  */
     { /*directly return the child node*/
 		(yyval.pnode) = (yyvsp[0].pnode);
 	}
@@ -3501,7 +3501,7 @@ yyreduce:
     break;
 
   case 189:
-#line 1600 "yacc.y" /* yacc.c:1646  */
+#line 1601 "yacc.y" /* yacc.c:1646  */
     {
 		NodeAst *p = new ArgExpListAst(NodeAst::T_CARGEXPLIST_ARGEXPLIST_ASSGEXP);
 		p->addChild2((yyvsp[-2].pnode), (yyvsp[0].pnode));
@@ -3511,7 +3511,7 @@ yyreduce:
     break;
 
   case 190:
-#line 1609 "yacc.y" /* yacc.c:1646  */
+#line 1610 "yacc.y" /* yacc.c:1646  */
     {
 			NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CCONSTVAR_INT_CONST, (yyvsp[0].yystring));
 			(yyval.pnode) = p;
@@ -3520,7 +3520,7 @@ yyreduce:
     break;
 
   case 191:
-#line 1615 "yacc.y" /* yacc.c:1646  */
+#line 1616 "yacc.y" /* yacc.c:1646  */
     {
 			NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CCONSTVAR_CHAR_CONST, (yyvsp[0].yystring));
 			(yyval.pnode) = p;
@@ -3529,7 +3529,7 @@ yyreduce:
     break;
 
   case 192:
-#line 1621 "yacc.y" /* yacc.c:1646  */
+#line 1622 "yacc.y" /* yacc.c:1646  */
     {
 			NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CCONSTVAR_FLOAT_CONST, (yyvsp[0].yystring));
 			(yyval.pnode) = p;
@@ -3766,7 +3766,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 1627 "yacc.y" /* yacc.c:1906  */
+#line 1628 "yacc.y" /* yacc.c:1906  */
 
 
 

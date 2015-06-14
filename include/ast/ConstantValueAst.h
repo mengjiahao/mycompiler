@@ -6,8 +6,7 @@
 class ConstantValueAst : public NodeAst {
 
 	public:
-        ConstantValueAst(NodeAst::Nodetype nodetype_t);
-
+        ConstantValueAst(NodeAst::NodeType nodetype_t);
 };
 
 

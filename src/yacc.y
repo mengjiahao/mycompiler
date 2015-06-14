@@ -4,7 +4,7 @@
 #include <string>
 #include "../include/AstHead.h"
 
-using namespace std;
+/*using namespace std;*/
 
 extern "C"{
 int yyparse(void);
@@ -17,8 +17,9 @@ extern int yylineno;
 %}
 
 
+
 %union {
-   string yystring;
+   string* yystring;
    NodeAst* pnode;
 }
 
