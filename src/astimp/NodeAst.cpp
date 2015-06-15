@@ -8,7 +8,7 @@
 
 using namespace std;
 
-static const char *demoAstDotFilename = "demoAst.dot";
+static const char *s_demoAstDotFilename = "demoAst.dot";
 
 const int NodeAst::s_nodeTypeNo = 206;
 const char* NodeAst::s_nodeTypeString[] = {
@@ -589,7 +589,7 @@ void NodeAst::dotBfsNodeTree(NodeAst* root_t)
         return;
 
     ofstream ofs;
-    ofs.open(demoAstDotFilename);
+    ofs.open(s_demoAstDotFilename);
 
     queue<NodeAst *> nodeQueue;
     NodeAst *node = NULL;
