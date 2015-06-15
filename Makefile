@@ -79,7 +79,6 @@ debug: 		 	complier.out
 
 complier.out:  			lex.yy.c yacc.tab.c yacc.tab.h $(astimpobj)
 				$(cc) -o complier.out $(argu) $(addprefix ./src/,lex.yy.c yacc.tab.c)  $(addprefix ./output/, $(astimpobj)) -ll
-				rm ./src/yacc.tab.h ./src/yacc.tab.c ./src/lex.yy.c
 
 lex.yy.c: 		lex.l yacc.tab.h
 				flex ./src/lex.l
