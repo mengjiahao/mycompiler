@@ -1142,6 +1142,22 @@ assignment_expression
 		p->addChild3($1, $2, $3);
         	$$ = p;
 	}
+
+	| NEW_OP IDENTIFIER '(' ')'
+	{
+		NodeAst *p = new AssignExpAst(NodeAst::T_CASSIGNEXP_NEW_ID_VOID);
+		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CASSIGNEXP_NEW_ID_VOID, $2);
+		p->addChild1(t);
+        	$$ = p;
+	}
+
+	| DELETE_OP IDENTIFIER
+	{
+		NodeAst *p = new AssignExpAst(NodeAst::T_CASSIGNEXP_DELETE_ID);
+		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CASSIGNEXP_DELETE_ID, $2);
+		p->addChild1(t);
+        	$$ = p;
+	}
 	;
 
 assignment_operator
@@ -1438,22 +1454,6 @@ unary_expression
 	{
 		NodeAst *p = new UnaryExpAst(NodeAst::T_CUNARYEXP_DEC_OP_UNARYEXP);
 		p->addChild1($2);
-        	$$ = p;
-	}
-
-	| NEW_OP IDENTIFIER '(' ')'
-	{
-		NodeAst *p = new PostfixExpAst(NodeAst::T_CUNARYEXP_NEW_ID_VOID);
-		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CUNARYEXP_NEW_ID_VOID, $2);
-		p->addChild1(t);
-        	$$ = p;
-	}
-
-	| DELETE_OP IDENTIFIER
-	{
-		NodeAst *p = new PostfixExpAst(NodeAst::T_CUNARYEXP_DELETE_ID);
-		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CUNARYEXP_DELETE_ID, $2);
-		p->addChild1(t);
         	$$ = p;
 	}
 

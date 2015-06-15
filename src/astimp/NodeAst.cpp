@@ -49,8 +49,6 @@ const char* NodeAst::s_nodeTypeString[] = {
 "T_CUNARYEXP_POSTEXP",
 "T_CUNARYEXP_INC_OP_UNARAYEXP",
 "T_CUNARYEXP_DEC_OP_UNARYEXP",
-"T_CUNARYEXP_NEW_ID_VOID", "T_CTERMINATE_CUNARYEXP_NEW_ID_VOID",
-"T_CUNARYEXP_DELETE_ID", "T_CTERMINATE_CUNARYEXP_DELETE_ID",
 "T_CUNARYEXP_UNARY_OP_CASTEXP",
 "T_CUNARYEXP_SIZEOF_UNARAYEXP",
 
@@ -115,6 +113,8 @@ const char* NodeAst::s_nodeTypeString[] = {
 //assignment_expression
 "T_CASSIGNEXP_CONDITIONALEXP",
 "T_CASSIGNEXP_UNARYEXP_ASSIGN_OP_ASSIGNEXP",
+"T_CASSIGNEXP_NEW_ID_VOID", "T_CTERMINATE_CASSIGNEXP_NEW_ID_VOID",
+"T_CASSIGNEXP_DELETE_ID", "T_CTERMINATE_CASSIGNEXP_DELETE_ID",
 
 //expression
 "T_CEXP_ASSIGNEXP",
@@ -341,6 +341,7 @@ NodeAst::NodeAst()
     nodeId = -1;
     lineno = -1;
     childsNo = -1;
+    parent = NULL;
     nodeType = NodeAst::T_ERROR;
     setToken(s_nodeTypeString[NodeAst::T_ERROR]);
     printNodetype();
@@ -353,6 +354,7 @@ NodeAst::NodeAst()
 NodeAst::NodeAst(NodeAst::NodeType nodeType_t)
 {
     setNodeId();
+    setParent(NULL);
     setChildsNo(0);
     setNodeType(nodeType_t);
     setToken(s_nodeTypeString[nodeType_t]);
@@ -368,6 +370,7 @@ NodeAst::~NodeAst()
     nodeId = -1;
     lineno = -1;
     childsNo = -1;
+    parent = NULL;
     nodeType = NodeAst::T_ERROR;
 }
 
@@ -472,6 +475,15 @@ string NodeAst::getDotToken()
     return token;
 }
 
+void NodeAst::setParent(NodeAst* parent_t)
+{
+    parent = parent_t;
+}
+
+NodeAst* NodeAst::getParent()
+{
+    return parent;
+}
 
 
 int NodeAst::addChild1(NodeAst* child1_t)
@@ -481,6 +493,7 @@ int NodeAst::addChild1(NodeAst* child1_t)
     }
     childs.push_back(child1_t);
     setChildsNo(1);
+    child1_t->setParent(this);
     return 1;
 }
 
@@ -492,6 +505,8 @@ int NodeAst::addChild2(NodeAst* child1_t, NodeAst* child2_t)
     childs.push_back(child1_t);
     childs.push_back(child2_t);
     setChildsNo(2);
+    child1_t->setParent(this);
+    child2_t->setParent(this);
     return 2;
 }
 
@@ -504,6 +519,9 @@ int NodeAst::addChild3(NodeAst* child1_t, NodeAst* child2_t, NodeAst* child3_t)
     childs.push_back(child2_t);
     childs.push_back(child3_t);
     setChildsNo(3);
+    child1_t->setParent(this);
+    child2_t->setParent(this);
+    child3_t->setParent(this);
     return 3;
 
 }
@@ -519,6 +537,10 @@ int NodeAst::addChild4(NodeAst* child1_t, NodeAst* child2_t, NodeAst* child3_t, 
     childs.push_back(child3_t);
     childs.push_back(child4_t);
     setChildsNo(4);
+    child1_t->setParent(this);
+    child2_t->setParent(this);
+    child3_t->setParent(this);
+    child4_t->setParent(this);
     return 4;
 }
 
@@ -534,6 +556,11 @@ int NodeAst::addChild5(NodeAst* child1_t, NodeAst* child2_t, NodeAst* child3_t, 
     childs.push_back(child4_t);
     childs.push_back(child5_t);
     setChildsNo(5);
+    child1_t->setParent(this);
+    child2_t->setParent(this);
+    child3_t->setParent(this);
+    child4_t->setParent(this);
+    child5_t->setParent(this);
     return 5;
 }
 

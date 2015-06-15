@@ -49,8 +49,6 @@ class NodeAst {
 			T_CUNARYEXP_POSTEXP,
 			T_CUNARYEXP_INC_OP_UNARAYEXP,
 			T_CUNARYEXP_DEC_OP_UNARYEXP,
-			T_CUNARYEXP_NEW_ID_VOID, T_CTERMINATE_CUNARYEXP_NEW_ID_VOID,
-			T_CUNARYEXP_DELETE_ID, T_CTERMINATE_CUNARYEXP_DELETE_ID,
 			T_CUNARYEXP_UNARY_OP_CASTEXP,
 			T_CUNARYEXP_SIZEOF_UNARAYEXP,
 
@@ -115,6 +113,8 @@ class NodeAst {
 			//assignment_expression
 			T_CASSIGNEXP_CONDITIONALEXP,
 			T_CASSIGNEXP_UNARYEXP_ASSIGN_OP_ASSIGNEXP,
+			T_CASSIGNEXP_NEW_ID_VOID, T_CTERMINATE_CASSIGNEXP_NEW_ID_VOID,
+			T_CASSIGNEXP_DELETE_ID, T_CTERMINATE_CASSIGNEXP_DELETE_ID,
 
 			//expression
 			T_CEXP_ASSIGNEXP,
@@ -334,6 +334,7 @@ class NodeAst {
 		int nodeId;
 		int lineno;
 		int childsNo;
+		NodeAst *parent;
 		vector<NodeAst *> childs;
 		NodeType nodeType;
 		string token;
@@ -369,6 +370,9 @@ class NodeAst {
 		virtual void setToken(string token_t);
 		virtual string getToken();
 		virtual string getDotToken();
+
+		virtual void setParent(NodeAst *parent_t);
+		virtual NodeAst *getParent();
 
 		virtual int addChild1(NodeAst *child1_t);
 		virtual int addChild2(NodeAst *child1_t, NodeAst *child2_t);
