@@ -13,7 +13,7 @@ COMMENTS                {COMMENTS1}|{COMMENTS2}
 #include <cstdio>
 #include <cstring>
 #include "../include/AstHead.h"
-#include "y.tab.h"
+#include "yacc.tab.h"
 #include <string>
 
 using namespace std;

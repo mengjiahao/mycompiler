@@ -30,8 +30,8 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
-#ifndef YY_YY_Y_TAB_H_INCLUDED
-# define YY_YY_Y_TAB_H_INCLUDED
+#ifndef YY_YY_YACC_TAB_H_INCLUDED
+# define YY_YY_YACC_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -113,85 +113,18 @@ extern int yydebug;
     LOWER_THAN_ELSE = 323
   };
 #endif
-/* Tokens.  */
-#define IDENTIFIER 258
-#define CONSTANT 259
-#define INTEGER_CONSTANT 260
-#define CHARACTER_CONSTANT 261
-#define FLOATING_CONSTANT 262
-#define STRING_LITERAL 263
-#define SIZEOF 264
-#define PTR_OP 265
-#define INC_OP 266
-#define DEC_OP 267
-#define LEFT_OP 268
-#define RIGHT_OP 269
-#define LE_OP 270
-#define GE_OP 271
-#define EQ_OP 272
-#define NE_OP 273
-#define NEW_OP 274
-#define DELETE_OP 275
-#define AND_OP 276
-#define OR_OP 277
-#define MUL_ASSIGN 278
-#define DIV_ASSIGN 279
-#define MOD_ASSIGN 280
-#define ADD_ASSIGN 281
-#define SUB_ASSIGN 282
-#define LEFT_ASSIGN 283
-#define RIGHT_ASSIGN 284
-#define AND_ASSIGN 285
-#define XOR_ASSIGN 286
-#define OR_ASSIGN 287
-#define TYPE_NAME 288
-#define TYPEDEF 289
-#define EXTERN 290
-#define STATIC 291
-#define AUTO 292
-#define REGISTER 293
-#define CHAR 294
-#define SHORT 295
-#define INT 296
-#define LONG 297
-#define SIGNED 298
-#define UNSIGNED 299
-#define FLOAT 300
-#define DOUBLE 301
-#define CONST 302
-#define VOLATILE 303
-#define VOID 304
-#define VIRTUAL 305
-#define STRUCT 306
-#define UNION 307
-#define CLASS 308
-#define ENUM 309
-#define ELLIPSIS 310
-#define CASE 311
-#define DEFAULT 312
-#define IF 313
-#define ELSE 314
-#define SWITCH 315
-#define WHILE 316
-#define DO 317
-#define FOR 318
-#define GOTO 319
-#define CONTINUE 320
-#define BREAK 321
-#define RETURN 322
-#define LOWER_THAN_ELSE 323
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 21 "yacc.y" /* yacc.c:1909  */
+#line 21 "./src/yacc.y" /* yacc.c:1909  */
 
    string* yystring;
    NodeAst* pnode;
 
-#line 195 "y.tab.h" /* yacc.c:1909  */
+#line 128 "yacc.tab.h" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
@@ -202,4 +135,4 @@ extern YYSTYPE yylval;
 
 int yyparse (void);
 
-#endif /* !YY_YY_Y_TAB_H_INCLUDED  */
+#endif /* !YY_YY_YACC_TAB_H_INCLUDED  */
