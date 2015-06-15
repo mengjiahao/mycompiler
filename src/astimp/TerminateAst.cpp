@@ -15,6 +15,12 @@ TerminateAst::TerminateAst(NodeAst::NodeType nodeType_t, const char* token_t) : 
     token = string(token_t);
 }
 
+string TerminateAst::getDotToken()
+{
+    return token + " : " + s_nodeTypeString[nodeType];
+}
+
+
 
 TerminateAst::~TerminateAst()
 {

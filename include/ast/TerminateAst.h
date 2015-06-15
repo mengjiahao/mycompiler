@@ -13,6 +13,7 @@ class TerminateAst : public NodeAst{
 	public:
 		TerminateAst(NodeAst::NodeType nodeType_t, string *token_t);
 		TerminateAst(NodeAst::NodeType nodeType_t, const char *token_t);
+		virtual string getDotToken();
 		virtual ~TerminateAst();
 
 };

@@ -23,6 +23,7 @@ int main() {
     int x, y;
     
     class B cb = new B();
+    char z[2] = {'a', 'b'};
     
     
     x = 1;

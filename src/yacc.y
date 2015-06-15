@@ -1441,6 +1441,22 @@ unary_expression
         	$$ = p;
 	}
 
+	| NEW_OP IDENTIFIER '(' ')'
+	{
+		NodeAst *p = new PostfixExpAst(NodeAst::T_CUNARYEXP_NEW_ID_VOID);
+		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CUNARYEXP_NEW_ID_VOID, $2);
+		p->addChild1(t);
+        	$$ = p;
+	}
+
+	| DELETE_OP IDENTIFIER
+	{
+		NodeAst *p = new PostfixExpAst(NodeAst::T_CUNARYEXP_DELETE_ID);
+		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CUNARYEXP_DELETE_ID, $2);
+		p->addChild1(t);
+        	$$ = p;
+	}
+
 	| unary_operator cast_expression
 	{
 		NodeAst *p = new UnaryExpAst(NodeAst::T_CUNARYEXP_UNARY_OP_CASTEXP);
@@ -1539,22 +1555,6 @@ postfix_expression
 	{
 		NodeAst *p = new PostfixExpAst(NodeAst::T_CPOSTEXP_POSTEXP_DEC_OP);
 		p->addChild1($1);
-        	$$ = p;
-	}
-
-	| NEW_OP IDENTIFIER '(' ')'
-	{
-		NodeAst *p = new PostfixExpAst(NodeAst::T_CPOSTEXP_NEW_ID_VOID);
-		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CPOSTEXP_NEW_ID_VOID, $2);
-		p->addChild1(t);
-        	$$ = p;
-	}
-
-	| DELETE_OP IDENTIFIER
-	{
-		NodeAst *p = new PostfixExpAst(NodeAst::T_CPOSTEXP_DELETE_ID);
-		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CPOSTEXP_DELETE_ID, $2);
-		p->addChild1(t);
         	$$ = p;
 	}
 	;

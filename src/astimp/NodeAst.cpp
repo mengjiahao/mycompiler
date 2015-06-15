@@ -36,8 +36,6 @@ const char* NodeAst::s_nodeTypeString[] = {
 "T_CPOSTEXP_POSTEXP_PTR_ID", "T_CTERMINATE_CPOSTEXP_POSTEXP_PTR_ID",
 "T_CPOSTEXP_POSTEXP_INC_OP",
 "T_CPOSTEXP_POSTEXP_DEC_OP",
-"T_CPOSTEXP_NEW_ID_VOID", "T_CTERMINATE_CPOSTEXP_NEW_ID_VOID",
-"T_CPOSTEXP_DELETE_ID", "T_CTERMINATE_CPOSTEXP_DELETE_ID",
 
 //unary_operator
 "T_CTERMINATE_CUNARY_OP_AND_OP",
@@ -51,6 +49,8 @@ const char* NodeAst::s_nodeTypeString[] = {
 "T_CUNARYEXP_POSTEXP",
 "T_CUNARYEXP_INC_OP_UNARAYEXP",
 "T_CUNARYEXP_DEC_OP_UNARYEXP",
+"T_CUNARYEXP_NEW_ID_VOID", "T_CTERMINATE_CUNARYEXP_NEW_ID_VOID",
+"T_CUNARYEXP_DELETE_ID", "T_CTERMINATE_CUNARYEXP_DELETE_ID",
 "T_CUNARYEXP_UNARY_OP_CASTEXP",
 "T_CUNARYEXP_SIZEOF_UNARAYEXP",
 
@@ -437,7 +437,7 @@ NodeAst::NodeType NodeAst::getNodeType()
 
 void NodeAst::printNodetype()
 {
-    cout << token << endl;
+    cout << s_nodeTypeString[nodeType] << endl;
 }
 
 void NodeAst::printNodeTree(NodeAst* root, int depth)
@@ -466,6 +466,12 @@ string NodeAst::getToken()
 {
     return token;
 }
+
+string NodeAst::getDotToken()
+{
+    return token;
+}
+
 
 
 int NodeAst::addChild1(NodeAst* child1_t)
@@ -572,7 +578,8 @@ void NodeAst::dotBfsNodeTree(NodeAst* root_t)
         node = nodeQueue.front();
         nodeQueue.pop();
 
-        s1 = node->getToken();
+        //print token in the dot
+        s1 = node->getDotToken();
 
         if (NodeAst::T_CTERMINATE_CPRIMEXP_STR == node->nodeType) {
            s1.replace(s1.length()-1, 1, "\\\"");
