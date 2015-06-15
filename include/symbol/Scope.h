@@ -16,7 +16,6 @@ public:
     int level;
     int startOffset;
     int symbolNo;
-    int totalByteSize;
 
     Scope *parent;
     Scope *superClass;
