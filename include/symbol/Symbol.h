@@ -4,7 +4,7 @@
 class Symbol {
 public:
 
-    enum SymbolType {SYM_C};
+    //enum SymbolType {SYM_C};
 
     int symbolId;
     string symbolName;

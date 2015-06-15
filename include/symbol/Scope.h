@@ -32,7 +32,7 @@ public:
     Scope* encloseScope();
     Scope* getParentScope();
     Scope* getSuperClassScope();
-    void defineSymbol(Symbol *Symbol_t);
+    //void defineSymbol(Symbol *Symbol_t);
     void searchSymbol(string symbolName_t);
 
 
