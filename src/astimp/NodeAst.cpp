@@ -13,6 +13,10 @@ static const char *s_demoAstDotFilename = "demoAst.dot";
 const int NodeAst::s_nodeTypeNo = 206;
 const char* NodeAst::s_nodeTypeString[] = {
 
+//invalid
+"T_INVALID",
+
+//const_value
 "T_CTERMINATE_CCONSTVAR_INT_CONST",
 "T_CTERMINATE_CCONSTVAR_CHAR_CONST",
 "T_CTERMINATE_CCONSTVAR_FLOAT_CONST",
@@ -325,10 +329,10 @@ const char* NodeAst::s_nodeTypeString[] = {
 "T_CTRANSUNIT_TRANSUNIT_EXTDECTION",
 
 //program_start
-"T_CPROGRAMSTART_TRANSUNIT",
+"T_CPROGRAMSTART_TRANSUNIT"
 
 //OTHERS
-"T_ERROR"
+
 
 };
 LogiMsg* NodeAst::s_logiMsg = NULL;
@@ -342,8 +346,8 @@ NodeAst::NodeAst()
     lineno = -1;
     childsNo = -1;
     parent = NULL;
-    nodeType = NodeAst::T_ERROR;
-    setToken(s_nodeTypeString[NodeAst::T_ERROR]);
+    nodeType = NodeAst::T_INVALID;
+    setToken(s_nodeTypeString[NodeAst::T_INVALID]);
     printNodetype();
 
     addToNodeList(this);
@@ -354,9 +358,9 @@ NodeAst::NodeAst()
 NodeAst::NodeAst(NodeAst::NodeType nodeType_t)
 {
     setNodeId();
-    setParent(NULL);
-    setChildsNo(0);
-    setNodeType(nodeType_t);
+    parent = NULL;
+    childsNo = 0;
+    nodeType = nodeType_t;
     setToken(s_nodeTypeString[nodeType_t]);
 
     //printNodetype();
@@ -371,7 +375,7 @@ NodeAst::~NodeAst()
     lineno = -1;
     childsNo = -1;
     parent = NULL;
-    nodeType = NodeAst::T_ERROR;
+    nodeType = NodeAst::T_INVALID;
 }
 
 void NodeAst::addToNodeList(NodeAst* node_t)
@@ -453,7 +457,7 @@ void NodeAst::printNodeTree(NodeAst* root, int depth)
         cout << ' ';
     }
     cout << "|_";
-    root->printNodetype();
+    cout << root->getDotToken() << endl;
 
     for(i = 0; i < root->childsNo; ++i) {
         printNodeTree(root->childs.at(i), depth + 1);

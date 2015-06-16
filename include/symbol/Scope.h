@@ -11,7 +11,7 @@ class Context;
 class Scope {
 
 public:
-    enum ScopeType {SCOPE_INVALIDE, SCOPE_GLOBAL, SCOPE_CLASS,
+    enum ScopeType {SCOPE_INVALID, SCOPE_GLOBAL, SCOPE_CLASS,
     SCOPE_GLOBALFUNC, SCOPE_CLASSFUNC, SCOPE_LOCAL};
 
     int scopeId;
@@ -27,6 +27,8 @@ public:
     list<Scope *> childs;
     map<string, Symbol *> symbolVarMap;
     list<Symbol *> symbolSeqList;
+
+    static Scope *curScope;
 
     static map<string, Symbol *> s_labelMap;
     static map<string, Symbol *> s_constMap;

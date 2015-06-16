@@ -12,6 +12,9 @@ class NodeAst {
 	public:
 
 		enum NodeType {
+			//invalid
+			T_INVALID,
+
 		    //const_value
 			T_CTERMINATE_CCONSTVAR_INT_CONST,
 			T_CTERMINATE_CCONSTVAR_CHAR_CONST,
@@ -325,10 +328,10 @@ class NodeAst {
 			T_CTRANSUNIT_TRANSUNIT_EXTDECTION,
 
 			//program_start
-			T_CPROGRAMSTART_TRANSUNIT,
+			T_CPROGRAMSTART_TRANSUNIT
 
 			//OTHERS
-			T_ERROR
+
 		};
 
 		int nodeId;
