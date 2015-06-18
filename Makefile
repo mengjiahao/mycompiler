@@ -89,7 +89,7 @@ yacc.tab.c yacc.tab.h: 	yacc.y
 				mv yacc.tab.c yacc.tab.h ./src
 				rm yacc.output
 
-$(astimpobj):%.o:%.cpp
+$(astimpobj):%.o:%.cpp %.h
 				$(cc) -c $(argu) $(addprefix $(astdir), $<) -o $@
 				mv $@ ./output
 

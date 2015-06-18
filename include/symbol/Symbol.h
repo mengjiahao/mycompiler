@@ -2,78 +2,69 @@
 #define INCLUDE_SYMBOL_H
 
 #include <vector>
-
-class Symbol {
-
+#include <string>
+#include <map>
+using namespace std;
+class Symbol{    //最基本的类,所有的符号和作用域都需要继承这个类
 public:
+	Symbol(string name);
+	string getName();	
+private:
+	string name;
+}
 
-    enum SymbolType {SYMBOL_INVALID, SYMBOL_INTEGER_CONSTANT, SYMBOL_CHARACTER_CONSTANT,
-    SYMBOL_FLOATING_CONSTANT, SYMBOL_STRING_LITERAL, SYMBOL_TEMPVAR, SYMBOL_LABEL,
-    SYMBOL_VAR, SYMBOL_CONSTANTVAR, SYMBOL_CLASSDECL, SYMBOL_FUNCDECL, SYMBOL_LABELDECL};
-
-    enum StorageType {STOR_INVALID = 0, STOR_EXTERN = 1, STOR_STATIC = 2,
-    STOR_AUTO = 4, STOR_REGISTER = 8};
-
-    enum TypeSfType {SF_INVALID = 0, SF_VOID = 1, SF_CHAR = 2, SF_SHORT = 4, SF_INT = 8,
-    SF_LONG = 16, SF_FLOAT = 32, SF_DOUBLE = 64, SF_SIGNED = 128, SF_UNSIGNED = 256};
-
-    enum TypeQfType {QF_INVALID = 0, QF_CONST = 1, QF_VOLATILE = 2, QF_VIRTUAL = 4};
-
-    unsigned long symbolId;
-    vector<string> symbolValue;
-    SymbolType symbolType;
-
-    int storageType;
-    int typeSfType;
-    int typeQfType;
-
-    int offset;
-    int byteSize;
-
-    bool isArray;
-    vector<int> dimensions;
-
+class Scope{   //作用域类,所有的作用域都需继承这个类
 public:
+	static Scope *head;            //指向作用域树的头
+	static Scope *currentScope;   //指向当前作用域
+	Symbol **resolve(string name);          //在当前及上层作用域中按名查找
+	void def(Symbol * name);              //在当前域中定义符号
+	Scope *getUpScop();          //得到上一层作用域
+	void push(Scope *name);     //向下移动作用域
+	void pop();              //向上移动作用域
 
-    Symbol();
-    virtual ~Symbol();
+private:
+	map<string, Symbol **> dataDic;      //数据字典,存放当前作用域中的符号,为了方便修改所以为**
+	Scope *upScop;       //上一个作用域
 
-    virtual void initSymbol(Symbol::SymbolType symbolType_t);
+}
 
-    virtual void clearSymbol();
+class Type:public Symbol{    //内置类以及用户定义类需要继承该类
 
-    virtual void setSymbolId();
-    virtual unsigned long getSymbolId();
 
-    virtual void addSymbolValue(string symbolValue_t);
-    virtual string getSymbolValue();
-    virtual vector<string> getSymbolArrayValue();
+}
 
-    virtual void setSymbolType(Symbol::SymbolType symbolType_t);
-    virtual Symbol::SymbolType getSymbolType();
+class MethodDeclare:public Symbol{  //遇到函数声明时使用,不能算作scope
+private:
+	vector<Type *> argu;    //参数列表
+} 
 
-    virtual void setStorageType(Symbol::StorageType storageType_t);
-    virtual int getStorageType();
+class MethodScop:public MethodDeclare, public Scope {   //遇到函数定义时使用
 
-    virtual void setTypeSfType(Symbol::TypeSfType typeSfType_t);
-    virtual int getTypeSfType();
+}
 
-    virtual void setTypeQfType(Symbol::TypeQfType typeQfType_t);
-    virtual int getTypeQfType();
+class ClassDeclare:public Type{   //遇到类的声明时用
 
-    virtual void setOffset(int offset_t);
-    virtual int getOffset();
+}
 
-    virtual void setByteSize(int byteSize_t);
-    virtual int getByteSize();
+class ClassScop:public ClassDeclare public Scope {   //遇到类的定义时用
+public:
+	Symbol **resolveMember(string name);   //只在继承链中解析,不在外围作用域中解析,用于解析成员变量
+private:
+	ClassScop *upClass;   //指向父类
 
-    virtual void setIsArray(bool isArray_t);
-    virtual bool getIsArray();
+}
 
-    virtual void setDimension(int dim_t);
-    virtual vector<int> getDimension();
+class VariableSymbol: public Symbol{   //变量
+private:
+	Type * varType;    //变量类型
+}
 
-};
+class BuiltInType: public Type{ //内置类型
+	
+}
+
+//int 等数据类型全部继承BuiltInType
 
 
 #endif

@@ -1,3 +1,4 @@
 -I ./include/
 -I ./include/ast/
+-I ./include/symbol/
 
