@@ -8,6 +8,39 @@
 
 using namespace std;
 
+list<LexNodeAst *> LexNodeAst::s_lexNodeList;
+
+LexNodeAst::LexNodeAst(char *token_t, int lineno_t) : token(token_t), lineno(lineno_t) {
+		s_lexNodeList.push_back(this);
+}
+
+string LexNodeAst::getToken()
+{
+    return token;
+}
+
+int LexNodeAst::getLineno()
+{
+    return lineno;
+}
+
+void LexNodeAst::freeLexNodeList()
+{
+    list<LexNodeAst *>::iterator itr;
+    int i;
+    for (i = 0, itr = s_lexNodeList.begin(); itr != s_lexNodeList.end(); ++itr) {
+        delete (*itr);
+        ++i;
+    }
+
+    cout << "LexNodeListNum is " << i << endl;
+
+    s_lexNodeList.clear();
+}
+
+
+
+
 static const char *s_demoAstDotFilename = "demoAst.dot";
 
 const int NodeAst::s_nodeTypeNo = 206;
@@ -400,7 +433,6 @@ void NodeAst::freeNodeList()
 }
 
 
-
 void NodeAst::setNodeId()
 {
     static int s_nodeId = -1;
@@ -464,7 +496,7 @@ void NodeAst::printNodeTree(NodeAst* root, int depth)
     }
 }
 
-void NodeAst::setToken(string token_t)
+void NodeAst::setToken(const string token_t)
 {
     token = token_t;
 }

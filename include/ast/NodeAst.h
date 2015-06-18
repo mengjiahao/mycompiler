@@ -8,6 +8,21 @@
 
 using namespace std;
 
+class LexNodeAst {
+public:
+	string token;
+	int lineno;
+	static list<LexNodeAst *> s_lexNodeList;
+
+public:
+	LexNodeAst(char *token_t, int lineno_t);
+
+	string getToken();
+	int getLineno();
+
+	static void freeLexNodeList();
+};
+
 class NodeAst {
 	public:
 
@@ -370,7 +385,7 @@ class NodeAst {
 		virtual void printNodetype();
 		static void printNodeTree(NodeAst *root, int depth);
 
-		virtual void setToken(string token_t);
+		virtual void setToken(const string token_t);
 		virtual string getToken();
 		virtual string getDotToken();
 

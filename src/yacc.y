@@ -19,7 +19,7 @@ extern int yylineno;
 
 
 %union {
-   string* yystring;
+   LexNodeAst* yystring;
    NodeAst* pnode;
 }
 
@@ -132,6 +132,7 @@ program_start
         { /*global scope*/
 		NodeAst *p = new ProgramStartAst(NodeAst::T_CPROGRAMSTART_TRANSUNIT);
 		p->addChild1($1);
+		p->setLineno($1->getLineno());
 		$$ = p;
         }
         ;
@@ -146,6 +147,7 @@ translation_unit
 	{
 		NodeAst *p = new TranslationUnitAst(NodeAst::T_CTRANSUNIT_TRANSUNIT_EXTDECTION);
 		p->addChild2($1, $2);
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 	;
@@ -158,6 +160,7 @@ external_declaration
 	{ /*global scope func*/
 		NodeAst *p = new ExtDectionAst(NodeAst::T_CEXTDECTION_FUNCDEF);
 		p->addChild1($1);
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 
@@ -165,6 +168,7 @@ external_declaration
 	{ /*global scope var*/
 		NodeAst *p = new ExtDectionAst(NodeAst::T_CEXTDECTION_DECTION);
 		p->addChild1($1);
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 	;
@@ -174,6 +178,7 @@ function_definition
 	{ /*func scope*/
 		NodeAst *p = new FuncDefAst(NodeAst::T_CFUNCDEF_DECTIONSFS_DECTOR_COMPSTM);
 		p->addChild3($1, $2, $3);
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 	;
@@ -183,6 +188,7 @@ declaration
 	{
 		NodeAst *p = new DectionAst(NodeAst::T_CDECTION_DECTIONSFS);
 		p->addChild1($1);
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 
@@ -190,6 +196,7 @@ declaration
 	{
 		NodeAst *p = new DectionAst(NodeAst::T_CDECTION_DECTIONSFS_INITDECTORLIST);
 		p->addChild2($1, $2);
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 	;
@@ -204,6 +211,7 @@ declaration_list
 	{
 		NodeAst *p = new DectionListAst(NodeAst::T_CDECTIONLIST_DECTIONLIST_DECTION);
 		p->addChild2($1, $2);
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 	;
@@ -220,6 +228,7 @@ declaration_specifiers
 	{
 		NodeAst *p = new DectionSpecifiersAst(NodeAst::T_CDECTIONSF_STORCLASSSF_DECTIONSFS);
 		p->addChild2($1, $2);
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 
@@ -232,6 +241,7 @@ declaration_specifiers
 	{
 		NodeAst *p = new DectionSpecifiersAst(NodeAst::T_CDECTIONSF_TYPESF_DECTIONSFS);
 		p->addChild2($1, $2);
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 
@@ -244,6 +254,7 @@ declaration_specifiers
 	{
 		NodeAst *p = new DectionSpecifiersAst(NodeAst::T_CDECTIONSF_TYPEQF_DECTIONSFS);
 		p->addChild2($1, $2);
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 	;
@@ -251,31 +262,36 @@ declaration_specifiers
 storage_class_specifier
 	: TYPEDEF
 	{
-		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CSTORCLASSSF_TYPEDEF, $1);
+		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CSTORCLASSSF_TYPEDEF, $1->getToken());
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 
 	| EXTERN
 	{
-	    NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CSTORCLASSSF_EXTERN, $1);
+	    NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CSTORCLASSSF_EXTERN, $1->getToken());
+	    p->setLineno($1->getLineno());
 		$$ = p;
 	}
 
 	| STATIC
 	{
-	    NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CSTORCLASSSF_STATIC, $1);
+	    NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CSTORCLASSSF_STATIC, $1->getToken());
+	    p->setLineno($1->getLineno());
 		$$ = p;
 	}
 
 	| AUTO
 	{
-	    NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CSTORCLASSSF_AUTO, $1);
+	    NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CSTORCLASSSF_AUTO, $1->getToken());
+	    p->setLineno($1->getLineno());
 		$$ = p;
 	}
 
 	| REGISTER
 	{
-		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CSTORCLASSSF_REGISITER, $1);
+		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CSTORCLASSSF_REGISITER, $1->getToken());
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 	;
@@ -283,55 +299,64 @@ storage_class_specifier
 type_specifier
 	: VOID
 	{
-		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPESF_VOID, $1);
+		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPESF_VOID, $1->getToken());
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 
 	| CHAR
 	{
-		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPESF_CHAR, $1);
+		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPESF_CHAR, $1->getToken());
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 
 	| SHORT
 	{
-		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPESF_SHORT, $1);
+		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPESF_SHORT, $1->getToken());
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 
 	| INT
 	{
-		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPESF_INT, $1);
+		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPESF_INT, $1->getToken());
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 
 	| LONG
 	{
-		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPESF_LONG, $1);
+		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPESF_LONG, $1->getToken());
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 
 	| FLOAT
 	{
-		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPESF_FLOAT, $1);
+		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPESF_FLOAT, $1->getToken());
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 
 	| DOUBLE
 	{
-		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPESF_DOUBLE, $1);
+		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPESF_DOUBLE, $1->getToken());
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 
 	| SIGNED
 	{
-		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPESF_SIGNED, $1);
+		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPESF_SIGNED, $1->getToken());
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 
 	| UNSIGNED
 	{
-		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPESF_UNSIGNED, $1);
+		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPESF_UNSIGNED, $1->getToken());
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 
@@ -349,19 +374,22 @@ type_specifier
 type_qualifier
 	: CONST
 	{
-		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPEQF_CONST, $1);
+		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPEQF_CONST, $1->getToken());
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 
 	| VOLATILE
 	{
-		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPEQF_VOLATILE, $1);
+		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPEQF_VOLATILE, $1->getToken());
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 
 	| VIRTUAL
 	{
-		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPEQF_VIRTUAL, $1);
+		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CTYPEQF_VIRTUAL, $1->getToken());
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 	;
@@ -376,6 +404,7 @@ init_declarator_list
 	{
 		NodeAst *p = new InitDectorListAst(NodeAst::T_CINITDECTORLIST_INITDECTORLIST_INITDECTOR);
 		p->addChild2($1, $3);
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 	;
@@ -385,6 +414,7 @@ init_declarator
 	{
 		NodeAst *p = new InitDectorAst(NodeAst::T_CINITDECTOR_DECTOR);
 		p->addChild1($1);
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 
@@ -392,6 +422,7 @@ init_declarator
 	{
 		NodeAst *p = new InitDectorAst(NodeAst::T_CINITDECTOR_ASSGIN_INITZER);
 		p->addChild2($1, $3);
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 	;
@@ -401,6 +432,7 @@ specifier_qualifier_list
 	{
 		NodeAst *p = new SpeciQualiFierListAst(NodeAst::T_CSQFLIST_TYPESF_SQFLIST);
 		p->addChild2($1, $2);
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 
@@ -413,6 +445,7 @@ specifier_qualifier_list
 	{
 		NodeAst *p = new SpeciQualiFierListAst(NodeAst::T_CSQFLIST_TYPEQF_SQFLIST);
 		p->addChild2($1, $2);
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 
@@ -509,7 +542,7 @@ class_specifier
 	: CLASS IDENTIFIER '{' class_declaration_list '}'
 	{ /*class scope def*/
 		NodeAst *p = new ClassSpecifierAst(NodeAst::T_CCLASSSF_CLASS_ID_CLASSDECTIONLIST);
-		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CCLASSSF_CLASS_ID_CLASSDECTIONLIST, $2);
+		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CCLASSSF_CLASS_ID_CLASSDECTIONLIST, $2->getToken());
 		p->addChild2(t, $4);
 		$$ = p;
 	}
@@ -517,16 +550,18 @@ class_specifier
 	| CLASS IDENTIFIER ':' identifier_list '{' class_declaration_list '}'
 	{ //class scope def
 		NodeAst *p = new ClassSpecifierAst(NodeAst::T_CCLASSSF_CLASS_ID_IDLIST_CLASSDECTIONLIST);
-		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CCLASSSF_CLASS_ID_IDLIST_CLASSDECTIONLIST, $2);
+		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CCLASSSF_CLASS_ID_IDLIST_CLASSDECTIONLIST, $2->getToken());
 		p->addChild3(t, $4, $6);
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 
 	| CLASS IDENTIFIER
 	{ /*class declaration*/
 		NodeAst *p = new ClassSpecifierAst(NodeAst::T_CCLASSSF_CLASS_ID);
-		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CCLASSSF_CLASS_ID, $2);
+		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CCLASSSF_CLASS_ID, $2->getToken());
 		p->addChild1(t);
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 	;
@@ -541,6 +576,7 @@ class_declaration_list
 	{
 		NodeAst *p = new ClassDectionListAst(NodeAst::T_CCLASSDECTIONLIST_CLASSDECTIONLIST_CLASSDECTION);
 		p->addChild2($1, $2);
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 	;
@@ -550,6 +586,7 @@ class_declaration
 	{
 		NodeAst *p = new ClassDectionAst(NodeAst::T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST);
 		p->addChild2($1, $2);
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 
@@ -557,6 +594,7 @@ class_declaration
 	{
 		NodeAst *p = new ClassDectionAst(NodeAst::T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST_COMPSTM);
 		p->addChild3($1, $2, $3);
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 
@@ -564,6 +602,7 @@ class_declaration
 	{ /*this func can be the Constructor or Destructor*/
 		NodeAst *p = new ClassDectionAst(NodeAst::T_CCLASSDECTION_CLASSDECTORLIST_COMPSTM);
 		p->addChild2($1, $2);
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 	;
@@ -578,6 +617,7 @@ class_declarator_list
 	{
 		NodeAst *p = new ClassDectorListAst(NodeAst::T_CCLASSDECTORLIST_CLASSDECTORLIST_CLASSDECTOR);
 		p->addChild2($1, $3);
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 	;
@@ -587,6 +627,7 @@ class_declarator
 	{
 		NodeAst *p = new ClassDectorAst(NodeAst::T_CCLASSDECTOR_DECTOR);
 		p->addChild1($1);
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 	;
@@ -642,6 +683,7 @@ declarator
 	{
 		NodeAst *p = new DectorAst(NodeAst::T_CDECTOR_POINTER_DIRDECTOR);
 		p->addChild2($1, $2);
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 
@@ -655,8 +697,9 @@ direct_declarator
 	: IDENTIFIER
 	{
 		NodeAst *p = new DirDectorAst(NodeAst::T_CDIRDECTOR_ID);
-		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CDIRDECTOR_ID, $1);
+		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CDIRDECTOR_ID, $1->getToken());
 		p->addChild1(t);
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 
@@ -669,6 +712,7 @@ direct_declarator
 	{
 		NodeAst *p = new DirDectorAst(NodeAst::T_CDIRDECTOR_DIRDECTOR_ARRAY_CONSTEXP);
 		p->addChild2($1, $3);
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 
@@ -676,6 +720,7 @@ direct_declarator
 	{
 		NodeAst *p = new DirDectorAst(NodeAst::T_CDIRDECTOR_DIRDECTOR_ARRAY_VOID);
 		p->addChild1($1);
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 
@@ -683,6 +728,7 @@ direct_declarator
 	{
 		NodeAst *p = new DirDectorAst(NodeAst::T_CDIRDECTOR_DIRDECTOR_CALL_PARAMTYPELIST);
 		p->addChild2($1, $3);
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 
@@ -690,6 +736,7 @@ direct_declarator
 	{
 		NodeAst *p = new DirDectorAst(NodeAst::T_CDIRDECTOR_DIRDECTOR_CALL_EXP);
 		p->addChild2($1, $3);
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 
@@ -697,6 +744,7 @@ direct_declarator
 	{
 		NodeAst *p = new DirDectorAst(NodeAst::T_CDIRDECTOR_DIRDECTOR_CALL_VOID);
 		p->addChild1($1);
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 	;
@@ -735,6 +783,7 @@ type_qualifier_list
 	{
 		NodeAst *p = new TypeQualifierListAst(NodeAst::T_CTYPEQFLIST_TYPEQFLIST_TYPEQF);
 		p->addChild2($1, $2);
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 	;
@@ -763,6 +812,7 @@ parameter_list
 	{
 		NodeAst *p = new ParamTypeListAst(NodeAst::T_CPARAMLIST_PARAMLIST_PARAMDECTION);
 		p->addChild2($1, $3);
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 	;
@@ -772,6 +822,7 @@ parameter_declaration
 	{ /*this declaration may exist in func def*/
 		NodeAst *p = new ParamDectionAst(NodeAst::T_CPARAMDECTION_DECTIONSFS_DECTOR);
 		p->addChild2($1, $2);
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 
@@ -784,6 +835,7 @@ parameter_declaration
 	{
 		NodeAst *p = new ParamDectionAst(NodeAst::T_CPARAMDECTION_DECTIONSFS);
 		p->addChild1($1);
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 	;
@@ -793,15 +845,17 @@ parameter_declaration
 identifier_list
 	: IDENTIFIER
 	{
-		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CIDLIST_ID, $1);
+		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CIDLIST_ID, $1->getToken());
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 
 	| identifier_list ',' IDENTIFIER
 	{
 		NodeAst *p = new IdentifierListAst(NodeAst::T_CIDLIST_IDLIST_ID);
-		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CIDLIST_IDLIST_ID, $3);
+		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CIDLIST_IDLIST_ID, $3->getToken());
 		p->addChild2($1, t);
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 	;
@@ -811,6 +865,7 @@ initializer
 	{
 		NodeAst *p = new InitzerAst(NodeAst::T_CINITZER_ASSIGNEXP);
 		p->addChild1($1);
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 
@@ -818,6 +873,7 @@ initializer
 	{ /*init value*/
 		NodeAst *p = new InitzerAst(NodeAst::T_CINITZER_CINITZERLIST);
 		p->addChild1($2);
+		p->setLineno($2->getLineno());
 		$$ = p;
 	}
 	;
@@ -832,6 +888,7 @@ initializer_list
 	{
 		NodeAst *p = new InitzerListAst(NodeAst::T_CINITZERLIST_INITZERLIST_INITZER);
 		p->addChild2($1, $3);
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 	;
@@ -953,23 +1010,26 @@ labeled_statement
 	: IDENTIFIER ':' statement
 	{
 		NodeAst *p = new LabeledStmAst(NodeAst::T_CLABSTM_ID_STM);
-		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CLABSTM_ID_STM, $1);
-        	p->addChild2(t, $3);
-        	$$ = p;
+		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CLABSTM_ID_STM, $1->getToken());
+		p->addChild2(t, $3);
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 
 	| CASE constant_expression ':' statement
 	{
 		NodeAst *p = new LabeledStmAst(NodeAst::T_CLABSTM_CASE_CONSTEXP_STM);
-        	p->addChild2($2, $4);
-        	$$ = p;
+		p->addChild2($2, $4);
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 
 	| DEFAULT ':' statement
 	{
 		NodeAst *p = new LabeledStmAst(NodeAst::T_CLABSTM_DEFAULT_STM);
-        	p->addChild1($3);
-        	$$ = p;
+		p->addChild1($3);
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 	;
 
@@ -977,13 +1037,14 @@ expression_statement
 	: ';'
 	{
 		NodeAst *p = new ExpStmAst(NodeAst::T_CEXPSTM_VOID);
-       		$$ = p;
+		$$ = p;
 	}
 
 	| expression ';'
 	{
 		NodeAst *p = new ExpStmAst(NodeAst::T_CEXPSTM_EXP);
 		p->addChild1($1);
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 	;
@@ -992,28 +1053,31 @@ compound_statement
 	: '{' '}'
 	{ /*local scope*/
 		NodeAst *p = new CompoundStmAst(NodeAst::T_CCOMPSTM_VOID);
-        	$$ = p;
+		$$ = p;
 	}
 
 	| '{' statement_list '}'
 	{ /*local scope*/
 		NodeAst *p = new CompoundStmAst(NodeAst::T_CCOMPSTM_STMLIST);
 		p->addChild1($2);
-        	$$ = p;
+		p->setLineno($2->getLineno());
+		$$ = p;
 	}
 
 	| '{' declaration_list '}'
 	{ /*local scope*/
 		NodeAst *p = new CompoundStmAst(NodeAst::T_CCOMPSTM_DECTION_LIST);
 		p->addChild1($2);
-        	$$ = p;
+		p->setLineno($2->getLineno());
+		$$ = p;
 	}
 
 	| '{' declaration_list statement_list '}'
 	{ /*local scope*/
 		NodeAst *p = new CompoundStmAst(NodeAst::T_CCOMPSTM_DECTIONLIST_STMLIST);
 		p->addChild2($2, $3);
-        	$$ = p;
+		p->setLineno($2->getLineno());
+		$$ = p;
 	}
 	;
 
@@ -1027,7 +1091,8 @@ statement_list
 	{
 		NodeAst *p = new StmListAst(NodeAst::T_CSTMLIST_STMLIST_STM);
 		p->addChild2($1, $2);
-        	$$ = p;
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 	;
 
@@ -1036,21 +1101,24 @@ selection_statement
 	{
 		NodeAst *p = new SelectionStmAst(NodeAst::T_CSELSTM_IF_EXP_STM);
 		p->addChild2($3, $5);
-        	$$ = p;
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 
 	| IF '(' expression ')' statement ELSE statement
 	{
 		NodeAst *p = new SelectionStmAst(NodeAst::T_CSELSTM_IF_EXP_STM_ELSE_STM);
 		p->addChild3($3, $5, $7);
-        	$$ = p;
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 
 	| SWITCH '(' expression ')' statement
 	{
 		NodeAst *p = new SelectionStmAst(NodeAst::T_CSELSTM_SWITCH_EXP_STM);
 		p->addChild2($3, $5);
-        	$$ = p;
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 	;
 
@@ -1059,21 +1127,24 @@ iteration_statement
 	{
 		NodeAst *p = new IterationStmAst(NodeAst::T_CITRSTM_WHILE_EXP_STM);
 		p->addChild2($3, $5);
-        	$$ = p;
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 
 	| DO statement WHILE '(' expression ')' ';'
 	{
 		NodeAst *p = new IterationStmAst(NodeAst::T_CITRSTM_DO_STM_WHILE_EXP);
 		p->addChild2($2, $5);
-        	$$ = p;
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 
 	| FOR '(' expression_statement expression_statement expression ')' statement
 	{
 		NodeAst *p = new IterationStmAst(NodeAst::T_CITRSTM_FOR_EXPSTM_EXPSTM_EXP_STM);
 		p->addChild4($3, $4, $5, $7);
-        	$$ = p;
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 	;
 
@@ -1081,34 +1152,39 @@ jump_statement
 	: GOTO IDENTIFIER ';'
 	{
 		NodeAst *p = new JumpStmAst(NodeAst::T_CJUMPSTM_GOTO_ID);
-		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CJUMPSTM_GOTO_ID, $2);
+		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CJUMPSTM_GOTO_ID, $2->getToken());
 		p->addChild1(t);
-        	$$ = p;
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 
 	| CONTINUE ';'
 	{
 		NodeAst *p = new JumpStmAst(NodeAst::T_CJUMPSTM_CONTINUE);
-        	$$ = p;
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 
 	| BREAK ';'
 	{
 		NodeAst *p = new JumpStmAst(NodeAst::T_CJUMPSTM_BREAK);
-        	$$ = p;
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 
 	| RETURN ';'
 	{
 		NodeAst *p = new JumpStmAst(NodeAst::T_CJUMPSTM_RETURN);
-        	$$ = p;
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 
 	| RETURN expression ';'
 	{
 		NodeAst *p = new JumpStmAst(NodeAst::T_CJUMPSTM_RETURN_EXP);
 		p->addChild1($2);
-        	$$ = p;
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 	;
 
@@ -1124,7 +1200,8 @@ expression
 	{
 		NodeAst *p = new ExpAst(NodeAst::T_CEXP_EXP_ASSIGNEXP);
 		p->addChild2($1, $3);
-        	$$ = p;
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 	;
 
@@ -1133,30 +1210,34 @@ assignment_expression
 	{
 		NodeAst *p = new AssignExpAst(NodeAst::T_CASSIGNEXP_CONDITIONALEXP);
 		p->addChild1($1);
-       		$$ = p;
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 
 	| unary_expression assignment_operator assignment_expression
 	{
 		NodeAst *p = new AssignExpAst(NodeAst::T_CASSIGNEXP_UNARYEXP_ASSIGN_OP_ASSIGNEXP);
 		p->addChild3($1, $2, $3);
-        	$$ = p;
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 
 	| NEW_OP IDENTIFIER '(' ')'
 	{
 		NodeAst *p = new AssignExpAst(NodeAst::T_CASSIGNEXP_NEW_ID_VOID);
-		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CASSIGNEXP_NEW_ID_VOID, $2);
+		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CASSIGNEXP_NEW_ID_VOID, $2->getToken());
 		p->addChild1(t);
-        	$$ = p;
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 
 	| DELETE_OP IDENTIFIER
 	{
 		NodeAst *p = new AssignExpAst(NodeAst::T_CASSIGNEXP_DELETE_ID);
-		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CASSIGNEXP_DELETE_ID, $2);
+		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CASSIGNEXP_DELETE_ID, $2->getToken());
 		p->addChild1(t);
-        	$$ = p;
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 	;
 
@@ -1164,36 +1245,40 @@ assignment_operator
 	: '='
 	{
 		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CASSIGN_OP_ASSIGN, "=");
-        	$$ = p;
+		$$ = p;
 	}
 
 	| MUL_ASSIGN
 	{
-		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CASSIGN_OP_MUL_ASSIGN, $1);
-        	$$ = p;
+		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CASSIGN_OP_MUL_ASSIGN, $1->getToken());
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 
 	| DIV_ASSIGN
 	{
-		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CASSIGN_OP_DIV_ASSIGN, $1);
-        	$$ = p;
+		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CASSIGN_OP_DIV_ASSIGN, $1->getToken());
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 
 	| MOD_ASSIGN
 	{
-        	$$ = NULL;
+		$$ = NULL;
 	}
 
 	| ADD_ASSIGN
 	{
-        	NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CASSIGN_OP_ADD_ASSIGN, $1);
-        	$$ = p;
+		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CASSIGN_OP_ADD_ASSIGN, $1->getToken());
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 
 	| SUB_ASSIGN
 	{
-		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CASSIGN_OP_SUB_ASSIGN, $1);
-        	$$ = p;
+		NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CASSIGN_OP_SUB_ASSIGN, $1->getToken());
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 
 	| LEFT_ASSIGN
@@ -1246,7 +1331,8 @@ logical_or_expression
 	{
 		NodeAst *p = new LogicalOrExpAst(NodeAst::T_CLOGOREXP_LOGOREXP_OR_OP_LOGANDEXP);
 		p->addChild2($1, $3);
-        	$$ = p;
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 	;
 
@@ -1260,7 +1346,8 @@ logical_and_expression
 	{
 		NodeAst *p = new LogicalAndExpAst(NodeAst::T_CLOGANDEXP_LOGANDEXP_AND_OP_EQUALEXP);
 		p->addChild2($1, $3);
-        	$$ = p;
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 	;
 
@@ -1313,14 +1400,16 @@ equality_expression
 	{
 		NodeAst *p = new EqualExpAst(NodeAst::T_CEQUALEXP_EQUALEXP_EQ_OP_RELEXP);
 		p->addChild2($1, $3);
-       		$$ = p;
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 
 	| equality_expression NE_OP relational_expression
 	{
 		NodeAst *p = new EqualExpAst(NodeAst::T_CEQUALEXP_EQUALEXP_NE_OP_RELEXP);
 		p->addChild2($1, $3);
-        	$$ = p;
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 	;
 
@@ -1334,28 +1423,32 @@ relational_expression
 	{
 		NodeAst *p = new RelationExpAst(NodeAst::T_CRELEXP_RELEXP_L_OP_ADDEXP);
 		p->addChild2($1, $3);
-        	$$ = p;
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 
 	| relational_expression '>' additive_expression
 	{
 		NodeAst *p = new RelationExpAst(NodeAst::T_CRELEXP_RELEXP_G_OP_ADDEXP);
 		p->addChild2($1, $3);
-        	$$ = p;
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 
 	| relational_expression LE_OP additive_expression
 	{
 		NodeAst *p = new RelationExpAst(NodeAst::T_CRELEXP_RELEXP_LE_OP_ADDEXP);
 		p->addChild2($1, $3);
-        	$$ = p;
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 
 	| relational_expression GE_OP additive_expression
 	{
 		NodeAst *p = new RelationExpAst(NodeAst::T_CRELEXP_RELEXP_GE_OP_ADDEXP);
 		p->addChild2($1, $3);
-       		$$ = p;
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 	;
 
@@ -1388,14 +1481,16 @@ additive_expression
 	{
 		NodeAst *p = new AddExpAst(NodeAst::T_CADDEXP_ADDEXP_ADD_OP_MULEXP);
 		p->addChild2($1, $3);
-        	$$ = p;
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 
 	| additive_expression '-' multiplicative_expression
 	{
 		NodeAst *p = new AddExpAst(NodeAst::T_CADDEXP_ADDEXP_SUB_OP_MULEXP);
 		p->addChild2($1, $3);
-        	$$ = p;
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 	;
 
@@ -1409,14 +1504,16 @@ multiplicative_expression
 	{
 		NodeAst *p = new MulExpAst(NodeAst::T_CMULEXP_MULEXP_MUL_OP_CASTEXP);
 		p->addChild2($1, $3);
-        	$$ = p;
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 
 	| multiplicative_expression '/' cast_expression
 	{
 		NodeAst *p = new MulExpAst(NodeAst::T_CMULEXP_MULEXP_DIV_OP_CASTEXP);
 		p->addChild2($1, $3);
-        	$$ = p;
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 
 	| multiplicative_expression '%' cast_expression
@@ -1447,21 +1544,24 @@ unary_expression
 	{
 		NodeAst *p = new UnaryExpAst(NodeAst::T_CUNARYEXP_INC_OP_UNARAYEXP);
 		p->addChild1($2);
-        	$$ = p;
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 
 	| DEC_OP unary_expression
 	{
 		NodeAst *p = new UnaryExpAst(NodeAst::T_CUNARYEXP_DEC_OP_UNARYEXP);
 		p->addChild1($2);
-        	$$ = p;
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 
 	| unary_operator cast_expression
 	{
 		NodeAst *p = new UnaryExpAst(NodeAst::T_CUNARYEXP_UNARY_OP_CASTEXP);
 		p->addChild2($1, $2);
-        	$$ = p;
+		p->setLineno($2->getLineno());
+		$$ = p;
 	}
 
 	| SIZEOF unary_expression
@@ -1514,29 +1614,33 @@ postfix_expression
 	{
 		NodeAst *p = new PostfixExpAst(NodeAst::T_CPOSTEXP_POSTEXP_ARRAY_EXP);
 		p->addChild2($1, $3);
-        	$$ = p;
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 
 	| postfix_expression '(' ')'
 	{
 		NodeAst *p = new PostfixExpAst(NodeAst::T_CPOSTEXP_POSTEXP_CALL_VOID);
 		p->addChild1($1);
-        	$$ = p;
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 
 	| postfix_expression '(' argument_expression_list ')'
 	{ /*call the func callee*/
 		NodeAst *p = new PostfixExpAst(NodeAst::T_CPOSTEXP_POSTEXP_CALL_ARGEXPLIST);
 		p->addChild2($1, $3);
-        	$$ = p;
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 
 	| postfix_expression '.' IDENTIFIER
 	{
 		NodeAst *p = new PostfixExpAst(NodeAst::T_CPOSTEXP_POSTEXP_REF_ID);
-		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CPOSTEXP_POSTEXP_REF_ID, $3);
+		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CPOSTEXP_POSTEXP_REF_ID, $3->getToken());
 		p->addChild2($1, t);
-       		$$ = p;
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 
 	| postfix_expression PTR_OP IDENTIFIER
@@ -1548,14 +1652,16 @@ postfix_expression
 	{
 		NodeAst *p = new PostfixExpAst(NodeAst::T_CPOSTEXP_POSTEXP_INC_OP);
 		p->addChild1($1);
-        	$$ = p;
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 
 	| postfix_expression DEC_OP
 	{
 		NodeAst *p = new PostfixExpAst(NodeAst::T_CPOSTEXP_POSTEXP_DEC_OP);
 		p->addChild1($1);
-        	$$ = p;
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 	;
 
@@ -1563,8 +1669,9 @@ primary_expression
 	: IDENTIFIER
 	{
 		NodeAst *p = new PrimaryExpAst(NodeAst::T_CPRIMEXP_ID);
-		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CPRIMEXP_ID, $1);
+		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CPRIMEXP_ID, $1->getToken());
 		p->addChild1(t);
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 
@@ -1572,14 +1679,16 @@ primary_expression
 	{
 		NodeAst *p = new PrimaryExpAst(NodeAst::T_CPRIMEXP_CONST);
 		p->addChild1($1);
-       		$$ = p;
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 
 	| STRING_LITERAL
 	{
 		NodeAst *p = new PrimaryExpAst(NodeAst::T_CPRIMEXP_STR);
-		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CPRIMEXP_STR, $1);
+		NodeAst *t = new TerminateAst(NodeAst::T_CTERMINATE_CPRIMEXP_STR, $1->getToken());
 		p->addChild1(t);
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 
@@ -1587,7 +1696,8 @@ primary_expression
 	{
 		NodeAst *p = new PrimaryExpAst(NodeAst::T_CPRIMEXP_EXP);
 		p->addChild1($2);
-        	$$ = p;
+		p->setLineno($2->getLineno());
+		$$ = p;
 	}
 	;
 
@@ -1596,6 +1706,7 @@ argument_expression_list
 	{
 		NodeAst *p = new ArgExpListAst(NodeAst::T_CARGEXPLIST_ASSGEXP);
 		p->addChild1($1);
+		p->setLineno($1->getLineno());
 		$$ = p;
 	}
 
@@ -1603,26 +1714,30 @@ argument_expression_list
 	{
 		NodeAst *p = new ArgExpListAst(NodeAst::T_CARGEXPLIST_ARGEXPLIST_ASSGEXP);
 		p->addChild2($1, $3);
-        	$$ = p;
+		p->setLineno($1->getLineno());
+		$$ = p;
 	}
 	;
 
 constant_value
         : INTEGER_CONSTANT
         {
-			NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CCONSTVAR_INT_CONST, $1);
+			NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CCONSTVAR_INT_CONST, $1->getToken());
+			p->setLineno($1->getLineno());
 			$$ = p;
         }
 
         | CHARACTER_CONSTANT
         {
-			NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CCONSTVAR_CHAR_CONST, $1);
+			NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CCONSTVAR_CHAR_CONST, $1->getToken());
+			p->setLineno($1->getLineno());
 			$$ = p;
         }
 
         | FLOATING_CONSTANT
         {
-			NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CCONSTVAR_FLOAT_CONST, $1);
+			NodeAst *p = new TerminateAst(NodeAst::T_CTERMINATE_CCONSTVAR_FLOAT_CONST, $1->getToken());
+			p->setLineno($1->getLineno());
 			$$ = p;
         }
         ;
@@ -1649,6 +1764,7 @@ int main() {
 
    NodeAst::dotBfsNodeTree(NodeAst::getNodeTreeRoot());
 
+   LexNodeAst::freeLexNodeList();
    NodeAst::freeNodeList();
 
    return 0;

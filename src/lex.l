@@ -62,7 +62,7 @@ extern int yyerror(const char *msg);
 "sizeof"		{ count(); inityylval(yytext); return(SIZEOF); }
 "static"		{ count(); inityylval(yytext); return(STATIC); }
 "struct"		{ count(); inityylval(yytext); return(STRUCT); }
-"class"                 { count(); inityylval(yytext); return(CLASS); }
+"class"         { count(); inityylval(yytext); return(CLASS); }
 "switch"		{ count(); inityylval(yytext); return(SWITCH); }
 "typedef"		{ count(); inityylval(yytext); return(TYPEDEF); }
 "union"			{ count(); inityylval(yytext); return(UNION); }
@@ -70,21 +70,21 @@ extern int yyerror(const char *msg);
 "void"			{ count(); inityylval(yytext); return(VOID); }
 "volatile"		{ count(); inityylval(yytext); return(VOLATILE); }
 "while"			{ count(); inityylval(yytext); return(WHILE); }
-"new"                   { count(); inityylval(yytext); return(NEW_OP); }
-"delete"                { count(); inityylval(yytext); return(DELETE_OP); }
+"new"           { count(); inityylval(yytext); return(NEW_OP); }
+"delete"        { count(); inityylval(yytext); return(DELETE_OP); }
 
-(_|{L})(_|{L}|{D})*	{ count(); inityylval(yytext); return(IDENTIFIER); }
+(_|{L})(_|{L}|{D})*	    { count(); inityylval(yytext); return(IDENTIFIER); }
 
-0[xX]{H}+{IS}?		{ count(); inityylval(yytext); return(INTEGER_CONSTANT); }
-0{D}+{IS}?		{ count(); inityylval(yytext); return(INTEGER_CONSTANT); }
-{D}+{IS}?		{ count(); inityylval(yytext); return(INTEGER_CONSTANT); }
-L?'(\\.|[^\\'])+'	{ count(); inityylval(yytext); return(CHARACTER_CONSTANT); }
+0[xX]{H}+{IS}?		    { count(); inityylval(yytext); return(INTEGER_CONSTANT); }
+0{D}+{IS}?		        { count(); inityylval(yytext); return(INTEGER_CONSTANT); }
+{D}+{IS}?		        { count(); inityylval(yytext); return(INTEGER_CONSTANT); }
+L?'(\\.|[^\\'])+'	    { count(); inityylval(yytext); return(CHARACTER_CONSTANT); }
 
-{D}+{E}{FS}?		{ count(); inityylval(yytext); return(FLOATING_CONSTANT); }
+{D}+{E}{FS}?		    { count(); inityylval(yytext); return(FLOATING_CONSTANT); }
 {D}*"."{D}+({E})?{FS}?	{ count(); inityylval(yytext); return(FLOATING_CONSTANT); }
 {D}+"."{D}*({E})?{FS}?	{ count(); inityylval(yytext); return(FLOATING_CONSTANT); }
 
-L?\"(\\.|[^\\"])*\"	{ count(); inityylval(yytext); return(STRING_LITERAL); }
+L?\"(\\.|[^\\"])*\"	    { count(); inityylval(yytext); return(STRING_LITERAL); }
 
 "..."			{ count(); inityylval(yytext); return(ELLIPSIS); }
 ">>="			{ count(); inityylval(yytext); return(RIGHT_ASSIGN); }
@@ -108,38 +108,38 @@ L?\"(\\.|[^\\"])*\"	{ count(); inityylval(yytext); return(STRING_LITERAL); }
 ">="			{ count(); inityylval(yytext); return(GE_OP); }
 "=="			{ count(); inityylval(yytext); return(EQ_OP); }
 "!="			{ count(); inityylval(yytext); return(NE_OP); }
-";"			{ count(); return(';'); }
+";"			    { count(); return(';'); }
 ("{"|"<%")		{ count(); return('{'); }
 ("}"|"%>")		{ count(); return('}'); }
-","			{ count(); return(','); }
-":"			{ count(); return(':'); }
-"="			{ count(); return('='); }
-"("			{ count(); return('('); }
-")"			{ count(); return(')'); }
+","			    { count(); return(','); }
+":"			    { count(); return(':'); }
+"="			    { count(); return('='); }
+"("			    { count(); return('('); }
+")"			    { count(); return(')'); }
 ("["|"<:")		{ count(); return('['); }
 ("]"|":>")		{ count(); return(']'); }
-"."			{ count(); return('.'); }
-"&"			{ count(); return('&'); }
-"!"			{ count(); return('!'); }
-"~"			{ count(); return('~'); }
-"-"			{ count(); return('-'); }
-"+"			{ count(); return('+'); }
-"*"			{ count(); return('*'); }
-"/"			{ count(); return('/'); }
-"%"			{ count(); return('%'); }
-"<"			{ count(); return('<'); }
-">"			{ count(); return('>'); }
-"^"			{ count(); return('^'); }
-"|"			{ count(); return('|'); }
-"?"			{ count(); return('?'); }
+"."			    { count(); return('.'); }
+"&"		    	{ count(); return('&'); }
+"!"		    	{ count(); return('!'); }
+"~"		    	{ count(); return('~'); }
+"-"			    { count(); return('-'); }
+"+"			    { count(); return('+'); }
+"*"			    { count(); return('*'); }
+"/"			    { count(); return('/'); }
+"%"			    { count(); return('%'); }
+"<"			    { count(); return('<'); }
+">"			    { count(); return('>'); }
+"^"			    { count(); return('^'); }
+"|"			    { count(); return('|'); }
+"?"			    { count(); return('?'); }
 
 [ \t\v\n\f]		{ count(); }
-.			{ string s(yytext); s = "error: lex errror at " + s; yyerror(s.c_str()); }
+.			    { string s(yytext); s = "error: lex errror at " + s; yyerror(s.c_str()); }
 
 %%
 
 void inityylval(char *yytext) {
-    yylval.yystring = new string(yytext);
+    yylval.yystring = new LexNodeAst(yytext, yylineno);
 }
 
 int yywrap()

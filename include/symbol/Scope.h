@@ -3,9 +3,13 @@
 
 #include <map>
 #include <list>
+#include <vector>
 #include <string>
+#include <stack>
 #include "Symbol.h"
 
+
+/***********************************Scope***************************************/
 class Context;
 
 class Scope {
@@ -14,57 +18,51 @@ public:
     enum ScopeType {SCOPE_INVALID, SCOPE_GLOBAL, SCOPE_CLASS,
     SCOPE_GLOBALFUNC, SCOPE_CLASSFUNC, SCOPE_LOCAL};
 
-    int scopeId;
+    unsigned long scopeId;
     ScopeType scopeType;
     string scopeName;
-    int level;
-    int startOffset;
-    int symbolsNo;
-    int totalByteSize;
 
     Scope *parent;
     Scope *superClass;
-    list<Scope *> childs;
-    map<string, Symbol *> symbolVarMap;
-    list<Symbol *> symbolSeqList;
 
-    static Scope *curScope;
+    int level;
+    int curStartOffset;
+    unsigned int totalByteSize;
+
+    TypeClass *returnTypeClass;
+
+    vector<Scope *> childs;
+    unsigned int symbolsNo;
+
+    map<string, Symbol *> symbolVarMap;  //paramVar, classVar, localVar
+    map<string, Symbol *> symbolTempVarMap;
+    list<Symbol *> symbolSeqList;  //sequencialVar
 
     static map<string, Symbol *> s_labelMap;
     static map<string, Symbol *> s_constMap;
     static map<string, Symbol *> s_tempVarMap;
-    static list<Symbol *> s_allSymbolList;
-    static map<int, Symbol*> s_allSymbolMap;
+    static map<unsigned long, Symbol*> s_allSymbolMap;
 
-    static Context* s_context;
+    static list<Scope *> s_allScopeList;
+
+    static list<Symbol *> s_allSymbolList;
+
+    static Scope *s_curScope;
+
+    static Context *s_context;
 
 public:
     Scope();
     virtual ~Scope();
 
-    virtual void initGlobalScope();
-    virtual void initClassScope();
-    virtual void initGlobalFuncScope();
-    virtual void initClassFuncScope();
-    virtual void initLocalScope();
-
     virtual void setScopeId();
-    virtual int getScopeId();
+    virtual unsigned long getScopeId();
 
     virtual void setScopeType(Scope::ScopeType scopeType_t);
-    virtual Scope::ScopeType  getScopeType();
+    virtual Scope::ScopeType getScopeType();
 
-    virtual void setLevel(int level_t);
-    virtual int getlevel();
-
-    virtual void setStartOffset(int startOffset_t);
-    virtual int getStartOffset();
-
-    virtual void setSymbolsNo(int symbolsNo_t);
-    virtual int getSymbolsNo();
-
-    virtual void setTotalByteSize(int totalByteSize_t);
-    virtual int getTotalByteSize();
+    virtual void setScopeName(const string &scopeName_t);
+    virtual string getScopeName();
 
     virtual void setParent(Scope *parent_t);
     virtual Scope* getParent();
@@ -72,29 +70,69 @@ public:
     virtual void setSuperClass(Scope *superClass_t);
     virtual Scope* getSuperClass();
 
-    virtual addChild(Scope *child_t);
-    virtual Scope* searchChild(string childName_t);
+    virtual void setLevel(int level_t);
+    virtual int getlevel();
 
-    virtual addToSymbolVarMap(Symbol *symbolVar_t);
-    virtual Symbol* searchSymbolVarMap(string symbolName_t);
+    virtual void setCurStartOffset(int curStartOffset_t);
+    virtual void incCurStartOffset(int incOffset_t);
+    virtual int getCurStartOffset();
 
-    virtual addToSymbolSeqList(Symbol *symbolVar_t);
-    virtual list<Symbol *>& getSymbolSeqList();
+    virtual void setTotalByteSize(unsigned int totalByteSize_t);
+    virtual void incTotalByteSize(unsigned int incByteSize_t)
+    virtual unsigned int getTotalByteSize();
 
-    static void addToLabelMap(Symbol *label_t);
+    virtual void setReturnTypeClass(TypeClass *typeClass_t);
+    virtual TypeClass* getReturnTypeClass();
 
-    static void addToConstantMap(Symbol *constant_t)
+    virtual int addChild(Scope *child_t);
+    virtual Scope* searchChildName(const string &childName_t);
 
-    static void addToTempVarMap(Symbol *tempVar_t);
+    virtual void setSymbolsNo(unsigned int symbolsNo_t);
+    virtual void incSymbolsNo();
+    virtual unsigned int getSymbolsNo();
 
-    static void addToAllSymbolList(Symbol *symbol_t);
+    virtual int addToSymbolVarMap(Symbol *symbolVar_t);
+    virtual Symbol* searchSymbolVarMap(const string &symbolName_t);
+    static Symbol* searchDownUpSymbolVarMap(Scope *curScope_t, const string &symbolName_t);
 
-    static void addToAllSymbolMap(Symbol *symbol_t);
-    static Symbol* searchAllSymbolMap(int symbolId_t);
+    virtual int addToSymbolTempVarMap(Symbol *symbolTempVar_t);
+    virtual Symbol* searchSymbolTempVarMap(const string &symbolName_t);
 
-    virtual void pushScope(Scope *newScope_t);
-    virtual Scope* enterScope();
-    virtual Scope* encloseScope();
+    virtual int addToSymbolSeqList(Symbol *symbol_t);
+
+    static int addToLabelMap(Symbol *label_t);
+    static Symbol* searchLabelMap(const string &labelName_t);
+
+    static int addToConstantMap(Symbol *constant_t);
+    static Symbol* searchConstantMap(const string &constantName_t);
+
+    static int addToTempVarMap(Symbol *tempVar_t);
+    static Symbol* searchTempVarMap(const string &tempVarName_t);
+
+    static int addToAllSymbolMap(Symbol *symbol_t);
+    static Symbol* searchAllSymbolMap(unsigned long symbolId_t);
+
+    static int addToAllScopeList(Scope *scope_t);
+
+    static int addToAllSymbolList(Symbol *symbol_t);
+
+    static void setCurScope(Scope *curScope_t);
+    static Scope* getCurScope();
+
+    virtual void initGlobalScope();
+    virtual void initClassScope(const string &scopeName_t);
+    virtual void initGlobalFuncScope(const string &scopeName_t);
+    virtual void initClassFuncScope(const string &scopeName_t);
+    virtual void initLocalScope();
+
+    static Scope* pushScope(Scope* curScope_t, Scope *newScope_t);
+    static Scope* enterScope(Scope *nextScope_t);
+    static Scope* encloseScope(Scope* curScope_t);
+
+    virtual int defineSymbol(Symbol *symbol_t);
+
+    static Context* getSingletonContext();
+
 };
 
 
@@ -103,7 +141,28 @@ public:
 class Context {
 
 public:
-    Symbol* s_newSymbol;
+    int state;
+
+    TypeClass tmpDeclType;
+
+    list<Symbol *> tmpDeclVarId;
+
+    list<Symbol *> initValue;
+
+    string tmpDeclCallId;
+
+    TypeClass tmpReturnType;
+
+    list<Symbol *> tmpDeclParamList;
+
+    list<Symbol *> tmpArgParamList;
+
+    stack<Symbol *> tmpExpLeftVar;
+    stack<Symbol *> tmpExpRightVar;
+
+
+
+
 
 public:
     Constext();
@@ -111,7 +170,7 @@ public:
 
     static void clearNewSymbol();
 
-    static Context* getSingletonContext();
+
 
 };
 
