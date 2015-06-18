@@ -3,6 +3,14 @@
 using namespace std;
 
 /***********************************Scope***************************************/
+map<string, Symbol *> Scope::s_labelMap;
+map<string, Symbol *> Scope::s_constMap;
+map<string, Symbol *> Scope::s_tempVarMap;
+map<unsigned long, Symbol*> Scope::s_allSymbolMap;
+list<Scope *> Scope::s_allScopeList;
+list<Symbol *> Scope::s_allSymbolList;
+Scope *Scope::s_curScope;
+Context *Scope::s_context;
 
 Scope::Scope()
 {
@@ -16,7 +24,7 @@ Scope::Scope()
     startOffset = 0;
     totalByteSize = 0;
 
-    returnType = NULL;
+    returnTypeClass = NULL;
 
     symbolsNo = 0;
 
@@ -35,7 +43,7 @@ Scope::~Scope()
     startOffset = 0;
     totalByteSize = 0;
 
-    returnType = NULL;
+    returnTypeClass = NULL;
 
     symbolsNo = 0;
 }
@@ -163,6 +171,7 @@ Scope* Scope::searchChildName(const string &childName_t)
             return *itr;
         }
     }
+	return NULL;
 }
 
 void Scope::setSymbolsNo(unsigned int symbolsNo_t)
@@ -186,7 +195,7 @@ int Scope::addToSymbolVarMap(Symbol* symbolVar_t)
     if (NULL != symbolVar_t) {
 
         pair< map<string, Symbol *>::iterator, bool > insertFlag;
-        insertFlag = symbolVarMap.insert( pair<string, Symbol *>(symbolVar_t.getSymbolName(), symbolVar_t) );
+        insertFlag = symbolVarMap.insert( pair<string, Symbol *>(symbolVar_t->getSymbolName(), symbolVar_t) );
         if (true == insertFlag.second) {
             return 1;
         }
@@ -242,7 +251,7 @@ int Scope::addToSymbolTempVarMap(Symbol* symbolTempVar_t)
     if (NULL != symbolTempVar_t) {
 
         pair< map<string, Symbol *>::iterator, bool > insertFlag;
-        insertFlag = symbolTempVarMap.insert( pair<string, Symbol *>(symbolTempVar_t.getSymbolName(), symbolTempVar_t) );
+        insertFlag = symbolTempVarMap.insert( pair<string, Symbol *>(symbolTempVar_t->getSymbolName(), symbolTempVar_t) );
         if (true == insertFlag.second) {
             return 1;
         }
@@ -279,7 +288,7 @@ int Scope::addToLabelMap(Symbol* label_t)
 {
     if (NULL != label_t) {
         pair< map<string, Symbol *>::iterator, bool > insertFlag;
-        insertFlag = s_labelMap.insert( pair<string, Symbol *>(label_t.getSymbolName(), label_t) );
+        insertFlag = s_labelMap.insert( pair<string, Symbol *>(label_t->getSymbolName(), label_t) );
         if (true == insertFlag.second) {
             return 1;
         }
@@ -303,7 +312,7 @@ int Scope::addToConstantMap(Symbol* constant_t)
 {
     if (NULL != constant_t) {
         pair< map<string, Symbol *>::iterator, bool > insertFlag;
-        insertFlag = s_constMap.insert( pair<string, Symbol *>(constant_t.getSymbolName(), constant_t) );
+        insertFlag = s_constMap.insert( pair<string, Symbol *>(constant_t->getSymbolName(), constant_t) );
         if (true == insertFlag.second) {
             return 1;
         }
@@ -327,7 +336,7 @@ int Scope::addToTempVarMap(Symbol* tempVar_t)
 {
     if (NULL != tempVar_t) {
         pair< map<string, Symbol *>::iterator, bool > insertFlag;
-        insertFlag = s_tempVarMap.insert( pair<string, Symbol *>(tempVar_t.getSymbolName(), tempVar_t) );
+        insertFlag = s_tempVarMap.insert( pair<string, Symbol *>(tempVar_t->getSymbolName(), tempVar_t) );
         if (true == insertFlag.second) {
             return 1;
         }
@@ -336,7 +345,7 @@ int Scope::addToTempVarMap(Symbol* tempVar_t)
     return 0;
 }
 
-Symbol Scope::searchTempVarMap(const string& tempVarName_t)
+Symbol* Scope::searchTempVarMap(const string& tempVarName_t)
 {
     map<string, Symbol *>::iterator itr;
     itr = s_tempVarMap.find(tempVarName_t);
@@ -351,7 +360,7 @@ int Scope::addToAllSymbolMap(Symbol* symbol_t)
 {
     if (NULL != symbol_t) {
         pair< map<unsigned long, Symbol *>::iterator, bool > insertFlag;
-        insertFlag = s_allSymbolMap.insert( pair<unsigned long, Symbol *>(symbol_t.getSymbolId(), symbol_t) );
+        insertFlag = s_allSymbolMap.insert( pair<unsigned long, Symbol *>(symbol_t->getSymbolId(), symbol_t) );
         if (true == insertFlag.second) {
             return 1;
         }
@@ -501,7 +510,7 @@ Scope* Scope::pushScope(Scope* curScope_t, Scope* newScope_t)
 
         newScope_t->setScopeId();  //id
 
-        if (NULL != curScope) {
+        if (NULL != curScope_t) {
             curScope_t->addChild(newScope_t);
             newScope_t->setParent(curScope_t);
         } else {

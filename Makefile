@@ -4,10 +4,14 @@ argu=
 vpath %.o ./output
 vpath %.c ./src
 vpath %.cpp ./src/astimp
+vpath %.cpp ./src/symbolimp
 vpath %.h ./include/ast
+vpath %.h ./include/symbol
 vpath %.h ./src
 vpath %.l ./src
 vpath %.y ./src
+
+symbolobj=Scope.o Symbol.o
 
 astimpobj=AbsDectorAst.o \
 AddExpAst.o \
@@ -77,8 +81,8 @@ release: 		complier.out
 debug: 		argu+=-ggdb3
 debug: 		 	complier.out
 
-complier.out:  			lex.yy.c yacc.tab.c yacc.tab.h $(astimpobj)
-				$(cc) -o complier.out $(argu) $(addprefix ./src/,lex.yy.c yacc.tab.c)  $(addprefix ./output/, $(astimpobj)) -ll
+complier.out:  			lex.yy.c yacc.tab.c yacc.tab.h $(astimpobj) $(symbolobj)
+				$(cc) -o complier.out $(argu) $(addprefix ./src/,lex.yy.c yacc.tab.c)  $(addprefix ./output/, $(astimpobj)) $(addprefix ./output/, $(symbolobj)) -ll
 
 lex.yy.c: 		lex.l yacc.tab.h
 				flex ./src/lex.l
@@ -89,8 +93,12 @@ yacc.tab.c yacc.tab.h: 	yacc.y
 				mv yacc.tab.c yacc.tab.h ./src
 				rm yacc.output
 
-$(astimpobj):%.o:%.cpp
+$(astimpobj):%.o:%.cpp %.h
 				$(cc) -c $(argu) $(addprefix $(astdir), $<) -o $@
 				mv $@ ./output
 
 
+$(symbolobj):%.o:%.cpp %.h
+				$(cc) -c $(argu) $(addprefix $(astdir), $<) -o $@
+				mv $@ ./output
+				

@@ -3,10 +3,13 @@
 
 #include <string>
 #include <vector>
+#include "Scope.h"
+using namespace std;
 
 
 /*********************************TypeClass*****************************************/
 
+class Scope;
 class TypeClass {
 public:
     enum StorageType {STOR_INVALID = 0, STOR_EXTERN = 1, STOR_STATIC = 2,
@@ -74,7 +77,7 @@ public:
     Scope *refScope;
 
 
-    TypeClass typeClass;
+    TypeClass *typeClass;
 
     int offset;
     unsigned int byteSize;
@@ -106,7 +109,7 @@ public:
     virtual Scope* getRefScope();
 
     virtual void setTypeClass(TypeClass *typeClass_t);
-    virtual void TypeClass* getTypeClass();
+    virtual  TypeClass* getTypeClass();
 
     virtual void setOffset(int offset_t);
     virtual int getOffset();
@@ -120,4 +123,12 @@ public:
 };
 
 
+class FuncSymble:public Symbol{
+private:
+	vector<TypeClass *> argu;
+public:
+	int arguNum;
+	void addArgu(TypeClass *type);
+	FuncSymble();
+};
 #endif

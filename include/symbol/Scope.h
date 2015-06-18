@@ -7,11 +7,14 @@
 #include <string>
 #include <stack>
 #include "Symbol.h"
+using namespace std;
 
 
 /***********************************Scope***************************************/
+class Scope;
 class Context;
-
+class Symbol;
+class TypeClass;
 class Scope {
 
 public:
@@ -30,7 +33,7 @@ public:
     unsigned int totalByteSize;
 
     TypeClass *returnTypeClass;
-
+	int startOffset;
     vector<Scope *> childs;
     unsigned int symbolsNo;
 
@@ -78,7 +81,7 @@ public:
     virtual int getCurStartOffset();
 
     virtual void setTotalByteSize(unsigned int totalByteSize_t);
-    virtual void incTotalByteSize(unsigned int incByteSize_t)
+    virtual void incTotalByteSize(unsigned int incByteSize_t);
     virtual unsigned int getTotalByteSize();
 
     virtual void setReturnTypeClass(TypeClass *typeClass_t);
@@ -143,7 +146,7 @@ class Context {
 public:
     int state;
 
-    TypeClass tmpDeclType;
+    TypeClass *tmpDeclType;
 
     list<Symbol *> tmpDeclVarId;
 
@@ -151,7 +154,7 @@ public:
 
     string tmpDeclCallId;
 
-    TypeClass tmpReturnType;
+    TypeClass * tmpReturnType;
 
     list<Symbol *> tmpDeclParamList;
 
@@ -165,8 +168,8 @@ public:
 
 
 public:
-    Constext();
-    ~Constext();
+    Context();
+    ~Context();
 
     static void clearNewSymbol();
 
