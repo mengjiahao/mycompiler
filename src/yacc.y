@@ -1764,7 +1764,7 @@ int main() {
 
    NodeAst::dotBfsNodeTree(NodeAst::getNodeTreeRoot());
 
-   NodeAst::s_context = NodeAst::getSingletonContext();
+   NodeAst::setContext(NodeAst::getSingletonContext());
 
 
    if (NULL != NodeAst::s_root) {

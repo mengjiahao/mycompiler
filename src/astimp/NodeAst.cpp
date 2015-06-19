@@ -628,6 +628,12 @@ Context* NodeAst::getSingletonContext()
     return s_context = new Context();
 }
 
+void NodeAst::setContext(Context* context_t)
+{
+    s_context = context_t;
+}
+
+
 
 void NodeAst::dotBfsNodeTree(NodeAst* root_t)
 {
@@ -708,12 +714,12 @@ void NodeAst::dotBfsNodeTree(NodeAst* root_t)
 
 }
 
-
-
 void NodeAst::walk()
 {
     cout << "NodeAstWalk" << endl;
 }
+
+
 
 
 

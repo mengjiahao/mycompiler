@@ -409,6 +409,7 @@ class NodeAst {
 		static LogiMsg *getSingletonLogiMsg();
 
 		static Context *getSingletonContext();
+		static void setContext(Context *context_t);
 
 		static void dotBfsNodeTree(NodeAst *root_t);
 
