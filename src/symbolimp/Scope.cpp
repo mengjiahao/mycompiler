@@ -9,8 +9,9 @@ map<string, Symbol *> Scope::s_tempVarMap;
 map<unsigned long, Symbol*> Scope::s_allSymbolMap;
 list<Scope *> Scope::s_allScopeList;
 list<Symbol *> Scope::s_allSymbolList;
-Scope *Scope::s_curScope;
-Context *Scope::s_context;
+Scope *Scope::s_globalScope = NULL;
+Scope *Scope::s_curScope = NULL;
+Context *Scope::s_context = NULL;
 
 Scope::Scope()
 {
@@ -28,7 +29,7 @@ Scope::Scope()
 
     symbolsNo = 0;
 
-    addToAllScopeList(this);
+    //addToAllScopeList(this);
 }
 
 Scope::~Scope()
@@ -43,6 +44,9 @@ Scope::~Scope()
     startOffset = 0;
     totalByteSize = 0;
 
+    if (NULL != returnTypeClass) {
+        delete returnTypeClass;
+    }
     returnTypeClass = NULL;
 
     symbolsNo = 0;
@@ -142,6 +146,7 @@ unsigned int Scope::getTotalByteSize()
 void Scope::setReturnTypeClass(TypeClass* typeClass_t)
 {
     if (NULL == returnTypeClass) {
+
         returnTypeClass = new TypeClass();
 
         returnTypeClass->clone(typeClass_t);
@@ -407,6 +412,17 @@ void Scope::setCurScope(Scope* curScope_t)
     }
 }
 
+void Scope::setGlobalScope(Scope* globalScope_t)
+{
+    s_globalScope = globalScope_t;
+}
+
+Scope* Scope::getGlobalScope()
+{
+    return s_globalScope;
+}
+
+
 Scope* Scope::getCurScope()
 {
     return s_curScope;
@@ -434,13 +450,14 @@ void Scope::initClassScope(const string& scopeName_t)
     scopeType = Scope::SCOPE_CLASS;
     scopeName = scopeName_t;
 
-    if (NULL != parent) {
-        level = parent->getlevel() + 1;
-    }
-    if (NULL != superClass) {
-        curStartOffset = superClass->getTotalByteSize();
+
+    /**if (NULL != superClass) {
+        curStartOffset = superClass->getTotalByteSize();  //setStartOffset
         totalByteSize = superClass->getTotalByteSize();
-    }
+    }**/
+
+    curStartOffset = 0;
+    totalByteSize = 0;
 
 
     returnTypeClass = NULL;
@@ -455,9 +472,6 @@ void Scope::initGlobalFuncScope(const string& scopeName_t)
 
     superClass = NULL;
 
-    if (NULL != parent) {
-        level = parent->getlevel() + 1;
-    }
     curStartOffset = 0;
     totalByteSize = 0;
 
@@ -474,11 +488,11 @@ void Scope::initClassFuncScope(const string& scopeName_t)
 
     superClass = NULL;
 
-    if (NULL != parent) {
-        level = parent->getlevel() + 1;
-    }
-    curStartOffset = 4;  //pointer this?
-    totalByteSize = 4;
+    //Symbol *symbol_t = new Symbol(Symbol::SYMBOL_CLASSREFVAR);
+    //defineSymbol(symbol_t);
+
+    curStartOffset = 0;
+    totalByteSize = 0;
 
     returnTypeClass = NULL;
 
@@ -492,10 +506,23 @@ void Scope::initLocalScope()
 
     superClass = NULL;
 
-    if (NULL != parent) {
-        level = parent->getlevel() + 1;
-        curStartOffset = parent->getCurStartOffset();
-    }
+    curStartOffset = 0;
+    totalByteSize = 0;
+
+    returnTypeClass = NULL;
+
+    symbolsNo = 0;
+
+}
+
+void Scope::initGlabalFuncDeclScope(const string& scopeName_t)
+{
+    scopeType = Scope::SCOPE_GLOBALFUNCDECL;
+    scopeName = scopeName_t;
+
+    superClass = NULL;
+
+    curStartOffset = 0;
     totalByteSize = 0;
 
     returnTypeClass = NULL;
@@ -508,15 +535,65 @@ Scope* Scope::pushScope(Scope* curScope_t, Scope* newScope_t)
 {
     if (NULL != newScope_t) {
 
-        newScope_t->setScopeId();  //id
+        if ( (NULL == curScope_t) && (Scope::SCOPE_GLOBAL == newScope_t->getScopeType()) ) {
 
-        if (NULL != curScope_t) {
-            curScope_t->addChild(newScope_t);
-            newScope_t->setParent(curScope_t);
+            goto then_push;
+
+        } else if ( NULL != curScope_t && (Scope::SCOPE_GLOBAL == curScope_t->getScopeType())
+        && ( (Scope::SCOPE_CLASS == newScope_t->getScopeType()) ||
+        (Scope::SCOPE_GLOBALFUNC == newScope_t->getScopeType()) ||
+        (Scope::SCOPE_GLOBALFUNCDECL == newScope_t->getScopeType()) ) ) {
+
+            goto then_push;
+
+        } else if ( NULL != curScope_t && (Scope::SCOPE_CLASS == curScope_t->getScopeType())
+        && (Scope::SCOPE_CLASSFUNC == newScope_t->getScopeType()) ) {
+
+            goto then_push;
+
+        } else if ( NULL != curScope_t && (Scope::SCOPE_GLOBALFUNC == curScope_t->getScopeType())
+        && (Scope::SCOPE_LOCAL == newScope_t->getScopeType())  ) {
+
+            goto then_push;
+
+        } else if ( NULL != curScope_t && (Scope::SCOPE_CLASSFUNC == curScope_t->getScopeType())
+        && (Scope::SCOPE_LOCAL == newScope_t->getScopeType()) ) {
+
+            goto then_push;
+
+        } else if ( NULL != curScope_t && (Scope::SCOPE_LOCAL == curScope_t->getScopeType())
+        && (Scope::SCOPE_LOCAL == newScope_t->getScopeType()) ) {
+
+            goto then_push;
+
         } else {
-            newScope_t->setParent(NULL);
+            return NULL;
         }
 
+then_push:
+
+
+        if (NULL != curScope_t) {
+
+            if (NULL == curScope_t->searchChildName(newScope_t->getScopeName())) {
+                curScope_t->addChild(newScope_t);
+
+                newScope_t->setParent(curScope_t);
+                newScope_t->setLevel(curScope_t->getlevel() + 1);
+
+            } else {
+                return NULL;
+            }
+
+
+        } else {  //global
+
+            newScope_t->setParent(NULL);
+            newScope_t->setLevel(0);
+        }
+
+        newScope_t->setScopeId();  //distribute id
+        addToAllScopeList(newScope_t);
         return newScope_t;
     }
 
@@ -535,7 +612,7 @@ Scope* Scope::enterScope(Scope* nextScope_t)
 
 Scope* Scope::encloseScope(Scope* curScope_t)
 {
-    if ((NULL != curScope_t) && (NULL != curScope_t->parent)) {
+    if ((NULL != curScope_t)) {
         return curScope_t->getParent();
     }
 
@@ -550,12 +627,10 @@ int Scope::defineSymbol(Symbol* symbol_t)
 
         case Symbol::SYMBOL_VAR: {
             symbol_t->setSymbolId();
-            symbol_t->setOffset(curStartOffset);
-            incCurStartOffset(symbol_t->getByteSize());
-            incTotalByteSize(symbol_t->getByteSize());
 
             addToSymbolSeqList(symbol_t);
             addToSymbolVarMap(symbol_t);
+
             addToAllSymbolMap(symbol_t);
             addToAllSymbolList(symbol_t);
 
@@ -563,12 +638,11 @@ int Scope::defineSymbol(Symbol* symbol_t)
         }
 
         case Symbol::SYMBOL_TEMPVAR: {
-            symbol_t->setOffset(curStartOffset);
-            incCurStartOffset(symbol_t->getByteSize());
-            incTotalByteSize(symbol_t->getByteSize());
+            symbol_t->setSymbolId();
 
             addToSymbolSeqList(symbol_t);
             addToSymbolTempVarMap(symbol_t);
+
             addToTempVarMap(symbol_t);
             addToAllSymbolMap(symbol_t);
             addToAllSymbolList(symbol_t);
@@ -577,11 +651,11 @@ int Scope::defineSymbol(Symbol* symbol_t)
         }
 
         case Symbol::SYMBOL_CLASSREFVAR: {
-            symbol_t->setOffset(curStartOffset);
-            incCurStartOffset(symbol_t->getByteSize());
-            incTotalByteSize(symbol_t->getByteSize());
+            symbol_t->setSymbolId();
 
             addToSymbolSeqList(symbol_t);
+            addToSymbolVarMap(symbol_t);
+
             addToAllSymbolMap(symbol_t);
             addToAllSymbolList(symbol_t);
 
@@ -589,11 +663,11 @@ int Scope::defineSymbol(Symbol* symbol_t)
         }
 
         case Symbol::SYMBOL_CLASSMEMVAR: {
-            symbol_t->setOffset(curStartOffset);
-            incCurStartOffset(symbol_t->getByteSize());
-            incTotalByteSize(symbol_t->getByteSize());
+            symbol_t->setSymbolId();
 
             addToSymbolSeqList(symbol_t);
+            addToSymbolVarMap(symbol_t);
+
             addToAllSymbolMap(symbol_t);
             addToAllSymbolList(symbol_t);
 
@@ -601,13 +675,11 @@ int Scope::defineSymbol(Symbol* symbol_t)
         }
 
         case Symbol::SYMBOL_CONSTANTVAR: {
-            symbol_t->setOffset(curStartOffset);
-            incCurStartOffset(symbol_t->getByteSize());
-            incTotalByteSize(symbol_t->getByteSize());
+            symbol_t->setSymbolId();
 
             addToSymbolSeqList(symbol_t);
-            addToSymbolTempVarMap(symbol_t);
-            addToTempVarMap(symbol_t);
+            addToSymbolVarMap(symbol_t);
+
             addToAllSymbolMap(symbol_t);
             addToAllSymbolList(symbol_t);
 
@@ -615,6 +687,8 @@ int Scope::defineSymbol(Symbol* symbol_t)
         }
 
         case Symbol::SYMBOL_INTEGER_CONSTANT: {
+            symbol_t->setSymbolId();
+
             addToConstantMap(symbol_t);
             addToAllSymbolMap(symbol_t);
             addToAllSymbolList(symbol_t);
@@ -623,6 +697,8 @@ int Scope::defineSymbol(Symbol* symbol_t)
         }
 
         case Symbol::SYMBOL_CHARACTER_CONSTANT: {
+            symbol_t->setSymbolId();
+
             addToConstantMap(symbol_t);
             addToAllSymbolMap(symbol_t);
             addToAllSymbolList(symbol_t);
@@ -631,6 +707,8 @@ int Scope::defineSymbol(Symbol* symbol_t)
         }
 
         case Symbol::SYMBOL_FLOATING_CONSTANT: {
+            symbol_t->setSymbolId();
+
             addToConstantMap(symbol_t);
             addToAllSymbolMap(symbol_t);
             addToAllSymbolList(symbol_t);
@@ -639,6 +717,8 @@ int Scope::defineSymbol(Symbol* symbol_t)
         }
 
         case Symbol::SYMBOL_STRING_LITERAL: {
+            symbol_t->setSymbolId();
+
             addToConstantMap(symbol_t);
             addToAllSymbolMap(symbol_t);
             addToAllSymbolList(symbol_t);
@@ -647,6 +727,8 @@ int Scope::defineSymbol(Symbol* symbol_t)
         }
 
         case Symbol::SYMBOL_LABEL: {
+            symbol_t->setSymbolId();
+
             addToLabelMap(symbol_t);
             addToAllSymbolMap(symbol_t);
             addToAllSymbolList(symbol_t);
@@ -668,6 +750,53 @@ int Scope::defineSymbol(Symbol* symbol_t)
     return 0;
 }
 
+
+Symbol* Scope::resolveSymbol(const string& symbolName_t, Symbol::SymbolType symbolType_t)
+{
+    switch (symbolType_t) {
+    case Symbol::SYMBOL_VAR:
+    case Symbol::SYMBOL_CLASSREFVAR:
+    case Symbol::SYMBOL_CONSTANTVAR:
+    case Symbol::SYMBOL_CLASSMEMVAR: {
+        return searchDownUpSymbolVarMap(Scope::s_curScope, symbolName_t);
+        break;
+    }
+    case Symbol::SYMBOL_TEMPVAR: {
+        return searchTempVarMap(symbolName_t);
+        break;
+    }
+    case Symbol::SYMBOL_INTEGER_CONSTANT:
+    case Symbol::SYMBOL_CHARACTER_CONSTANT:
+    case Symbol::SYMBOL_FLOATING_CONSTANT:
+    case Symbol::SYMBOL_STRING_LITERAL: {
+        return searchConstantMap(symbolName_t);
+        break;
+    }
+    case Symbol::SYMBOL_LABEL: {
+        return searchLabelMap(symbolName_t);
+        break;
+    }
+    default: {
+        return NULL;
+    }
+
+    }
+
+    return NULL;
+
+}
+
+Scope* Scope::resolveScope(const string& scopeName_t, Symbol::SymbolType symbolType_t)
+{
+    if (NULL != s_globalScope) {
+        Scope *scope_t = s_globalScope->searchChildName(scopeName_t);
+        if ( (NULL != scope_t) && (symbolType_t == scope_t->getScopeType()) ) {
+            return scope_t;
+        }
+    }
+
+    return NULL;
+}
 
 
 /*****************************Context***********************************************/

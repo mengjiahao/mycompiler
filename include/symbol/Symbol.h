@@ -3,17 +3,19 @@
 
 #include <string>
 #include <vector>
-#include "Scope.h"
+//#include "Scope.h"
+
 using namespace std;
 
 
 /*********************************TypeClass*****************************************/
 
 class Scope;
+
 class TypeClass {
 public:
     enum StorageType {STOR_INVALID = 0, STOR_EXTERN = 1, STOR_STATIC = 2,
-    STOR_AUTO = 3, STOR_REGISTER = 4};
+    STOR_AUTO = 4, STOR_REGISTER = 8};
 
     enum TypeSfType {SF_INVALID = 0, SF_VOID = 1, SF_CHAR = 2, SF_SHORT = 4, SF_INT = 8,
     SF_LONG = 16, SF_FLOAT = 32, SF_DOUBLE = 64, SF_SIGNED = 128, SF_UNSIGNED = 256};
@@ -50,7 +52,7 @@ public:
     virtual void addDimensions(int dim_t);
     virtual vector<int> getDimensions();
 
-    virtual void checkType();
+    virtual int checkType();
 
     virtual unsigned int getTypeByteSize();
 
@@ -77,7 +79,7 @@ public:
     Scope *refScope;
 
 
-    TypeClass *typeClass;
+    TypeClass typeClass;
 
     int offset;
     unsigned int byteSize;
@@ -122,7 +124,7 @@ public:
 
 };
 
-
+/*******************************
 class FuncSymble:public Symbol{
 private:
 	vector<TypeClass *> argu;
@@ -130,5 +132,7 @@ public:
 	int arguNum;
 	void addArgu(TypeClass *type);
 	FuncSymble();
-};
+};******************************/
+
+
 #endif

@@ -7,19 +7,20 @@
 #include <string>
 #include <stack>
 #include "Symbol.h"
+
 using namespace std;
 
 
 /***********************************Scope***************************************/
-class Scope;
+
 class Context;
-class Symbol;
-class TypeClass;
+
+
 class Scope {
 
 public:
     enum ScopeType {SCOPE_INVALID, SCOPE_GLOBAL, SCOPE_CLASS,
-    SCOPE_GLOBALFUNC, SCOPE_CLASSFUNC, SCOPE_LOCAL};
+    SCOPE_GLOBALFUNC, SCOPE_GLOBALFUNCDECL, SCOPE_CLASSFUNC, SCOPE_LOCAL};
 
     unsigned long scopeId;
     ScopeType scopeType;
@@ -49,6 +50,8 @@ public:
     static list<Scope *> s_allScopeList;
 
     static list<Symbol *> s_allSymbolList;
+
+    static Scope *s_globalScope;
 
     static Scope *s_curScope;
 
@@ -122,17 +125,25 @@ public:
     static void setCurScope(Scope *curScope_t);
     static Scope* getCurScope();
 
+    static void setGlobalScope(Scope *globalScope_t);
+    static Scope* getGlobalScope();
+
     virtual void initGlobalScope();
     virtual void initClassScope(const string &scopeName_t);
     virtual void initGlobalFuncScope(const string &scopeName_t);
     virtual void initClassFuncScope(const string &scopeName_t);
     virtual void initLocalScope();
+    virtual void initGlabalFuncDeclScope(const string &scopeName_t);
 
     static Scope* pushScope(Scope* curScope_t, Scope *newScope_t);
     static Scope* enterScope(Scope *nextScope_t);
     static Scope* encloseScope(Scope* curScope_t);
 
     virtual int defineSymbol(Symbol *symbol_t);
+
+    virtual Symbol* resolveSymbol(const string& symbolName_t, Symbol::SymbolType symbolType_t);
+    virtual Scope* resolveScope(const string& scopeName_t, Symbol::SymbolType symbolType_t);
+
 
     static Context* getSingletonContext();
 

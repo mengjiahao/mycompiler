@@ -50,7 +50,7 @@ void TypeClass::clone(TypeClass *typeClass_t)
 
 void TypeClass::setStorageType(TypeClass::StorageType storageType_t)
 {
-    storageType = storageType_t;
+    storageType |= storageType_t;
 }
 
 int TypeClass::getStorageType()
@@ -99,9 +99,9 @@ vector<int> TypeClass::getDimensions()
     return dimensions;
 }
 
-void TypeClass::checkType()
+int TypeClass::checkType()
 {
-
+    return 0;
 }
 
 unsigned int TypeClass::getTypeByteSize()
@@ -137,7 +137,7 @@ unsigned int TypeClass::getTypeByteSize()
 
 int TypeClass::compare(TypeClass* a, TypeClass* b)
 {
-
+    return 0;
 }
 
 
@@ -170,7 +170,7 @@ Symbol::~Symbol()
     symbolValue.clear();
     symbolType = Symbol::SYMBOL_INVALID;
 
-    typeClass->clearTypeClass();
+    typeClass.clearTypeClass();
 
     offset = -1;
     byteSize = 0;
@@ -182,7 +182,7 @@ void Symbol::clearSymbol()
     symbolValue.clear();
     symbolType = Symbol::SYMBOL_INVALID;
 
-    typeClass->clearTypeClass();
+    typeClass.clearTypeClass();
 
     offset = -1;
     byteSize = 0;
@@ -222,8 +222,8 @@ string Symbol::getSymbolName()
 
 void Symbol::addSymbolValue(const string &symbolValue_t)
 {
-    if ( (0 == symbolValue.size()) && (false == typeClass->getIsArray())
-    || (true == typeClass->getIsArray()) ) {
+    if ( ( (0 == symbolValue.size()) && (false == typeClass.getIsArray()) )
+    || (true == typeClass.getIsArray()) ) {
         symbolValue.push_back(symbolValue_t);
     }
 }
@@ -258,13 +258,13 @@ void Symbol::setTypeClass(TypeClass* typeClass_t)
     if (NULL == typeClass_t)
         return;
 
-    typeClass->clone(typeClass_t);
+    typeClass.clone(typeClass_t);
 }
 
 
-TypeClass *Symbol::getTypeClass()
+TypeClass* Symbol::getTypeClass()
 {
-    return typeClass;
+    return &typeClass;
 }
 
 void Symbol::setOffset(int offset_t)
@@ -294,7 +294,7 @@ void Symbol::computeByteSize()
         break;
     }
     case SYMBOL_FLOATING_CONSTANT: {
-        byteSize = typeClass->getTypeByteSize();
+        byteSize = typeClass.getTypeByteSize();
         break;
     }
     case SYMBOL_STRING_LITERAL: {
@@ -302,7 +302,7 @@ void Symbol::computeByteSize()
         break;
     }
     case SYMBOL_VAR: {
-        byteSize = typeClass->getTypeByteSize();
+        byteSize = typeClass.getTypeByteSize();
         break;
     }
     case SYMBOL_CLASSREFVAR: {
@@ -310,15 +310,15 @@ void Symbol::computeByteSize()
         break;
     }
     case SYMBOL_CONSTANTVAR: {
-        byteSize = typeClass->getTypeByteSize();
+        byteSize = typeClass.getTypeByteSize();
         break;
     }
     case SYMBOL_TEMPVAR: {
-        byteSize = typeClass->getTypeByteSize();
+        byteSize = typeClass.getTypeByteSize();
         break;
     }
     case SYMBOL_CLASSMEMVAR: {
-        byteSize = typeClass->getTypeByteSize();
+        byteSize = typeClass.getTypeByteSize();
         break;
     }
     case SYMBOL_LABEL: {
@@ -344,7 +344,7 @@ void Symbol::printSymbol()
 
 }
 
-
+/****************************
 FuncSymble::FuncSymble()
 {
 	symbolType=SYMBOL_LABEL;
@@ -355,7 +355,7 @@ void FuncSymble::addArgu(TypeClass *type)
 {
 	argu.push_back(type);
 	arguNum++;
-}
+}*****************************/
 
 
 
