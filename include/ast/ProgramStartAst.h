@@ -7,7 +7,7 @@
 
 class  ProgramStartAst: public NodeAst {
 	public:
-
+        virtual Info *walk();
 	public:
 		ProgramStartAst(NodeAst::NodeType nodeType_t);
 

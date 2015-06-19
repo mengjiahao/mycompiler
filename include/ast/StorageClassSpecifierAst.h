@@ -6,6 +6,7 @@
 
 class  StorageClassSpecifierAst: public NodeAst {
 	public:
+
 	public:
 		StorageClassSpecifierAst(NodeAst::NodeType nodeType_t);
 

@@ -5,7 +5,7 @@
 #include <string>
 #include <list>
 #include "../LogiMsg.h"
-
+#include "../symbol/Scope.h"
 using namespace std;
 
 class LexNodeAst {
@@ -22,10 +22,13 @@ public:
 
 	static void freeLexNodeList();
 };
+class Info
+{
 
+};
 class NodeAst {
 	public:
-
+        Info *infoCarry;
 		enum NodeType {
 			//invalid
 			T_INVALID,
@@ -397,7 +400,7 @@ class NodeAst {
 		virtual int addChild3(NodeAst *child1_t, NodeAst *child2_t, NodeAst *child3_t);
 		virtual int addChild4(NodeAst *child1_t, NodeAst *child2_t, NodeAst *child3_t, NodeAst *child4_t);
 		virtual int addChild5(NodeAst *child1_t, NodeAst *child2_t, NodeAst *child3_t, NodeAst *child4_t, NodeAst *child5_t);
-
+        virtual Info *walk()=0;
 		static void setNodeTreeRoot(NodeAst *root_t);
 		static NodeAst *getNodeTreeRoot();
 		static LogiMsg *getSingletonLogiMsg();
