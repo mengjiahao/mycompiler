@@ -4,4 +4,8 @@
 yacc.tab.h
 yacc.tab.c
 lex.yy.c
-
+*.cbp
+*.layout
+*.dot
+*.jpg
+testcomp.cpp

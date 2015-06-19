@@ -101,4 +101,8 @@ $(astimpobj):%.o:%.cpp %.h
 $(symbolobj):%.o:%.cpp %.h
 				$(cc) -c $(argu) $(addprefix $(astdir), $<) -o $@
 				mv $@ ./output
+
+.PHONY: dot
+dot:
+				dot -Tjpg demoAst.dot > demoAst.jpg
 				
