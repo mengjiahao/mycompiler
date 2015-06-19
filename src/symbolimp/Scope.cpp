@@ -1,5 +1,8 @@
 #include "../../include/symbol/Scope.h"
 
+#include <iostream>
+#include <fstream>
+
 using namespace std;
 
 /***********************************Scope***************************************/
@@ -22,7 +25,7 @@ Scope::Scope()
     superClass = NULL;
 
     level = -1;
-    startOffset = 0;
+    curStartOffset = 0;
     totalByteSize = 0;
 
     returnTypeClass = NULL;
@@ -41,7 +44,7 @@ Scope::~Scope()
     superClass = NULL;
 
     level = -1;
-    startOffset = 0;
+    curStartOffset = 0;
     totalByteSize = 0;
 
     if (NULL != returnTypeClass) {
@@ -592,8 +595,9 @@ then_push:
             newScope_t->setLevel(0);
         }
 
-        newScope_t->setScopeId();  //distribute id
+        newScope_t->setScopeId();  //distribute id for new scope
         addToAllScopeList(newScope_t);
+
         return newScope_t;
     }
 
@@ -786,16 +790,64 @@ Symbol* Scope::resolveSymbol(const string& symbolName_t, Symbol::SymbolType symb
 
 }
 
-Scope* Scope::resolveScope(const string& scopeName_t, Symbol::SymbolType symbolType_t)
+Scope* Scope::resolveScope(const string& scopeName_t, Scope::ScopeType scopeType_t)
 {
     if (NULL != s_globalScope) {
         Scope *scope_t = s_globalScope->searchChildName(scopeName_t);
-        if ( (NULL != scope_t) && (symbolType_t == scope_t->getScopeType()) ) {
+        if ( (NULL != scope_t) && (scopeType_t == scope_t->getScopeType()) ) {
             return scope_t;
         }
     }
 
     return NULL;
+}
+
+void Scope::printScopeTree()
+{
+    ofstream ofs;
+    cout << "printScopeTree" << endl;
+
+    ofs.open("SymbolTable.txt");
+
+    if (NULL != s_globalScope) {
+        s_globalScope->printScope(ofs);
+    }
+
+    ofs.close();
+
+}
+
+
+
+void Scope::printScope(ofstream &ofs_t)
+{
+
+
+    ofs_t << "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n";
+    ofs_t << "$Scope: " << scopeId << " " << scopeType << " " << scopeName << "\n";
+    ofs_t << "$space: " << level << " " << curStartOffset << " " << totalByteSize << "\n";
+    ofs_t << "$returnTypeClass:\n";
+    if (NULL != returnTypeClass) {
+        returnTypeClass->printTypeClass(ofs_t);
+    } else {
+        ofs_t << "has no returnTypeClass\n";
+    }
+
+    ofs_t << "$symbolSeqList:\n";
+    list<Symbol *>::iterator seqItr;
+    for(seqItr = symbolSeqList.begin(); seqItr != symbolSeqList.end(); ++seqItr) {
+        if (NULL != (*seqItr)) {
+            (*seqItr)->printSymbol(ofs_t);
+        }
+    }
+
+    ofs_t << "$childs:\n";
+    vector<Scope *>::iterator childItr;
+    for(childItr = childs.begin(); childItr != childs.end(); ++childItr) {
+        if (NULL != (*childItr)) {
+            (*childItr)->printScope(ofs_t);
+        }
+    }
 }
 
 

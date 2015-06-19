@@ -1764,8 +1764,15 @@ int main() {
 
    NodeAst::dotBfsNodeTree(NodeAst::getNodeTreeRoot());
 
+   if (NULL != NodeAst::s_root) {
+		NodeAst::s_root->walk();
+   }
+
+
    LexNodeAst::freeLexNodeList();
    NodeAst::freeNodeList();
+
+
 
    return 0;
 }

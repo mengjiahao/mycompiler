@@ -1,6 +1,8 @@
 #ifndef INCLUDE_SCOPE_H
 #define INCLUDE_SCOPE_H
 
+#include <iostream>
+#include <fstream>
 #include <map>
 #include <list>
 #include <vector>
@@ -34,7 +36,7 @@ public:
     unsigned int totalByteSize;
 
     TypeClass *returnTypeClass;
-	int startOffset;
+
     vector<Scope *> childs;
     unsigned int symbolsNo;
 
@@ -45,7 +47,7 @@ public:
     static map<string, Symbol *> s_labelMap;
     static map<string, Symbol *> s_constMap;
     static map<string, Symbol *> s_tempVarMap;
-    static map<unsigned long, Symbol*> s_allSymbolMap;
+    static map<unsigned long, Symbol *> s_allSymbolMap;
 
     static list<Scope *> s_allScopeList;
 
@@ -142,8 +144,10 @@ public:
     virtual int defineSymbol(Symbol *symbol_t);
 
     virtual Symbol* resolveSymbol(const string& symbolName_t, Symbol::SymbolType symbolType_t);
-    virtual Scope* resolveScope(const string& scopeName_t, Symbol::SymbolType symbolType_t);
+    virtual Scope* resolveScope(const string& scopeName_t, Scope::ScopeType scopeType_t);
 
+    static void printScopeTree();
+    virtual void printScope(ofstream &ofs_t);
 
     static Context* getSingletonContext();
 

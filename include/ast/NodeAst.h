@@ -405,6 +405,9 @@ class NodeAst {
 		static void dotBfsNodeTree(NodeAst *root_t);
 
 
+		virtual void walk();
+
+
 };
 
 

@@ -1,6 +1,8 @@
 #ifndef INCLUDE_ASTHEAD_H
 #define INCLUDE_ASTHEAD_H
 
+#include "./symbol/Symbol.h"
+#include "./symbol/Scope.h"
 
 #include "./ast/AbsDectorAst.h"
 #include "./ast/AddExpAst.h"

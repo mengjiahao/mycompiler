@@ -11,6 +11,8 @@ class  ProgramStartAst: public NodeAst {
 	public:
 		ProgramStartAst(NodeAst::NodeType nodeType_t);
 
+		virtual void walk();
+
 };
 
 #endif

@@ -56,6 +56,8 @@ public:
 
     virtual unsigned int getTypeByteSize();
 
+    virtual void printTypeClass(ofstream &ofs_t);
+
     static int compare(TypeClass *a, TypeClass *b);
 };
 
@@ -74,6 +76,7 @@ public:
     unsigned long symbolId;
     SymbolType symbolType;
     string symbolName;
+
     vector<string> symbolValue;
 
     Scope *refScope;
@@ -120,7 +123,7 @@ public:
     virtual void computeByteSize();
     virtual unsigned int getByteSize();
 
-    virtual void printSymbol();
+    virtual void printSymbol(ofstream &ofs_t);
 
 };
 
