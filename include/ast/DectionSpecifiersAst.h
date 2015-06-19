@@ -7,7 +7,7 @@ using namespace std;
 
 class  DectionSpecifiersAst: public NodeAst {
 	public:
-	    virtual Info *walk();
+	    virtual void walk();
 	public:
 		DectionSpecifiersAst(NodeAst::NodeType nodeType_t);
 

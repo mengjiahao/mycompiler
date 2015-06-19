@@ -6,7 +6,7 @@
 
 class FuncDefAst: public NodeAst {
 	public:
-	    virtual Info *walk();
+	    virtual void walk();
 	public:
 		FuncDefAst(NodeAst::NodeType nodeType_t);
 

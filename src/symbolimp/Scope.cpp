@@ -14,7 +14,6 @@ list<Scope *> Scope::s_allScopeList;
 list<Symbol *> Scope::s_allSymbolList;
 Scope *Scope::s_globalScope = NULL;
 Scope *Scope::s_curScope = NULL;
-Context *Scope::s_context = NULL;
 
 Scope::Scope()
 {
@@ -852,6 +851,20 @@ void Scope::printScope(ofstream &ofs_t)
 
 
 /*****************************Context***********************************************/
+Context::Context()
+{
+
+}
+
+Context::~Context()
+{
+
+}
+
+void Context::clearContext()
+{
+    tmpDeclType.clearTypeClass();
+}
 
 
 

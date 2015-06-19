@@ -7,15 +7,24 @@ ProgramStartAst::ProgramStartAst(NodeAst::NodeType nodeType_t) : NodeAst(nodeTyp
 
 
 
-Info *ProgramStartAst::walk()
+void ProgramStartAst::walk()
 {
-    Scope *tmp=new Scope();
+    Scope *tmp = new Scope();
     tmp->initGlobalScope();
-    if (Scope::pushScope(NULL,tmp)!=NULL)
+
+    if (NULL != Scope::pushScope(NULL, tmp))
     {
         Scope::setGlobalScope(tmp);
         Scope::setCurScope(tmp);
     }
-    childs.at(0)->walk();
-    return NULL;
+
+    cout << "ProgStartWalk" << endl;
+
+    for (int i = 0; i < childs.size(); ++i) {
+        if (NULL != childs.at(i)) {
+            childs.at(i)->walk();
+        }
+    }
+
+
 }

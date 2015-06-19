@@ -57,7 +57,6 @@ public:
 
     static Scope *s_curScope;
 
-    static Context *s_context;
 
 public:
     Scope();
@@ -149,7 +148,6 @@ public:
     static void printScopeTree();
     virtual void printScope(ofstream &ofs_t);
 
-    static Context* getSingletonContext();
 
 };
 
@@ -161,9 +159,9 @@ class Context {
 public:
     int state;
 
-    TypeClass *tmpDeclType;
+    TypeClass tmpDeclType;
 
-    list<Symbol *> tmpDeclVarId;
+    /*list<Symbol *> tmpDeclVarId;
 
     list<Symbol *> initValue;
 
@@ -176,7 +174,7 @@ public:
     list<Symbol *> tmpArgParamList;
 
     stack<Symbol *> tmpExpLeftVar;
-    stack<Symbol *> tmpExpRightVar;
+    stack<Symbol *> tmpExpRightVar;*/
 
 
 
@@ -186,7 +184,7 @@ public:
     Context();
     ~Context();
 
-    static void clearNewSymbol();
+    void clearContext();
 
 
 

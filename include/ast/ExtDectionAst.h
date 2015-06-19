@@ -7,7 +7,7 @@ using namespace std;
 
 class  ExtDectionAst: public NodeAst {
 	public:
-        virtual Info *walk();
+        virtual void walk();
 	public:
 		ExtDectionAst(NodeAst::NodeType nodeType_t);
 

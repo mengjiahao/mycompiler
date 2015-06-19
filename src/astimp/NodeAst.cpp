@@ -371,6 +371,7 @@ const char* NodeAst::s_nodeTypeString[] = {
 LogiMsg* NodeAst::s_logiMsg = NULL;
 list<NodeAst *> NodeAst::s_nodeList;
 NodeAst *NodeAst::s_root = NULL;
+Context *NodeAst::s_context = NULL;
 
 
 NodeAst::NodeAst()
@@ -619,6 +620,15 @@ LogiMsg* NodeAst::getSingletonLogiMsg()
     return s_logiMsg = new LogiMsg();
 }
 
+Context* NodeAst::getSingletonContext()
+{
+    if (NULL != s_context) {
+        return s_context;
+    }
+    return s_context = new Context();
+}
+
+
 void NodeAst::dotBfsNodeTree(NodeAst* root_t)
 {
     if (NULL == root_t)
@@ -698,9 +708,11 @@ void NodeAst::dotBfsNodeTree(NodeAst* root_t)
 
 }
 
-Info *NodeAst::walk()
-{
 
+
+void NodeAst::walk()
+{
+    cout << "NodeAstWalk" << endl;
 }
 
 

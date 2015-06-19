@@ -26,144 +26,98 @@ string TerminateAst::getDotToken()
     return token + " : " + s_nodeTypeString[nodeType];
 }
 
-Info *TerminateAst::walk()
+TerminateAst::~TerminateAst()
 {
-    if (token=="typedef")
-        return NULL;    //typedef is not support
-    else if (token=="extern")
-    {
-        TypeInfo *tmp=new TypeInfo();
-        tmp->clearTypeClass();
-        tmp->setStorageType(TypeClass::STOR_EXTERN);
-        infoCarry=tmp;
-        return tmp;
-    }
-    else if (token=="static")
-    {
-        TypeInfo *tmp=new TypeInfo();
-        tmp->clearTypeClass();
-        tmp->setStorageType(TypeClass::STOR_STATIC);
-        infoCarry=tmp;
-        return tmp;
-    }
-    else if (token=="auto")
-    {
-        TypeInfo *tmp=new TypeInfo();
-        tmp->clearTypeClass();
-        tmp->setStorageType(TypeClass::STOR_AUTO);
-        infoCarry=tmp;
-        return tmp;
-    }
-    else if (token=="register")
-    {
-        TypeInfo *tmp=new TypeInfo();
-        tmp->clearTypeClass();
-        tmp->setStorageType(TypeClass::STOR_REGISTER);
-        infoCarry=tmp;
-        return tmp;
-    }
-    else if (token=="void")
-    {
-        TypeInfo *tmp=new TypeInfo();
-        tmp->clearTypeClass();
-        tmp->setTypeSfType(TypeClass::SF_VOID);
-        infoCarry=tmp;
-        return tmp;
-    }
-    else if (token=="char")
-    {
-        TypeInfo *tmp=new TypeInfo();
-        tmp->clearTypeClass();
-        tmp->setTypeSfType(TypeClass::SF_CHAR);
-        infoCarry=tmp;
-        return tmp;
-    }
-    else if (token=="short")
-    {
-        TypeInfo *tmp=new TypeInfo();
-        tmp->clearTypeClass();
-        tmp->setTypeSfType(TypeClass::SF_SHORT);
-        infoCarry=tmp;
-        return tmp;
-    }
-    else if (token=="int")
-    {
-        TypeInfo *tmp=new TypeInfo();
-        tmp->clearTypeClass();
-        tmp->setTypeSfType(TypeClass::SF_INT);
-        infoCarry=tmp;
-        return tmp;
-    }
-    else if (token=="long")
-    {
-        TypeInfo *tmp=new TypeInfo();
-        tmp->clearTypeClass();
-        tmp->setTypeSfType(TypeClass::SF_LONG);
-        infoCarry=tmp;
-        return tmp;
-    }
-    else if (token=="float")
-    {
-        TypeInfo *tmp=new TypeInfo();
-        tmp->clearTypeClass();
-        tmp->setTypeSfType(TypeClass::SF_FLOAT);
-        infoCarry=tmp;
-        return tmp;
-    }
-    else if (token=="double")
-    {
-        TypeInfo *tmp=new TypeInfo();
-        tmp->clearTypeClass();
-        tmp->setTypeSfType(TypeClass::SF_DOUBLE);
-        infoCarry=tmp;
-        return tmp;
-    }
-    else if (token=="signed")
-    {
-        TypeInfo *tmp=new TypeInfo();
-        tmp->clearTypeClass();
-        tmp->setTypeSfType(TypeClass::SF_SIGNED);
-        infoCarry=tmp;
-        return tmp;
-    }
-    else if (token=="unsigned")
-    {
-        TypeInfo *tmp=new TypeInfo();
-        tmp->clearTypeClass();
-        tmp->setTypeSfType(TypeClass::SF_UNSIGNED);
-        infoCarry=tmp;
-        return tmp;
-    }
-    else if (token=="const")
-    {
-        TypeInfo *tmp=new TypeInfo();
-        tmp->clearTypeClass();
-        tmp->setTypeQfType(TypeClass::QF_CONST);
-        infoCarry=tmp;
-        return tmp;
-    }
-    else if (token=="volatile")
-    {
-        TypeInfo *tmp=new TypeInfo();
-        tmp->clearTypeClass();
-        tmp->setTypeQfType(TypeClass::QF_VOLATILE);
-        infoCarry=tmp;
-        return tmp;
-    }
-    else if (token=="virtual")
-    {
-        TypeInfo *tmp=new TypeInfo();
-        tmp->clearTypeClass();
-        tmp->setTypeQfType(TypeClass::QF_VIRTUAL);
-        infoCarry=tmp;
-        return tmp;
-    }
-    return NULL:
 
 }
 
-TerminateAst::~TerminateAst()
+void TerminateAst::walk()
 {
+    cout << "TerminateAstWalk" << endl;
+
+    if (token == "typedef")
+        return ;    //typedef is not support
+    else if (token == "extern")
+    {
+        s_context->tmpDeclType.clearTypeClass();
+        s_context->tmpDeclType.setStorageType(TypeClass::STOR_EXTERN);
+    }
+    else if (token == "static")
+    {
+        s_context->tmpDeclType.clearTypeClass();
+        s_context->tmpDeclType.setStorageType(TypeClass::STOR_STATIC);
+    }
+    else if (token=="auto")
+    {
+        s_context->tmpDeclType.clearTypeClass();
+        s_context->tmpDeclType.setStorageType(TypeClass::STOR_AUTO);
+    }
+    else if (token=="register")
+    {
+        s_context->tmpDeclType.clearTypeClass();
+        s_context->tmpDeclType.setStorageType(TypeClass::STOR_REGISTER);
+    }
+    else if (token=="void")
+    {
+        s_context->tmpDeclType.clearTypeClass();
+        s_context->tmpDeclType.setTypeSfType(TypeClass::SF_VOID);
+    }
+    else if (token=="char")
+    {
+        s_context->tmpDeclType.clearTypeClass();
+        s_context->tmpDeclType.setTypeSfType(TypeClass::SF_CHAR);
+    }
+    else if (token=="short")
+    {
+        s_context->tmpDeclType.clearTypeClass();
+        s_context->tmpDeclType.setTypeSfType(TypeClass::SF_SHORT);
+    }
+    else if (token=="int")
+    {
+        s_context->tmpDeclType.clearTypeClass();
+        s_context->tmpDeclType.setTypeSfType(TypeClass::SF_INT);
+    }
+    else if (token=="long")
+    {
+        s_context->tmpDeclType.clearTypeClass();
+        s_context->tmpDeclType.setTypeSfType(TypeClass::SF_LONG);
+    }
+    else if (token=="float")
+    {
+        s_context->tmpDeclType.clearTypeClass();
+        s_context->tmpDeclType.setTypeSfType(TypeClass::SF_FLOAT);
+    }
+    else if (token=="double")
+    {
+        s_context->tmpDeclType.clearTypeClass();
+        s_context->tmpDeclType.setTypeSfType(TypeClass::SF_DOUBLE);
+    }
+    else if (token=="signed")
+    {
+        s_context->tmpDeclType.clearTypeClass();
+        s_context->tmpDeclType.setTypeSfType(TypeClass::SF_SIGNED);
+    }
+    else if (token=="unsigned")
+    {
+        s_context->tmpDeclType.clearTypeClass();
+        s_context->tmpDeclType.setTypeSfType(TypeClass::SF_UNSIGNED);
+    }
+    else if (token=="const")
+    {
+        s_context->tmpDeclType.clearTypeClass();
+        s_context->tmpDeclType.setTypeQfType(TypeClass::QF_CONST);
+    }
+    else if (token=="volatile")
+    {
+        s_context->tmpDeclType.clearTypeClass();
+        s_context->tmpDeclType.setTypeQfType(TypeClass::QF_VOLATILE);
+    }
+    else if (token=="virtual")
+    {
+        s_context->tmpDeclType.clearTypeClass();
+        s_context->tmpDeclType.setTypeQfType(TypeClass::QF_VIRTUAL);
+
+    }
 
 }
 

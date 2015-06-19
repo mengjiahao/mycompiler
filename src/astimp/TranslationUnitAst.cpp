@@ -4,9 +4,11 @@ TranslationUnitAst::TranslationUnitAst(NodeAst::NodeType nodeType_t) : NodeAst(n
 
 }
 
-Info *TranslationUnitAst::walk()
+void TranslationUnitAst::walk()
 {
-    childs.at(0)->walk();
-    childs.at(1)->walk();
-    return NULL;
+    for (int i = 0; i < childs.size(); ++i) {
+        if (NULL != childs.at(i)) {
+            childs.at(i)->walk();
+        }
+    }
 }

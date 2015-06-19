@@ -4,9 +4,15 @@ DectionSpecifiersAst::DectionSpecifiersAst(NodeAst::NodeType nodeType_t) : NodeA
 
 }
 
-Info *DectionSpecifiersAst::walk()
+void DectionSpecifiersAst::walk()
 {
-    Info *tmp1=childs.at(0)->walk();
-    Info *tmp2=childs.at(1)->walk();
+    cout << "DectionSpecifiersAstWalk" << endl;
+
+    for (int i = 0; i < childs.size(); ++i) {
+        if (NULL != childs.at(i)) {
+            childs.at(i)->walk();
+        }
+
+    }
 
 }
