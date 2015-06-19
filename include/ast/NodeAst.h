@@ -8,6 +8,11 @@
 #include "../symbol/Scope.h"
 using namespace std;
 
+class TypeInfo:public Info, public TypeClass
+{
+
+};
+
 class LexNodeAst {
 public:
 	string token;
@@ -408,7 +413,6 @@ class NodeAst {
 		static void dotBfsNodeTree(NodeAst *root_t);
 
 
-		virtual void walk();
 
 
 };

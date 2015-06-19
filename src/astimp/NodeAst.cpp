@@ -698,7 +698,7 @@ void NodeAst::dotBfsNodeTree(NodeAst* root_t)
 
 }
 
-void NodeAst::walk()
+Info *NodeAst::walk()
 {
 
 }

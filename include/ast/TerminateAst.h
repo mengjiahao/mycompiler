@@ -5,10 +5,7 @@
 #include "NodeAst.h"
 
 
-class TypeInfo:public Info, public TypeClass
-{
 
-};
 class TerminateAst : public NodeAst{
 	public:
         virtual Info *walk();
