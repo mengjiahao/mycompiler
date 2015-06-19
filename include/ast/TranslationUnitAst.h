@@ -6,6 +6,7 @@
 
 class  TranslationUnitAst: public NodeAst {
 	public:
+	    virtual Info *walk();
 	public:
 		TranslationUnitAst(NodeAst::NodeType nodeType_t);
 

@@ -6,21 +6,16 @@ ProgramStartAst::ProgramStartAst(NodeAst::NodeType nodeType_t) : NodeAst(nodeTyp
 }
 
 
-void ProgramStartAst::walk()
+
+Info *ProgramStartAst::walk()
 {
-    Scope *globalScope = new Scope();
-    globalScope->initGlobalScope();
-
-
-
-    Scope *p = Scope::pushScope(NULL, globalScope);
-    if (NULL != p) {
-
-        Scope::setGlobalScope(p);
-        Scope::setCurScope(p);
-
+    Scope *tmp=new Scope();
+    tmp->initGlobalScope();
+    if (Scope::pushScope(NULL,tmp)!=NULL)
+    {
+        Scope::setGlobalScope(tmp);
+        Scope::setCurScope(tmp);
     }
-
-    Scope::printScopeTree();
-
+    childs.at(0)->walk();
+    return NULL;
 }

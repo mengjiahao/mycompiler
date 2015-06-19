@@ -26,7 +26,12 @@ string TerminateAst::getDotToken()
     return token + " : " + s_nodeTypeString[nodeType];
 }
 
+Info *TerminateAst::walk()
+{
+    if ((token=="typedef") || (token=="extern") || (token=="static") || (token=="auto") ||(token=="register"))
 
+
+}
 
 TerminateAst::~TerminateAst()
 {
