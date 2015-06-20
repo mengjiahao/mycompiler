@@ -11,6 +11,8 @@ class  PrimaryExpAst: public NodeAst {
 	public:
         PrimaryExpAst(NodeAst::NodeType nodeType_t);
 
+        virtual void walk();
+
 };
 
 
