@@ -8,6 +8,7 @@ class  ParamDectionAst: public NodeAst {
 	public:
 	public:
 		ParamDectionAst(NodeAst::NodeType nodeType_t);
+		virtual void walk();
 
 };
 

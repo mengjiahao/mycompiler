@@ -1771,7 +1771,7 @@ int main() {
 		NodeAst::s_root->walk();
    }
 
-
+   Scope::printScopeTree();
    LexNodeAst::freeLexNodeList();
    NodeAst::freeNodeList();
 

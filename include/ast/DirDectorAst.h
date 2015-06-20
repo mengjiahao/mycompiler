@@ -8,6 +8,7 @@ class DirDectorAst: public NodeAst {
 	public:
 	public:
 		DirDectorAst(NodeAst::NodeType nodeType_t);
+		virtual void walk();
 
 };
 

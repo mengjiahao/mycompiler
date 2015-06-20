@@ -160,25 +160,13 @@ public:
     int state;
 
     TypeClass tmpDeclType;
-
-    /*list<Symbol *> tmpDeclVarId;
-
-    list<Symbol *> initValue;
-
-    string tmpDeclCallId;
-
-    TypeClass * tmpReturnType;
-
-    list<Symbol *> tmpDeclParamList;
-
-    list<Symbol *> tmpArgParamList;
-
-    stack<Symbol *> tmpExpLeftVar;
-    stack<Symbol *> tmpExpRightVar;*/
-
-
-
-
+    string tmpIdenName;
+    vector<TypeClass> tmpParaTypeList;
+    vector<Symbol> tmpParaWithIdList;
+    int tmpParaWithoutIdNum;
+    void addParawithoutid(TypeClass m);
+    int tmpParaWithIdNum;
+    void addParawithid(Symbol m);
 
 public:
     Context();
