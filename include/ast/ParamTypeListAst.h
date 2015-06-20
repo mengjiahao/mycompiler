@@ -9,7 +9,7 @@ class  ParamTypeListAst: public NodeAst {
 
 	public:
 		ParamTypeListAst(NodeAst::NodeType nodeType_t);
-
+        virtual void walk();
 };
 
 #endif

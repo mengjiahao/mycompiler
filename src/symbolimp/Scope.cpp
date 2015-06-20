@@ -864,8 +864,24 @@ Context::~Context()
 void Context::clearContext()
 {
     tmpDeclType.clearTypeClass();
+    tmpIdenName="";
+    tmpParaTypeList.clear();
+    tmpParaWithIdList.clear();
+    tmpParaWithIdNum=0;
+    tmpParaWithoutIdNum=0;
 }
 
+void Context::addParawithid(Symbol m)
+{
+    tmpParaWithIdList.push_back(m);
+    tmpParaWithIdNum++;
+}
+
+void Context::addParawithoutid(TypeClass m)
+{
+    tmpParaTypeList.push_back(m);
+    tmpParaWithoutIdNum++;
+}
 
 
 

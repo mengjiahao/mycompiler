@@ -106,3 +106,7 @@ $(symbolobj):%.o:%.cpp %.h
 dot:
 				dot -Tjpg demoAst.dot > demoAst.jpg
 				
+
+.PHONY: clean
+clean:
+				rm ./output/*
