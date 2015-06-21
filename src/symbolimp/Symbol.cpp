@@ -13,7 +13,7 @@ TypeClass::TypeClass()
     storageType = TypeClass::STOR_INVALID;
     typeSfType = TypeClass::SF_INVALID;
     typeQfType = TypeClass::QF_INVALID;
-
+    scopeType=NULL;
     isArray = false;
 
 }
@@ -23,7 +23,7 @@ TypeClass::~TypeClass()
     storageType = TypeClass::STOR_INVALID;
     typeSfType = TypeClass::SF_INVALID;
     typeQfType = TypeClass::QF_INVALID;
-
+    scopeType=NULL;
     isArray = false;
     dimensions.clear();
 }
@@ -33,7 +33,7 @@ void TypeClass::clearTypeClass()
     storageType = TypeClass::STOR_INVALID;
     typeSfType = TypeClass::SF_INVALID;
     typeQfType = TypeClass::QF_INVALID;
-
+    scopeType=NULL;
     isArray = false;
     dimensions.clear();
 }
@@ -47,7 +47,7 @@ void TypeClass::clone(TypeClass *typeClass_t)
     storageType = typeClass_t->getStorageType();
     typeSfType = typeClass_t->getTypeSfType();
     typeQfType = typeClass_t->getTypeQfType();
-
+    scopeType=typeClass_t->scopeType;
     isArray = typeClass_t->getIsArray();
     dimensions = typeClass_t->getDimensions();
 }

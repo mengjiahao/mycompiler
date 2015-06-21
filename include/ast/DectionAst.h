@@ -8,6 +8,7 @@ class  DectionAst: public NodeAst {
 	public:
 
 	public:
+	    virtual void walk();
 		DectionAst(NodeAst::NodeType nodeType_t);
 
 };

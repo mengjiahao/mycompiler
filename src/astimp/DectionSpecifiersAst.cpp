@@ -17,6 +17,11 @@ void DectionSpecifiersAst::walk()
         childs.at(0)->walk();
         tmp[i]->clone(&(s_context->tmpDeclType));
     }
+    if (tmp[0]->scopeType || tmp[1]->scopeType)
+    {
+        std::cout<<"error: class type should not use with other type at line "<<getLineno()<<std::endl;
+        exit(0);
+    }
     judgetType(tmp[0],tmp[1]);
     tmp[0]->storageType|=tmp[1]->storageType;
     tmp[0]->typeQfType|=tmp[1]->typeQfType;

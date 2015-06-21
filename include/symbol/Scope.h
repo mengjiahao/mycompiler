@@ -143,7 +143,7 @@ public:
     virtual int defineSymbol(Symbol *symbol_t);
 
     virtual Symbol* resolveSymbol(const string& symbolName_t, Symbol::SymbolType symbolType_t);
-    virtual Scope* resolveScope(const string& scopeName_t, Scope::ScopeType scopeType_t);
+    static Scope* resolveScope(const string& scopeName_t, Scope::ScopeType scopeType_t);
 
     static void printScopeTree();
     virtual void printScope(ofstream &ofs_t);

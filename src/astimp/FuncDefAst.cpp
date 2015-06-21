@@ -26,6 +26,9 @@ void FuncDefAst::walk()
         std::cout<<"error:argument list do not have identifier"<<std::endl;
         exit(0);
     }
+    tmpScope->setScopeType(Scope::SCOPE_GLOBALFUNC);
+    Scope::pushScope(Scope::s_curScope,tmpScope);
+    Scope::setCurScope(tmpScope);
     if (s_context->tmpParaWithIdNum)
     {
         for (int i=0;i<s_context->tmpParaWithIdNum;i++)
@@ -33,11 +36,11 @@ void FuncDefAst::walk()
             Symbol *tmpsymbol=new Symbol(Symbol::SYMBOL_VAR);
             tmpsymbol->symbolName=s_context->tmpParaWithIdList.at(i).symbolName;
             tmpsymbol->typeClass.clone(&(s_context->tmpParaWithIdList.at(i).typeClass));
-            tmpScope->defineSymbol(tmpsymbol);
+            Scope::s_curScope->defineSymbol(tmpsymbol);
         }
     }
-    tmpScope->setScopeType(Scope::SCOPE_GLOBALFUNC);
-    Scope::pushScope(Scope::s_curScope,tmpScope);
+    //childs.at(2)->walk();
+    Scope::setCurScope(Scope::encloseScope(Scope::s_curScope));
 
 
 }

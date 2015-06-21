@@ -138,6 +138,8 @@ void TerminateAst::walk()
 
     //identifier_list
     case T_CTERMINATE_CIDLIST_ID: {
+        s_context->clearContext();
+        s_context->tmpIdenName=token;
         break;
     }
     case T_CTERMINATE_CIDLIST_IDLIST_ID: {
@@ -153,72 +155,81 @@ void TerminateAst::walk()
 
     //class_specifier
     case T_CTERMINATE_CCLASSSF_CLASS_ID_CLASSDECTIONLIST: {
+        s_context->clearContext();
+        s_context->tmpIdenName=token;
         break;
     }
     case T_CTERMINATE_CCLASSSF_CLASS_ID_IDLIST_CLASSDECTIONLIST: {
+        s_context->clearContext();
+        s_context->tmpIdenName=token;
+        break;
+    }
+    case T_CTERMINATE_CCLASSSF_CLASS_ID:{
+        s_context->clearContext();
+        s_context->tmpIdenName=token;
         break;
     }
 
     //type_qualifier
     case T_CTERMINATE_CTYPEQF_CONST: {
-        s_context->tmpDeclType.clearTypeClass();
+        s_context->clearContext();
         s_context->tmpDeclType.setTypeQfType(TypeClass::QF_CONST);
         break;
     }
     case T_CTERMINATE_CTYPEQF_VOLATILE: {
-        s_context->tmpDeclType.clearTypeClass();
+        s_context->clearContext();
         s_context->tmpDeclType.setTypeQfType(TypeClass::QF_VOLATILE);
         break;
     }
     case T_CTERMINATE_CTYPEQF_VIRTUAL: {
-        s_context->tmpDeclType.clearTypeClass();
+        s_context->clearContext();
         s_context->tmpDeclType.setTypeQfType(TypeClass::QF_VIRTUAL);
         break;
     }
 
     //type_specifier
     case T_CTERMINATE_CTYPESF_VOID: {
-        s_context->tmpDeclType.clearTypeClass();
+        s_context->clearContext();
         s_context->tmpDeclType.setTypeSfType(TypeClass::SF_VOID);
         break;
     }
     case T_CTERMINATE_CTYPESF_CHAR: {
-        s_context->tmpDeclType.clearTypeClass();
+        s_context->clearContext();
         s_context->tmpDeclType.setTypeSfType(TypeClass::SF_CHAR);
         break;
     }
     case T_CTERMINATE_CTYPESF_SHORT: {
-        s_context->tmpDeclType.clearTypeClass();
+        s_context->clearContext();
         s_context->tmpDeclType.setTypeSfType(TypeClass::SF_SHORT);
         break;
     }
     case T_CTERMINATE_CTYPESF_INT: {
-        s_context->tmpDeclType.clearTypeClass();
+        s_context->clearContext();
         s_context->tmpDeclType.setTypeSfType(TypeClass::SF_INT);
         break;
     }
     case T_CTERMINATE_CTYPESF_LONG: {
-        s_context->tmpDeclType.clearTypeClass();
+        s_context->clearContext();
         s_context->tmpDeclType.setTypeSfType(TypeClass::SF_LONG);
         break;
     }
     case T_CTERMINATE_CTYPESF_FLOAT: {
-        s_context->tmpDeclType.clearTypeClass();
+        s_context->clearContext();
         s_context->tmpDeclType.setTypeSfType(TypeClass::SF_FLOAT);
         break;
     }
     case T_CTERMINATE_CTYPESF_DOUBLE: {
-        s_context->tmpDeclType.clearTypeClass();
+        s_context->clearContext();
         s_context->tmpDeclType.setTypeSfType(TypeClass::SF_DOUBLE);
         break;
     }
     case T_CTERMINATE_CTYPESF_SIGNED: {
-        s_context->tmpDeclType.clearTypeClass();
+        s_context->clearContext();
         s_context->tmpDeclType.setTypeSfType(TypeClass::SF_SIGNED);
         break;
     }
     case T_CTERMINATE_CTYPESF_UNSIGNED: {
-        s_context->tmpDeclType.clearTypeClass();
+        s_context->clearContext();
         s_context->tmpDeclType.setTypeSfType(TypeClass::SF_UNSIGNED);
         break;
     }
@@ -228,22 +239,22 @@ void TerminateAst::walk()
         break;
     }
     case T_CTERMINATE_CSTORCLASSSF_EXTERN: {
-        s_context->tmpDeclType.clearTypeClass();
+        s_context->clearContext();
         s_context->tmpDeclType.setStorageType(TypeClass::STOR_EXTERN);
         break;
     }
     case T_CTERMINATE_CSTORCLASSSF_STATIC: {
-        s_context->tmpDeclType.clearTypeClass();
+        s_context->clearContext();
         s_context->tmpDeclType.setStorageType(TypeClass::STOR_STATIC);
         break;
     }
     case T_CTERMINATE_CSTORCLASSSF_AUTO: {
-        s_context->tmpDeclType.clearTypeClass();
+        s_context->clearContext();
         s_context->tmpDeclType.setStorageType(TypeClass::STOR_AUTO);
         break;
     }
     case T_CTERMINATE_CSTORCLASSSF_REGISITER: {
-        s_context->tmpDeclType.clearTypeClass();
+        s_context->clearContext();
         s_context->tmpDeclType.setStorageType(TypeClass::STOR_REGISTER);
         break;
     }

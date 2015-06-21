@@ -25,7 +25,7 @@ public:
     int storageType;
     int typeSfType;
     int typeQfType;
-
+    Scope *scopeType;      //用于类型是类的情况
     bool isArray;
     vector<int> dimensions;
 
