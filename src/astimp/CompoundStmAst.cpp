@@ -26,7 +26,7 @@ void CompoundStmAst::walk()
             break;
         }
         case T_CCOMPSTM_DECTIONLIST_STMLIST:{
-        cout << "!:comp" << endl;
+
             Scope *tmpScope = new Scope();
             tmpScope->setScopeType(Scope::SCOPE_LOCAL);
             Scope::pushScope(Scope::s_curScope, tmpScope);

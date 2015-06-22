@@ -39,7 +39,6 @@ void FuncDefAst::walk()
     Scope *tmpFuncImp = NULL;
     tmpFuncImp = Scope::resolveScope(tmpScope->scopeName, Scope::SCOPE_GLOBALFUNCDECL);
 
-    cout << "!:" << tmpScope->scopeName << endl;
 
     if ( NULL != tmpFuncImp ) {
 
