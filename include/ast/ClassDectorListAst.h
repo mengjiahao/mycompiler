@@ -8,7 +8,7 @@ class  ClassDectorListAst: public NodeAst {
 
 	public:
 		ClassDectorListAst(NodeAst::NodeType nodeType_t);
-
+        virtual void walk();
 };
 
 #endif

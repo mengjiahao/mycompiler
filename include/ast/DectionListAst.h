@@ -9,7 +9,7 @@ class  DectionListAst: public NodeAst {
 
 	public:
 		DectionListAst(NodeAst::NodeType nodeType_t);
-
+        virtual void walk();
 };
 
 #endif

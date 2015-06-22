@@ -29,6 +29,7 @@ void DirDectorAst::walk()
             string tmp1=s_context->tmpIdenName;
             childs.at(1)->walk();
             s_context->tmpIdenName=tmp1;
+            s_context->isFunc=true;
             break;
         }
         case T_CDIRDECTOR_DIRDECTOR_CALL_EXP:{
@@ -45,7 +46,7 @@ void DirDectorAst::walk()
             string tmp1=s_context->tmpIdenName;
             s_context->clearContext();
             s_context->tmpIdenName=tmp1;
-
+            s_context->isFunc=true;
             break;
         }
         default:{

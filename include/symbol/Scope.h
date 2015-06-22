@@ -22,7 +22,7 @@ class Scope {
 
 public:
     enum ScopeType {SCOPE_INVALID, SCOPE_GLOBAL, SCOPE_CLASS,
-    SCOPE_GLOBALFUNC, SCOPE_GLOBALFUNCDECL, SCOPE_CLASSFUNC, SCOPE_LOCAL};
+    SCOPE_GLOBALFUNC, SCOPE_GLOBALFUNCDECL, SCOPE_GLOBALFUNCCHAN,SCOPE_CLASSFUNC, SCOPE_LOCAL};
 
     unsigned long scopeId;
     ScopeType scopeType;
@@ -56,6 +56,10 @@ public:
     static Scope *s_globalScope;
 
     static Scope *s_curScope;
+
+    int paraTypeNum;
+    vector<TypeClass> paraType;
+    void addParaType(TypeClass *type_t);
 
 
 public:
@@ -164,6 +168,7 @@ public:
     vector<TypeClass> tmpParaTypeList;
     vector<Symbol> tmpParaWithIdList;
     int tmpParaWithoutIdNum;
+    bool isFunc;
     void addParawithoutid(TypeClass m);
     int tmpParaWithIdNum;
     void addParawithid(Symbol m);

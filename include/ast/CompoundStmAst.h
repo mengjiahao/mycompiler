@@ -10,7 +10,7 @@ class CompoundStmAst: public NodeAst {
 
 	public:
 		CompoundStmAst(NodeAst::NodeType nodeType_t);
-
+        virtual void walk();
 };
 
 #endif

@@ -30,6 +30,8 @@ Scope::Scope()
     returnTypeClass = NULL;
 
     symbolsNo = 0;
+    paraTypeNum=0;
+    paraType.clear();
 
     //addToAllScopeList(this);
 }
@@ -850,6 +852,15 @@ void Scope::printScope(ofstream &ofs_t)
 }
 
 
+
+void Scope::addParaType(TypeClass *type_t)
+{
+    TypeClass tmp;
+    tmp.clone(type_t);
+    paraType.push_back(tmp);
+    paraTypeNum++;
+}
+
 /*****************************Context***********************************************/
 Context::Context()
 {
@@ -869,6 +880,7 @@ void Context::clearContext()
     tmpParaWithIdList.clear();
     tmpParaWithIdNum=0;
     tmpParaWithoutIdNum=0;
+    isFunc=false;
 }
 
 void Context::addParawithid(Symbol m)

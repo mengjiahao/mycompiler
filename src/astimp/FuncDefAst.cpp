@@ -21,14 +21,30 @@ void FuncDefAst::walk()
     tmpScope->setReturnTypeClass(&(s_context->tmpDeclType));
     childs.at(1)->walk();
     tmpScope->setScopeName(s_context->tmpIdenName);
+    if (Scope::resolveScope(tmpScope->scopeName, Scope::SCOPE_GLOBALFUNC))
+    {
+        std::cout<<"error: this function has been defined at line "<<getLineno()<<std::endl;
+        exit(0);
+    }
+    if (Scope::resolveScope(tmpScope->scopeName, Scope::SCOPE_GLOBALFUNCDECL))
+    {
+        delete tmpScope;
+        tmpScope=Scope::resolveScope(tmpScope->scopeName, Scope::SCOPE_GLOBALFUNCDECL);
+        tmpScope->setScopeType(Scope::SCOPE_GLOBALFUNCCHAN);
+        Scope::setCurScope(tmpScope);
+    }
+    else
+    {
+        tmpScope->setScopeType(Scope::SCOPE_GLOBALFUNC);
+        Scope::pushScope(Scope::s_curScope,tmpScope);
+        Scope::setCurScope(tmpScope);
+    }
     if (s_context->tmpParaWithoutIdNum)
     {
         std::cout<<"error:argument list do not have identifier"<<std::endl;
         exit(0);
     }
-    tmpScope->setScopeType(Scope::SCOPE_GLOBALFUNC);
-    Scope::pushScope(Scope::s_curScope,tmpScope);
-    Scope::setCurScope(tmpScope);
+
     if (s_context->tmpParaWithIdNum)
     {
         for (int i=0;i<s_context->tmpParaWithIdNum;i++)
@@ -36,10 +52,15 @@ void FuncDefAst::walk()
             Symbol *tmpsymbol=new Symbol(Symbol::SYMBOL_VAR);
             tmpsymbol->symbolName=s_context->tmpParaWithIdList.at(i).symbolName;
             tmpsymbol->typeClass.clone(&(s_context->tmpParaWithIdList.at(i).typeClass));
+            if (Scope::s_curScope->symbolVarMap.find(tmpsymbol->symbolName)!=Scope::s_curScope->symbolVarMap.end())
+            {
+                std::cout<<"error: duplicate argument at line "<<getLineno()<<std::endl;
+                exit(0);
+            }
             Scope::s_curScope->defineSymbol(tmpsymbol);
         }
     }
-    //childs.at(2)->walk();
+    childs.at(2)->walk();
     Scope::setCurScope(Scope::encloseScope(Scope::s_curScope));
 
 

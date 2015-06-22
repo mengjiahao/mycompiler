@@ -21,7 +21,50 @@ void DectionAst::walk()
             break;
         }
         case T_CDECTION_DECTIONSFS_INITDECTORLIST:{
-
+            childs.at(0)->walk();
+            TypeClass *tmpType=new TypeClass();
+            tmpType->clone(&(s_context->tmpDeclType));
+            childs.at(1)->walk();
+            if (s_context->isFunc)
+            {
+                Scope *tmpScope=new Scope();
+                tmpScope->setReturnTypeClass(tmpType);
+                tmpScope->setScopeName(s_context->tmpIdenName);
+                tmpScope->setScopeType(Scope::SCOPE_GLOBALFUNCDECL);
+                Scope::pushScope(Scope::s_curScope,tmpScope);  //do not change s_curscope
+                if (s_context->tmpParaWithoutIdNum && s_context->tmpParaWithIdNum)
+                {
+                    std::cout<<"func para do not support mix style at line "<<getLineno()<<std::endl;
+                    exit(0);
+                }
+                if (s_context->tmpParaWithIdNum)
+                {
+                    for (int i=0; i < s_context->tmpParaWithIdNum ;i++)
+                    {
+                        tmpScope->addParaType(&(s_context->tmpParaWithIdList.at(i).typeClass));
+                    }
+                }
+                if (s_context->tmpParaWithoutIdNum)
+                {
+                    for (int i=0; i < s_context->tmpParaWithoutIdNum; i++)
+                    {
+                        tmpScope->addParaType(&(s_context->tmpParaTypeList.at(i)));
+                    }
+                }
+            }
+            else
+            {
+                Symbol *tmpsymbol=new Symbol(Symbol::SYMBOL_VAR);
+                tmpsymbol->symbolName=s_context->tmpIdenName;
+                tmpsymbol->typeClass.clone(tmpType);
+                if (Scope::s_curScope->symbolVarMap.find(tmpsymbol->symbolName)!=Scope::s_curScope->symbolVarMap.end())
+                {
+                    std::cout<<"error: duplicate var at line "<<getLineno()<<std::endl;
+                    exit(0);
+                }
+                Scope::s_curScope->defineSymbol(tmpsymbol);
+            }
+            delete tmpType;
             break;
         }
         default:{

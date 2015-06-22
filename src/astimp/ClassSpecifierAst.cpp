@@ -10,10 +10,15 @@ void ClassSpecifierAst::walk()
         case T_CCLASSSF_CLASS_ID_CLASSDECTIONLIST:{
             childs.at(0)->walk();
             Scope *tmpScope=new Scope();
+            if (Scope::resolveScope(s_context->tmpIdenName, Scope::SCOPE_CLASS))
+            {
+                std::cout<<"error: this class  has been defined at line "<<getLineno()<<std::endl;
+                exit(0);
+            }
             tmpScope->initClassScope(s_context->tmpIdenName);
             Scope::pushScope(Scope::s_curScope,tmpScope);
             Scope::setCurScope(tmpScope);
-            //childs.at(1)->walk();
+            childs.at(1)->walk();
             Scope::setCurScope(Scope::encloseScope(Scope::s_curScope));
             //std::cout<<"safsadfafasfsafasf"<<Scope::s_curScope->scopeName<<std::endl;
             TypeClass *tmp=new TypeClass();
@@ -26,6 +31,11 @@ void ClassSpecifierAst::walk()
         case T_CCLASSSF_CLASS_ID_IDLIST_CLASSDECTIONLIST:{
             childs.at(0)->walk();
             Scope *tmpScope=new Scope();
+            if (Scope::resolveScope(s_context->tmpIdenName, Scope::SCOPE_CLASS))
+            {
+                std::cout<<"error: this class  has been defined at line "<<getLineno()<<std::endl;
+                exit(0);
+            }
             tmpScope->initClassScope(s_context->tmpIdenName);
             if (childs.at(1)->nodeType!=T_CTERMINATE_CIDLIST_ID)
             {
@@ -42,7 +52,7 @@ void ClassSpecifierAst::walk()
             tmpScope->setSuperClass(superScope);
             Scope::pushScope(Scope::s_curScope,tmpScope);
             Scope::setCurScope(tmpScope);
-            //childs.at(2)->walk();
+            childs.at(2)->walk();
             Scope::setCurScope(Scope::encloseScope(Scope::s_curScope));
             TypeClass *tmp=new TypeClass();
             tmp->scopeType=tmpScope;

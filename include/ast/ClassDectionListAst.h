@@ -9,7 +9,7 @@ class  ClassDectionListAst: public NodeAst {
 
 	public:
 		ClassDectionListAst(NodeAst::NodeType nodeType_t);
-
+        virtual void walk();
 };
 
 #endif
