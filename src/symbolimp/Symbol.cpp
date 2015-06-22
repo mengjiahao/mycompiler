@@ -465,6 +465,7 @@ void Symbol::computeByteSize()
     }
     default: {
         byteSize = 0;
+
         break;
     }
 

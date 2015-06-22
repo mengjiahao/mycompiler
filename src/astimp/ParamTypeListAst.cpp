@@ -35,7 +35,7 @@ void ParamTypeListAst::walk()
     }
     else
     {
-        std::cout<<"error: nodetype error at ParamTypeListAst"<<std::endl;
+        std::cout<<"error in ParamTypeListAst: nodetype is invalid"<<std::endl;
         exit(0);
     }
 }

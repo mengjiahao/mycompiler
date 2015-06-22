@@ -41,6 +41,7 @@ void CompoundStmAst::walk()
             break;
         }
         default:{
+            std::cout << "error in CompoundStmAst: nodeType is invalid" << std::endl;
 
             break;
         }

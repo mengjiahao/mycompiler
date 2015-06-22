@@ -791,6 +791,8 @@ int Scope::defineSymbol(Symbol* symbol_t)
         }
 
         default: {
+
+            std::cout<<"error in defineSymbol(): SymbolType is invalid"<<std::endl;
             return 0;
         }
 
@@ -835,6 +837,7 @@ Symbol* Scope::resolveSymbol(const string& symbolName_t, Symbol::SymbolType symb
         break;
     }
     default: {
+        std::cout<<"error in resolveSymbol(): SymbolType is invalid"<<std::endl;
         return NULL;
     }
 

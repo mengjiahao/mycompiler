@@ -177,6 +177,8 @@ void ClassDectionAst::walk()
         }
         default:{
 
+            std::cout << "error in ClassDectionAst: nodeType is invalid" << std::endl;
+
             break;
         }
     }

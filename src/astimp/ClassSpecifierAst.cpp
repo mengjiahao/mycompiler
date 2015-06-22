@@ -101,7 +101,7 @@ void ClassSpecifierAst::walk()
             break;
         }
         default:{
-            std::cout<<"error: nodetype error at ClassSpecifierAst"<<std::endl;
+            std::cout << "error in ClassSpecifierAst: nodeType is invalid" << std::endl;
             exit(0);
             break;
         }

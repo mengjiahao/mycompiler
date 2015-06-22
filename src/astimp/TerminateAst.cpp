@@ -260,6 +260,8 @@ void TerminateAst::walk()
     }
 
     default: {
+
+        std::cout<<"error in TerminateAst: nodetype is invalid"<<std::endl;
         break;
     }
 

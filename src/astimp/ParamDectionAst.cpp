@@ -41,7 +41,8 @@ void ParamDectionAst::walk()
             break;
         }
         default:{
-            std::cout<<"error: unknown nodetype in ParamDectionAst"<<endl;
+            std::cout<<"error in ParamDectionAst: nodetype is invalid"<<endl;
+
             exit(0);
         }
     }

@@ -101,7 +101,8 @@ void DectionAst::walk()
             break;
         }
         default:{
-            std::cout<<"error: nodetype error at DectionAst"<<std::endl;
+
+            std::cout<<"error in DectionAst: nodetype is invalid"<<std::endl;
             exit(0);
             break;
         }

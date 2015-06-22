@@ -58,7 +58,7 @@ void DirDectorAst::walk()
             break;
         }
         default:{
-            std::cout<<"error: unknown nodetype in DirDectorAst"<<endl;
+            std::cout<<"error in DirDectorAst: nodetype is invalid"<<std::endl;
             exit(0);
         }
     }
