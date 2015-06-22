@@ -766,6 +766,10 @@ Symbol* Scope::resolveSymbol(const string& symbolName_t, Symbol::SymbolType symb
         return searchDownUpSymbolVarMap(Scope::s_curScope, symbolName_t);
         break;
     }
+    case Symbol::SYMBOL_PARAMVAR: {
+        return searchSymbolVarMap(symbolName_t);
+        break;
+    }
     case Symbol::SYMBOL_TEMPVAR: {
         return searchTempVarMap(symbolName_t);
         break;
@@ -858,7 +862,7 @@ void Scope::addParaType(TypeClass *type_t)
     TypeClass tmp;
     tmp.clone(type_t);
     paraType.push_back(tmp);
-    paraTypeNum++;
+    ++paraTypeNum;
 }
 
 /*****************************Context***********************************************/
@@ -875,24 +879,24 @@ Context::~Context()
 void Context::clearContext()
 {
     tmpDeclType.clearTypeClass();
-    tmpIdenName="";
+    tmpIdenName = "";
     tmpParaTypeList.clear();
     tmpParaWithIdList.clear();
-    tmpParaWithIdNum=0;
-    tmpParaWithoutIdNum=0;
-    isFunc=false;
+    tmpParaWithIdNum = 0;
+    tmpParaWithoutIdNum = 0;
+    isFunc = false;
 }
 
 void Context::addParawithid(Symbol m)
 {
     tmpParaWithIdList.push_back(m);
-    tmpParaWithIdNum++;
+    ++tmpParaWithIdNum;
 }
 
 void Context::addParawithoutid(TypeClass m)
 {
     tmpParaTypeList.push_back(m);
-    tmpParaWithoutIdNum++;
+    ++tmpParaWithoutIdNum;
 }
 
 

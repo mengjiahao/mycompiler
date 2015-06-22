@@ -173,7 +173,11 @@ void TypeClass::judgetType(TypeClass *type1_t,TypeClass *type2_t, int lineno)
     }
     if ((type1_t->getTypeSfType()&TypeClass::SF_SIGNED) || (type1_t->getTypeSfType()&TypeClass::SF_UNSIGNED) )
     {
-        if ((type2_t->getTypeSfType()&TypeClass::SF_UNSIGNED) || (type2_t->getTypeSfType()&TypeClass::SF_SIGNED) || (type2_t->getTypeSfType()&TypeClass::SF_DOUBLE) || (type2_t->getTypeSfType()&TypeClass::SF_FLOAT)  || (type2_t->getTypeSfType()&TypeClass::SF_VOID))
+        if ((type2_t->getTypeSfType()&TypeClass::SF_UNSIGNED)
+        || (type2_t->getTypeSfType()&TypeClass::SF_SIGNED)
+        || (type2_t->getTypeSfType()&TypeClass::SF_DOUBLE)
+        || (type2_t->getTypeSfType()&TypeClass::SF_FLOAT)
+        || (type2_t->getTypeSfType()&TypeClass::SF_VOID))
         {
            std::cout<<"error: wrong type at line: "<<lineno<<std::endl;
            exit(0);
@@ -181,7 +185,11 @@ void TypeClass::judgetType(TypeClass *type1_t,TypeClass *type2_t, int lineno)
     }
     if ((type2_t->getTypeSfType()&TypeClass::SF_SIGNED) || (type2_t->getTypeSfType()&TypeClass::SF_UNSIGNED) )
     {
-        if ((type1_t->getTypeSfType()&TypeClass::SF_UNSIGNED) || (type1_t->getTypeSfType()&TypeClass::SF_SIGNED) || (type1_t->getTypeSfType()&TypeClass::SF_DOUBLE) || (type1_t->getTypeSfType()&TypeClass::SF_FLOAT)  || (type1_t->getTypeSfType()&TypeClass::SF_VOID))
+        if ((type1_t->getTypeSfType()&TypeClass::SF_UNSIGNED)
+        || (type1_t->getTypeSfType()&TypeClass::SF_SIGNED)
+        || (type1_t->getTypeSfType()&TypeClass::SF_DOUBLE)
+        || (type1_t->getTypeSfType()&TypeClass::SF_FLOAT)
+        || (type1_t->getTypeSfType()&TypeClass::SF_VOID))
         {
            std::cout<<"error: wrong type at line: "<<lineno<<std::endl;
            exit(0);
@@ -237,7 +245,9 @@ void TypeClass::judgetType(TypeClass *type1_t,TypeClass *type2_t, int lineno)
     }
     if (type1_t->getTypeSfType()&TypeClass::SF_CHAR)
     {
-        if ((type2_t->getTypeSfType()&TypeClass::SF_SHORT) || (type2_t->getTypeSfType()&TypeClass::SF_LONG) || (type2_t->getTypeSfType()&TypeClass::SF_INT))
+        if ((type2_t->getTypeSfType()&TypeClass::SF_SHORT)
+        || (type2_t->getTypeSfType()&TypeClass::SF_LONG)
+        || (type2_t->getTypeSfType()&TypeClass::SF_INT))
         {
             std::cout<<"error: wrong type at line: "<<lineno<<std::endl;
             exit(0);
@@ -245,7 +255,9 @@ void TypeClass::judgetType(TypeClass *type1_t,TypeClass *type2_t, int lineno)
     }
     if (type2_t->getTypeSfType()&TypeClass::SF_CHAR)
     {
-        if ((type1_t->getTypeSfType()&TypeClass::SF_SHORT) || (type1_t->getTypeSfType()&TypeClass::SF_LONG) || (type1_t->getTypeSfType()&TypeClass::SF_INT))
+        if ((type1_t->getTypeSfType()&TypeClass::SF_SHORT)
+        || (type1_t->getTypeSfType()&TypeClass::SF_LONG)
+        || (type1_t->getTypeSfType()&TypeClass::SF_INT))
         {
             std::cout<<"error: wrong type at line: "<<lineno<<std::endl;
             exit(0);
@@ -424,6 +436,10 @@ void Symbol::computeByteSize()
         break;
     }
     case SYMBOL_VAR: {
+        byteSize = typeClass.getTypeByteSize();
+        break;
+    }
+    case SYMBOL_PARAMVAR: {
         byteSize = typeClass.getTypeByteSize();
         break;
     }

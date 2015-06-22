@@ -9,14 +9,16 @@ void InitDectorAst::walk()
 {
     switch (nodeType){
         case T_CINITDECTOR_DECTOR:{
+
             childs.at(0)->walk();
+
             break;
         }
         case T_CINITDECTOR_ASSGIN_INITZER:{
             break;
         }
         default:{
-            std::cout<<"nodetype error at InitDectorAst"<<std::endl;
+            std::cout<<"error in InitDectorAst: nodetype is invalid"<<std::endl;
             exit(0);
         }
     }

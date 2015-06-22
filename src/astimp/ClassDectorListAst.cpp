@@ -6,6 +6,7 @@ ClassDectorListAst::ClassDectorListAst(NodeAst::NodeType nodeType_t) : NodeAst(n
 
 void ClassDectorListAst::walk()
 {
-    std::cout << "sorry, we do not support this kind of declaration at line " << getLineno() << std::endl;
+    std::cout << "sorry in ClassDectorListAst: we do not support this kind of declaration at line "
+    << getLineno() << std::endl;
     exit(0);
 }

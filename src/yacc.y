@@ -1772,6 +1772,7 @@ int main() {
    }
 
    Scope::printScopeTree();
+
    LexNodeAst::freeLexNodeList();
    NodeAst::freeNodeList();
 

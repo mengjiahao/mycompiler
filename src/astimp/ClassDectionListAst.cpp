@@ -6,9 +6,10 @@ ClassDectionListAst::ClassDectionListAst(NodeAst::NodeType nodeType_t) : NodeAst
 
 void ClassDectionListAst::walk()
 {
-    if (nodeType!=T_CCLASSDECTIONLIST_CLASSDECTIONLIST_CLASSDECTION)
+    if (nodeType != T_CCLASSDECTIONLIST_CLASSDECTIONLIST_CLASSDECTION)
     {
-        std::cout << "nodetype error at ClassDectionListAst" << std::endl;
+        std::cout << "error: nodetype is not T_CCLASSDECTIONLIST_CLASSDECTIONLIST_CLASSDECTION in ClassDectionListAst"
+        << std::endl;
         exit(0);
     }
     childs.at(0)->walk();

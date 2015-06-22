@@ -20,16 +20,21 @@ void DirDectorAst::walk()
             break;
         }
         case T_CDIRDECTOR_DIRDECTOR_CALL_PARAMTYPELIST:{
-            if (childs.at(0)->nodeType!=T_CDIRDECTOR_ID)
+            if (childs.at(0)->nodeType != T_CDIRDECTOR_ID)
             {
-                std::cout<<"error: the name of function is not a identifier at line "<<getLineno()<<std::endl;
+                std::cout<<"error in T_CDIRDECTOR_DIRDECTOR_CALL_PARAMTYPELIST: the children's type is not T_CDIRDECTOR_ID at line "
+                <<getLineno()<<std::endl;
                 exit(0);
             }
+
             childs.at(0)->walk();
-            string tmp1=s_context->tmpIdenName;
+
+            string tmp1 = s_context->tmpIdenName;
+
             childs.at(1)->walk();
-            s_context->tmpIdenName=tmp1;
-            s_context->isFunc=true;
+
+            s_context->tmpIdenName = tmp1;
+            s_context->isFunc = true;
             break;
         }
         case T_CDIRDECTOR_DIRDECTOR_CALL_EXP:{
@@ -37,12 +42,15 @@ void DirDectorAst::walk()
             break;
         }
         case T_CDIRDECTOR_DIRDECTOR_CALL_VOID:{
-            if (childs.at(0)->nodeType!=T_CDIRDECTOR_ID)
+            if (childs.at(0)->nodeType != T_CDIRDECTOR_ID)
             {
-                std::cout<<"error: the name of function is not a identifier at line "<<getLineno()<<std::endl;
+                std::cout<<"error in T_CDIRDECTOR_DIRDECTOR_CALL_VOID: the children's type is not T_CDIRDECTOR_ID at line "
+                <<getLineno()<<std::endl;
                 exit(0);
             }
+
             childs.at(0)->walk();
+
             string tmp1=s_context->tmpIdenName;
             s_context->clearContext();
             s_context->tmpIdenName=tmp1;
@@ -50,7 +58,7 @@ void DirDectorAst::walk()
             break;
         }
         default:{
-            std::cout<<"unknown nodetype in DirDectorAst"<<endl;
+            std::cout<<"error: unknown nodetype in DirDectorAst"<<endl;
             exit(0);
         }
     }

@@ -6,12 +6,13 @@ DectionListAst::DectionListAst(NodeAst::NodeType nodeType_t) : NodeAst(nodeType_
 
 void DectionListAst::walk()
 {
-    if (nodeType!=T_CDECTIONLIST_DECTIONLIST_DECTION)
+    if (nodeType != T_CDECTIONLIST_DECTIONLIST_DECTION)
     {
-        std::cout << "nodetype error at DectionListAst" << std::endl;
+        std::cout << "error in DectionListAst: nodetype is not T_CDECTIONLIST_DECTIONLIST_DECTION"
+        << std::endl;
         exit(0);
     }
-    for (int i=0; i < childsNo; i++)
+    for (int i = 0; i < childsNo; ++i)
     {
         childs.at(i)->walk();
     }
