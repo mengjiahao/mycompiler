@@ -9,7 +9,7 @@ class  SpeciQualiFierListAst: public NodeAst {
 
 	public:
 		SpeciQualiFierListAst(NodeAst::NodeType nodeType_t);
-
+        virtual void walk();
 };
 
 #endif

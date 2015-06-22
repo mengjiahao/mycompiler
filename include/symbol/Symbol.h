@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 //#include "Scope.h"
-
+#include <cstdlib>
 using namespace std;
 
 
@@ -57,7 +57,7 @@ public:
     virtual unsigned int getTypeByteSize();
 
     virtual void printTypeClass(ofstream &ofs_t);
-
+    static void judgetType(TypeClass *type1_t,TypeClass *type2_t, int lineno);
     static int compare(TypeClass *a, TypeClass *b);
 };
 
