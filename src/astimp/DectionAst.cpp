@@ -55,14 +55,20 @@ void DectionAst::walk()
                 {
                     for (int i = 0; i < s_context->tmpParaWithIdNum ;i++)
                     {
-                        tmpScope->addParaType(&(s_context->tmpParaWithIdList.at(i).typeClass));
+                        //tmpScope->addParaType(&(s_context->tmpParaWithIdList.at(i).typeClass));
+                        Symbol *paramType = new Symbol(Symbol::SYMBOL_PARAMVAR);
+                        paramType->setTypeClass(&(s_context->tmpParaWithIdList.at(i).typeClass));
+                        tmpScope->defineSymbol(paramType);
                     }
                 }
                 if (s_context->tmpParaWithoutIdNum)
                 {
                     for (int i = 0; i < s_context->tmpParaWithoutIdNum; i++)
                     {
-                        tmpScope->addParaType(&(s_context->tmpParaTypeList.at(i)));
+                        //tmpScope->addParaType(&(s_context->tmpParaTypeList.at(i)));
+                        Symbol *paramType = new Symbol(Symbol::SYMBOL_PARAMVAR);
+                        paramType->setTypeClass(&(s_context->tmpParaTypeList.at(i)));
+                        tmpScope->defineSymbol(paramType);
                     }
                 }
 

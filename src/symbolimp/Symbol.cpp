@@ -440,7 +440,7 @@ void Symbol::computeByteSize()
         break;
     }
     case SYMBOL_PARAMVAR: {
-        byteSize = typeClass.getTypeByteSize();
+        byteSize = 0;
         break;
     }
     case SYMBOL_CLASSREFVAR: {

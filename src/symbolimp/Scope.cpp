@@ -30,8 +30,8 @@ Scope::Scope()
     returnTypeClass = NULL;
 
     symbolsNo = 0;
-    paraTypeNum=0;
-    paraType.clear();
+    //paraTypeNum=0;
+    //paraType.clear();
 
     //addToAllScopeList(this);
 }
@@ -293,6 +293,12 @@ int Scope::addToSymbolSeqList(Symbol* symbol_t)
     return 0;
 }
 
+void Scope::clearSymbolSeqList()
+{
+    symbolSeqList.clear();
+}
+
+
 int Scope::addToLabelMap(Symbol* label_t)
 {
     if (NULL != label_t) {
@@ -399,6 +405,20 @@ int Scope::addToAllScopeList(Scope* scope_t)
     return 0;
 }
 
+void Scope::freeAllScopeList()
+{
+    list<Scope *>::iterator itr;
+    int i;
+    for (i = 0, itr = Scope::s_allScopeList.begin(); Scope::s_allScopeList.end() != itr; ++itr) {
+        delete(*itr);
+        ++i;
+    }
+    cout << "Scope's Num is " << i << endl;
+
+    Scope::s_allScopeList.clear();
+}
+
+
 int Scope::addToAllSymbolList(Symbol* symbol_t)
 {
     if (NULL != symbol_t) {
@@ -408,6 +428,20 @@ int Scope::addToAllSymbolList(Symbol* symbol_t)
 
     return 0;
 }
+
+void Scope::freeAllSymbolList()
+{
+    list<Symbol *>::iterator itr;
+    int i;
+    for (i = 0, itr = Scope::s_allSymbolList.begin(); Scope::s_allSymbolList.end() != itr; ++itr) {
+        delete(*itr);
+        ++i;
+    }
+    cout << "Symbol's Num is " << i << endl;
+
+    Scope::s_allSymbolList.clear();
+}
+
 
 void Scope::setCurScope(Scope* curScope_t)
 {
@@ -546,7 +580,8 @@ Scope* Scope::pushScope(Scope* curScope_t, Scope* newScope_t)
         } else if ( NULL != curScope_t && (Scope::SCOPE_GLOBAL == curScope_t->getScopeType())
         && ( (Scope::SCOPE_CLASS == newScope_t->getScopeType()) ||
         (Scope::SCOPE_GLOBALFUNC == newScope_t->getScopeType()) ||
-        (Scope::SCOPE_GLOBALFUNCDECL == newScope_t->getScopeType()) ) ) {
+        (Scope::SCOPE_GLOBALFUNCDECL == newScope_t->getScopeType()) ||
+        (Scope::SCOPE_GLOBALFUNCCHAN == newScope_t->getScopeType()) ) ) {
 
             goto then_push;
 
@@ -556,6 +591,11 @@ Scope* Scope::pushScope(Scope* curScope_t, Scope* newScope_t)
             goto then_push;
 
         } else if ( NULL != curScope_t && (Scope::SCOPE_GLOBALFUNC == curScope_t->getScopeType())
+        && (Scope::SCOPE_LOCAL == newScope_t->getScopeType())  ) {
+
+            goto then_push;
+
+        } else if ( NULL != curScope_t && (Scope::SCOPE_GLOBALFUNCCHAN == curScope_t->getScopeType())
         && (Scope::SCOPE_LOCAL == newScope_t->getScopeType())  ) {
 
             goto then_push;
@@ -639,6 +679,15 @@ int Scope::defineSymbol(Symbol* symbol_t)
             addToAllSymbolMap(symbol_t);
             addToAllSymbolList(symbol_t);
 
+            break;
+        }
+
+        case Symbol::SYMBOL_PARAMVAR: {
+            symbol_t->setSymbolId();
+
+            addToSymbolSeqList(symbol_t);
+
+            addToAllSymbolList(symbol_t);
             break;
         }
 
@@ -857,13 +906,13 @@ void Scope::printScope(ofstream &ofs_t)
 
 
 
-void Scope::addParaType(TypeClass *type_t)
+/*void Scope::addParaType(TypeClass *type_t)
 {
     TypeClass tmp;
     tmp.clone(type_t);
     paraType.push_back(tmp);
     ++paraTypeNum;
-}
+}*/
 
 /*****************************Context***********************************************/
 Context::Context()

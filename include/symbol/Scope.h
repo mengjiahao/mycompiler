@@ -22,7 +22,7 @@ class Scope {
 
 public:
     enum ScopeType {SCOPE_INVALID, SCOPE_GLOBAL, SCOPE_CLASS,
-    SCOPE_GLOBALFUNC, SCOPE_GLOBALFUNCDECL, SCOPE_GLOBALFUNCCHAN,SCOPE_CLASSFUNC, SCOPE_LOCAL};
+    SCOPE_GLOBALFUNC, SCOPE_GLOBALFUNCDECL, SCOPE_GLOBALFUNCCHAN, SCOPE_CLASSFUNC, SCOPE_LOCAL};
 
     unsigned long scopeId;
     ScopeType scopeType;
@@ -57,9 +57,9 @@ public:
 
     static Scope *s_curScope;
 
-    int paraTypeNum;
-    vector<TypeClass> paraType;
-    void addParaType(TypeClass *type_t);
+    //int paraTypeNum;
+    //vector<TypeClass> paraType;
+
 
 
 public:
@@ -110,6 +110,7 @@ public:
     virtual Symbol* searchSymbolTempVarMap(const string &symbolName_t);
 
     virtual int addToSymbolSeqList(Symbol *symbol_t);
+    virtual void clearSymbolSeqList();
 
     static int addToLabelMap(Symbol *label_t);
     static Symbol* searchLabelMap(const string &labelName_t);
@@ -124,8 +125,10 @@ public:
     static Symbol* searchAllSymbolMap(unsigned long symbolId_t);
 
     static int addToAllScopeList(Scope *scope_t);
+    static void freeAllScopeList();
 
     static int addToAllSymbolList(Symbol *symbol_t);
+    static void freeAllSymbolList();
 
     static void setCurScope(Scope *curScope_t);
     static Scope* getCurScope();
@@ -151,6 +154,8 @@ public:
 
     static void printScopeTree();
     virtual void printScope(ofstream &ofs_t);
+
+    //virtual void addParaType(TypeClass *type_t);
 
 
 };

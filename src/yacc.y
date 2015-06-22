@@ -1775,6 +1775,8 @@ int main() {
 
    LexNodeAst::freeLexNodeList();
    NodeAst::freeNodeList();
+   Scope::freeAllSymbolList();
+   Scope::freeAllScopeList();
 
 
 

@@ -36,14 +36,25 @@ void FuncDefAst::walk()
         exit(0);
     }
 
-    if (Scope::resolveScope(tmpScope->scopeName, Scope::SCOPE_GLOBALFUNCDECL)) {
+    Scope *tmpFuncImp = NULL;
+    tmpFuncImp = Scope::resolveScope(tmpScope->scopeName, Scope::SCOPE_GLOBALFUNCDECL);
+
+    cout << "!:" << tmpScope->scopeName << endl;
+
+    if ( NULL != tmpFuncImp ) {
+
         delete tmpScope;
-        tmpScope=Scope::resolveScope(tmpScope->scopeName, Scope::SCOPE_GLOBALFUNCDECL);
+        tmpScope = tmpFuncImp;
+        tmpScope->clearSymbolSeqList();
+
         tmpScope->setScopeType(Scope::SCOPE_GLOBALFUNCCHAN);   //replace
+
+
         Scope::setCurScope(tmpScope);
     } else {
         tmpScope->setScopeType(Scope::SCOPE_GLOBALFUNC);
-        Scope::pushScope(Scope::s_curScope,tmpScope);
+
+        Scope::pushScope(Scope::s_curScope, tmpScope);
         Scope::setCurScope(tmpScope);
     }
 
@@ -56,7 +67,7 @@ void FuncDefAst::walk()
 
     if (s_context->tmpParaWithIdNum)
     {
-        for (int i=0;i<s_context->tmpParaWithIdNum;i++)
+        for (int i = 0; i < s_context->tmpParaWithIdNum; i++)
         {
             Symbol *tmpsymbol = new Symbol(Symbol::SYMBOL_VAR);
             tmpsymbol->symbolName = s_context->tmpParaWithIdList.at(i).symbolName;
