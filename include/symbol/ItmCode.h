@@ -1,12 +1,14 @@
 #ifndef INCLUDE_ITMCODE_H
 #define INCLUDE_ITMCODE_H
 
+#include <iostream>
+#include <fstream>
 #include <list>
 #include <vector>
+#include "./Symbol.h"
+#include "./Scope.h"
 
 using namespace std;
-
-class Symbol;
 
 
 class Reg {
@@ -27,6 +29,9 @@ public:
 
 
 public:
+    virtual int getRegType();
+    virtual int getRegValueType();
+
     static void initRegs();
 
     static Reg* getReg(RegType regType_t, RegValueType regValueType_t);
@@ -35,7 +40,7 @@ public:
 
 class ItmCode {
 public:
-    enum IRtype {IR_INVALID, IR_EMITFUNC, IR_EMITVAR, IR_CALLFUNC, IR_FETCHARRAY,
+    enum IRtype {IR_INVALID, IR_PUSHVAR, IR_POPVAR, IR_EMITVAR, IR_EMITFUNC, IR_CALLFUNC, IR_FETCHARRAY,
     IR_NEW_OP, IR_DELETE_OP, IR_ASSG_OP, IR_MUL_ASSIGN, IR_DIV_ASSIGN, IR_MOD_ASSIGN,
     IR_ADD_ASSIGN, IR_SUB_ASSIGN, IR_LEFT_ASSIGN, IR_RIGHT_ASSIGN, IR_AND_ASSIGN,
     IR_XOR_ASSIGN, IR_OR_ASSIGN, IR_LOGOR_OP, IR_LOGAND_OP, IR_EQ_OP, IR_NE_OP,
@@ -71,11 +76,16 @@ public:
     ItmCode(IRtype iRType_t, OperandType t1_t, void *v1_t,
     OperandType t2_t, void *v2_t, OperandType t3_t, void *v3_t);
 
+    virtual void printOperand(ofstream &ofs_t, OperandType opType_t, void *op_t);
+    virtual void printItmCode(ofstream &ofs_t);
+
     static void addToAllArgList(list<Symbol *> *argList_t);
     static void freeAllArgList();
 
     static void addToAllItmCode(ItmCode *itmCode_t);
     static void freeAllItmCode();
+
+    static void printAllItmCode();
 
 
 };

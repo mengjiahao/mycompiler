@@ -902,33 +902,40 @@ void Scope::printScopeTree()
 
 void Scope::printScope(ofstream &ofs_t)
 {
+    if (ofs_t.is_open()) {
+        ofs_t << "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n";
+        ofs_t << "$Scope: " << scopeId << " " << scopeType << " " << scopeName << "\n";
+        ofs_t << "$level: " << level << " " << curStartOffset << " " << totalByteSize << "\n";
+        ofs_t << "$returnTypeClass:\n";
+        if (NULL != returnTypeClass) {
+            returnTypeClass->printTypeClass(ofs_t);
+        } else {
+            ofs_t << "has no returnTypeClass\n";
+        }
+
+        ofs_t << "$symbolSeqList:\n";
+        list<Symbol *>::iterator seqItr;
+        for(seqItr = symbolSeqList.begin(); seqItr != symbolSeqList.end(); ++seqItr) {
+            if (NULL != (*seqItr)) {
+                (*seqItr)->printSymbol(ofs_t);
+            }
+        }
+
+        ofs_t << "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$childsScopes$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n";
+        vector<Scope *>::iterator childItr;
+        for(childItr = childs.begin(); childItr != childs.end(); ++childItr) {
+            if (NULL != (*childItr)) {
+                (*childItr)->printScope(ofs_t);
+            }
+        }
 
 
-    ofs_t << "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n";
-    ofs_t << "$Scope: " << scopeId << " " << scopeType << " " << scopeName << "\n";
-    ofs_t << "$level: " << level << " " << curStartOffset << " " << totalByteSize << "\n";
-    ofs_t << "$returnTypeClass:\n";
-    if (NULL != returnTypeClass) {
-        returnTypeClass->printTypeClass(ofs_t);
     } else {
-        ofs_t << "has no returnTypeClass\n";
+        std::cout << "error in printScope(): SymbolTable.txt is not open" << std::endl;
+
     }
 
-    ofs_t << "$symbolSeqList:\n";
-    list<Symbol *>::iterator seqItr;
-    for(seqItr = symbolSeqList.begin(); seqItr != symbolSeqList.end(); ++seqItr) {
-        if (NULL != (*seqItr)) {
-            (*seqItr)->printSymbol(ofs_t);
-        }
-    }
 
-    ofs_t << "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$childsScopes$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n";
-    vector<Scope *>::iterator childItr;
-    for(childItr = childs.begin(); childItr != childs.end(); ++childItr) {
-        if (NULL != (*childItr)) {
-            (*childItr)->printScope(ofs_t);
-        }
-    }
 }
 
 

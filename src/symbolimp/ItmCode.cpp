@@ -1,6 +1,7 @@
 #include "../../include/symbol/ItmCode.h"
 
 #include <iostream>
+#include <fstream>
 #include <list>
 #include <vector>
 
@@ -10,6 +11,18 @@ using namespace std;
 int Reg::RegTypeNo = 13;
 int Reg::RegValueTypeNo = 10;
 Reg Reg::regs[13][10];
+
+
+int Reg::getRegType()
+{
+    return regType;
+}
+
+int Reg::getRegValueType()
+{
+    return regValueType;
+}
+
 
 void Reg::initRegs()
 {
@@ -21,6 +34,8 @@ void Reg::initRegs()
         }
     }
 }
+
+
 
 Reg* Reg::getReg(RegType regType_t, RegValueType regValueType_t)
 {
@@ -101,4 +116,91 @@ void ItmCode::freeAllItmCode()
     cout << "AllItmCode's Num is " << i << endl;
 
     s_allItmCode.clear();
+}
+
+void ItmCode::printOperand(ofstream& ofs_t, OperandType opType_t, void *op_t)
+{
+    if (ofs_t.is_open()) {
+
+        switch(opType_t) {
+        case OPR_SYMBOL: {
+            ofs_t << "Symbol(" << ((Symbol *)op_t)->getSymbolId()
+            << "): " << ((Symbol *)op_t)->getSymbolName();
+            break;
+        }
+        case OPR_SCOPE: {
+            ofs_t << "Scope(" << ((Scope *)op_t)->getScopeId()
+            << "): " << ((Scope *)op_t)->getScopeId();
+            break;
+        }
+        case OPR_ARGLIST: {
+            ofs_t << "ARGLIST(";
+            list<Symbol *> *lop_t = (list<Symbol *>*)op_t;
+            if (NULL != lop_t) {
+                list<Symbol *>::iterator itr;
+                for (itr = (*lop_t).begin(); itr != (*lop_t).end(); ++itr) {
+                    if (NULL != *itr) {
+                        ofs_t << (*itr)->getSymbolName() << "("
+                        << (*itr)->getSymbolId() << ")--";
+                    }
+                }
+            }
+            ofs_t << ")";
+            break;
+        }
+        case OPR_REGISTER: {
+            ofs_t << "Reg(";
+            ofs_t << ((Reg *)op_t)->getRegType();
+            ofs_t << "): " << ((Reg *)op_t)->getRegValueType();
+            break;
+        }
+        default: {
+            ofs_t << "NULL";
+            break;
+        }
+
+
+        }
+
+
+    } else {
+        cout << "error in printOperand(): IR.txt is not open" << endl;
+    }
+}
+
+
+void ItmCode::printItmCode(ofstream &ofs_t)
+{
+    if (ofs_t.is_open()) {
+
+        ofs_t << iRType << " , ";
+        printOperand(ofs_t, t1, v1);
+        ofs_t << " , ";
+        printOperand(ofs_t, t2, v2);
+        ofs_t << " , ";
+        printOperand(ofs_t, t3, v3);
+        ofs_t << "\n";
+
+    } else {
+        cout << "error in printItmCode(): IR.txt is not open" << endl;
+    }
+}
+
+
+void ItmCode::printAllItmCode()
+{
+    ofstream ofs;
+    cout << ">>>printItmCode in IR.txt" << endl;
+
+    ofs.open("IR.txt");
+
+    vector<ItmCode *>::iterator itr;
+    for (itr = s_allItmCode.begin(); itr != s_allItmCode.end(); ++itr) {
+        if (NULL != *itr) {
+            (*itr)->printItmCode(ofs);
+        }
+    }
+
+
+    ofs.close();
 }

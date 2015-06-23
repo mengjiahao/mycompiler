@@ -151,6 +151,8 @@ void TypeClass::printTypeClass(ofstream& ofs_t)
         ofs_t << "\n";
         }
 
+    } else {
+        std::cout << "error in printTypeClass(): SymbolTable.txt is not open" << std::endl;
     }
 }
 
@@ -492,6 +494,8 @@ void Symbol::printSymbol(ofstream& ofs_t)
         typeClass.printTypeClass(ofs_t);
         ofs_t << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n";
 
+    } else {
+        std::cout << "error in printSymbol(): SymbolTable.txt is not open" << std::endl;
     }
 }
 
