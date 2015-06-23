@@ -173,13 +173,13 @@ void ItmCode::printItmCode(ofstream &ofs_t)
 {
     if (ofs_t.is_open()) {
 
-        ofs_t << iRType << " , ";
+        ofs_t << "{ " << iRType << " , ";
         printOperand(ofs_t, t1, v1);
         ofs_t << " , ";
         printOperand(ofs_t, t2, v2);
         ofs_t << " , ";
         printOperand(ofs_t, t3, v3);
-        ofs_t << "\n";
+        ofs_t << " }\n";
 
     } else {
         cout << "error in printItmCode(): IR.txt is not open" << endl;
