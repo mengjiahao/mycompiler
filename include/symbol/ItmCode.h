@@ -8,6 +8,31 @@ using namespace std;
 
 class Symbol;
 
+
+class Reg {
+public:
+    enum RegType {REG_INVALID, REG_EAX, REG_EBX, REG_ECX, REG_EDX,
+    REG_ST0, REG_ST1, REG_ST2, REG_ST3, REG_ST4, REG_ST5, REG_ST6, REG_ST7};
+
+    enum RegValueType {REG_CHAR, REG_INT, REG_LONG, REG_FLOAT, REG_DOUBLE,
+    REG_U_CHAR, REG_U_INT, REG_U_LONG, REG_U_FLOAT, REG_U_DOUBLE};
+
+    static int RegTypeNo;
+    static int RegValueTypeNo;
+
+    int regType;
+    int regValueType;
+
+    static Reg regs[13][10];
+
+
+public:
+    static void initRegs();
+
+    static Reg* getReg(RegType regType_t, RegValueType regValueType_t);
+
+};
+
 class ItmCode {
 public:
     enum IRtype {IR_INVALID, IR_EMITFUNC, IR_EMITVAR, IR_CALLFUNC, IR_FETCHARRAY,
@@ -20,13 +45,13 @@ public:
     IR_RETURN};
 
     enum OperandType {OPR_INVALID, OPR_SYMBOL, OPR_SCOPE, OPR_ARGLIST,
-    OPR_REGISTER_A, OPR_REGISTER_B, OPR_REGISTER_C, OPR_REGISTER_D};
+    OPR_REGISTER};
 
     /*union OperandValue{
         Symbol *v1;
         Scope *v2;
         list<Symbol *> *v3;
-        void *v4;
+        Reg *v4;
     };*/
 
     IRtype iRType;

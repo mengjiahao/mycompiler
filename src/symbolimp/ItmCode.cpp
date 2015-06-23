@@ -6,6 +6,37 @@
 
 using namespace std;
 
+/***********************************Reg**********************************************/
+int Reg::RegTypeNo = 13;
+int Reg::RegValueTypeNo = 10;
+Reg Reg::regs[13][10];
+
+void Reg::initRegs()
+{
+    int i, j;
+    for(i = 0; i < RegTypeNo; ++i) {
+        for(j = 0; j < RegValueTypeNo; ++j) {
+            regs[i][j].regType = i;
+            regs[i][j].regValueType = j;
+        }
+    }
+}
+
+Reg* Reg::getReg(RegType regType_t, RegValueType regValueType_t)
+{
+    if ( (regType_t >= 0) && (regType_t < RegTypeNo)
+    && (regValueType_t >= 0) && (regValueType_t < RegValueTypeNo) ) {
+        return &regs[regType_t][regValueType_t];
+    }
+
+    return NULL;
+}
+
+
+
+
+
+/*********************************ItmCode********************************************/
 list< list<Symbol *>* > ItmCode::s_allArgList;
 vector<ItmCode *> ItmCode::s_allItmCode;
 

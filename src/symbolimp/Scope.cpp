@@ -285,10 +285,9 @@ int Scope::addToSymbolSeqList(Symbol* symbol_t)
 {
     if (NULL != symbol_t) {
         symbolSeqList.push_back(symbol_t);
+        ++symbolsNo;
         return 1;
     }
-
-    ++symbolsNo;
 
     return 0;
 }
@@ -811,7 +810,7 @@ Symbol* Scope::resolveSymbol(const string& symbolName_t, Symbol::SymbolType symb
 {
     switch (symbolType_t) {
     case Symbol::SYMBOL_VAR:
-    case Symbol::SYMBOL_CLASSREFVAR:
+    //case Symbol::SYMBOL_CLASSREFVAR:
     case Symbol::SYMBOL_CONSTANTVAR:
     case Symbol::SYMBOL_CLASSMEMVAR: {
         return searchDownUpSymbolVarMap(Scope::s_curScope, symbolName_t);
@@ -841,6 +840,31 @@ Symbol* Scope::resolveSymbol(const string& symbolName_t, Symbol::SymbolType symb
         return NULL;
     }
 
+    }
+
+    return NULL;
+
+}
+
+
+Symbol* Scope::resolveSymbolRefVar(Scope* classScope_t, const string &symbolName_t)
+{
+    if (NULL == classScope_t || Scope::SCOPE_CLASS != classScope_t->scopeType) {
+        return NULL;
+    }
+
+    Symbol *result = classScope_t->searchSymbolVarMap(symbolName_t);
+
+    if (NULL != result) {
+        return result;
+    } else {
+
+        if ( (Scope::SCOPE_CLASS == classScope_t->scopeType) && (NULL != classScope_t->superClass) ) {
+            result = resolveSymbolRefVar(classScope_t->superClass, symbolName_t);
+            if (NULL != result) {
+                return result;
+            }
+        }
     }
 
     return NULL;
