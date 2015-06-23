@@ -9,7 +9,7 @@ class  DectorAst: public NodeAst {
 
 	public:
 		DectorAst(NodeAst::NodeType nodeType_t);
-
+        virtual void walk();
 };
 
 #endif

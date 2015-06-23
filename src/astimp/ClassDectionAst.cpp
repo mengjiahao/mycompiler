@@ -27,7 +27,7 @@ void ClassDectionAst::walk()
                 << getLineno() << std::endl;
                 exit(0);
             } else {
-                Symbol *tmpsymbol = new Symbol(Symbol::SYMBOL_VAR);
+                Symbol *tmpsymbol = new Symbol(Symbol::SYMBOL_CLASSMEMVAR);
                 tmpsymbol->symbolName = s_context->tmpIdenName;
                 tmpsymbol->typeClass.clone(&tmpType);
 
