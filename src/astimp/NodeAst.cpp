@@ -716,7 +716,7 @@ void NodeAst::dotBfsNodeTree(NodeAst* root_t)
 
 void NodeAst::walk()
 {
-    cout << "NodeAstWalk" << endl;
+    std::cout << "walk in NodeAst" << endl;
 
     for (int i = 0; i < childs.size(); ++i) {
         if (NULL !=  childs.at(i)) {

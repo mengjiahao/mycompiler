@@ -12,6 +12,8 @@ void ClassDectionListAst::walk()
         << std::endl;
         exit(0);
     }
+    std::cout << "walk in T_CCLASSDECTIONLIST_CLASSDECTIONLIST_CLASSDECTION" << endl;
+
     childs.at(0)->walk();
     childs.at(1)->walk();
 }

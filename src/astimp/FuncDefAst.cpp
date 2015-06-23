@@ -11,6 +11,8 @@ void FuncDefAst::walk()
         std::cout<<"error: nodetype error in FuncDefAst"<<std::endl;
         exit(0);
     }
+    std::cout << "walk in T_CFUNCDEF_DECTIONSFS_DECTOR_COMPSTM" << endl;
+
     if ((childs.at(1)->nodeType != T_CDIRDECTOR_DIRDECTOR_CALL_PARAMTYPELIST)
     && (childs.at(1)->nodeType != T_CDIRDECTOR_DIRDECTOR_CALL_VOID))
     {

@@ -6,7 +6,8 @@ DectionSpecifiersAst::DectionSpecifiersAst(NodeAst::NodeType nodeType_t) : NodeA
 
 void DectionSpecifiersAst::walk()
 {
-    cout << "DectionSpecifiersAstWalk" << endl;
+    std::cout << "walk in DectionSpecifiersAst" << endl;
+
     TypeClass *tmp[getChildsNo()];
     for (int i = 0; i < getChildsNo(); i++)
     {

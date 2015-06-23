@@ -8,6 +8,8 @@ void ParamTypeListAst::walk()
 {
     if (nodeType == T_CPARAMLIST_PARAMLIST_PARAMDECTION)
     {
+        std::cout << "walk in T_CPARAMLIST_PARAMLIST_PARAMDECTION" << endl;
+
         childs.at(1)->walk();
 
         if (childs.at(1)->nodeType == T_CPARAMDECTION_DECTIONSFS) {

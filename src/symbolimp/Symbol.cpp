@@ -481,7 +481,7 @@ unsigned Symbol::getByteSize()
 void Symbol::printSymbol(ofstream& ofs_t)
 {
     if (ofs_t.is_open()) {
-        ofs_t << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n";
+        ofs_t << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n";
         ofs_t << "@Symbol: " << symbolId << " " << symbolType << " " << symbolName << "\n";
         ofs_t << "@SymbolValue: ";
         for(int i = 0; i < symbolValue.size(); ++i) {
@@ -490,6 +490,7 @@ void Symbol::printSymbol(ofstream& ofs_t)
         ofs_t << "\n";
         ofs_t << "@offset&&byteSize: " << offset << " " << byteSize << "\n";
         typeClass.printTypeClass(ofs_t);
+        ofs_t << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n";
 
     }
 }

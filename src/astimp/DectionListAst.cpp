@@ -12,6 +12,8 @@ void DectionListAst::walk()
         << std::endl;
         exit(0);
     }
+    std::cout << "walk in T_CDECTIONLIST_DECTIONLIST_DECTION" << endl;
+
     for (int i = 0; i < childsNo; ++i)
     {
         childs.at(i)->walk();

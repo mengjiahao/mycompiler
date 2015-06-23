@@ -11,5 +11,7 @@ void ClassDectorAst::walk()
         std::cout << "error: nodetype is not T_CCLASSDECTOR_DECTOR in ClassDectorAst" << std::endl;
         exit(0);
     }
+    std::cout << "walk in T_CCLASSDECTOR_DECTOR" << endl;
+
     childs.at(0)->walk();
 }

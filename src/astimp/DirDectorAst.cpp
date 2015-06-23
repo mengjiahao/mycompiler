@@ -8,18 +8,24 @@ void DirDectorAst::walk()
 {
     switch(nodeType){
         case T_CDIRDECTOR_ID:{
+            std::cout << "walk in T_CDIRDECTOR_ID" << endl;
+
             childs.at(0)->walk();
             break;
         }
         case T_CDIRDECTOR_DIRDECTOR_ARRAY_CONSTEXP:{
+            std::cout << "walk in T_CDIRDECTOR_DIRDECTOR_ARRAY_CONSTEXP" << endl;
 
             break;
         }
         case T_CDIRDECTOR_DIRDECTOR_ARRAY_VOID:{
+            std::cout << "walk in T_CDIRDECTOR_DIRDECTOR_ARRAY_VOID" << endl;
 
             break;
         }
         case T_CDIRDECTOR_DIRDECTOR_CALL_PARAMTYPELIST:{
+            std::cout << "walk in T_CDIRDECTOR_DIRDECTOR_CALL_PARAMTYPELIST" << endl;
+
             if (childs.at(0)->nodeType != T_CDIRDECTOR_ID)
             {
                 std::cout<<"error in T_CDIRDECTOR_DIRDECTOR_CALL_PARAMTYPELIST: the children's type is not T_CDIRDECTOR_ID at line "
@@ -38,10 +44,13 @@ void DirDectorAst::walk()
             break;
         }
         case T_CDIRDECTOR_DIRDECTOR_CALL_EXP:{
+            std::cout << "walk in T_CDIRDECTOR_DIRDECTOR_CALL_EXP" << endl;
 
             break;
         }
         case T_CDIRDECTOR_DIRDECTOR_CALL_VOID:{
+            std::cout << "walk in T_CDIRDECTOR_DIRDECTOR_CALL_VOID" << endl;
+
             if (childs.at(0)->nodeType != T_CDIRDECTOR_ID)
             {
                 std::cout<<"error in T_CDIRDECTOR_DIRDECTOR_CALL_VOID: the children's type is not T_CDIRDECTOR_ID at line "

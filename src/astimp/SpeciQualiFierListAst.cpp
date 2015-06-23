@@ -6,6 +6,8 @@ SpeciQualiFierListAst::SpeciQualiFierListAst(NodeAst::NodeType nodeType_t) : Nod
 
 void SpeciQualiFierListAst::walk()
 {
+    std::cout << "walk in SpeciQualiFierListAst" << endl;
+
     TypeClass *tmp[getChildsNo()];
     for (int i = 0; i < getChildsNo(); i++)
     {

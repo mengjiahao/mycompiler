@@ -8,6 +8,8 @@ void DectionAst::walk()
 {
     switch (nodeType){
         case T_CDECTION_DECTIONSFS:{
+            std::cout << "walk in T_CDECTION_DECTIONSFS" << endl;
+
             if ((childs.at(0)->nodeType != T_CCLASSSF_CLASS_ID_CLASSDECTIONLIST)
             && (childs.at(0)->nodeType != T_CCLASSSF_CLASS_ID_IDLIST_CLASSDECTIONLIST))
             {
@@ -29,6 +31,8 @@ void DectionAst::walk()
             break;
         }
         case T_CDECTION_DECTIONSFS_INITDECTORLIST:{
+            std::cout << "walk in T_CDECTION_DECTIONSFS_INITDECTORLIST" << endl;
+
             childs.at(0)->walk();
 
             TypeClass tmpType;

@@ -8,6 +8,8 @@ void ParamDectionAst::walk()
 {
     switch(nodeType){
         case T_CPARAMDECTION_DECTIONSFS_DECTOR:{
+            std::cout << "walk in T_CPARAMDECTION_DECTIONSFS_DECTOR" << endl;
+
             if (childs.at(1)->nodeType != T_CDIRDECTOR_ID)
             {
                 std::cout<<"error in T_CPARAMDECTION_DECTIONSFS_DECTOR: the children's type of function is T_CDIRDECTOR_ID at line "
@@ -31,6 +33,7 @@ void ParamDectionAst::walk()
             break;
         }
         case T_CPARAMDECTION_DECTIONSFS:{
+            std::cout << "walk in T_CPARAMDECTION_DECTIONSFS" << endl;
 
             childs.at(0)->walk();
 

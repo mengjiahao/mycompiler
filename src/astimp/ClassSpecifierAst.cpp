@@ -8,6 +8,7 @@ void ClassSpecifierAst::walk()
 {
     switch (nodeType){
         case T_CCLASSSF_CLASS_ID_CLASSDECTIONLIST:{
+            std::cout << "walk in T_CCLASSSF_CLASS_ID_CLASSDECTIONLIST" << endl;
 
             childs.at(0)->walk();
 
@@ -36,6 +37,8 @@ void ClassSpecifierAst::walk()
             break;
         }
         case T_CCLASSSF_CLASS_ID_IDLIST_CLASSDECTIONLIST:{
+            std::cout << "walk in T_CCLASSSF_CLASS_ID_IDLIST_CLASSDECTIONLIST" << endl;
+
             childs.at(0)->walk();
 
             Scope *tmpScope = new Scope();
@@ -83,6 +86,7 @@ void ClassSpecifierAst::walk()
             break;
         }
         case T_CCLASSSF_CLASS_ID:{
+            std::cout << "walk in T_CCLASSSF_CLASS_ID" << endl;
 
             childs.at(0)->walk();
 

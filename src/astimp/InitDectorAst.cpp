@@ -9,12 +9,15 @@ void InitDectorAst::walk()
 {
     switch (nodeType){
         case T_CINITDECTOR_DECTOR:{
+            std::cout << "walk in T_CINITDECTOR_DECTOR" << endl;
 
             childs.at(0)->walk();
 
             break;
         }
         case T_CINITDECTOR_ASSGIN_INITZER:{
+            std::cout << "walk in T_CINITDECTOR_ASSGIN_INITZER" << endl;
+
             break;
         }
         default:{

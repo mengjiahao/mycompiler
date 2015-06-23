@@ -862,7 +862,7 @@ Scope* Scope::resolveScope(const string& scopeName_t, Scope::ScopeType scopeType
 void Scope::printScopeTree()
 {
     ofstream ofs;
-    cout << "printScopeTree" << endl;
+    cout << ">>>printScopeTree in SymbolTable.txt" << endl;
 
     ofs.open("SymbolTable.txt");
 
@@ -880,9 +880,9 @@ void Scope::printScope(ofstream &ofs_t)
 {
 
 
-    ofs_t << "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n";
+    ofs_t << "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n";
     ofs_t << "$Scope: " << scopeId << " " << scopeType << " " << scopeName << "\n";
-    ofs_t << "$space: " << level << " " << curStartOffset << " " << totalByteSize << "\n";
+    ofs_t << "$level: " << level << " " << curStartOffset << " " << totalByteSize << "\n";
     ofs_t << "$returnTypeClass:\n";
     if (NULL != returnTypeClass) {
         returnTypeClass->printTypeClass(ofs_t);
@@ -898,7 +898,7 @@ void Scope::printScope(ofstream &ofs_t)
         }
     }
 
-    ofs_t << "$childs:\n";
+    ofs_t << "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$childsScopes$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n";
     vector<Scope *>::iterator childItr;
     for(childItr = childs.begin(); childItr != childs.end(); ++childItr) {
         if (NULL != (*childItr)) {

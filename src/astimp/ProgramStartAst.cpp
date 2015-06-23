@@ -18,7 +18,7 @@ void ProgramStartAst::walk()
         Scope::setCurScope(tmp);
     }
 
-    cout << "ProgStartWalk" << endl;
+    cout << "walk in ProgramStartAst" << endl;
 
     for (int i = 0; i < childs.size(); ++i) {
         if (NULL != childs.at(i)) {

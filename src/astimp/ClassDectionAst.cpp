@@ -8,6 +8,7 @@ void ClassDectionAst::walk()
 {
     switch (nodeType){
         case T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST:{
+            std::cout << "walk in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST" << endl;
 
             if (2 != childs.size()) {
                 std::cout << "error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST: doesn't have 2 children at line " << getLineno() << std::endl;
@@ -48,6 +49,7 @@ void ClassDectionAst::walk()
         }
 
         case T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST_COMPSTM:{
+            std::cout << "walk in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST_COMPSTM" << endl;
 
             if (3 != childs.size()) {
                 std::cout << "error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST_COMPSTM:  doesn't have 3 children at line "
@@ -117,6 +119,7 @@ void ClassDectionAst::walk()
         }
 
         case T_CCLASSDECTION_CLASSDECTORLIST_COMPSTM:{
+            std::cout << "walk in T_CCLASSDECTION_CLASSDECTORLIST_COMPSTM" << endl;
 
             //Scope *tmpScope=new Scope();
             childs.at(0)->walk();
