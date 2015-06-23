@@ -37,6 +37,13 @@ void FuncDefAst::walk()
         delete tmpScope;
         exit(0);
     }
+    if (Scope::resolveScope(tmpScope->scopeName, Scope::SCOPE_GLOBALFUNCCHAN))
+    {
+        std::cout<<"error in FuncDefAst: the function"
+        << tmpScope->scopeName << " has been defined at line "<<getLineno()<<std::endl;
+        delete tmpScope;
+        exit(0);
+    }
 
     Scope *tmpFuncImp = NULL;
     tmpFuncImp = Scope::resolveScope(tmpScope->scopeName, Scope::SCOPE_GLOBALFUNCDECL);

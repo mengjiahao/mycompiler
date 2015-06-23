@@ -46,6 +46,28 @@ void DectionAst::walk()
                 tmpScope->setScopeName(s_context->tmpIdenName);
                 tmpScope->setScopeType(Scope::SCOPE_GLOBALFUNCDECL);
 
+                if (Scope::resolveScope(tmpScope->scopeName, Scope::SCOPE_GLOBALFUNC))
+                {
+                    std::cout<<"error in FuncDefAst: the function"
+                    << tmpScope->scopeName << " has been defined at line "<<getLineno()<<std::endl;
+                    delete tmpScope;
+                    exit(0);
+                }
+                if (Scope::resolveScope(tmpScope->scopeName, Scope::SCOPE_GLOBALFUNCCHAN))
+                {
+                    std::cout<<"error in FuncDefAst: the function"
+                    << tmpScope->scopeName << " has been defined at line "<<getLineno()<<std::endl;
+                    delete tmpScope;
+                    exit(0);
+                }
+                if (Scope::resolveScope(tmpScope->scopeName, Scope::SCOPE_GLOBALFUNCDECL))
+                {
+                    std::cout<<"error in FuncDefAst: the function"
+                    << tmpScope->scopeName << " has been defined at line "<<getLineno()<<std::endl;
+                    delete tmpScope;
+                    exit(0);
+                }
+
                 Scope::pushScope(Scope::s_curScope, tmpScope);  //do not change s_curscope
 
                 if (s_context->tmpParaWithoutIdNum && s_context->tmpParaWithIdNum)
