@@ -14,6 +14,8 @@ Context::Context()
     tmpParaWithoutIdNum = 0;
     isFunc = false;
 
+    tmpClassScope = NULL;
+
     isReg = false;
     tmpExpReg = NULL;
     tmpExpSymbol = NULL;
@@ -34,6 +36,8 @@ Context::~Context()
     tmpParaWithoutIdNum = 0;
     isFunc = false;
 
+    tmpClassScope = NULL;
+
     isReg = false;
     tmpExpReg = NULL;
     tmpExpSymbol = NULL;
@@ -51,6 +55,8 @@ void Context::clearContext()
     tmpParaWithIdNum = 0;
     tmpParaWithoutIdNum = 0;
     isFunc = false;
+
+    tmpClassScope = NULL;
 
     isReg = false;
     tmpExpReg = NULL;

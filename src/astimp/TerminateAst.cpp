@@ -38,11 +38,13 @@ void TerminateAst::walk()
     }
 
     switch(nodeType) {
+
     //const_value
     case T_CTERMINATE_CCONSTVAR_INT_CONST: {
         std::cout << "walk in T_CTERMINATE_CCONSTVAR_INT_CONST" << endl;
 
-        Symbol *rst = Scope::s_curScope->searchConstantMap(token);
+        Symbol *rst = Scope::s_curScope->resolveSymbol(token, Symbol::SYMBOL_INTEGER_CONSTANT);
+
         if (NULL == rst) {
             rst = new Symbol(Symbol::SYMBOL_INTEGER_CONSTANT);
             rst->setSymbolName(token);
@@ -53,17 +55,14 @@ void TerminateAst::walk()
         }
         s_context->isReg = false;
         s_context->tmpExpSymbol = rst;
-        /*rst = Scope::s_curScope->resolveSymbol(token, Symbol::SYMBOL_INTEGER_CONSTANT);
-        if (NULL != rst) {
-            s_context->tmpExpSymbol = rst;
-        }*/
 
         break;
     }
     case T_CTERMINATE_CCONSTVAR_CHAR_CONST: {
         std::cout << "walk in T_CTERMINATE_CCONSTVAR_CHAR_CONST" << endl;
 
-        Symbol *rst = Scope::s_curScope->searchConstantMap(token);
+        Symbol *rst = Scope::s_curScope->resolveSymbol(token, Symbol::SYMBOL_CHARACTER_CONSTANT);
+
         if (NULL == rst) {
             rst = new Symbol(Symbol::SYMBOL_CHARACTER_CONSTANT);
             rst->setSymbolName(token);
@@ -83,7 +82,8 @@ void TerminateAst::walk()
     case T_CTERMINATE_CCONSTVAR_FLOAT_CONST: {
         std::cout << "walk in T_CTERMINATE_CCONSTVAR_FLOAT_CONST" << endl;
 
-        Symbol *rst = Scope::s_curScope->searchConstantMap(token);
+        Symbol *rst = Scope::s_curScope->resolveSymbol(token, Symbol::SYMBOL_FLOATING_CONSTANT);
+
         if (NULL == rst) {
             rst = new Symbol(Symbol::SYMBOL_FLOATING_CONSTANT);
             rst->setSymbolName(token);
@@ -106,7 +106,7 @@ void TerminateAst::walk()
 
         if (NULL == rst) {
             std::cout << "error in T_CTERMINATE_CPRIMEXP_ID: "
-            << "identifier " << token << "has not be declared" << endl;
+            << "identifier " << token << " has not be declared at line " << getLineno() << endl;
             stopWalk();
             return ;
 
@@ -119,7 +119,8 @@ void TerminateAst::walk()
     case T_CTERMINATE_CPRIMEXP_STR: {
         std::cout << "walk in T_CTERMINATE_CPRIMEXP_STR" << endl;
 
-        Symbol *rst = Scope::s_curScope->searchConstantMap(token);
+        Symbol *rst = Scope::s_curScope->resolveSymbol(token, Symbol::SYMBOL_STRING_LITERAL);
+
         if (NULL == rst) {
             rst = new Symbol(Symbol::SYMBOL_STRING_LITERAL);
             rst->setSymbolName(token);
@@ -128,7 +129,7 @@ void TerminateAst::walk()
 
             cout << "!" << rst->getFirstSymbolValue() << endl;
 
-            Scope::s_curScope->defineSymbol(rst);
+            rst = (0 == Scope::s_curScope->defineSymbol(rst)) ? NULL : rst;
 
         }
         s_context->isReg = false;
@@ -141,6 +142,26 @@ void TerminateAst::walk()
     //postfix_expression
     case T_CTERMINATE_CPOSTEXP_POSTEXP_REF_ID: {
         std::cout << "walk in T_CTERMINATE_CPOSTEXP_POSTEXP_REF_ID" << endl;
+
+        if (NULL == s_context->tmpClassScope) {
+            std::cout << "error in T_CTERMINATE_CPOSTEXP_POSTEXP_REF_ID: "
+            << "tmpClassScope in the s_context is not exist at line" << getLineno() << endl;
+            stopWalk();
+            return ;
+        }
+
+        Symbol *rst = Scope::s_curScope->resolveSymbolRefVar(s_context->tmpClassScope, token);
+
+        if (NULL == rst) {
+            std::cout << "error in T_CTERMINATE_CPOSTEXP_POSTEXP_REF_ID: "
+            << "Class " << s_context->tmpClassScope->getScopeName()
+            << " has no member named " << token << " at line " << getLineno() << endl;
+            stopWalk();
+            return ;
+
+        }
+        s_context->isReg = false;
+        s_context->tmpExpSymbol = rst;
 
         break;
     }

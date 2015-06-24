@@ -25,6 +25,8 @@ public:
     int tmpParaWithoutIdNum;
     bool isFunc;
 
+    Scope *tmpClassScope;
+
     bool isReg;
     Reg *tmpExpReg;
     Symbol *tmpExpSymbol;

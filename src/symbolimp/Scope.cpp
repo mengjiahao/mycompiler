@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <sstream>
 
 using namespace std;
 
@@ -693,6 +694,14 @@ int Scope::defineSymbol(Symbol* symbol_t)
 
         case Symbol::SYMBOL_TEMPVAR: {
             symbol_t->setSymbolId();
+            string tmpVarName(".t");
+            stringstream ss;
+            string tmpStrId;
+            ss << symbol_t->getSymbolId();
+            ss >> tmpStrId;
+            tmpVarName += tmpStrId;
+
+            symbol_t->setSymbolName(tmpVarName);
 
             addToSymbolSeqList(symbol_t);
             addToSymbolTempVarMap(symbol_t);
@@ -782,6 +791,14 @@ int Scope::defineSymbol(Symbol* symbol_t)
 
         case Symbol::SYMBOL_LABEL: {
             symbol_t->setSymbolId();
+            string labelVarName(".l");
+            stringstream ss;
+            string tmpStrId;
+            ss << symbol_t->getSymbolId();
+            ss >> tmpStrId;
+            labelVarName += tmpStrId;
+
+            symbol_t->setSymbolName(labelVarName);
 
             addToLabelMap(symbol_t);
             addToAllSymbolMap(symbol_t);
