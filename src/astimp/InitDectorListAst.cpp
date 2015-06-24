@@ -10,7 +10,7 @@ void InitDectorListAst::walk()
         return ;
     }
 
-    std::cout << "sorry, in InitDectorListAst we do not support this type of definition at line " << getLineno() << std::endl;
+    std::cout << "error in InitDectorListAst: we do not support this type of definition at line " << getLineno() << std::endl;
     stopWalk();
 
 }

@@ -37,17 +37,27 @@ void DectionAst::walk()
             }
 
             childs.at(0)->walk();
+            if (checkIsNotWalking()) {
+                return ;
+            }
+
             break;
         }
         case T_CDECTION_DECTIONSFS_INITDECTORLIST:{
             std::cout << "walk in T_CDECTION_DECTIONSFS_INITDECTORLIST" << endl;
 
             childs.at(0)->walk();
+            if (checkIsNotWalking()) {
+                return ;
+            }
 
             TypeClass tmpType;
             tmpType.clone(&(s_context->tmpDeclType));
 
             childs.at(1)->walk();
+            if (checkIsNotWalking()) {
+                return ;
+            }
 
             if (s_context->isFunc) {
                 /*Scope *tmpScope = new Scope();

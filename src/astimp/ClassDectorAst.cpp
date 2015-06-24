@@ -19,5 +19,8 @@ void ClassDectorAst::walk()
     std::cout << "walk in T_CCLASSDECTOR_DECTOR" << endl;
 
     childs.at(0)->walk();
+    if (checkIsNotWalking()) {
+        return ;
+    }
 
 }

@@ -29,11 +29,18 @@ void FuncDefAst::walk()
     }
 
     childs.at(0)->walk();
+    if (checkIsNotWalking()) {
+        return ;
+    }
 
     Scope *tmpScope = new Scope();
     tmpScope->setReturnTypeClass(&(s_context->tmpDeclType));
 
     childs.at(1)->walk();
+    if (checkIsNotWalking()) {
+        return ;
+    }
+
 
     tmpScope->setScopeName(s_context->tmpIdenName);
 
@@ -79,7 +86,8 @@ void FuncDefAst::walk()
     if (s_context->tmpParaWithoutIdNum)
     {
         std::cout<<"error in FuncDefAst: argument list do not have identifier"<<std::endl;
-        exit(0);
+        stopWalk();
+        return ;
     }
 
     if (s_context->tmpParaWithIdNum)
@@ -113,6 +121,10 @@ void FuncDefAst::walk()
     }
 
     childs.at(2)->walk();
+    if (checkIsNotWalking()) {
+        return ;
+    }
+
 
     Scope::setCurScope(Scope::encloseScope(Scope::s_curScope));
 

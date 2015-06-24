@@ -62,8 +62,10 @@ public:
     virtual unsigned int getTypeByteSize();
 
     virtual void printTypeClass(ofstream &ofs_t);
-    static void judgetType(TypeClass *type1_t,TypeClass *type2_t, int lineno);
     static int compare(TypeClass *a, TypeClass *b);
+    static int promoteType(TypeClass *a, TypeClass *b);
+    static bool judgeType(TypeClass *type1_t,TypeClass *type2_t, int lineno);
+
 };
 
 

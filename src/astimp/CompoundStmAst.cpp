@@ -24,6 +24,9 @@ void CompoundStmAst::walk()
             Scope::setCurScope(tmpScope);
 
             childs.at(0)->walk();
+            if (checkIsNotWalking()) {
+                return ;
+            }
 
             Scope::setCurScope(Scope::encloseScope(Scope::s_curScope));
             break;
@@ -37,6 +40,9 @@ void CompoundStmAst::walk()
             Scope::setCurScope(tmpScope);
 
             childs.at(0)->walk();
+            if (checkIsNotWalking()) {
+                return ;
+            }
 
             Scope::setCurScope(Scope::encloseScope(Scope::s_curScope));
             break;
@@ -50,8 +56,14 @@ void CompoundStmAst::walk()
             Scope::setCurScope(tmpScope);
 
             childs.at(0)->walk();
+            if (checkIsNotWalking()) {
+                return ;
+            }
 
             childs.at(1)->walk();
+            if (checkIsNotWalking()) {
+                return ;
+            }
 
             Scope::setCurScope(Scope::encloseScope(Scope::s_curScope));
 

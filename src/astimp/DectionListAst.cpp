@@ -22,6 +22,9 @@ void DectionListAst::walk()
     for (int i = 0; i < childsNo; ++i)
     {
         childs.at(i)->walk();
+        if (checkIsNotWalking()) {
+            return ;
+        }
     }
 
 }

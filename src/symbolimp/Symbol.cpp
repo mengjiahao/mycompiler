@@ -120,6 +120,7 @@ vector<int> TypeClass::getDimensions()
 
 int TypeClass::checkType()
 {
+
     return 0;
 }
 
@@ -182,16 +183,146 @@ int TypeClass::compare(TypeClass* a, TypeClass* b)
     return 0;
 }
 
-
-
-
-void TypeClass::judgetType(TypeClass *type1_t,TypeClass *type2_t, int lineno)
+static int getSfTypeMatrixNo(TypeClass* a)
 {
-    if ((type1_t->getStorageType()!=0) && (type2_t->getStorageType()!=0))
-    {
-        std::cout<<"error: redundant storage type at line: "<<lineno<<std::endl;
-        exit(0);
+    if (NULL == a) {
+        return 0;
     }
+
+    int no;
+
+    if (a->getTypeSfType() & TypeClass::SF_INVALID) {
+        return 0;
+
+    } else if (a->getTypeSfType() & TypeClass::SF_VOID) {
+        return 1;
+
+    } else if (a->getTypeSfType() & TypeClass::SF_CHAR) {
+        no = 2;
+
+    } else if (a->getTypeSfType() & TypeClass::SF_SHORT) {
+        no = 3;
+
+    } else if (a->getTypeSfType() & TypeClass::SF_INT) {
+        no = 4;
+
+    } else if (a->getTypeSfType() & TypeClass::SF_LONG) {
+        no = 5;
+
+    } else if (a->getTypeSfType() & TypeClass::SF_FLOAT) {
+        return 6;
+
+    } else if (a->getTypeSfType() & TypeClass::SF_DOUBLE) {
+        return 7;
+
+    } else {
+        return 0;
+    }
+
+    if (a->getTypeSfType() & TypeClass::SF_UNSIGNED) {
+        no += 6;
+    } else {
+    }
+
+    return no;
+}
+
+int TypeClass::promoteType(TypeClass* a, TypeClass* b)
+{
+    static int s_promoteMatrix[12][12] = {
+        //SF_INVALID
+     {SF_INVALID, SF_INVALID, SF_INVALID, SF_INVALID, SF_INVALID, SF_INVALID,
+     SF_INVALID, SF_INVALID, SF_INVALID, SF_INVALID, SF_INVALID, SF_INVALID},
+
+        //SF_VOID
+     {SF_INVALID, SF_VOID, SF_VOID, SF_VOID, SF_VOID, SF_VOID,
+     SF_VOID, SF_VOID, SF_VOID, SF_VOID, SF_VOID, SF_VOID},
+
+        //SF_CHAR
+     {SF_INVALID, SF_VOID, SF_CHAR, SF_SHORT, SF_INT, SF_LONG, SF_FLOAT, SF_DOUBLE,
+     SF_CHAR, SF_SHORT, SF_INT, SF_LONG},
+
+        //SF_SHORT
+     {SF_INVALID, SF_VOID, SF_SHORT, SF_SHORT, SF_INT, SF_LONG, SF_FLOAT, SF_DOUBLE,
+     SF_SHORT, SF_SHORT, SF_INT, SF_LONG},
+
+        //SF_INT
+     {SF_INVALID, SF_VOID, SF_INT, SF_INT, SF_INT, SF_LONG, SF_FLOAT, SF_DOUBLE,
+     SF_INT, SF_INT, SF_INT, SF_LONG},
+
+        //SF_LONG
+     {SF_INVALID, SF_VOID, SF_LONG, SF_LONG, SF_LONG, SF_LONG, SF_FLOAT, SF_DOUBLE,
+     SF_LONG, SF_LONG, SF_LONG, SF_LONG},
+
+        //SF_FLOAT
+     {SF_INVALID, SF_VOID, SF_FLOAT, SF_FLOAT, SF_FLOAT, SF_FLOAT, SF_FLOAT, SF_DOUBLE,
+     SF_FLOAT, SF_FLOAT, SF_FLOAT, SF_FLOAT},
+
+        //SF_DOUBLE
+     {SF_INVALID, SF_VOID, SF_DOUBLE, SF_DOUBLE, SF_DOUBLE, SF_DOUBLE, SF_DOUBLE, SF_DOUBLE,
+     SF_DOUBLE, SF_DOUBLE, SF_DOUBLE, SF_DOUBLE},
+
+        //SF_CHAR & SF_UNSIGNED
+     {SF_INVALID, SF_VOID, SF_CHAR, SF_SHORT, SF_INT, SF_LONG, SF_FLOAT, SF_DOUBLE,
+     SF_CHAR & SF_UNSIGNED, SF_SHORT & SF_UNSIGNED, SF_INT & SF_UNSIGNED,
+     SF_LONG & SF_UNSIGNED},
+
+        //SF_SHORT & SF_UNSIGNED
+     {SF_INVALID, SF_VOID, SF_SHORT & SF_UNSIGNED, SF_SHORT, SF_INT, SF_LONG, SF_FLOAT, SF_DOUBLE,
+     SF_SHORT & SF_UNSIGNED, SF_SHORT & SF_UNSIGNED, SF_INT & SF_UNSIGNED,
+     SF_LONG & SF_UNSIGNED},
+
+        //SF_INT & SF_UNSIGNED
+     {SF_INVALID, SF_VOID, SF_INT & SF_UNSIGNED, SF_INT & SF_UNSIGNED, SF_INT, SF_LONG, SF_FLOAT, SF_DOUBLE,
+     SF_INT & SF_UNSIGNED, SF_INT & SF_UNSIGNED, SF_INT & SF_UNSIGNED,
+     SF_LONG & SF_UNSIGNED},
+
+        //SF_LONG & SF_UNSIGNED
+     {SF_INVALID, SF_VOID, SF_LONG & SF_UNSIGNED, SF_LONG & SF_UNSIGNED, SF_LONG & SF_UNSIGNED,
+     SF_LONG, SF_FLOAT, SF_DOUBLE,
+     SF_LONG & SF_UNSIGNED, SF_LONG & SF_UNSIGNED, SF_LONG & SF_UNSIGNED,
+     SF_LONG & SF_UNSIGNED},
+
+    };
+
+    if (NULL == a || NULL == b) {
+        return TypeClass::SF_INVALID;
+    }
+
+    int row = getSfTypeMatrixNo(a);
+    int column = getSfTypeMatrixNo(b);
+
+    return s_promoteMatrix[row][column];
+
+
+}
+
+
+
+
+
+bool TypeClass::judgeType(TypeClass *type1_t,TypeClass *type2_t, int lineno)
+{
+    if (NULL == type1_t || NULL == type2_t) {
+        return false;
+    }
+
+    if (type1_t->scopeType || type2_t->scopeType
+    || type2_t->getStorageType() != TypeClass::STOR_INVALID
+    || type2_t->getTypeSfType() != TypeClass::SF_INVALID
+    || type2_t->getTypeQfType() != TypeClass::QF_INVALID) {
+
+        std::cout<<"error in TypeClass: class type should not be used with other type at line "
+        <<lineno<<std::endl;
+        return false;
+    }
+
+    if ((type1_t->getStorageType()!=TypeClass::STOR_INVALID) && (type2_t->getStorageType()!=TypeClass::STOR_INVALID))
+    {
+        std::cout<<"error in TypeClass: redundant storage type at line "<<lineno<<std::endl;
+        return false;
+    }
+
     if ((type1_t->getTypeSfType()&TypeClass::SF_SIGNED) || (type1_t->getTypeSfType()&TypeClass::SF_UNSIGNED) )
     {
         if ((type2_t->getTypeSfType()&TypeClass::SF_UNSIGNED)
@@ -200,8 +331,10 @@ void TypeClass::judgetType(TypeClass *type1_t,TypeClass *type2_t, int lineno)
         || (type2_t->getTypeSfType()&TypeClass::SF_FLOAT)
         || (type2_t->getTypeSfType()&TypeClass::SF_VOID))
         {
-           std::cout<<"error: wrong type at line: "<<lineno<<std::endl;
-           exit(0);
+           std::cout<<"error in TypeClass: specifier type "
+           <<  type1_t->getTypeSfType() << " & " << type2_t->getTypeSfType()
+           << " are conflict at line "<<lineno<<std::endl;
+           return false;
         }
     }
     if ((type2_t->getTypeSfType()&TypeClass::SF_SIGNED) || (type2_t->getTypeSfType()&TypeClass::SF_UNSIGNED) )
@@ -212,56 +345,64 @@ void TypeClass::judgetType(TypeClass *type1_t,TypeClass *type2_t, int lineno)
         || (type1_t->getTypeSfType()&TypeClass::SF_FLOAT)
         || (type1_t->getTypeSfType()&TypeClass::SF_VOID))
         {
-           std::cout<<"error: wrong type at line: "<<lineno<<std::endl;
-           exit(0);
+           std::cout<<"error in TypeClass: specifier type "
+           <<  type1_t->getTypeSfType() << " & " << type2_t->getTypeSfType()
+           << " are conflict at line "<<lineno<<std::endl;
+           return false;
         }
     }
     if ((type1_t->getTypeSfType()&TypeClass::SF_FLOAT) || (type1_t->getTypeSfType()&TypeClass::SF_DOUBLE) )
     {
         if (type2_t->getTypeSfType()!=TypeClass::SF_INVALID)
         {
-           std::cout<<"error: wrong type at line: "<<lineno<<std::endl;
-           exit(0);
+           std::cout<<"error in TypeClass: specifier type is redefined with float or double at line "
+           <<lineno<<std::endl;
+           return false;
         }
     }
     if ((type2_t->getTypeSfType()&TypeClass::SF_FLOAT) || (type2_t->getTypeSfType()&TypeClass::SF_DOUBLE) )
     {
         if (type1_t->getTypeSfType()!=TypeClass::SF_INVALID)
         {
-           std::cout<<"error: wrong type at line: "<<lineno<<std::endl;
-           exit(0);
+           std::cout<<"error in TypeClass: specifier type is redefined with float or double at line "
+           <<lineno<<std::endl;
+           return false;
         }
     }
     if (type1_t->getTypeSfType()&TypeClass::SF_VOID)
     {
         if (type2_t->getTypeSfType()!=TypeClass::SF_INVALID)
         {
-           std::cout<<"error: wrong type at line: "<<lineno<<std::endl;
-           exit(0);
+           std::cout<<"error in TypeClass: specifier type is redefined with void at line "
+           <<lineno<<std::endl;
+           return false;
         }
     }
     if (type2_t->getTypeSfType()&TypeClass::SF_VOID)
     {
         if (type1_t->getTypeSfType()!=TypeClass::SF_INVALID)
         {
-           std::cout<<"error: wrong type at line: "<<lineno<<std::endl;
-           exit(0);
+           std::cout<<"error in TypeClass: specifier type is redefined with void at line "
+           <<lineno<<std::endl;
+           return false;
         }
     }
     if (type1_t->getTypeSfType()&TypeClass::SF_LONG)
     {
         if (type2_t->getTypeSfType()&TypeClass::SF_SHORT)
         {
-           std::cout<<"error: wrong type at line: "<<lineno<<std::endl;
-           exit(0);
+           std::cout<<"error in TypeClass: specifier type long and short are conflict at line "
+           <<lineno<<std::endl;
+           return false;
         }
     }
     if (type2_t->getTypeSfType()&TypeClass::SF_LONG)
     {
         if (type1_t->getTypeSfType()&TypeClass::SF_SHORT)
         {
-           std::cout<<"error: wrong type at line: "<<lineno<<std::endl;
-           exit(0);
+           std::cout<<"error in TypeClass: specifier type long and short are conflict at line "
+           <<lineno<<std::endl;
+           return false;
         }
     }
     if (type1_t->getTypeSfType()&TypeClass::SF_CHAR)
@@ -270,8 +411,9 @@ void TypeClass::judgetType(TypeClass *type1_t,TypeClass *type2_t, int lineno)
         || (type2_t->getTypeSfType()&TypeClass::SF_LONG)
         || (type2_t->getTypeSfType()&TypeClass::SF_INT))
         {
-            std::cout<<"error: wrong type at line: "<<lineno<<std::endl;
-            exit(0);
+            std::cout<<"error in TypeClass: specifier type char and integer(short, int, long) are conflict at line "
+            <<lineno<<std::endl;
+            return false;
         }
     }
     if (type2_t->getTypeSfType()&TypeClass::SF_CHAR)
@@ -280,20 +422,24 @@ void TypeClass::judgetType(TypeClass *type1_t,TypeClass *type2_t, int lineno)
         || (type1_t->getTypeSfType()&TypeClass::SF_LONG)
         || (type1_t->getTypeSfType()&TypeClass::SF_INT))
         {
-            std::cout<<"error: wrong type at line: "<<lineno<<std::endl;
-            exit(0);
+            std::cout<<"error in TypeClass: specifier type char and integer(short, int, long) are conflict at line "
+            <<lineno<<std::endl;
+            return false;
         }
     }
     if (type1_t->getTypeSfType() & type2_t->getTypeSfType())
     {
-        std::cout<<"error: redundant storage type at line: "<<lineno<<std::endl;
-        exit(0);
+        std::cout<<"error in TypeClass: redundant specifier type at line: "<<lineno<<std::endl;
+        return false;
     }
+
     if (type1_t->getTypeQfType() & type2_t->getTypeQfType())
     {
-        std::cout<<"error: redundant storage type at line: "<<lineno<<std::endl;
-        exit(0);
+        std::cout<<"error in TypeClass: redundant qualifier type at line: "<<lineno<<std::endl;
+        return false;
     }
+
+    return true;
 }
 
 

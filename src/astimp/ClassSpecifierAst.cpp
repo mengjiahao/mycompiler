@@ -15,6 +15,9 @@ void ClassSpecifierAst::walk()
             std::cout << "walk in T_CCLASSSF_CLASS_ID_CLASSDECTIONLIST" << endl;
 
             childs.at(0)->walk();
+            if (checkIsNotWalking()) {
+                return ;
+            }
 
             //Scope *tmpScope = new Scope();
             if (Scope::resolveScope(s_context->tmpIdenName, Scope::SCOPE_CLASS))
@@ -31,6 +34,9 @@ void ClassSpecifierAst::walk()
             Scope::setCurScope(tmpScope);
 
             childs.at(1)->walk();
+            if (checkIsNotWalking()) {
+                return ;
+            }
 
             Scope::setCurScope(Scope::encloseScope(Scope::s_curScope));
             //std::cout<<"safsadfafasfsafasf"<<Scope::s_curScope->scopeName<<std::endl;
@@ -46,6 +52,9 @@ void ClassSpecifierAst::walk()
             std::cout << "walk in T_CCLASSSF_CLASS_ID_IDLIST_CLASSDECTIONLIST" << endl;
 
             childs.at(0)->walk();
+            if (checkIsNotWalking()) {
+                return ;
+            }
 
             //Scope *tmpScope = new Scope();
             if (Scope::resolveScope(s_context->tmpIdenName, Scope::SCOPE_CLASS))
@@ -70,6 +79,9 @@ void ClassSpecifierAst::walk()
             tmpScope->initClassScope(s_context->tmpIdenName);
 
             childs.at(1)->walk();
+            if (checkIsNotWalking()) {
+                return ;
+            }
 
             Scope *superScope = Scope::resolveScope(s_context->tmpIdenName, Scope::SCOPE_CLASS);
 
@@ -88,6 +100,9 @@ void ClassSpecifierAst::walk()
             Scope::setCurScope(tmpScope);
 
             childs.at(2)->walk();
+            if (checkIsNotWalking()) {
+                return ;
+            }
 
             Scope::setCurScope(Scope::encloseScope(Scope::s_curScope));
 
@@ -102,6 +117,9 @@ void ClassSpecifierAst::walk()
             std::cout << "walk in T_CCLASSSF_CLASS_ID" << endl;
 
             childs.at(0)->walk();
+            if (checkIsNotWalking()) {
+                return ;
+            }
 
             Scope *tmpScope = Scope::resolveScope(s_context->tmpIdenName,Scope::SCOPE_CLASS);
             if (!tmpScope)

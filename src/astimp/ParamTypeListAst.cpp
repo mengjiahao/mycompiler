@@ -15,12 +15,18 @@ void ParamTypeListAst::walk()
         std::cout << "walk in T_CPARAMLIST_PARAMLIST_PARAMDECTION" << endl;
 
         childs.at(1)->walk();
+        if (checkIsNotWalking()) {
+                return ;
+        }
 
         if (childs.at(1)->nodeType == T_CPARAMDECTION_DECTIONSFS) {
             TypeClass tmp;
             tmp.clone(&(s_context->tmpParaTypeList.at(0)));
 
             childs.at(0)->walk();
+            if (checkIsNotWalking()) {
+                return ;
+            }
 
             s_context->addParawithoutid(tmp);
 
@@ -32,6 +38,9 @@ void ParamTypeListAst::walk()
             tmpsymbol.setTypeClass(&(s_context->tmpParaWithIdList.at(0).typeClass));
 
             childs.at(0)->walk();
+            if (checkIsNotWalking()) {
+                return ;
+            }
 
             s_context->addParawithid(tmpsymbol);
         } else {

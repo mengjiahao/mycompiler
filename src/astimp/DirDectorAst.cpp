@@ -15,6 +15,10 @@ void DirDectorAst::walk()
             std::cout << "walk in T_CDIRDECTOR_ID" << endl;
 
             childs.at(0)->walk();
+            if (checkIsNotWalking()) {
+                return ;
+            }
+
             break;
         }
         case T_CDIRDECTOR_DIRDECTOR_ARRAY_CONSTEXP:{
@@ -39,10 +43,16 @@ void DirDectorAst::walk()
             }
 
             childs.at(0)->walk();
+            if (checkIsNotWalking()) {
+                return ;
+            }
 
             string tmp1 = s_context->tmpIdenName;
 
             childs.at(1)->walk();
+            if (checkIsNotWalking()) {
+                return ;
+            }
 
             s_context->tmpIdenName = tmp1;
             s_context->isFunc = true;
@@ -65,6 +75,9 @@ void DirDectorAst::walk()
             }
 
             childs.at(0)->walk();
+            if (checkIsNotWalking()) {
+                return ;
+            }
 
             string tmp1 = s_context->tmpIdenName;
             s_context->clearContext();

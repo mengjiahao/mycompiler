@@ -23,11 +23,18 @@ void ParamDectionAst::walk()
             }
 
             childs.at(0)->walk();
+            if (checkIsNotWalking()) {
+                return ;
+            }
+
 
             TypeClass tmp;
             tmp.clone(&(s_context->tmpDeclType));
 
             childs.at(1)->walk();
+            if (checkIsNotWalking()) {
+                return ;
+            }
 
             Symbol tmpsymbol(Symbol::SYMBOL_VAR);
 
@@ -45,6 +52,9 @@ void ParamDectionAst::walk()
             std::cout << "walk in T_CPARAMDECTION_DECTIONSFS" << endl;
 
             childs.at(0)->walk();
+            if (checkIsNotWalking()) {
+                return ;
+            }
 
             TypeClass tmp;
             tmp.clone(&(s_context->tmpDeclType));

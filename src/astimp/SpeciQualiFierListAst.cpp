@@ -22,15 +22,28 @@ void SpeciQualiFierListAst::walk()
         childs.at(0)->walk();
         tmp[i]->clone(&(s_context->tmpDeclType));
     }
-    if (tmp[0]->scopeType || tmp[1]->scopeType)
+
+    if (2 != getChildsNo()) {
+        std::cout<<"error in SpeciQualiFierListAst: SpeciQualiFierListAst doesn't have 2 children"
+        << std::endl;
+        stopWalk();
+        return ;
+    }
+
+    /*if (tmp[0]->scopeType || tmp[1]->scopeType)
     {
         std::cout<<"error in SpeciQualiFierListAst: class type should not be used with other type at line "
         <<getLineno()<<std::endl;
         stopWalk();
         return ;
+    }*/
+
+    if(false == TypeClass::judgeType(tmp[0],tmp[1], getLineno())) {
+        stopWalk();
+        return ;
     }
 
-    TypeClass::judgetType(tmp[0],tmp[1], getLineno());
+
     tmp[0]->storageType |= tmp[1]->storageType;
     tmp[0]->typeQfType |= tmp[1]->typeQfType;
     tmp[0]->typeSfType |= tmp[1]->typeSfType;

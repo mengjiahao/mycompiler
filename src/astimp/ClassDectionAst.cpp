@@ -22,11 +22,17 @@ void ClassDectionAst::walk()
             }
 
             childs.at(0)->walk();
+            if (checkIsNotWalking()) {
+                return ;
+            }
 
             TypeClass tmpType;
             tmpType.clone(&(s_context->tmpDeclType));
 
             childs.at(1)->walk();
+            if (checkIsNotWalking()) {
+                return ;
+            }
 
             if (s_context->isFunc) {
                 std::cout << "error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST: ClassDectionAst scope should not have func declaration at line "
@@ -72,11 +78,17 @@ void ClassDectionAst::walk()
             }
 
             childs.at(0)->walk();
+            if (checkIsNotWalking()) {
+                return ;
+            }
 
             Scope *tmpScope = new Scope();
             tmpScope->setReturnTypeClass(&(s_context->tmpDeclType));
 
             childs.at(1)->walk();
+            if (checkIsNotWalking()) {
+                return ;
+            }
 
             if (!s_context->isFunc)
             {
@@ -136,6 +148,9 @@ void ClassDectionAst::walk()
             }
 
             childs.at(2)->walk();
+            if (checkIsNotWalking()) {
+                return ;
+            }
 
             Scope::setCurScope(Scope::encloseScope(Scope::s_curScope));
             break;
@@ -146,6 +161,9 @@ void ClassDectionAst::walk()
 
             //Scope *tmpScope=new Scope();
             childs.at(0)->walk();
+            if (checkIsNotWalking()) {
+                return ;
+            }
 
             if (!s_context->isFunc)
             {
@@ -202,6 +220,9 @@ void ClassDectionAst::walk()
             }
 
             childs.at(1)->walk();
+            if (checkIsNotWalking()) {
+                return ;
+            }
 
             Scope::setCurScope(Scope::encloseScope(Scope::s_curScope));
 

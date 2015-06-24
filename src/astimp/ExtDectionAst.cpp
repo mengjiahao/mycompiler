@@ -16,6 +16,9 @@ void ExtDectionAst::walk()
 
         if (NULL != childs.at(i)) {
             (childs.at(i))->walk();
+            if (checkIsNotWalking()) {
+                return ;
+            }
         }
     }
 }

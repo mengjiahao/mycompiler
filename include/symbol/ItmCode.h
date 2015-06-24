@@ -6,6 +6,7 @@
 #include <list>
 #include <vector>
 
+class TypeClass;
 class Symbol;
 class Scope;
 
@@ -17,8 +18,8 @@ public:
     enum RegType {REG_INVALID, REG_EAX, REG_EBX, REG_ECX, REG_EDX,
     REG_ST0, REG_ST1, REG_ST2, REG_ST3, REG_ST4, REG_ST5, REG_ST6, REG_ST7};
 
-    enum RegValueType {REG_CHAR, REG_INT, REG_LONG, REG_FLOAT, REG_DOUBLE,
-    REG_U_CHAR, REG_U_INT, REG_U_LONG, REG_U_FLOAT, REG_U_DOUBLE};
+    enum RegValueType {REG_CHAR, REG_SHORT, REG_INT, REG_LONG, REG_FLOAT, REG_DOUBLE,
+    REG_U_CHAR, REG_U_SHORT, REG_U_INT, REG_U_LONG, REG_U_FLOAT, REG_U_DOUBLE};
 
     static int RegTypeNo;
     static int RegValueTypeNo;
@@ -26,7 +27,7 @@ public:
     int regType;
     int regValueType;
 
-    static Reg regs[13][10];
+    static Reg regs[13][12];
 
 
 public:
@@ -36,6 +37,7 @@ public:
     static void initRegs();
 
     static Reg* getReg(RegType regType_t, RegValueType regValueType_t);
+    static Reg* getReg(RegType regType_t, TypeClass *typeClass_t);
 
 };
 

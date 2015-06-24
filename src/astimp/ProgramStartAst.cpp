@@ -27,6 +27,9 @@ void ProgramStartAst::walk()
     for (int i = 0; i < childs.size(); ++i) {
         if (NULL != childs.at(i)) {
             childs.at(i)->walk();
+            if (checkIsNotWalking()) {
+                return ;
+            }
         }
     }
 

@@ -13,8 +13,8 @@ using namespace std;
 
 /***********************************Reg**********************************************/
 int Reg::RegTypeNo = 13;
-int Reg::RegValueTypeNo = 10;
-Reg Reg::regs[13][10];
+int Reg::RegValueTypeNo = 12;
+Reg Reg::regs[13][12];
 
 
 int Reg::getRegType()
@@ -51,6 +51,62 @@ Reg* Reg::getReg(RegType regType_t, RegValueType regValueType_t)
     return NULL;
 }
 
+
+Reg* Reg::getReg(RegType regType_t, TypeClass *typeClass_t) {
+    if (typeClass_t->getTypeSfType() & TypeClass::SF_CHAR) {
+        if (typeClass_t->getTypeSfType() & TypeClass::SF_UNSIGNED) {
+            return &regs[regType_t][Reg::REG_U_CHAR];
+        } else {
+            return &regs[regType_t][Reg::REG_CHAR];
+        }
+
+
+    } else if (typeClass_t->getTypeSfType() & TypeClass::SF_SHORT) {
+         if (typeClass_t->getTypeSfType() & TypeClass::SF_UNSIGNED) {
+            return &regs[regType_t][Reg::REG_U_SHORT];
+        } else {
+            return &regs[regType_t][Reg::REG_SHORT];
+        }
+
+    } else if (typeClass_t->getTypeSfType() & TypeClass::SF_INT) {
+        if (typeClass_t->getTypeSfType() & TypeClass::SF_UNSIGNED) {
+            return &regs[regType_t][Reg::REG_U_INT];
+        } else {
+            return &regs[regType_t][Reg::REG_INT];
+        }
+
+    } else if (typeClass_t->getTypeSfType() & TypeClass::SF_LONG) {
+        if (typeClass_t->getTypeSfType() & TypeClass::SF_UNSIGNED) {
+            return &regs[regType_t][Reg::REG_U_LONG];
+        } else {
+            return &regs[regType_t][Reg::REG_LONG];
+        }
+
+    } else if (typeClass_t->getTypeSfType() & TypeClass::SF_FLOAT) {
+        if (typeClass_t->getTypeSfType() & TypeClass::SF_UNSIGNED) {
+            return &regs[regType_t][Reg::REG_U_FLOAT];
+        } else {
+            return &regs[regType_t][Reg::REG_FLOAT];
+        }
+
+    } else if (typeClass_t->getTypeSfType() & TypeClass::SF_DOUBLE) {
+        if (typeClass_t->getTypeSfType() & TypeClass::SF_UNSIGNED) {
+            return &regs[regType_t][Reg::REG_U_DOUBLE];
+        } else {
+            return &regs[regType_t][Reg::REG_DOUBLE];
+        }
+
+    } else if (typeClass_t->getTypeSfType() & TypeClass::SF_VOID) {
+        if (typeClass_t->getTypeSfType() & TypeClass::SF_UNSIGNED) {
+            return &regs[regType_t][Reg::REG_U_INT];
+        } else {
+            return &regs[regType_t][Reg::REG_INT];
+        }
+
+    }
+
+    return NULL;
+}
 
 
 
