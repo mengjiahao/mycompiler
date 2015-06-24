@@ -304,7 +304,7 @@ Symbol::Symbol()
     symbolId = 0;
     symbolType = Symbol::SYMBOL_INVALID;
 
-    offset = -1;
+    offset = 0;
     byteSize = 0;
 
 }
@@ -314,7 +314,7 @@ Symbol::Symbol(Symbol::SymbolType symbolType_t)
     symbolId = 0;
     symbolType = symbolType_t;
 
-    offset = -1;
+    offset = 0;
     byteSize = 0;
 }
 
@@ -327,7 +327,7 @@ Symbol::~Symbol()
 
     typeClass.clearTypeClass();
 
-    offset = -1;
+    offset = 0;
     byteSize = 0;
 }
 
@@ -339,7 +339,7 @@ void Symbol::clearSymbol()
 
     typeClass.clearTypeClass();
 
-    offset = -1;
+    offset = 0;
     byteSize = 0;
 }
 

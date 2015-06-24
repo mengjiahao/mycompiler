@@ -61,11 +61,22 @@ vector<ItmCode *> ItmCode::s_allItmCode;
 
 ItmCode::ItmCode()
 {
+    codeId = 0;
     iRType = ItmCode::IR_INVALID;
+    t1 = ItmCode::OPR_INVALID;
+    v1 = NULL;
+    t2 = ItmCode::OPR_INVALID;
+    v2 = NULL;
+    t3 = ItmCode::OPR_INVALID;
+    v3 = NULL;
 }
 
-ItmCode::ItmCode(IRtype iRType_t, OperandType t1_t, void* v1_t, OperandType t2_t, void* v2_t, OperandType t3_t, void* v3_t)
+ItmCode::ItmCode(IRtype iRType_t,
+OperandType t1_t, void* v1_t,
+OperandType t2_t, void* v2_t,
+OperandType t3_t, void* v3_t)
 {
+    codeId = 0;
     iRType = iRType_t;
     t1 = t1_t;
     v1 = v1_t;
@@ -74,6 +85,30 @@ ItmCode::ItmCode(IRtype iRType_t, OperandType t1_t, void* v1_t, OperandType t2_t
     t3 = t3_t;
     v3 = v3_t;
 }
+
+ItmCode::~ItmCode()
+{
+    codeId = 0;
+    iRType = ItmCode::IR_INVALID;
+    t1 = ItmCode::OPR_INVALID;
+    v1 = NULL;
+    t2 = ItmCode::OPR_INVALID;
+    v2 = NULL;
+    t3 = ItmCode::OPR_INVALID;
+    v3 = NULL;
+}
+
+void ItmCode::setCodeId()
+{
+    static unsigned long s_codeId = 0;
+    codeId = ++s_codeId;
+}
+
+unsigned long ItmCode::getCodeId()
+{
+    return codeId;
+}
+
 
 void ItmCode::addToAllArgList(list<Symbol* >* argList_t)
 {
@@ -177,7 +212,7 @@ void ItmCode::printItmCode(ofstream &ofs_t)
 {
     if (ofs_t.is_open()) {
 
-        ofs_t << "{ " << iRType << " , ";
+        ofs_t << codeId << ": { " << iRType << " , ";
         printOperand(ofs_t, t1, v1);
         ofs_t << " , ";
         printOperand(ofs_t, t2, v2);

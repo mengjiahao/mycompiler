@@ -60,6 +60,7 @@ public:
         Reg *v4;
     };*/
 
+    unsigned long codeId;
     IRtype iRType;
     OperandType t1;
     void *v1;
@@ -74,8 +75,14 @@ public:
 
 public:
     ItmCode();
-    ItmCode(IRtype iRType_t, OperandType t1_t, void *v1_t,
-    OperandType t2_t, void *v2_t, OperandType t3_t, void *v3_t);
+    ItmCode(IRtype iRType_t = ItmCode::IR_INVALID,
+OperandType t1_t = ItmCode::OPR_INVALID, void* v1_t = NULL,
+OperandType t2_t = ItmCode::OPR_INVALID, void* v2_t = NULL,
+OperandType t3_t = ItmCode::OPR_INVALID, void* v3_t = NULL);
+    ~ItmCode();
+
+    virtual void setCodeId();
+    virtual unsigned long getCodeId();
 
     virtual void printOperand(ofstream &ofs_t, OperandType opType_t, void *op_t);
     virtual void printItmCode(ofstream &ofs_t);
