@@ -183,43 +183,39 @@ int TypeClass::compare(TypeClass* a, TypeClass* b)
     return 0;
 }
 
-static int getSfTypeMatrixNo(TypeClass* a)
+static int getSfTypeMatrixNo(int sf_t)
 {
-    if (NULL == a) {
-        return 0;
-    }
-
     int no;
 
-    if (a->getTypeSfType() & TypeClass::SF_INVALID) {
+    if (sf_t & TypeClass::SF_INVALID) {
         return 0;
 
-    } else if (a->getTypeSfType() & TypeClass::SF_VOID) {
+    } else if (sf_t & TypeClass::SF_VOID) {
         return 1;
 
-    } else if (a->getTypeSfType() & TypeClass::SF_CHAR) {
+    } else if (sf_t & TypeClass::SF_CHAR) {
         no = 2;
 
-    } else if (a->getTypeSfType() & TypeClass::SF_SHORT) {
+    } else if (sf_t & TypeClass::SF_SHORT) {
         no = 3;
 
-    } else if (a->getTypeSfType() & TypeClass::SF_INT) {
+    } else if (sf_t & TypeClass::SF_INT) {
         no = 4;
 
-    } else if (a->getTypeSfType() & TypeClass::SF_LONG) {
+    } else if (sf_t & TypeClass::SF_LONG) {
         no = 5;
 
-    } else if (a->getTypeSfType() & TypeClass::SF_FLOAT) {
+    } else if (sf_t & TypeClass::SF_FLOAT) {
         return 6;
 
-    } else if (a->getTypeSfType() & TypeClass::SF_DOUBLE) {
+    } else if (sf_t & TypeClass::SF_DOUBLE) {
         return 7;
 
     } else {
         return 0;
     }
 
-    if (a->getTypeSfType() & TypeClass::SF_UNSIGNED) {
+    if (sf_t & TypeClass::SF_UNSIGNED) {
         no += 6;
     } else {
     }
@@ -227,7 +223,7 @@ static int getSfTypeMatrixNo(TypeClass* a)
     return no;
 }
 
-int TypeClass::promoteType(TypeClass* a, TypeClass* b)
+int TypeClass::promoteType(int sf_a, int sf_b)
 {
     static int s_promoteMatrix[12][12] = {
         //SF_INVALID
@@ -285,12 +281,8 @@ int TypeClass::promoteType(TypeClass* a, TypeClass* b)
 
     };
 
-    if (NULL == a || NULL == b) {
-        return TypeClass::SF_INVALID;
-    }
-
-    int row = getSfTypeMatrixNo(a);
-    int column = getSfTypeMatrixNo(b);
+    int row = getSfTypeMatrixNo(sf_a);
+    int column = getSfTypeMatrixNo(sf_b);
 
     return s_promoteMatrix[row][column];
 

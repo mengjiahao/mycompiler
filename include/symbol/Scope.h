@@ -34,6 +34,7 @@ public:
     int level;
     int curStartOffset;
     unsigned int totalByteSize;
+    int funcOffset;
 
     TypeClass *returnTypeClass;
 
@@ -91,6 +92,10 @@ public:
     virtual void setTotalByteSize(unsigned int totalByteSize_t);
     virtual void incTotalByteSize(unsigned int incByteSize_t);
     virtual unsigned int getTotalByteSize();
+
+    virtual void setFuncOffest(int funcOffset_t);
+    virtual void incFuncOffset(int incOffset_t);
+    virtual int getFuncOffset();
 
     virtual void setReturnTypeClass(TypeClass *typeClass_t);
     virtual TypeClass* getReturnTypeClass();
@@ -150,7 +155,7 @@ public:
     virtual int defineSymbol(Symbol *symbol_t);
 
     virtual Symbol* resolveSymbol(const string& symbolName_t, Symbol::SymbolType symbolType_t);
-    static Symbol* resolveSymbolRefVar(Scope* classScope_t, const string &symbolName_t);
+    static Symbol* resolveSymbolMemVar(Scope* classScope_t, const string &symbolName_t);
     static Scope* resolveScope(const string& scopeName_t, Scope::ScopeType scopeType_t);
 
     static void printScopeTree();

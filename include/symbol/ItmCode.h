@@ -5,6 +5,7 @@
 #include <fstream>
 #include <list>
 #include <vector>
+#include <set>
 
 class TypeClass;
 class Symbol;
@@ -12,34 +13,55 @@ class Scope;
 
 using namespace std;
 
+/***************************************Reg***************************************************/
+class RegSortComp;
 
 class Reg {
 public:
     enum RegType {REG_INVALID, REG_EAX, REG_EBX, REG_ECX, REG_EDX,
     REG_ST0, REG_ST1, REG_ST2, REG_ST3, REG_ST4, REG_ST5, REG_ST6, REG_ST7};
 
-    enum RegValueType {REG_CHAR, REG_SHORT, REG_INT, REG_LONG, REG_FLOAT, REG_DOUBLE,
-    REG_U_CHAR, REG_U_SHORT, REG_U_INT, REG_U_LONG, REG_U_FLOAT, REG_U_DOUBLE};
-
-    static int RegTypeNo;
-    static int RegValueTypeNo;
 
     int regType;
-    int regValueType;
+    int typeSfType;
 
-    static Reg regs[13][12];
+    static set<Reg, RegSortComp> s_regs;
 
 
 public:
+
+    virtual void setRegType(int regType_t);
     virtual int getRegType();
-    virtual int getRegValueType();
+
+    virtual void setTypeSfType(int typeSfType_t);
+    virtual int getTypeSfType();
 
     static void initRegs();
 
-    static Reg* getReg(RegType regType_t, RegValueType regValueType_t);
-    static Reg* getReg(RegType regType_t, TypeClass *typeClass_t);
+    static const Reg* getReg(RegType regType_t, int sf_t);
 
 };
+
+class RegSortComp {
+public:
+
+    bool operator() (const Reg &a, const Reg &b) const {
+        if (a.regType < b.regType ) {
+            return true;
+        } else if (a.regType == b.regType) {
+
+            if (a.typeSfType < b.typeSfType) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+};
+
+/*******************************************ItemCode***********************************************************/
 
 class ItmCode {
 public:

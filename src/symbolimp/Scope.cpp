@@ -28,6 +28,7 @@ Scope::Scope()
     level = -1;
     curStartOffset = 0;
     totalByteSize = 0;
+    funcOffset = 0;
 
     returnTypeClass = NULL;
 
@@ -49,6 +50,7 @@ Scope::~Scope()
     level = -1;
     curStartOffset = 0;
     totalByteSize = 0;
+    funcOffset = 0;
 
     if (NULL != returnTypeClass) {
         delete returnTypeClass;
@@ -148,6 +150,23 @@ unsigned int Scope::getTotalByteSize()
 {
     return totalByteSize;
 }
+
+
+void Scope::setFuncOffest(int funcOffset_t)
+{
+    funcOffset = funcOffset_t;
+}
+
+void Scope::incFuncOffset(int incOffset_t)
+{
+    funcOffset += incOffset_t;
+}
+
+int Scope::getFuncOffset()
+{
+    return funcOffset;
+}
+
 
 void Scope::setReturnTypeClass(TypeClass* typeClass_t)
 {
@@ -828,9 +847,8 @@ Symbol* Scope::resolveSymbol(const string& symbolName_t, Symbol::SymbolType symb
 {
     switch (symbolType_t) {
     case Symbol::SYMBOL_VAR:
-    //case Symbol::SYMBOL_CLASSREFVAR:
-    case Symbol::SYMBOL_CONSTANTVAR:
-    case Symbol::SYMBOL_CLASSMEMVAR: {
+    case Symbol::SYMBOL_CLASSREFVAR:
+    case Symbol::SYMBOL_CONSTANTVAR: {
         return searchDownUpSymbolVarMap(Scope::s_curScope, symbolName_t);
         break;
     }
@@ -865,7 +883,7 @@ Symbol* Scope::resolveSymbol(const string& symbolName_t, Symbol::SymbolType symb
 }
 
 
-Symbol* Scope::resolveSymbolRefVar(Scope* classScope_t, const string &symbolName_t)
+Symbol* Scope::resolveSymbolMemVar(Scope* classScope_t, const string &symbolName_t)
 {
     if (NULL == classScope_t || Scope::SCOPE_CLASS != classScope_t->scopeType) {
         return NULL;
@@ -878,7 +896,7 @@ Symbol* Scope::resolveSymbolRefVar(Scope* classScope_t, const string &symbolName
     } else {
 
         if ( (Scope::SCOPE_CLASS == classScope_t->scopeType) && (NULL != classScope_t->superClass) ) {
-            result = resolveSymbolRefVar(classScope_t->superClass, symbolName_t);
+            result = resolveSymbolMemVar(classScope_t->superClass, symbolName_t);
             if (NULL != result) {
                 return result;
             }

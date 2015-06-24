@@ -150,7 +150,7 @@ void TerminateAst::walk()
             return ;
         }
 
-        Symbol *rst = Scope::s_curScope->resolveSymbolRefVar(s_context->tmpClassScope, token);
+        Symbol *rst = Scope::s_curScope->resolveSymbolMemVar(s_context->tmpClassScope, token);
 
         if (NULL == rst) {
             std::cout << "error in T_CTERMINATE_CPOSTEXP_POSTEXP_REF_ID: "

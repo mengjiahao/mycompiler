@@ -12,100 +12,111 @@
 using namespace std;
 
 /***********************************Reg**********************************************/
-int Reg::RegTypeNo = 13;
-int Reg::RegValueTypeNo = 12;
-Reg Reg::regs[13][12];
+set<Reg, RegSortComp> Reg::s_regs;
 
+void Reg::setRegType(int regType_t)
+{
+    regType = regType_t;
+}
 
 int Reg::getRegType()
 {
     return regType;
 }
 
-int Reg::getRegValueType()
+void Reg::setTypeSfType(int typeSfType_t)
 {
-    return regValueType;
+    typeSfType = typeSfType_t;
 }
+
+int Reg::getTypeSfType()
+{
+    return typeSfType;
+}
+
 
 
 void Reg::initRegs()
 {
-    int i, j;
-    for(i = 0; i < RegTypeNo; ++i) {
-        for(j = 0; j < RegValueTypeNo; ++j) {
-            regs[i][j].regType = i;
-            regs[i][j].regValueType = j;
-        }
+    Reg tmpReg;
+
+    static int s_regTypeNo = 13;
+
+    int i;
+    for (i = 0; i < s_regTypeNo; ++i) {
+
+        tmpReg.setRegType(i);
+
+        tmpReg.setTypeSfType(TypeClass::SF_INVALID);
+        s_regs.insert(tmpReg);
+
+        tmpReg.setTypeSfType(TypeClass::SF_VOID);
+        s_regs.insert(tmpReg);
+
+        tmpReg.setTypeSfType(TypeClass::SF_CHAR);
+        s_regs.insert(tmpReg);
+
+        tmpReg.setTypeSfType(TypeClass::SF_CHAR & TypeClass::SF_SIGNED);
+        s_regs.insert(tmpReg);
+
+        tmpReg.setTypeSfType(TypeClass::SF_CHAR & TypeClass::SF_UNSIGNED);
+        s_regs.insert(tmpReg);
+
+        tmpReg.setTypeSfType(TypeClass::SF_SHORT);
+        s_regs.insert(tmpReg);
+
+        tmpReg.setTypeSfType(TypeClass::SF_SHORT & TypeClass::SF_SIGNED);
+        s_regs.insert(tmpReg);
+
+        tmpReg.setTypeSfType(TypeClass::SF_SHORT & TypeClass::SF_UNSIGNED);
+        s_regs.insert(tmpReg);
+
+        tmpReg.setTypeSfType(TypeClass::SF_INT);
+        s_regs.insert(tmpReg);
+
+        tmpReg.setTypeSfType(TypeClass::SF_INT & TypeClass::SF_SIGNED);
+        s_regs.insert(tmpReg);
+
+        tmpReg.setTypeSfType(TypeClass::SF_INT & TypeClass::SF_UNSIGNED);
+        s_regs.insert(tmpReg);
+
+        tmpReg.setTypeSfType(TypeClass::SF_LONG);
+        s_regs.insert(tmpReg);
+
+        tmpReg.setTypeSfType(TypeClass::SF_LONG & TypeClass::SF_SIGNED);
+        s_regs.insert(tmpReg);
+
+        tmpReg.setTypeSfType(TypeClass::SF_LONG & TypeClass::SF_UNSIGNED);
+        s_regs.insert(tmpReg);
+
+        tmpReg.setTypeSfType(TypeClass::SF_FLOAT);
+        s_regs.insert(tmpReg);
+
+        tmpReg.setTypeSfType(TypeClass::SF_DOUBLE);
+        s_regs.insert(tmpReg);
     }
 }
 
 
 
-Reg* Reg::getReg(RegType regType_t, RegValueType regValueType_t)
-{
-    if ( (regType_t >= 0) && (regType_t < RegTypeNo)
-    && (regValueType_t >= 0) && (regValueType_t < RegValueTypeNo) ) {
-        return &regs[regType_t][regValueType_t];
+
+const Reg* Reg::getReg(RegType regType_t, int sf_t) {
+
+    Reg tmpReg;
+    set<Reg, RegSortComp>::iterator itr;
+
+    tmpReg.setRegType(regType_t);
+    tmpReg.setTypeSfType(sf_t);
+
+    itr = s_regs.find(tmpReg);
+    if (s_regs.end() == itr) {
+        cout << "error in getReg(): can not find regType of "
+        << regType_t << " , " << sf_t << endl;
+        return NULL;
     }
 
-    return NULL;
-}
-
-
-Reg* Reg::getReg(RegType regType_t, TypeClass *typeClass_t) {
-    if (typeClass_t->getTypeSfType() & TypeClass::SF_CHAR) {
-        if (typeClass_t->getTypeSfType() & TypeClass::SF_UNSIGNED) {
-            return &regs[regType_t][Reg::REG_U_CHAR];
-        } else {
-            return &regs[regType_t][Reg::REG_CHAR];
-        }
-
-
-    } else if (typeClass_t->getTypeSfType() & TypeClass::SF_SHORT) {
-         if (typeClass_t->getTypeSfType() & TypeClass::SF_UNSIGNED) {
-            return &regs[regType_t][Reg::REG_U_SHORT];
-        } else {
-            return &regs[regType_t][Reg::REG_SHORT];
-        }
-
-    } else if (typeClass_t->getTypeSfType() & TypeClass::SF_INT) {
-        if (typeClass_t->getTypeSfType() & TypeClass::SF_UNSIGNED) {
-            return &regs[regType_t][Reg::REG_U_INT];
-        } else {
-            return &regs[regType_t][Reg::REG_INT];
-        }
-
-    } else if (typeClass_t->getTypeSfType() & TypeClass::SF_LONG) {
-        if (typeClass_t->getTypeSfType() & TypeClass::SF_UNSIGNED) {
-            return &regs[regType_t][Reg::REG_U_LONG];
-        } else {
-            return &regs[regType_t][Reg::REG_LONG];
-        }
-
-    } else if (typeClass_t->getTypeSfType() & TypeClass::SF_FLOAT) {
-        if (typeClass_t->getTypeSfType() & TypeClass::SF_UNSIGNED) {
-            return &regs[regType_t][Reg::REG_U_FLOAT];
-        } else {
-            return &regs[regType_t][Reg::REG_FLOAT];
-        }
-
-    } else if (typeClass_t->getTypeSfType() & TypeClass::SF_DOUBLE) {
-        if (typeClass_t->getTypeSfType() & TypeClass::SF_UNSIGNED) {
-            return &regs[regType_t][Reg::REG_U_DOUBLE];
-        } else {
-            return &regs[regType_t][Reg::REG_DOUBLE];
-        }
-
-    } else if (typeClass_t->getTypeSfType() & TypeClass::SF_VOID) {
-        if (typeClass_t->getTypeSfType() & TypeClass::SF_UNSIGNED) {
-            return &regs[regType_t][Reg::REG_U_INT];
-        } else {
-            return &regs[regType_t][Reg::REG_INT];
-        }
-
-    }
-
-    return NULL;
+    const Reg *rst = &(*itr);
+    return rst;
 }
 
 
@@ -246,7 +257,7 @@ void ItmCode::printOperand(ofstream& ofs_t, OperandType opType_t, void *op_t)
         case OPR_REGISTER: {
             ofs_t << "Reg(";
             ofs_t << ((Reg *)op_t)->getRegType();
-            ofs_t << "): " << ((Reg *)op_t)->getRegValueType();
+            ofs_t << "): " << ((Reg *)op_t)->getTypeSfType();
             break;
         }
         default: {
