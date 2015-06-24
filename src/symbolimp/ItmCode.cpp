@@ -1,9 +1,13 @@
 #include "../../include/symbol/ItmCode.h"
+#include "../../include/symbol/Symbol.h"
+#include "../../include/symbol/Scope.h"
+
 
 #include <iostream>
 #include <fstream>
 #include <list>
 #include <vector>
+
 
 using namespace std;
 

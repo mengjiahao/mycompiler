@@ -4,6 +4,7 @@
 #include "./symbol/Symbol.h"
 #include "./symbol/Scope.h"
 #include "./symbol/ItmCode.h"
+#include "./symbol/Context.h"
 
 #include "./ast/AbsDectorAst.h"
 #include "./ast/AddExpAst.h"

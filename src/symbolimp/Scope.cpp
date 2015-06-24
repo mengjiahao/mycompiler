@@ -1,4 +1,5 @@
 #include "../../include/symbol/Scope.h"
+#include "../../include/symbol/Symbol.h"
 
 #include <iostream>
 #include <fstream>
@@ -947,40 +948,6 @@ void Scope::printScope(ofstream &ofs_t)
     paraType.push_back(tmp);
     ++paraTypeNum;
 }*/
-
-/*****************************Context***********************************************/
-Context::Context()
-{
-
-}
-
-Context::~Context()
-{
-
-}
-
-void Context::clearContext()
-{
-    tmpDeclType.clearTypeClass();
-    tmpIdenName = "";
-    tmpParaTypeList.clear();
-    tmpParaWithIdList.clear();
-    tmpParaWithIdNum = 0;
-    tmpParaWithoutIdNum = 0;
-    isFunc = false;
-}
-
-void Context::addParawithid(Symbol m)
-{
-    tmpParaWithIdList.push_back(m);
-    ++tmpParaWithIdNum;
-}
-
-void Context::addParawithoutid(TypeClass m)
-{
-    tmpParaTypeList.push_back(m);
-    ++tmpParaWithoutIdNum;
-}
 
 
 

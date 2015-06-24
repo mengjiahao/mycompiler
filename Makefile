@@ -11,7 +11,7 @@ vpath %.h ./src
 vpath %.l ./src
 vpath %.y ./src
 
-symbolobj=Scope.o Symbol.o ItmCode.o
+symbolobj=Scope.o Symbol.o ItmCode.o Context.o
 
 astimpobj=AbsDectorAst.o \
 AddExpAst.o \

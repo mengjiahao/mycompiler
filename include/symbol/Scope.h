@@ -162,32 +162,6 @@ public:
 };
 
 
-/*****************************Context***********************************************/
-
-class Context {
-
-public:
-    int state;
-
-    TypeClass tmpDeclType;
-    string tmpIdenName;
-    vector<TypeClass> tmpParaTypeList;
-    vector<Symbol> tmpParaWithIdList;
-    int tmpParaWithoutIdNum;
-    bool isFunc;
-    void addParawithoutid(TypeClass m);
-    int tmpParaWithIdNum;
-    void addParawithid(Symbol m);
-
-public:
-    Context();
-    ~Context();
-
-    void clearContext();
-
-
-
-};
 
 #endif
 

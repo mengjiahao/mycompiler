@@ -5,8 +5,9 @@
 #include <fstream>
 #include <list>
 #include <vector>
-#include "./Symbol.h"
-#include "./Scope.h"
+
+class Symbol;
+class Scope;
 
 using namespace std;
 

@@ -3,8 +3,8 @@
 
 #include <string>
 #include <vector>
-//#include "Scope.h"
 #include <cstdlib>
+
 using namespace std;
 
 
@@ -25,7 +25,7 @@ public:
     int storageType;
     int typeSfType;
     int typeQfType;
-    Scope *scopeType;      //用于类型是类的情况
+    Scope *scopeType;      //only for classRefVar
     bool isArray;
     vector<int> dimensions;
 

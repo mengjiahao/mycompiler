@@ -1,4 +1,5 @@
 #include "../../include/symbol/Symbol.h"
+#include "../../include/symbol/Scope.h"
 
 #include <iostream>
 #include <fstream>
@@ -13,7 +14,7 @@ TypeClass::TypeClass()
     storageType = TypeClass::STOR_INVALID;
     typeSfType = TypeClass::SF_INVALID;
     typeQfType = TypeClass::QF_INVALID;
-    scopeType=NULL;
+    scopeType = NULL;
     isArray = false;
 
 }
@@ -23,7 +24,7 @@ TypeClass::~TypeClass()
     storageType = TypeClass::STOR_INVALID;
     typeSfType = TypeClass::SF_INVALID;
     typeQfType = TypeClass::QF_INVALID;
-    scopeType=NULL;
+    scopeType = NULL;
     isArray = false;
     dimensions.clear();
 }
@@ -33,7 +34,7 @@ void TypeClass::clearTypeClass()
     storageType = TypeClass::STOR_INVALID;
     typeSfType = TypeClass::SF_INVALID;
     typeQfType = TypeClass::QF_INVALID;
-    scopeType=NULL;
+    scopeType = NULL;
     isArray = false;
     dimensions.clear();
 }
@@ -47,7 +48,7 @@ void TypeClass::clone(TypeClass *typeClass_t)
     storageType = typeClass_t->getStorageType();
     typeSfType = typeClass_t->getTypeSfType();
     typeQfType = typeClass_t->getTypeQfType();
-    scopeType=typeClass_t->scopeType;
+    scopeType = typeClass_t->scopeType;
     isArray = typeClass_t->getIsArray();
     dimensions = typeClass_t->getDimensions();
 }
@@ -142,6 +143,10 @@ void TypeClass::printTypeClass(ofstream& ofs_t)
 {
     if (ofs_t.is_open()) {
         ofs_t << "#typeClass: " << storageType << " " << typeSfType << " " << typeQfType << "\n";
+        if (NULL != scopeType) {
+            ofs_t << "#refClassScope: " << scopeType->getScopeName() << "\n";
+        }
+
         ofs_t << "#isArray: " << isArray << "\n";
         if (isArray) {
         ofs_t << "#dimensions: ";
