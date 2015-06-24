@@ -6,6 +6,7 @@
 #include <list>
 #include "../LogiMsg.h"
 #include "../symbol/Scope.h"
+#include "../symbol/ItmCode.h"
 #include <cstdlib>
 using namespace std;
 
