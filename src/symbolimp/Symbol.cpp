@@ -84,6 +84,20 @@ int TypeClass::getTypeQfType()
     return typeQfType;
 }
 
+void TypeClass::setScopeType(Scope* scopeType_t)
+{
+    if (NULL != scopeType_t) {
+        scopeType = scopeType_t;
+    }
+}
+
+Scope* TypeClass::getScopeType()
+{
+    return scopeType;
+}
+
+
+
 void TypeClass::setIsArray(bool isArray_t)
 {
     isArray = isArray_t;
@@ -350,7 +364,7 @@ Symbol::SymbolType Symbol::getSymbolType()
     return symbolType;
 }
 
-void Symbol::addSymbolName(const string &symbolName_t)
+void Symbol::setSymbolName(const string &symbolName_t)
 {
     symbolName = symbolName_t;
 }

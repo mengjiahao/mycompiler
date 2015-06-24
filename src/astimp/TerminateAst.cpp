@@ -33,21 +33,67 @@ TerminateAst::~TerminateAst()
 
 void TerminateAst::walk()
 {
+    if (checkIsNotWalking()) {
+        return ;
+    }
 
     switch(nodeType) {
     //const_value
     case T_CTERMINATE_CCONSTVAR_INT_CONST: {
         std::cout << "walk in T_CTERMINATE_CCONSTVAR_INT_CONST" << endl;
 
+        Symbol *rst = Scope::s_curScope->searchConstantMap(token);
+        if (NULL == rst) {
+            rst = new Symbol(Symbol::SYMBOL_INTEGER_CONSTANT);
+            rst->setSymbolName(token);
+            rst->addSymbolValue(token);
+
+            rst = (0 == Scope::s_curScope->defineSymbol(rst)) ? NULL : rst;
+
+        }
+        s_context->isReg = false;
+        s_context->tmpExpSymbol = rst;
+        /*rst = Scope::s_curScope->resolveSymbol(token, Symbol::SYMBOL_INTEGER_CONSTANT);
+        if (NULL != rst) {
+            s_context->tmpExpSymbol = rst;
+        }*/
+
         break;
     }
     case T_CTERMINATE_CCONSTVAR_CHAR_CONST: {
         std::cout << "walk in T_CTERMINATE_CCONSTVAR_CHAR_CONST" << endl;
 
+        Symbol *rst = Scope::s_curScope->searchConstantMap(token);
+        if (NULL == rst) {
+            rst = new Symbol(Symbol::SYMBOL_CHARACTER_CONSTANT);
+            rst->setSymbolName(token);
+            string charValue = token.substr(1, 1);
+            rst->addSymbolValue(charValue);
+
+            cout << "!" << rst->getFirstSymbolValue() << endl;
+
+            rst = (0 == Scope::s_curScope->defineSymbol(rst)) ? NULL : rst;
+
+        }
+        s_context->isReg = false;
+        s_context->tmpExpSymbol = rst;
+
         break;
     }
     case T_CTERMINATE_CCONSTVAR_FLOAT_CONST: {
         std::cout << "walk in T_CTERMINATE_CCONSTVAR_FLOAT_CONST" << endl;
+
+        Symbol *rst = Scope::s_curScope->searchConstantMap(token);
+        if (NULL == rst) {
+            rst = new Symbol(Symbol::SYMBOL_FLOATING_CONSTANT);
+            rst->setSymbolName(token);
+            rst->addSymbolValue(token);
+
+            rst = (0 == Scope::s_curScope->defineSymbol(rst)) ? NULL : rst;
+
+        }
+        s_context->isReg = false;
+        s_context->tmpExpSymbol = rst;
 
         break;
     }
@@ -56,10 +102,38 @@ void TerminateAst::walk()
     case T_CTERMINATE_CPRIMEXP_ID: {
         std::cout << "walk in T_CTERMINATE_CPRIMEXP_ID" << endl;
 
+        Symbol *rst = Scope::s_curScope->resolveSymbol(token, Symbol::SYMBOL_VAR);
+
+        if (NULL == rst) {
+            std::cout << "error in T_CTERMINATE_CPRIMEXP_ID: "
+            << "identifier " << token << "has not be declared" << endl;
+            stopWalk();
+            return ;
+
+        }
+        s_context->isReg = false;
+        s_context->tmpExpSymbol = rst;
+
         break;
     }
     case T_CTERMINATE_CPRIMEXP_STR: {
         std::cout << "walk in T_CTERMINATE_CPRIMEXP_STR" << endl;
+
+        Symbol *rst = Scope::s_curScope->searchConstantMap(token);
+        if (NULL == rst) {
+            rst = new Symbol(Symbol::SYMBOL_STRING_LITERAL);
+            rst->setSymbolName(token);
+            string strValue = token.substr(1, token.size() - 2);
+            rst->addSymbolValue(strValue);
+
+            cout << "!" << rst->getFirstSymbolValue() << endl;
+
+            Scope::s_curScope->defineSymbol(rst);
+
+        }
+        s_context->isReg = false;
+        s_context->tmpExpSymbol = rst;
+
 
         break;
     }
@@ -367,7 +441,6 @@ void TerminateAst::walk()
     }
 
     }
-
 
 
 }

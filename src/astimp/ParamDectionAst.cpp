@@ -6,6 +6,10 @@ ParamDectionAst::ParamDectionAst(NodeAst::NodeType nodeType_t) : NodeAst(nodeTyp
 
 void ParamDectionAst::walk()
 {
+    if (checkIsNotWalking()) {
+        return ;
+    }
+
     switch(nodeType){
         case T_CPARAMDECTION_DECTIONSFS_DECTOR:{
             std::cout << "walk in T_CPARAMDECTION_DECTIONSFS_DECTOR" << endl;
@@ -14,7 +18,8 @@ void ParamDectionAst::walk()
             {
                 std::cout<<"error in T_CPARAMDECTION_DECTIONSFS_DECTOR: the children's type of function is T_CDIRDECTOR_ID at line "
                 <<getLineno()<<std::endl;
-                exit(0);
+                stopWalk();
+                return ;
             }
 
             childs.at(0)->walk();
@@ -25,8 +30,12 @@ void ParamDectionAst::walk()
             childs.at(1)->walk();
 
             Symbol tmpsymbol(Symbol::SYMBOL_VAR);
-            tmpsymbol.symbolName=s_context->tmpIdenName;
-            tmpsymbol.typeClass.clone(&tmp);
+
+            //tmpsymbol.symbolName=s_context->tmpIdenName;
+            //tmpsymbol.typeClass.clone(&tmp);
+            tmpsymbol.setSymbolName(s_context->tmpIdenName);
+            tmpsymbol.setTypeClass(&tmp);
+
 
             s_context->clearContext();
             s_context->addParawithid(tmpsymbol);
@@ -46,7 +55,10 @@ void ParamDectionAst::walk()
         default:{
             std::cout<<"error in ParamDectionAst: nodetype is invalid"<<endl;
 
-            exit(0);
+            stopWalk();
+            return ;
         }
     }
+
+
 }

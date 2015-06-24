@@ -6,10 +6,16 @@ FuncDefAst::FuncDefAst(NodeAst::NodeType nodeType_t) : NodeAst(nodeType_t) {
 
 void FuncDefAst::walk()
 {
+    if (checkIsNotWalking()) {
+        return ;
+    }
+
+
     if (nodeType != T_CFUNCDEF_DECTIONSFS_DECTOR_COMPSTM)
     {
         std::cout<<"error: nodetype error in FuncDefAst"<<std::endl;
-        exit(0);
+        stopWalk();
+        return ;
     }
     std::cout << "walk in T_CFUNCDEF_DECTIONSFS_DECTOR_COMPSTM" << endl;
 
@@ -18,7 +24,8 @@ void FuncDefAst::walk()
     {
         std::cout<<"error in FuncDefAst: the children's type of function is not param either void at line "
         <<getLineno()<<std::endl;
-        exit(0);
+        stopWalk();
+        return ;
     }
 
     childs.at(0)->walk();
@@ -35,14 +42,16 @@ void FuncDefAst::walk()
         std::cout<<"error in FuncDefAst: the function"
         << tmpScope->scopeName << " has been defined at line "<<getLineno()<<std::endl;
         delete tmpScope;
-        exit(0);
+        stopWalk();
+        return ;
     }
     if (Scope::resolveScope(tmpScope->scopeName, Scope::SCOPE_GLOBALFUNCCHAN))
     {
         std::cout<<"error in FuncDefAst: the function"
         << tmpScope->scopeName << " has been defined at line "<<getLineno()<<std::endl;
         delete tmpScope;
-        exit(0);
+        stopWalk();
+        return ;
     }
 
     Scope *tmpFuncImp = NULL;
@@ -77,16 +86,20 @@ void FuncDefAst::walk()
     {
         for (int i = 0; i < s_context->tmpParaWithIdNum; i++)
         {
-            Symbol *tmpsymbol = new Symbol(Symbol::SYMBOL_VAR);
+            /*Symbol *tmpsymbol = new Symbol(Symbol::SYMBOL_VAR);
             tmpsymbol->symbolName = s_context->tmpParaWithIdList.at(i).symbolName;
-            tmpsymbol->typeClass.clone(&(s_context->tmpParaWithIdList.at(i).typeClass));
+            tmpsymbol->typeClass.clone(&(s_context->tmpParaWithIdList.at(i).typeClass));*/
 
-            if (NULL != Scope::s_curScope->searchSymbolVarMap(tmpsymbol->symbolName)) {
+            if (NULL != Scope::s_curScope->searchSymbolVarMap(s_context->tmpParaWithIdList.at(i).symbolName)) {
                 std::cout << "error in FuncDefAst: duplicate argument "
-                << tmpsymbol->symbolName << " at line " << getLineno() << std::endl;
-                delete tmpsymbol;
-                exit(0);
+                << s_context->tmpParaWithIdList.at(i).symbolName << " at line " << getLineno() << std::endl;
+                stopWalk();
+                return ;
             }
+
+            Symbol *tmpsymbol = new Symbol(Symbol::SYMBOL_VAR);
+            tmpsymbol->setSymbolName(s_context->tmpParaWithIdList.at(i).symbolName);
+            tmpsymbol->setTypeClass(&(s_context->tmpParaWithIdList.at(i).typeClass));
 
             /*if (Scope::s_curScope->symbolVarMap.find(tmpsymbol->symbolName)!=Scope::s_curScope->symbolVarMap.end())
             {

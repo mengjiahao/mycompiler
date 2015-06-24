@@ -6,6 +6,10 @@ DectionSpecifiersAst::DectionSpecifiersAst(NodeAst::NodeType nodeType_t) : NodeA
 
 void DectionSpecifiersAst::walk()
 {
+    if (checkIsNotWalking()) {
+        return ;
+    }
+
     std::cout << "walk in DectionSpecifiersAst" << endl;
 
     TypeClass *tmp[getChildsNo()];
@@ -25,7 +29,8 @@ void DectionSpecifiersAst::walk()
     {
         std::cout<<"error at DectionSpecifiersAst: class type should not use with other type at line "
         <<getLineno()<<std::endl;
-        exit(0);
+        stopWalk();
+        return ;
     }
     TypeClass::judgetType(tmp[0],tmp[1], getLineno());
     tmp[0]->storageType |= tmp[1]->storageType;
@@ -39,6 +44,8 @@ void DectionSpecifiersAst::walk()
     {
         delete tmp[i];
     }
+
+
 }
 
 

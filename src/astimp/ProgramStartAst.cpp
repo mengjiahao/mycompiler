@@ -9,6 +9,10 @@ ProgramStartAst::ProgramStartAst(NodeAst::NodeType nodeType_t) : NodeAst(nodeTyp
 
 void ProgramStartAst::walk()
 {
+    if (checkIsNotWalking()) {
+        return ;
+    }
+
     Scope *tmp = new Scope();
     tmp->initGlobalScope();
 

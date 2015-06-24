@@ -25,7 +25,9 @@ public:
     int storageType;
     int typeSfType;
     int typeQfType;
+
     Scope *scopeType;      //only for classRefVar
+
     bool isArray;
     vector<int> dimensions;
 
@@ -45,6 +47,9 @@ public:
 
     virtual void setTypeQfType(TypeClass::TypeQfType typeQfType_t);
     virtual int getTypeQfType();
+
+    virtual void setScopeType(Scope *scopeType_t);
+    virtual Scope* getScopeType();
 
     virtual void setIsArray(bool isArray_t);
     virtual bool getIsArray();
@@ -103,7 +108,7 @@ public:
     virtual void setSymbolType(Symbol::SymbolType symbolType_t);
     virtual Symbol::SymbolType getSymbolType();
 
-    virtual void addSymbolName(const string &symbolName_t);
+    virtual void setSymbolName(const string &symbolName_t);
     virtual string getSymbolName();
 
     virtual void addSymbolValue(const string &symbolValue_t);

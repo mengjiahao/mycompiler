@@ -371,6 +371,8 @@ class NodeAst {
 
 		static Context *s_context;
 
+		static bool s_isInstalled;
+
 	public:
 		NodeAst(NodeAst::NodeType nodeType_t);
 		NodeAst();
@@ -415,6 +417,9 @@ class NodeAst {
 		static void setContext(Context *context_t);
 
 		static void dotBfsNodeTree(NodeAst *root_t);
+
+		virtual void stopWalk();
+		virtual bool checkIsNotWalking();
 
 		virtual void walk();
 

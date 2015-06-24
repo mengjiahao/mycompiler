@@ -6,6 +6,10 @@ ExtDectionAst::ExtDectionAst(NodeAst::NodeType nodeType_t) : NodeAst(nodeType_t)
 
 void ExtDectionAst::walk()
 {
+    if (checkIsNotWalking()) {
+        return ;
+    }
+
     std::cout << "walk in ExtDectionAst" << endl;
 
     for(int i = 0; i < childs.size(); ++i) {

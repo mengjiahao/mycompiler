@@ -911,18 +911,21 @@ void Scope::printScope(ofstream &ofs_t)
         if (NULL != returnTypeClass) {
             returnTypeClass->printTypeClass(ofs_t);
         } else {
-            ofs_t << "has no returnTypeClass\n";
+            ofs_t << "      has no returnTypeClass\n";
         }
 
         ofs_t << "$symbolSeqList:\n";
         list<Symbol *>::iterator seqItr;
-        for(seqItr = symbolSeqList.begin(); seqItr != symbolSeqList.end(); ++seqItr) {
+        if (!symbolSeqList.empty()) {
+            for(seqItr = symbolSeqList.begin(); seqItr != symbolSeqList.end(); ++seqItr) {
             if (NULL != (*seqItr)) {
                 (*seqItr)->printSymbol(ofs_t);
             }
         }
+        } else {
+            ofs_t << "      symbolSeqList has no symbols\n";
+        }
 
-        ofs_t << "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$childsScopes$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n";
         vector<Scope *>::iterator childItr;
         for(childItr = childs.begin(); childItr != childs.end(); ++childItr) {
             if (NULL != (*childItr)) {

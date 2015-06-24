@@ -6,6 +6,10 @@ ParamTypeListAst::ParamTypeListAst(NodeAst::NodeType nodeType_t) : NodeAst(nodeT
 
 void ParamTypeListAst::walk()
 {
+    if (checkIsNotWalking()) {
+        return ;
+    }
+
     if (nodeType == T_CPARAMLIST_PARAMLIST_PARAMDECTION)
     {
         std::cout << "walk in T_CPARAMLIST_PARAMLIST_PARAMDECTION" << endl;
@@ -22,8 +26,10 @@ void ParamTypeListAst::walk()
 
         } else if (childs.at(1)->nodeType == T_CPARAMDECTION_DECTIONSFS_DECTOR) {
             Symbol tmpsymbol(Symbol::SYMBOL_VAR);
-            tmpsymbol.symbolName = s_context->tmpParaWithIdList.at(0).symbolName;
-            tmpsymbol.typeClass.clone(&(s_context->tmpParaWithIdList.at(0).typeClass));
+            //tmpsymbol.symbolName = s_context->tmpParaWithIdList.at(0).symbolName;
+            //tmpsymbol.typeClass.clone(&(s_context->tmpParaWithIdList.at(0).typeClass));
+            tmpsymbol.setSymbolName(s_context->tmpParaWithIdList.at(0).symbolName);
+            tmpsymbol.setTypeClass(&(s_context->tmpParaWithIdList.at(0).typeClass));
 
             childs.at(0)->walk();
 
@@ -31,13 +37,16 @@ void ParamTypeListAst::walk()
         } else {
             std::cout<<"error in T_CPARAMDECTION_DECTIONSFS_DECTOR: nodetype is not T_CPARAMLIST_PARAMLIST_PARAMDECTION"
             <<std::endl;
-            exit(0);
+            stopWalk();
+            return ;
         }
 
     }
     else
     {
         std::cout<<"error in ParamTypeListAst: nodetype is invalid"<<std::endl;
-        exit(0);
+        stopWalk();
+        return ;
     }
+
 }

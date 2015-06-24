@@ -6,6 +6,9 @@ CompoundStmAst::CompoundStmAst(NodeAst::NodeType nodeType_t) : NodeAst(nodeType_
 
 void CompoundStmAst::walk()
 {
+    if (checkIsNotWalking()) {
+        return ;
+    }
 
     switch (nodeType){
         case T_CCOMPSTM_VOID:{

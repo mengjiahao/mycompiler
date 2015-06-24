@@ -26,13 +26,13 @@ public:
     bool isFunc;
 
     bool isReg;
-    Reg *tmpReg;
+    Reg *tmpExpReg;
     Symbol *tmpExpSymbol;
 
     Symbol *tmpTrueLabel;
     Symbol *tmpFalseLabel;
 
-    Symbol *tmpGotoBeginLabel;
+    //Symbol *tmpGotoBeginLabel;
 
 
 public:

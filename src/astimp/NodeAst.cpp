@@ -372,6 +372,7 @@ LogiMsg* NodeAst::s_logiMsg = NULL;
 list<NodeAst *> NodeAst::s_nodeList;
 NodeAst *NodeAst::s_root = NULL;
 Context *NodeAst::s_context = NULL;
+bool NodeAst::s_isInstalled = false;
 
 
 NodeAst::NodeAst()
@@ -714,9 +715,26 @@ void NodeAst::dotBfsNodeTree(NodeAst* root_t)
 
 }
 
+void NodeAst::stopWalk()
+{
+    s_isInstalled = true;
+}
+
+bool NodeAst::checkIsNotWalking()
+{
+    return s_isInstalled;
+}
+
+
 void NodeAst::walk()
 {
+    if (checkIsNotWalking()) {
+        return ;
+    }
+
     std::cout << "walk in NodeAst" << endl;
+
+
 
     for (int i = 0; i < childs.size(); ++i) {
         if (NULL !=  childs.at(i)) {
@@ -724,6 +742,8 @@ void NodeAst::walk()
         }
     }
 }
+
+
 
 
 

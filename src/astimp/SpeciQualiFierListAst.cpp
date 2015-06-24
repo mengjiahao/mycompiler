@@ -6,6 +6,10 @@ SpeciQualiFierListAst::SpeciQualiFierListAst(NodeAst::NodeType nodeType_t) : Nod
 
 void SpeciQualiFierListAst::walk()
 {
+    if (checkIsNotWalking()) {
+        return ;
+    }
+
     std::cout << "walk in SpeciQualiFierListAst" << endl;
 
     TypeClass *tmp[getChildsNo()];
@@ -22,7 +26,8 @@ void SpeciQualiFierListAst::walk()
     {
         std::cout<<"error in SpeciQualiFierListAst: class type should not be used with other type at line "
         <<getLineno()<<std::endl;
-        exit(0);
+        stopWalk();
+        return ;
     }
 
     TypeClass::judgetType(tmp[0],tmp[1], getLineno());
@@ -37,4 +42,5 @@ void SpeciQualiFierListAst::walk()
     {
         delete tmp[i];
     }
+
 }

@@ -6,6 +6,10 @@ DirDectorAst::DirDectorAst(NodeAst::NodeType nodeType_t) : NodeAst(nodeType_t) {
 
 void DirDectorAst::walk()
 {
+    if (checkIsNotWalking()) {
+        return ;
+    }
+
     switch(nodeType){
         case T_CDIRDECTOR_ID:{
             std::cout << "walk in T_CDIRDECTOR_ID" << endl;
@@ -30,7 +34,8 @@ void DirDectorAst::walk()
             {
                 std::cout<<"error in T_CDIRDECTOR_DIRDECTOR_CALL_PARAMTYPELIST: the children's type is not T_CDIRDECTOR_ID at line "
                 <<getLineno()<<std::endl;
-                exit(0);
+                stopWalk();
+                return ;
             }
 
             childs.at(0)->walk();
@@ -55,20 +60,23 @@ void DirDectorAst::walk()
             {
                 std::cout<<"error in T_CDIRDECTOR_DIRDECTOR_CALL_VOID: the children's type is not T_CDIRDECTOR_ID at line "
                 <<getLineno()<<std::endl;
-                exit(0);
+                stopWalk();
+                return ;
             }
 
             childs.at(0)->walk();
 
-            string tmp1=s_context->tmpIdenName;
+            string tmp1 = s_context->tmpIdenName;
             s_context->clearContext();
-            s_context->tmpIdenName=tmp1;
-            s_context->isFunc=true;
+            s_context->tmpIdenName = tmp1;
+            s_context->isFunc = true;
             break;
         }
         default:{
             std::cout<<"error in DirDectorAst: nodetype is invalid"<<std::endl;
-            exit(0);
+            stopWalk();
+            return ;
         }
     }
+
 }

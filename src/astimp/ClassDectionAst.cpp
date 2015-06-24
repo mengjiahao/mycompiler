@@ -6,13 +6,19 @@ ClassDectionAst::ClassDectionAst(NodeAst::NodeType nodeType_t) : NodeAst(nodeTyp
 
 void ClassDectionAst::walk()
 {
+    if (checkIsNotWalking()) {
+        return ;
+    }
+
     switch (nodeType){
         case T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST:{
             std::cout << "walk in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST" << endl;
 
             if (2 != childs.size()) {
                 std::cout << "error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST: doesn't have 2 children at line " << getLineno() << std::endl;
-                exit(0);
+                //exit(0);
+                stopWalk();
+                return ;
             }
 
             childs.at(0)->walk();
@@ -25,18 +31,25 @@ void ClassDectionAst::walk()
             if (s_context->isFunc) {
                 std::cout << "error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST: ClassDectionAst scope should not have func declaration at line "
                 << getLineno() << std::endl;
-                exit(0);
+                stopWalk();
+                return ;
             } else {
-                Symbol *tmpsymbol = new Symbol(Symbol::SYMBOL_CLASSMEMVAR);
-                tmpsymbol->symbolName = s_context->tmpIdenName;
-                tmpsymbol->typeClass.clone(&tmpType);
 
-                if (NULL != Scope::s_curScope->searchSymbolVarMap(tmpsymbol->symbolName)) {
+                /*Symbol *tmpsymbol = new Symbol(Symbol::SYMBOL_CLASSMEMVAR);
+                tmpsymbol->symbolName = s_context->tmpIdenName;
+                tmpsymbol->typeClass.clone(&tmpType);*/
+
+                if (NULL != Scope::s_curScope->searchSymbolVarMap(s_context->tmpIdenName)) {
                     std::cout << "error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST: ClassDectionAst duplicate var "
-                    << tmpsymbol->symbolName << " at line " << getLineno() << std::endl;
-                    delete tmpsymbol;
-                    exit(0);
+                    << s_context->tmpIdenName << " at line " << getLineno() << std::endl;
+                    stopWalk();
+                    return ;
                 }
+
+                Symbol *tmpsymbol = new Symbol(Symbol::SYMBOL_CLASSMEMVAR);
+                tmpsymbol->setSymbolName(s_context->tmpIdenName);
+                tmpsymbol->setTypeClass(&tmpType);
+
                 /*if (Scope::s_curScope->symbolVarMap.find(tmpsymbol->symbolName) != Scope::s_curScope->symbolVarMap.end())
                 {
                     std::cout << "error: duplicate var at line " << getLineno() << std::endl;
@@ -54,7 +67,8 @@ void ClassDectionAst::walk()
             if (3 != childs.size()) {
                 std::cout << "error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST_COMPSTM:  doesn't have 3 children at line "
                 << getLineno() << std::endl;
-                exit(0);
+                stopWalk();
+                return ;
             }
 
             childs.at(0)->walk();
@@ -69,7 +83,9 @@ void ClassDectionAst::walk()
                 std::cout << "error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST_COMPSTM: ClassDectionAst should not have a func at line "
                 << getLineno() << std::endl;
                 delete tmpScope;
-                exit(0);
+
+                stopWalk();
+                return ;
             }
 
             tmpScope->initClassFuncScope(s_context->tmpIdenName);
@@ -82,23 +98,30 @@ void ClassDectionAst::walk()
             {
                 std::cout << "error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST_COMPSTM: ClassDectionAst-func's argument list do not have identifier"
                 << std::endl;
-                exit(0);
+                stopWalk();
+                return ;
             }
 
             if (s_context->tmpParaWithIdNum)
             {
                 for (int i = 0; i < s_context->tmpParaWithIdNum; ++i)
                 {
-                    Symbol *tmpsymbol = new Symbol(Symbol::SYMBOL_VAR);
+                    /*Symbol *tmpsymbol = new Symbol(Symbol::SYMBOL_VAR);
                     tmpsymbol->symbolName = s_context->tmpParaWithIdList.at(i).symbolName;
-                    tmpsymbol->typeClass.clone(&(s_context->tmpParaWithIdList.at(i).typeClass));
+                    tmpsymbol->typeClass.clone(&(s_context->tmpParaWithIdList.at(i).typeClass));*/
 
-                    if (NULL != Scope::s_curScope->searchSymbolVarMap(tmpsymbol->symbolName)) {
+                    if (NULL != Scope::s_curScope->searchSymbolVarMap(s_context->tmpParaWithIdList.at(i).symbolName)) {
                         std::cout << "error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST_COMPSTM: ClassDectionAst-func's duplicate argument "
-                        << tmpsymbol->symbolName << " at line " << getLineno() << std::endl;
-                        delete tmpsymbol;
-                        exit(0);
+                        << s_context->tmpParaWithIdList.at(i).symbolName << " at line " << getLineno() << std::endl;
+                        stopWalk();
+                        return ;
                     }
+
+                    Symbol *tmpsymbol = new Symbol(Symbol::SYMBOL_VAR);
+                    tmpsymbol->setSymbolName(s_context->tmpParaWithIdList.at(i).symbolName);
+                    tmpsymbol->setTypeClass(&(s_context->tmpParaWithIdList.at(i).typeClass));
+
+
                     /*if (Scope::s_curScope->symbolVarMap.find(tmpsymbol->symbolName) != Scope::s_curScope->symbolVarMap.end())
                     {
                         std::cout << "error: ClassDecl-func's duplicate argument " << tmpsymbol->symbolName
@@ -128,7 +151,8 @@ void ClassDectionAst::walk()
             {
                 std::cout << "error in T_CCLASSDECTION_CLASSDECTORLIST_COMPSTM: ClassDectionAst should have a func at line "
                 << getLineno() << std::endl;
-                exit(0);
+                stopWalk();
+                return ;
             }
 
             Scope *tmpScope = new Scope();
@@ -142,23 +166,28 @@ void ClassDectionAst::walk()
             {
                 std::cout << "error in T_CCLASSDECTION_CLASSDECTORLIST_COMPSTM: ClassDectionAst-func's argument list do not have identifier"
                 << std::endl;
-                exit(0);
+                stopWalk();
+                return ;
             }
 
             if (s_context->tmpParaWithIdNum)
             {
                 for (int i = 0; i < s_context->tmpParaWithIdNum; ++i)
                 {
-                    Symbol *tmpsymbol = new Symbol(Symbol::SYMBOL_VAR);
+                    /*Symbol *tmpsymbol = new Symbol(Symbol::SYMBOL_VAR);
                     tmpsymbol->symbolName = s_context->tmpParaWithIdList.at(i).symbolName;
-                    tmpsymbol->typeClass.clone(&(s_context->tmpParaWithIdList.at(i).typeClass));
+                    tmpsymbol->typeClass.clone(&(s_context->tmpParaWithIdList.at(i).typeClass));*/
 
-                    if (NULL != Scope::s_curScope->searchSymbolVarMap(tmpsymbol->symbolName)) {
+                    if (NULL != Scope::s_curScope->searchSymbolVarMap(s_context->tmpParaWithIdList.at(i).symbolName)) {
                         std::cout << "error in T_CCLASSDECTION_CLASSDECTORLIST_COMPSTM: ClassDectionAst-func's duplicate argument "
-                        << tmpsymbol->symbolName << " at line " << getLineno() << std::endl;
-                        delete tmpsymbol;
-                        exit(0);
+                        << s_context->tmpParaWithIdList.at(i).symbolName << " at line " << getLineno() << std::endl;
+                        stopWalk();
+                        return ;
                     }
+
+                    Symbol *tmpsymbol = new Symbol(Symbol::SYMBOL_VAR);
+                    tmpsymbol->setSymbolName(s_context->tmpParaWithIdList.at(i).symbolName);
+                    tmpsymbol->setTypeClass(&(s_context->tmpParaWithIdList.at(i).typeClass));
 
                     /*if (Scope::s_curScope->symbolVarMap.find(tmpsymbol->symbolName) != Scope::s_curScope->symbolVarMap.end())
                     {

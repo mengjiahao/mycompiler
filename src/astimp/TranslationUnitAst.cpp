@@ -6,6 +6,10 @@ TranslationUnitAst::TranslationUnitAst(NodeAst::NodeType nodeType_t) : NodeAst(n
 
 void TranslationUnitAst::walk()
 {
+    if (checkIsNotWalking()) {
+        return ;
+    }
+
     std::cout << "walk in TranslationUnitAst" << std::endl;
 
     for (int i = 0; i < childs.size(); ++i) {

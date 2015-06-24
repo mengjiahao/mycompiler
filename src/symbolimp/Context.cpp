@@ -6,12 +6,40 @@ using namespace std;
 /*****************************Context***********************************************/
 Context::Context()
 {
+    tmpDeclType.clearTypeClass();
+    tmpIdenName = "";
+    tmpParaTypeList.clear();
+    tmpParaWithIdList.clear();
+    tmpParaWithIdNum = 0;
+    tmpParaWithoutIdNum = 0;
+    isFunc = false;
+
+    isReg = false;
+    tmpExpReg = NULL;
+    tmpExpSymbol = NULL;
+
+    tmpTrueLabel = NULL;
+    tmpFalseLabel = NULL;
+
 
 }
 
 Context::~Context()
 {
+    tmpDeclType.clearTypeClass();
+    tmpIdenName = "";
+    tmpParaTypeList.clear();
+    tmpParaWithIdList.clear();
+    tmpParaWithIdNum = 0;
+    tmpParaWithoutIdNum = 0;
+    isFunc = false;
 
+    isReg = false;
+    tmpExpReg = NULL;
+    tmpExpSymbol = NULL;
+
+    tmpTrueLabel = NULL;
+    tmpFalseLabel = NULL;
 }
 
 void Context::clearContext()
@@ -23,6 +51,14 @@ void Context::clearContext()
     tmpParaWithIdNum = 0;
     tmpParaWithoutIdNum = 0;
     isFunc = false;
+
+    isReg = false;
+    tmpExpReg = NULL;
+    tmpExpSymbol = NULL;
+
+    tmpTrueLabel = NULL;
+    tmpFalseLabel = NULL;
+
 }
 
 void Context::addParawithid(Symbol m)

@@ -6,6 +6,10 @@ DectionAst::DectionAst(NodeAst::NodeType nodeType_t) : NodeAst(nodeType_t) {
 
 void DectionAst::walk()
 {
+    if (checkIsNotWalking()) {
+        return ;
+    }
+
     switch (nodeType){
         case T_CDECTION_DECTIONSFS:{
             std::cout << "walk in T_CDECTION_DECTIONSFS" << endl;
@@ -17,14 +21,19 @@ void DectionAst::walk()
                 {
                     std::cout << "sorry in T_CDECTION_DECTIONSFS, our compiler do not support class declaration at line "
                     << getLineno() << std::endl;
+                    stopWalk();
+                    return ;
                 }
                 else {
                     std::cout << "error in T_CDECTION_DECTIONSFS: this type is builtin type, you can not define it at line "
                     <<getLineno()<<std::endl;
+                    stopWalk();
+                    return ;
                 }
 
 
-                exit(0);
+                stopWalk();
+                return ;
             }
 
             childs.at(0)->walk();
@@ -41,32 +50,37 @@ void DectionAst::walk()
             childs.at(1)->walk();
 
             if (s_context->isFunc) {
+                /*Scope *tmpScope = new Scope();
+                tmpScope->setReturnTypeClass(&tmpType);
+                tmpScope->setScopeName(s_context->tmpIdenName);
+                tmpScope->setScopeType(Scope::SCOPE_GLOBALFUNCDECL);*/
+
+                if (Scope::resolveScope(s_context->tmpIdenName, Scope::SCOPE_GLOBALFUNC))
+                {
+                    std::cout<<"error in FuncDefAst: the function"
+                    << s_context->tmpIdenName << " has been defined at line "<<getLineno()<<std::endl;
+                    stopWalk();
+                    return ;
+                }
+                if (Scope::resolveScope(s_context->tmpIdenName, Scope::SCOPE_GLOBALFUNCCHAN))
+                {
+                    std::cout<<"error in FuncDefAst: the function"
+                    << s_context->tmpIdenName << " has been defined at line "<<getLineno()<<std::endl;
+                    stopWalk();
+                    return ;
+                }
+                if (Scope::resolveScope(s_context->tmpIdenName, Scope::SCOPE_GLOBALFUNCDECL))
+                {
+                    std::cout<<"error in FuncDefAst: the function"
+                    << s_context->tmpIdenName << " has been defined at line "<<getLineno()<<std::endl;
+                    stopWalk();
+                    return ;
+                }
+
                 Scope *tmpScope = new Scope();
                 tmpScope->setReturnTypeClass(&tmpType);
                 tmpScope->setScopeName(s_context->tmpIdenName);
                 tmpScope->setScopeType(Scope::SCOPE_GLOBALFUNCDECL);
-
-                if (Scope::resolveScope(tmpScope->scopeName, Scope::SCOPE_GLOBALFUNC))
-                {
-                    std::cout<<"error in FuncDefAst: the function"
-                    << tmpScope->scopeName << " has been defined at line "<<getLineno()<<std::endl;
-                    delete tmpScope;
-                    exit(0);
-                }
-                if (Scope::resolveScope(tmpScope->scopeName, Scope::SCOPE_GLOBALFUNCCHAN))
-                {
-                    std::cout<<"error in FuncDefAst: the function"
-                    << tmpScope->scopeName << " has been defined at line "<<getLineno()<<std::endl;
-                    delete tmpScope;
-                    exit(0);
-                }
-                if (Scope::resolveScope(tmpScope->scopeName, Scope::SCOPE_GLOBALFUNCDECL))
-                {
-                    std::cout<<"error in FuncDefAst: the function"
-                    << tmpScope->scopeName << " has been defined at line "<<getLineno()<<std::endl;
-                    delete tmpScope;
-                    exit(0);
-                }
 
                 Scope::pushScope(Scope::s_curScope, tmpScope);  //do not change s_curscope
 
@@ -74,7 +88,8 @@ void DectionAst::walk()
                 {
                     std::cout<<"error in T_CDECTION_DECTIONSFS_INITDECTORLIST: func's param do not support mix style at line "
                     <<getLineno()<<std::endl;
-                    exit(0);
+                    stopWalk();
+                    return ;
                 }
 
                 if (s_context->tmpParaWithIdNum)
@@ -99,18 +114,21 @@ void DectionAst::walk()
                 }
 
             } else {
-                Symbol *tmpsymbol = new Symbol(Symbol::SYMBOL_VAR);
+
+                /*Symbol *tmpsymbol = new Symbol(Symbol::SYMBOL_VAR);
                 tmpsymbol->symbolName = s_context->tmpIdenName;
+                tmpsymbol->typeClass.clone(&tmpType);*/
 
-
-                tmpsymbol->typeClass.clone(&tmpType);
-
-                if (NULL != Scope::s_curScope->searchSymbolVarMap(tmpsymbol->symbolName)) {
+                if (NULL != Scope::s_curScope->searchSymbolVarMap(s_context->tmpIdenName)) {
                     std::cout<<"error in T_CDECTION_DECTIONSFS_INITDECTORLIST: duplicate var "
-                    << tmpsymbol->symbolName << " at line " << getLineno() << std::endl;
-                    delete tmpsymbol;
-                    exit(0);
+                    << s_context->tmpIdenName << " at line " << getLineno() << std::endl;
+                    stopWalk();
+                    return ;
                 }
+
+                Symbol *tmpsymbol = new Symbol(Symbol::SYMBOL_VAR);
+                tmpsymbol->setSymbolName(s_context->tmpIdenName);
+                tmpsymbol->setTypeClass(&tmpType);
 
                 /*if (Scope::s_curScope->symbolVarMap.find(tmpsymbol->symbolName) != Scope::s_curScope->symbolVarMap.end())
                 {
@@ -129,8 +147,9 @@ void DectionAst::walk()
         default:{
 
             std::cout<<"error in DectionAst: nodetype is invalid"<<std::endl;
-            exit(0);
-            break;
+            stopWalk();
+            return ;
         }
     }
+
 }
