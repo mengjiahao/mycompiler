@@ -673,7 +673,7 @@ void Symbol::printSymbol(ofstream& ofs_t)
 {
     if (ofs_t.is_open()) {
         ofs_t << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n";
-        ofs_t << "@Symbol: " << symbolId << " " << symbolType << " " << symbolName << "\n";
+        ofs_t << "@Symbol: " << symbolId << " " << symbolType << " " << symbolName <<" " << offset<<"\n";
         ofs_t << "@SymbolValue: ";
         for(int i = 0; i < symbolValue.size(); ++i) {
             ofs_t << symbolValue[i] << " ";

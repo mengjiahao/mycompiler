@@ -972,7 +972,7 @@ void Scope::printScope(ofstream &ofs_t)
     if (ofs_t.is_open()) {
         ofs_t << "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n";
         ofs_t << "$Scope: " << scopeId << " " << scopeType << " " << scopeName << "\n";
-        ofs_t << "$level: " << level << " " << curStartOffset << " " << totalByteSize << "\n";
+        ofs_t << "$level: " << level << " " << curStartOffset << " " << totalByteSize << " " << funcOffset<<"\n";
         ofs_t << "$returnTypeClass:\n";
         if (NULL != returnTypeClass) {
             returnTypeClass->printTypeClass(ofs_t);
