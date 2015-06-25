@@ -29,6 +29,9 @@ void ClassSpecifierAst::walk()
             }
 
             Scope *tmpScope = new Scope();
+            tmpScope->setTotalByteSize(0);
+            tmpScope->setTotalFuncByteSize(0);
+
             tmpScope->initClassScope(s_context->tmpIdenName);
             Scope::pushScope(Scope::s_curScope,tmpScope);
             Scope::setCurScope(tmpScope);
@@ -76,6 +79,7 @@ void ClassSpecifierAst::walk()
             }
 
             Scope *tmpScope = new Scope();
+
             tmpScope->initClassScope(s_context->tmpIdenName);
 
             childs.at(1)->walk();
@@ -96,6 +100,8 @@ void ClassSpecifierAst::walk()
             }
 
             tmpScope->setSuperClass(superScope);
+            tmpScope->setTotalByteSize(tmpScope->getSuperClass()->getTotalByteSize());
+            tmpScope->setTotalFuncByteSize(tmpScope->getSuperClass()->getTotalFuncByteSize());
             Scope::pushScope(Scope::s_curScope,tmpScope);
             Scope::setCurScope(tmpScope);
 

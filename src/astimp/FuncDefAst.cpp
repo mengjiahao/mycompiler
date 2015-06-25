@@ -35,7 +35,8 @@ void FuncDefAst::walk()
 
     Scope *tmpScope = new Scope();
     tmpScope->setReturnTypeClass(&(s_context->tmpDeclType));
-
+    tmpScope->setCurStartOffset(0);
+    tmpScope->setTotalByteSize(0);
     childs.at(1)->walk();
     if (checkIsNotWalking()) {
         return ;
@@ -72,7 +73,8 @@ void FuncDefAst::walk()
         tmpScope->clearSymbolSeqList();
 
         tmpScope->setScopeType(Scope::SCOPE_GLOBALFUNCCHAN);   //replace
-
+        tmpScope->setCurStartOffset(0);
+        tmpScope->setTotalByteSize(0);
 
         Scope::setCurScope(tmpScope);
     } else {
@@ -92,7 +94,7 @@ void FuncDefAst::walk()
 
     if (s_context->tmpParaWithIdNum)
     {
-        for (int i = 0; i < s_context->tmpParaWithIdNum; i++)
+        for (int i = 0; i <s_context->tmpParaWithIdNum ; i++)
         {
             /*Symbol *tmpsymbol = new Symbol(Symbol::SYMBOL_VAR);
             tmpsymbol->symbolName = s_context->tmpParaWithIdList.at(i).symbolName;
@@ -109,6 +111,7 @@ void FuncDefAst::walk()
             tmpsymbol->setSymbolName(s_context->tmpParaWithIdList.at(i).symbolName);
             tmpsymbol->setTypeClass(&(s_context->tmpParaWithIdList.at(i).typeClass));
 
+
             /*if (Scope::s_curScope->symbolVarMap.find(tmpsymbol->symbolName)!=Scope::s_curScope->symbolVarMap.end())
             {
                 std::cout<<"error in FuncDefAst: duplicate argument at line "<<getLineno()<<std::endl;
@@ -118,6 +121,13 @@ void FuncDefAst::walk()
 
             Scope::s_curScope->defineSymbol(tmpsymbol);
         }
+        list<Symbol *>::reverse_iterator r_itr;
+        for (r_itr= Scope::s_curScope->symbolSeqList.rbegin(); r_itr!=Scope::s_curScope->symbolSeqList.rend(); r_itr++)
+        {
+            (*r_itr)->setOffset(Scope::s_curScope->getTotalByteSize());
+            Scope::s_curScope->incTotalByteSize((*r_itr)->getByteSize());
+        }
+        Scope::s_curScope->incTotalByteSize(8);
     }
 
     childs.at(2)->walk();
