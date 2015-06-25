@@ -123,7 +123,7 @@ const Reg* Reg::getReg(RegType regType_t, int sf_t) {
 
 
 /*********************************ItmCode********************************************/
-list< vector<Symbol *>* > ItmCode::s_allArgList;
+list< vector<void *>* > ItmCode::s_allArgList;
 vector<ItmCode *> ItmCode::s_allItmCode;
 
 ItmCode::ItmCode()
@@ -176,19 +176,20 @@ unsigned long ItmCode::getCodeId()
     return codeId;
 }
 
-void ItmCode::copyVectorToAllArgList(vector<Symbol* > &vargList_t)
+vector<void* >* ItmCode::copyVectorToAllArgList(vector<void* > &vargList_t)
 {
-    vector<Symbol* > *newArgList = new vector<Symbol* >();
-    vector<Symbol* >::iterator itr;
+    vector<void* > *newArgList = new vector<void* >();
+    vector<void* >::iterator itr;
     for(itr = vargList_t.begin(); vargList_t.end() != itr; ++itr) {
         newArgList->push_back(*itr);
     }
 
     addToAllArgList(newArgList);
+    return newArgList;
 }
 
 
-void ItmCode::addToAllArgList(vector<Symbol* >* argList_t)
+void ItmCode::addToAllArgList(vector<void* >* argList_t)
 {
     if (NULL != argList_t) {
         s_allArgList.push_back(argList_t);
@@ -197,7 +198,7 @@ void ItmCode::addToAllArgList(vector<Symbol* >* argList_t)
 
 void ItmCode::freeAllArgList()
 {
-    list< vector<Symbol* >* >::iterator itr;
+    list< vector<void* >* >::iterator itr;
 
     int i;
 
@@ -256,7 +257,7 @@ void ItmCode::printOperand(ofstream& ofs_t, OperandType opType_t, void *op_t)
         }
         case OPR_ARGLIST: {
             ofs_t << "ARGLIST(";
-            vector<Symbol *> *lop_t = (vector<Symbol *>*)op_t;
+            /*vector<Symbol *> *lop_t = (vector<Symbol *>*)op_t;
             if (NULL != lop_t) {
                 vector<Symbol *>::iterator itr;
                 for (itr = (*lop_t).begin(); itr != (*lop_t).end(); ++itr) {
@@ -265,7 +266,7 @@ void ItmCode::printOperand(ofstream& ofs_t, OperandType opType_t, void *op_t)
                         << (*itr)->getSymbolId() << ")--";
                     }
                 }
-            }
+            }*/
             ofs_t << ")";
             break;
         }

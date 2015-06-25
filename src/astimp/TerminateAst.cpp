@@ -102,17 +102,8 @@ void TerminateAst::walk()
     case T_CTERMINATE_CPRIMEXP_ID: {
         std::cout << "walk in T_CTERMINATE_CPRIMEXP_ID" << endl;
 
-        Symbol *rst = Scope::s_curScope->resolveSymbol(token, Symbol::SYMBOL_VAR);
-
-        if (NULL == rst) {
-            std::cout << "error in T_CTERMINATE_CPRIMEXP_ID: "
-            << "identifier " << token << " has not be declared at line " << getLineno() << endl;
-            stopWalk();
-            return ;
-
-        }
-        s_context->tmpOpType = ItmCode::OPR_SYMBOL;
-        s_context->tmpExpSymbol = rst;
+        s_context->tmpOpType = ItmCode::OPR_INVALID;
+        s_context->tmpIdenName = token;
 
         break;
     }

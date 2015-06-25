@@ -79,7 +79,7 @@ void Context::addParawithoutid(TypeClass m)
     ++tmpParaWithoutIdNum;
 }
 
-void Context::addToArgExpList(Symbol* m)
+void Context::addToArgExpList(void* m)
 {
     if (NULL != m) {
         tmpArgExpList.push_back(m);

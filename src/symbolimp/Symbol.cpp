@@ -192,9 +192,27 @@ void TypeClass::printTypeClass(ofstream& ofs_t)
 
 
 
-int TypeClass::compare(TypeClass* a, TypeClass* b)
+bool TypeClass::compare(TypeClass* a, TypeClass* b)
 {
-    return 0;
+    if(NULL == a || NULL == b) {
+        return false;
+    }
+
+    if ( (a->getStorageType() == b->getStorageType())
+    && (a->getTypeQfType() == b->getTypeQfType()) ) {
+        if( a->getTypeSfType() == b->getTypeSfType() ) {
+            return true;
+        }
+
+        if ( (a->getTypeSfType() & TypeClass::SF_SIGNED)
+        == (b->getTypeSfType() & TypeClass::SF_SIGNED) ) {
+            return true;
+        }
+
+    }
+
+
+    return false;
 }
 
 static int getSfTypeMatrixNo(int sf_t)

@@ -157,6 +157,7 @@ public:
     virtual Symbol* resolveSymbol(const string& symbolName_t, Symbol::SymbolType symbolType_t);
     static Symbol* resolveSymbolMemVar(Scope* classScope_t, const string &symbolName_t);
     static Scope* resolveScope(const string& scopeName_t, Scope::ScopeType scopeType_t);
+    static Scope* resolveClassFuncScope(Scope *classScope_t, const string& scopeName_t);
 
     static void printScopeTree();
     virtual void printScope(ofstream &ofs_t);

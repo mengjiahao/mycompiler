@@ -919,6 +919,21 @@ Scope* Scope::resolveScope(const string& scopeName_t, Scope::ScopeType scopeType
     return NULL;
 }
 
+Scope* Scope::resolveClassFuncScope(Scope* classScope_t, const string& scopeName_t)
+{
+    if (NULL == classScope_t || Scope::SCOPE_CLASS != classScope_t->getScopeType()) {
+        return NULL;
+    }
+
+    Scope *scope_t = classScope_t->searchChildName(scopeName_t);
+
+    if ( (NULL != scope_t) && (Scope::SCOPE_CLASSFUNC == scope_t->getScopeType()) ) {
+        return scope_t;
+    }
+    return NULL;
+}
+
+
 void Scope::printScopeTree()
 {
     ofstream ofs;

@@ -11,6 +11,11 @@ class  PostfixExpAst: public NodeAst {
 	public:
 		PostfixExpAst(NodeAst::NodeType nodeType_t);
 
+		virtual void walk();
+
+		void genCodeCallVoid(Scope *func_t);
+		void genCodeCallArgExpList(Scope *func_t, vector<void* >* argExpList_t);
+
 };
 
 #endif

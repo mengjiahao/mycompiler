@@ -20,10 +20,12 @@ public:
 
     TypeClass tmpDeclType;
     string tmpIdenName;
+
     vector<TypeClass> tmpParaTypeList;
     vector<Symbol> tmpParaWithIdList;
     int tmpParaWithoutIdNum;
     int tmpParaWithIdNum;
+
     bool isFunc;
 
     Scope *tmpClassScope;
@@ -33,7 +35,7 @@ public:
     Reg *tmpExpReg;
     Symbol *tmpExpSymbol;
 
-    vector<Symbol *> tmpArgExpList;
+    vector<void *> tmpArgExpList;
     int tmpArgExpNum;
 
     Symbol *tmpTrueLabel;
@@ -51,7 +53,7 @@ public:
     void addParawithoutid(TypeClass m);
     void addParawithid(Symbol m);
 
-    void addToArgExpList(Symbol *m);
+    void addToArgExpList(void *m);
 
 
 

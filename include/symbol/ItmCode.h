@@ -67,7 +67,8 @@ class ItmCode {
 public:
     enum IRtype {IR_INVALID,
     IR_PUSHVAR, IR_POPVAR,
-    IR_EMITVAR, IR_EMITFUNC, IR_EMITLABEL, IR_CALLFUNC,
+    IR_EMITVAR, IR_EMITFUNC, IR_EMITLABEL,
+    IR_CALLFUNC, IR_CALLCLASSFUNC,
     IR_FETCHARRAY,
     IR_NEW_OP, IR_DELETE_OP,
     IR_ASSIGN_OP, IR_MUL_ASSIGN, IR_DIV_ASSIGN, IR_MOD_ASSIGN,
@@ -83,8 +84,8 @@ public:
     IR_GOTO, IR_IF_GOTO, IR_IF_NOT_GOTO,
     IR_RETURN};
 
-    enum OperandType {OPR_INVALID, OPR_SYMBOL, OPR_SCOPE, OPR_ARGLIST,
-    OPR_REGISTER};
+    enum OperandType {OPR_INVALID, OPR_SYMBOL, OPR_SCOPE, OPR_REGISTER,
+    OPR_ARGLIST, OPR_CLASS_REFMEM, OPR_ARRAY_ELEM};
 
     /*union OperandValue{
         Symbol *v1;
@@ -102,7 +103,7 @@ public:
     OperandType t3;
     void *v3;
 
-    static list< vector<Symbol *> * > s_allArgList;
+    static list< vector<void *> * > s_allArgList;
     static vector<ItmCode *> s_allItmCode;
 
 
@@ -120,8 +121,8 @@ OperandType t3_t = ItmCode::OPR_INVALID, void* v3_t = NULL);
     virtual void printOperand(ofstream &ofs_t, OperandType opType_t, void *op_t);
     virtual void printItmCode(ofstream &ofs_t);
 
-    static void copyVectorToAllArgList(vector<Symbol *> &vargList_t);
-    static void addToAllArgList(vector<Symbol *> *argList_t);
+    static vector<void* >* copyVectorToAllArgList(vector<void *> &vargList_t);
+    static void addToAllArgList(vector<void *> *argList_t);
     static void freeAllArgList();
 
     static void addToAllItmCode(ItmCode *itmCode_t);
