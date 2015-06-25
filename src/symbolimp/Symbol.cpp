@@ -139,7 +139,10 @@ unsigned int TypeClass::getTypeByteSize()
 {
     unsigned int elemSize = 0;
 
-    if (typeSfType & SF_CHAR) {
+    if (scopeType){
+        elemSize=4;
+    }
+      else if (typeSfType & SF_CHAR) {
         elemSize = 1;
     } else if (typeSfType & SF_SHORT) {
         elemSize = 2;

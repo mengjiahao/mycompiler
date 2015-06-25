@@ -135,8 +135,15 @@ void DectionAst::walk()
                     stopWalk();
                     return ;
                 }
-
-                Symbol *tmpsymbol = new Symbol(Symbol::SYMBOL_VAR);
+                Symbol *tmpsymbol=NULL;
+                if (!tmpType.scopeType)
+                {
+                    tmpsymbol= new Symbol(Symbol::SYMBOL_VAR);
+                }
+                else
+                {
+                    tmpsymbol= new Symbol(Symbol::SYMBOL_CLASSREFVAR);
+                }
                 tmpsymbol->setSymbolName(s_context->tmpIdenName);
                 tmpsymbol->setTypeClass(&tmpType);
 
