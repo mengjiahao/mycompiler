@@ -40,6 +40,17 @@ void TypeClass::clearTypeClass()
 }
 
 
+void TypeClass::initRegTypeClass(int typeSfType_t)
+{
+    storageType = TypeClass::STOR_REGISTER;
+    typeSfType = typeSfType;
+    typeQfType = TypeClass::QF_VOLATILE;
+    scopeType = NULL;
+    isArray = false;
+    dimensions.clear();
+}
+
+
 void TypeClass::clone(TypeClass *typeClass_t)
 {
     if (NULL == typeClass_t)

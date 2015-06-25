@@ -37,6 +37,8 @@ public:
 
     virtual void clearTypeClass();
 
+    virtual void initRegTypeClass(int typeSfType_t);
+
     virtual void clone(TypeClass *typeClass_t);
 
     virtual void setStorageType(TypeClass::StorageType storageType_t);

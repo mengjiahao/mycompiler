@@ -5,8 +5,13 @@
 
 
 class ArgExpListAst : public NodeAst {
-	public:
+public:
+
+public:
 		ArgExpListAst(NodeAst::NodeType nodeType_t);
+
+		virtual void processAssgExp(NodeType nodeType_t);
+		virtual void walk();
 };
 
 

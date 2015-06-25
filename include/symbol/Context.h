@@ -23,13 +23,18 @@ public:
     vector<TypeClass> tmpParaTypeList;
     vector<Symbol> tmpParaWithIdList;
     int tmpParaWithoutIdNum;
+    int tmpParaWithIdNum;
     bool isFunc;
 
     Scope *tmpClassScope;
 
     ItmCode::OperandType tmpOpType;
+
     Reg *tmpExpReg;
     Symbol *tmpExpSymbol;
+
+    vector<Symbol *> tmpArgExpList;
+    int tmpArgExpNum;
 
     Symbol *tmpTrueLabel;
     Symbol *tmpFalseLabel;
@@ -44,8 +49,9 @@ public:
     void clearContext();
 
     void addParawithoutid(TypeClass m);
-    int tmpParaWithIdNum;
     void addParawithid(Symbol m);
+
+    void addToArgExpList(Symbol *m);
 
 
 
