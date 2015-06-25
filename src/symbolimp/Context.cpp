@@ -1,5 +1,5 @@
 #include "../../include/symbol/Context.h"
-#include "../../include/symbol/ItmCode.h"
+
 
 using namespace std;
 
@@ -16,7 +16,7 @@ Context::Context()
 
     tmpClassScope = NULL;
 
-    isReg = false;
+    tmpOpType = ItmCode::OPR_INVALID;
     tmpExpReg = NULL;
     tmpExpSymbol = NULL;
 
@@ -38,7 +38,7 @@ Context::~Context()
 
     tmpClassScope = NULL;
 
-    isReg = false;
+    tmpOpType = ItmCode::OPR_INVALID;
     tmpExpReg = NULL;
     tmpExpSymbol = NULL;
 
@@ -58,7 +58,7 @@ void Context::clearContext()
 
     tmpClassScope = NULL;
 
-    isReg = false;
+    tmpOpType = ItmCode::OPR_INVALID;
     tmpExpReg = NULL;
     tmpExpSymbol = NULL;
 

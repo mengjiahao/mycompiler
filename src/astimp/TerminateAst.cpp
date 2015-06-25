@@ -53,7 +53,7 @@ void TerminateAst::walk()
             rst = (0 == Scope::s_curScope->defineSymbol(rst)) ? NULL : rst;
 
         }
-        s_context->isReg = false;
+        s_context->tmpOpType = ItmCode::OPR_SYMBOL;
         s_context->tmpExpSymbol = rst;
 
         break;
@@ -74,7 +74,7 @@ void TerminateAst::walk()
             rst = (0 == Scope::s_curScope->defineSymbol(rst)) ? NULL : rst;
 
         }
-        s_context->isReg = false;
+        s_context->tmpOpType = ItmCode::OPR_SYMBOL;
         s_context->tmpExpSymbol = rst;
 
         break;
@@ -92,7 +92,7 @@ void TerminateAst::walk()
             rst = (0 == Scope::s_curScope->defineSymbol(rst)) ? NULL : rst;
 
         }
-        s_context->isReg = false;
+        s_context->tmpOpType = ItmCode::OPR_SYMBOL;
         s_context->tmpExpSymbol = rst;
 
         break;
@@ -111,7 +111,7 @@ void TerminateAst::walk()
             return ;
 
         }
-        s_context->isReg = false;
+        s_context->tmpOpType = ItmCode::OPR_SYMBOL;
         s_context->tmpExpSymbol = rst;
 
         break;
@@ -132,7 +132,7 @@ void TerminateAst::walk()
             rst = (0 == Scope::s_curScope->defineSymbol(rst)) ? NULL : rst;
 
         }
-        s_context->isReg = false;
+        s_context->tmpOpType = ItmCode::OPR_SYMBOL;
         s_context->tmpExpSymbol = rst;
 
 
@@ -145,7 +145,7 @@ void TerminateAst::walk()
 
         if (NULL == s_context->tmpClassScope) {
             std::cout << "error in T_CTERMINATE_CPOSTEXP_POSTEXP_REF_ID: "
-            << "tmpClassScope in the s_context is not exist at line" << getLineno() << endl;
+            << "tmpClassScope in the s_context is not exist at line " << getLineno() << endl;
             stopWalk();
             return ;
         }
@@ -160,7 +160,7 @@ void TerminateAst::walk()
             return ;
 
         }
-        s_context->isReg = false;
+        s_context->tmpOpType = ItmCode::OPR_SYMBOL;
         s_context->tmpExpSymbol = rst;
 
         break;

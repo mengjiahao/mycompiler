@@ -5,13 +5,13 @@
 #include <vector>
 #include <list>
 #include "Symbol.h"
+#include "Scope.h"
+#include "ItmCode.h"
 
 using namespace std;
 
 
 /*****************************Context***********************************************/
-
-class Reg;
 
 class Context {
 
@@ -27,7 +27,7 @@ public:
 
     Scope *tmpClassScope;
 
-    bool isReg;
+    ItmCode::OperandType tmpOpType;
     Reg *tmpExpReg;
     Symbol *tmpExpSymbol;
 
