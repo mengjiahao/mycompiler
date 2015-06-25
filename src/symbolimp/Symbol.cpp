@@ -43,7 +43,7 @@ void TypeClass::clearTypeClass()
 void TypeClass::initRegTypeClass(int typeSfType_t)
 {
     storageType = TypeClass::STOR_REGISTER;
-    typeSfType = typeSfType;
+    typeSfType = typeSfType_t;
     typeQfType = TypeClass::QF_VOLATILE;
     scopeType = NULL;
     isArray = false;

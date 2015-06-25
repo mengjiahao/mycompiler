@@ -12,6 +12,8 @@ public:
 
 		virtual void processAssgExp(NodeType nodeType_t);
 		virtual void walk();
+
+		virtual void genCode(Reg *reg_t, Symbol *symbol_t);
 };
 
 

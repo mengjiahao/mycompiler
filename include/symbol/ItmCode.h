@@ -65,13 +65,22 @@ public:
 
 class ItmCode {
 public:
-    enum IRtype {IR_INVALID, IR_PUSHVAR, IR_POPVAR, IR_EMITVAR, IR_EMITFUNC, IR_EMITLABEL, IR_CALLFUNC,
-    IR_FETCHARRAY, IR_NEW_OP, IR_DELETE_OP, IR_ASSG_OP, IR_MUL_ASSIGN, IR_DIV_ASSIGN, IR_MOD_ASSIGN,
-    IR_ADD_ASSIGN, IR_SUB_ASSIGN, IR_LEFT_ASSIGN, IR_RIGHT_ASSIGN, IR_AND_ASSIGN,
-    IR_XOR_ASSIGN, IR_OR_ASSIGN, IR_LOGOR_OP, IR_LOGAND_OP, IR_EQ_OP, IR_NE_OP,
-    IR_L_OP, IR_G_OP, IR_LE_OP, IR_GE_OP, IR_LEFT_OP, IR_RIGHT_OP, IR_ADD_OP, IR_SUB_OP,
-    IR_MUL_OP, IR_DIV_OP, IR_MOD_OP, IR_INC_OP, IR_DEC_OP, IR_SIZEOF, IR_UAND_OP,
-    IR_UREF_OP, IR_UADD_OP, IR_USUB_OP, IR_UCOMP_OP, IR_UNOT_OP, IR_GOTO, IR_IF_GOTO, IR_IF_NOT_GOTO,
+    enum IRtype {IR_INVALID,
+    IR_PUSHVAR, IR_POPVAR,
+    IR_EMITVAR, IR_EMITFUNC, IR_EMITLABEL, IR_CALLFUNC,
+    IR_FETCHARRAY,
+    IR_NEW_OP, IR_DELETE_OP,
+    IR_ASSIGN_OP, IR_MUL_ASSIGN, IR_DIV_ASSIGN, IR_MOD_ASSIGN,
+    IR_ADD_ASSIGN, IR_SUB_ASSIGN,
+    IR_LEFT_ASSIGN, IR_RIGHT_ASSIGN,
+    IR_AND_ASSIGN, IR_XOR_ASSIGN, IR_OR_ASSIGN,
+    IR_LOGOR_OP, IR_LOGAND_OP,
+    IR_EQ_OP, IR_NE_OP, IR_L_OP, IR_G_OP, IR_LE_OP, IR_GE_OP,
+    IR_LEFT_OP, IR_RIGHT_OP,
+    IR_ADD_OP, IR_SUB_OP, IR_MUL_OP, IR_DIV_OP, IR_MOD_OP,
+    IR_INC_OP, IR_DEC_OP, IR_SIZEOF,
+    IR_UAND_OP, IR_UREF_OP, IR_UADD_OP, IR_USUB_OP, IR_UCOMP_OP, IR_UNOT_OP,
+    IR_GOTO, IR_IF_GOTO, IR_IF_NOT_GOTO,
     IR_RETURN};
 
     enum OperandType {OPR_INVALID, OPR_SYMBOL, OPR_SCOPE, OPR_ARGLIST,
@@ -93,7 +102,7 @@ public:
     OperandType t3;
     void *v3;
 
-    static list< list<Symbol *>* > s_allArgList;
+    static list< vector<Symbol *> * > s_allArgList;
     static vector<ItmCode *> s_allItmCode;
 
 
@@ -111,7 +120,8 @@ OperandType t3_t = ItmCode::OPR_INVALID, void* v3_t = NULL);
     virtual void printOperand(ofstream &ofs_t, OperandType opType_t, void *op_t);
     virtual void printItmCode(ofstream &ofs_t);
 
-    static void addToAllArgList(list<Symbol *> *argList_t);
+    static void copyVectorToAllArgList(vector<Symbol *> &vargList_t);
+    static void addToAllArgList(vector<Symbol *> *argList_t);
     static void freeAllArgList();
 
     static void addToAllItmCode(ItmCode *itmCode_t);

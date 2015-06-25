@@ -35,6 +35,8 @@ void ArgExpListAst::processAssgExp(NodeType nodeType_t)
                 } else {
                     s_context->addToArgExpList(m);
                     s_context->tmpOpType = ItmCode::OPR_ARGLIST;
+
+                    genCode(s_context->tmpExpReg, m);
                 }
 
             } else {
@@ -100,3 +102,19 @@ void ArgExpListAst::walk()
     }
 
 }
+
+void ArgExpListAst::genCode(Reg *reg_t, Symbol *symbol_t)
+{
+    if (NULL == symbol_t || NULL == reg_t) {
+        std::cout << "error in ArgExpListAst: a member of genCode()'s params is NULL" << std::endl;
+    }
+    ItmCode *newCode = new ItmCode(ItmCode::IR_ASSIGN_OP,
+    ItmCode::OPR_REGISTER, reg_t,
+    ItmCode::OPR_INVALID, NULL,
+    ItmCode::OPR_SYMBOL, symbol_t);
+
+    ItmCode::addToAllItmCode(newCode);
+
+
+}
+

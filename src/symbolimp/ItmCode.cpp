@@ -123,7 +123,7 @@ const Reg* Reg::getReg(RegType regType_t, int sf_t) {
 
 
 /*********************************ItmCode********************************************/
-list< list<Symbol *>* > ItmCode::s_allArgList;
+list< vector<Symbol *>* > ItmCode::s_allArgList;
 vector<ItmCode *> ItmCode::s_allItmCode;
 
 ItmCode::ItmCode()
@@ -176,8 +176,19 @@ unsigned long ItmCode::getCodeId()
     return codeId;
 }
 
+void ItmCode::copyVectorToAllArgList(vector<Symbol* > &vargList_t)
+{
+    vector<Symbol* > *newArgList = new vector<Symbol* >();
+    vector<Symbol* >::iterator itr;
+    for(itr = vargList_t.begin(); vargList_t.end() != itr; ++itr) {
+        newArgList->push_back(*itr);
+    }
 
-void ItmCode::addToAllArgList(list<Symbol* >* argList_t)
+    addToAllArgList(newArgList);
+}
+
+
+void ItmCode::addToAllArgList(vector<Symbol* >* argList_t)
 {
     if (NULL != argList_t) {
         s_allArgList.push_back(argList_t);
@@ -186,12 +197,16 @@ void ItmCode::addToAllArgList(list<Symbol* >* argList_t)
 
 void ItmCode::freeAllArgList()
 {
-    list< list<Symbol* >* >::iterator itr;
+    list< vector<Symbol* >* >::iterator itr;
 
     int i;
 
     for(i = 0, itr = s_allArgList.begin(); itr != s_allArgList.end(); ++itr) {
-        delete(*itr);
+        if ( NULL != (*itr) ) {
+            (*itr)->clear();
+            delete(*itr);
+        }
+
         ++i;
     }
 
@@ -241,9 +256,9 @@ void ItmCode::printOperand(ofstream& ofs_t, OperandType opType_t, void *op_t)
         }
         case OPR_ARGLIST: {
             ofs_t << "ARGLIST(";
-            list<Symbol *> *lop_t = (list<Symbol *>*)op_t;
+            vector<Symbol *> *lop_t = (vector<Symbol *>*)op_t;
             if (NULL != lop_t) {
-                list<Symbol *>::iterator itr;
+                vector<Symbol *>::iterator itr;
                 for (itr = (*lop_t).begin(); itr != (*lop_t).end(); ++itr) {
                     if (NULL != *itr) {
                         ofs_t << (*itr)->getSymbolName() << "("
