@@ -35,6 +35,7 @@ public:
     int curStartOffset;
     unsigned int totalByteSize;
     int funcOffset;
+    int totalFuncByteSize;
 
     TypeClass *returnTypeClass;
 
@@ -97,6 +98,10 @@ public:
     virtual void incFuncOffset(int incOffset_t);
     virtual int getFuncOffset();
 
+    virtual void setTotalFuncByteSize(int totalFuncByteSize_t);
+    virtual void incTotalFuncByteSize(int incByteSize_t);
+    virtual int getTotalFuncByteSize();
+
     virtual void setReturnTypeClass(TypeClass *typeClass_t);
     virtual TypeClass* getReturnTypeClass();
 
@@ -158,6 +163,9 @@ public:
     static Symbol* resolveSymbolMemVar(Scope* classScope_t, const string &symbolName_t);
     static Scope* resolveScope(const string& scopeName_t, Scope::ScopeType scopeType_t);
     static Scope* resolveClassFuncScope(Scope *classScope_t, const string& scopeName_t);
+    Scope*  resolveMemFunByName(const string& funcName_t);
+    Scope*  resolveMemFunByOffset(int funcOffset_t);
+    Scope*  searchChildOffset(int funcOffset_t);
 
     static void printScopeTree();
     virtual void printScope(ofstream &ofs_t);

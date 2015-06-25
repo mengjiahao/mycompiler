@@ -20,6 +20,10 @@ void CompoundStmAst::walk()
 
             Scope *tmpScope = new Scope();
             tmpScope->setScopeType(Scope::SCOPE_LOCAL);
+
+            tmpScope->setCurStartOffset(Scope::s_curScope->getTotalByteSize());
+            tmpScope->setTotalByteSize(Scope::s_curScope->getTotalByteSize());
+
             Scope::pushScope(Scope::s_curScope, tmpScope);
             Scope::setCurScope(tmpScope);
 
@@ -36,6 +40,10 @@ void CompoundStmAst::walk()
 
             Scope *tmpScope = new Scope();
             tmpScope->setScopeType(Scope::SCOPE_LOCAL);
+
+            tmpScope->setCurStartOffset(Scope::s_curScope->getTotalByteSize());
+            tmpScope->setTotalByteSize(Scope::s_curScope->getTotalByteSize());
+
             Scope::pushScope(Scope::s_curScope, tmpScope);
             Scope::setCurScope(tmpScope);
 
@@ -52,6 +60,10 @@ void CompoundStmAst::walk()
 
             Scope *tmpScope = new Scope();
             tmpScope->setScopeType(Scope::SCOPE_LOCAL);
+
+            tmpScope->setCurStartOffset(Scope::s_curScope->getTotalByteSize());
+            tmpScope->setTotalByteSize(Scope::s_curScope->getTotalByteSize());
+
             Scope::pushScope(Scope::s_curScope, tmpScope);
             Scope::setCurScope(tmpScope);
 

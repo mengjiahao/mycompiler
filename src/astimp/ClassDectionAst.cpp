@@ -56,6 +56,9 @@ void ClassDectionAst::walk()
                 tmpsymbol->setSymbolName(s_context->tmpIdenName);
                 tmpsymbol->setTypeClass(&tmpType);
 
+                tmpsymbol->setOffset(Scope::s_curScope->getTotalByteSize());
+                Scope::s_curScope->incTotalByteSize(tmpsymbol->getByteSize());
+
                 /*if (Scope::s_curScope->symbolVarMap.find(tmpsymbol->symbolName) != Scope::s_curScope->symbolVarMap.end())
                 {
                     std::cout << "error: duplicate var at line " << getLineno() << std::endl;
@@ -83,7 +86,9 @@ void ClassDectionAst::walk()
             }
 
             Scope *tmpScope = new Scope();
-            tmpScope->setReturnTypeClass(&(s_context->tmpDeclType));
+            TypeClass tmpType;
+            tmpType.clone(&(s_context->tmpDeclType));
+            //tmpScope->setReturnTypeClass(&(s_context->tmpDeclType));
 
             childs.at(1)->walk();
             if (checkIsNotWalking()) {
@@ -101,8 +106,21 @@ void ClassDectionAst::walk()
             }
 
             tmpScope->initClassFuncScope(s_context->tmpIdenName);
+            tmpScope->setReturnTypeClass(&tmpType);
+            tmpScope->setCurStartOffset(0);
+            tmpScope->setTotalByteSize(0);
             /*tmpScope->setScopeName(s_context->tmpIdenName);
             tmpScope->setScopeType(Scope::SCOPE_CLASSFUNC);*/
+            Scope *tmpVirFunc=Scope::s_curScope->resolveMemFunByName(tmpScope->getScopeName());
+            if (tmpVirFunc)
+            {
+                tmpScope->setFuncOffest(tmpVirFunc->getFuncOffset());
+            }
+            else
+            {
+                tmpScope->setFuncOffest(Scope::s_curScope->getTotalFuncByteSize());
+                Scope::s_curScope->incTotalFuncByteSize(4);
+            }
             Scope::pushScope(Scope::s_curScope,tmpScope);
             Scope::setCurScope(tmpScope);
 
@@ -134,6 +152,7 @@ void ClassDectionAst::walk()
                     tmpsymbol->setTypeClass(&(s_context->tmpParaWithIdList.at(i).typeClass));
 
 
+
                     /*if (Scope::s_curScope->symbolVarMap.find(tmpsymbol->symbolName) != Scope::s_curScope->symbolVarMap.end())
                     {
                         std::cout << "error: ClassDecl-func's duplicate argument " << tmpsymbol->symbolName
@@ -145,6 +164,14 @@ void ClassDectionAst::walk()
 
                     Scope::s_curScope->defineSymbol(tmpsymbol);
                 }
+                list<Symbol *>::reverse_iterator r_itr;
+                for (r_itr= Scope::s_curScope->symbolSeqList.rbegin(); r_itr!=Scope::s_curScope->symbolSeqList.rend(); r_itr++)
+                {
+                    (*r_itr)->setOffset(Scope::s_curScope->getTotalByteSize());
+                    Scope::s_curScope->incTotalByteSize((*r_itr)->getByteSize());
+                }
+                Scope::s_curScope->incTotalByteSize(12);
+
             }
 
             childs.at(2)->walk();
@@ -176,6 +203,8 @@ void ClassDectionAst::walk()
             Scope *tmpScope = new Scope();
             tmpScope->setScopeName(s_context->tmpIdenName);
             tmpScope->setScopeType(Scope::SCOPE_CLASSFUNC);
+            tmpScope->setCurStartOffset(0);
+            tmpScope->setTotalByteSize(0);
 
             Scope::pushScope(Scope::s_curScope, tmpScope);
             Scope::setCurScope(tmpScope);
@@ -217,6 +246,13 @@ void ClassDectionAst::walk()
 
                     Scope::s_curScope->defineSymbol(tmpsymbol);
                 }
+                list<Symbol *>::reverse_iterator r_itr;
+                for (r_itr= Scope::s_curScope->symbolSeqList.rbegin(); r_itr!=Scope::s_curScope->symbolSeqList.rend(); r_itr++)
+                {
+                    (*r_itr)->setOffset(Scope::s_curScope->getTotalByteSize());
+                    Scope::s_curScope->incTotalByteSize((*r_itr)->getByteSize());
+                }
+                Scope::s_curScope->incTotalByteSize(12);
             }
 
             childs.at(1)->walk();

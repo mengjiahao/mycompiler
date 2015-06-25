@@ -28,7 +28,8 @@ Scope::Scope()
     level = -1;
     curStartOffset = 0;
     totalByteSize = 0;
-    funcOffset = 0;
+    funcOffset = -1;
+    totalFuncByteSize=0;
 
     returnTypeClass = NULL;
 
@@ -167,6 +168,21 @@ int Scope::getFuncOffset()
     return funcOffset;
 }
 
+
+void Scope::setTotalFuncByteSize(int totalFuncByteSize_t)
+{
+    totalFuncByteSize=totalFuncByteSize_t;
+}
+
+void Scope::incTotalFuncByteSize(int incByteSize_t)
+{
+    totalFuncByteSize+=incByteSize_t;
+}
+
+int Scope::getTotalFuncByteSize()
+{
+    return totalFuncByteSize;
+}
 
 void Scope::setReturnTypeClass(TypeClass* typeClass_t)
 {
@@ -991,6 +1007,47 @@ void Scope::printScope(ofstream &ofs_t)
 
 
 }
+
+Scope*  Scope::resolveMemFunByName(const string& funcName_t)
+{
+    Scope *scope_t = searchChildName(funcName_t);
+    if (scope_t)
+    {
+        return scope_t;
+    }
+    if (superClass)
+        return superClass->resolveMemFunByName(funcName_t);
+    else
+        return NULL;
+}
+
+
+Scope* Scope::searchChildOffset(int funcOffset_t)
+{
+    vector<Scope *>::iterator itr;
+
+    for(itr = childs.begin(); itr != childs.end(); ++itr) {
+        if ( funcOffset_t == ( (*itr)->getFuncOffset() ) ) {
+            return *itr;
+        }
+    }
+	return NULL;
+}
+
+Scope*  Scope::resolveMemFunByOffset(int funcOffset_t)
+{
+    Scope *scope_t = searchChildOffset(funcOffset_t);
+    if (scope_t)
+    {
+        return scope_t;
+    }
+    if (superClass)
+        return superClass->resolveMemFunByOffset(funcOffset_t);
+    else
+        return NULL;
+}
+
+
 
 
 

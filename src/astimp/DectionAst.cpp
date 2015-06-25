@@ -35,6 +35,12 @@ void DectionAst::walk()
                 stopWalk();
                 return ;
             }
+            if (Scope::s_curScope!=Scope::s_globalScope)
+            {
+                std::cout << "error int T_CDECTION_DECTIONSFS: class definition can not appear in local at line " << getLineno() <<std::endl;
+                stopWalk();
+                return ;
+            }
 
             childs.at(0)->walk();
             if (checkIsNotWalking()) {
@@ -144,8 +150,14 @@ void DectionAst::walk()
                 {
                     tmpsymbol= new Symbol(Symbol::SYMBOL_CLASSREFVAR);
                 }
+
                 tmpsymbol->setSymbolName(s_context->tmpIdenName);
                 tmpsymbol->setTypeClass(&tmpType);
+                if (Scope::s_curScope!=Scope::s_globalScope)
+                {
+                    tmpsymbol->setOffset(Scope::s_curScope->getTotalByteSize());
+                    Scope::s_curScope->incTotalByteSize(tmpsymbol->getByteSize());
+                }
 
                 /*if (Scope::s_curScope->symbolVarMap.find(tmpsymbol->symbolName) != Scope::s_curScope->symbolVarMap.end())
                 {
