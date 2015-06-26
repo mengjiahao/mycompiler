@@ -102,7 +102,7 @@ void TerminateAst::walk()
     case T_CTERMINATE_CPRIMEXP_ID: {
         std::cout << "walk in T_CTERMINATE_CPRIMEXP_ID" << endl;
 
-        s_context->tmpOpType = ItmCode::OPR_INVALID;
+        s_context->tmpOpType = ItmCode::OPR_ID;
         s_context->tmpIdenName = token;
 
         break;
@@ -134,25 +134,8 @@ void TerminateAst::walk()
     case T_CTERMINATE_CPOSTEXP_POSTEXP_REF_ID: {
         std::cout << "walk in T_CTERMINATE_CPOSTEXP_POSTEXP_REF_ID" << endl;
 
-        if (NULL == s_context->tmpClassScope) {
-            std::cout << "error in T_CTERMINATE_CPOSTEXP_POSTEXP_REF_ID: "
-            << "tmpClassScope in the s_context is not exist at line " << getLineno() << endl;
-            stopWalk();
-            return ;
-        }
-
-        Symbol *rst = Scope::s_curScope->resolveSymbolMemVar(s_context->tmpClassScope, token);
-
-        if (NULL == rst) {
-            std::cout << "error in T_CTERMINATE_CPOSTEXP_POSTEXP_REF_ID: "
-            << "Class " << s_context->tmpClassScope->getScopeName()
-            << " has no member named " << token << " at line " << getLineno() << endl;
-            stopWalk();
-            return ;
-
-        }
-        s_context->tmpOpType = ItmCode::OPR_SYMBOL;
-        s_context->tmpExpSymbol = rst;
+        s_context->tmpOpType = ItmCode::OPR_ID;
+        s_context->tmpIdenName = token;
 
         break;
     }

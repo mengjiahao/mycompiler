@@ -160,12 +160,16 @@ public:
     virtual int defineSymbol(Symbol *symbol_t);
 
     virtual Symbol* resolveSymbol(const string& symbolName_t, Symbol::SymbolType symbolType_t);
+
     static Symbol* resolveSymbolMemVar(Scope* classScope_t, const string &symbolName_t);
     static Scope* resolveScope(const string& scopeName_t, Scope::ScopeType scopeType_t);
     static Scope* resolveClassFuncScope(Scope *classScope_t, const string& scopeName_t);
-    Scope*  resolveMemFunByName(const string& funcName_t);
-    Scope*  resolveMemFunByOffset(int funcOffset_t);
-    Scope*  searchChildOffset(int funcOffset_t);
+    static Scope* resolveGlobalFuncScope(const string& scopeName_t);
+
+    virtual Scope*  resolveMemFunByName(const string& funcName_t);
+    virtual Scope*  resolveMemFunByOffset(int funcOffset_t);
+
+    virtual Scope*  searchChildOffset(int funcOffset_t);
 
     static void printScopeTree();
     virtual void printScope(ofstream &ofs_t);

@@ -1,6 +1,7 @@
 #ifndef INCLUDE_ASTHEAD_H
 #define INCLUDE_ASTHEAD_H
 
+#include "LogiMsg.h"
 #include "./symbol/Symbol.h"
 #include "./symbol/Scope.h"
 #include "./symbol/ItmCode.h"

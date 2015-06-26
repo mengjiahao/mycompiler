@@ -79,11 +79,11 @@ void Context::addParawithoutid(TypeClass m)
     ++tmpParaWithoutIdNum;
 }
 
-void Context::addToArgExpList(void* m)
+void Context::addToExpList(void* m)
 {
     if (NULL != m) {
-        tmpArgExpList.push_back(m);
-        ++tmpArgExpNum;
+        tmpExpList.push_back(m);
+        ++tmpExpNum;
     }
 }
 

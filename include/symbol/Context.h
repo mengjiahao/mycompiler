@@ -27,16 +27,19 @@ public:
     int tmpParaWithIdNum;
 
     bool isFunc;
+    bool isMemVar;
 
     Scope *tmpClassScope;
 
+    /*enum OperandType {OPR_INVALID, OPR_ID, OPR_SYMBOL, OPR_SCOPE, OPR_REGISTER,
+    OPR_ARGLIST, OPR_CLASS_REFLIST, OPR_ARRAY_ELEMLIST};*/
     ItmCode::OperandType tmpOpType;
 
     Reg *tmpExpReg;
     Symbol *tmpExpSymbol;
 
-    vector<void *> tmpArgExpList;
-    int tmpArgExpNum;
+    vector<void *> tmpExpList;
+    int tmpExpNum;
 
     Symbol *tmpTrueLabel;
     Symbol *tmpFalseLabel;
@@ -53,7 +56,7 @@ public:
     void addParawithoutid(TypeClass m);
     void addParawithid(Symbol m);
 
-    void addToArgExpList(void *m);
+    void addToExpList(void *m);
 
 
 

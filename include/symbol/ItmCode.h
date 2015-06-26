@@ -84,8 +84,8 @@ public:
     IR_GOTO, IR_IF_GOTO, IR_IF_NOT_GOTO,
     IR_RETURN};
 
-    enum OperandType {OPR_INVALID, OPR_SYMBOL, OPR_SCOPE, OPR_REGISTER,
-    OPR_ARGLIST, OPR_CLASS_REFMEM, OPR_ARRAY_ELEM};
+    enum OperandType {OPR_INVALID, OPR_ID, OPR_SYMBOL, OPR_SCOPE, OPR_REGISTER,
+    OPR_ARGLIST, OPR_CLASS_REFLIST, OPR_ARRAY_ELEMLIST};
 
     /*union OperandValue{
         Symbol *v1;
@@ -103,7 +103,7 @@ public:
     OperandType t3;
     void *v3;
 
-    static list< vector<void *> * > s_allArgList;
+    static list< vector<void *> * > s_allExpList;
     static vector<ItmCode *> s_allItmCode;
 
 
@@ -121,9 +121,9 @@ OperandType t3_t = ItmCode::OPR_INVALID, void* v3_t = NULL);
     virtual void printOperand(ofstream &ofs_t, OperandType opType_t, void *op_t);
     virtual void printItmCode(ofstream &ofs_t);
 
-    static vector<void* >* copyVectorToAllArgList(vector<void *> &vargList_t);
-    static void addToAllArgList(vector<void *> *argList_t);
-    static void freeAllArgList();
+    static vector<void* >* copyVectorToAllExpList(vector<void *> &vargList_t);
+    static void addToAllExpList(vector<void *> *expList_t);
+    static void freeAllExpList();
 
     static void addToAllItmCode(ItmCode *itmCode_t);
     static void freeAllItmCode();

@@ -13,6 +13,8 @@ class  PostfixExpAst: public NodeAst {
 
 		virtual void walk();
 
+		virtual Scope* processPostfixBeforeCall(NodeAst::NodeType nodeType_t);
+
 		void genCodeCallVoid(Scope *func_t);
 		void genCodeCallArgExpList(Scope *func_t, vector<void* >* argExpList_t);
 

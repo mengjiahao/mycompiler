@@ -123,7 +123,7 @@ const Reg* Reg::getReg(RegType regType_t, int sf_t) {
 
 
 /*********************************ItmCode********************************************/
-list< vector<void *>* > ItmCode::s_allArgList;
+list< vector<void *>* > ItmCode::s_allExpList;
 vector<ItmCode *> ItmCode::s_allItmCode;
 
 ItmCode::ItmCode()
@@ -176,7 +176,7 @@ unsigned long ItmCode::getCodeId()
     return codeId;
 }
 
-vector<void* >* ItmCode::copyVectorToAllArgList(vector<void* > &vargList_t)
+vector<void* >* ItmCode::copyVectorToAllExpList(vector<void* > &vargList_t)
 {
     vector<void* > *newArgList = new vector<void* >();
     vector<void* >::iterator itr;
@@ -184,25 +184,25 @@ vector<void* >* ItmCode::copyVectorToAllArgList(vector<void* > &vargList_t)
         newArgList->push_back(*itr);
     }
 
-    addToAllArgList(newArgList);
+    addToAllExpList(newArgList);
     return newArgList;
 }
 
 
-void ItmCode::addToAllArgList(vector<void* >* argList_t)
+void ItmCode::addToAllExpList(vector<void* >* expList_t)
 {
-    if (NULL != argList_t) {
-        s_allArgList.push_back(argList_t);
+    if (NULL != expList_t) {
+        s_allExpList.push_back(expList_t);
     }
 }
 
-void ItmCode::freeAllArgList()
+void ItmCode::freeAllExpList()
 {
     list< vector<void* >* >::iterator itr;
 
     int i;
 
-    for(i = 0, itr = s_allArgList.begin(); itr != s_allArgList.end(); ++itr) {
+    for(i = 0, itr = s_allExpList.begin(); itr != s_allExpList.end(); ++itr) {
         if ( NULL != (*itr) ) {
             (*itr)->clear();
             delete(*itr);
@@ -213,7 +213,7 @@ void ItmCode::freeAllArgList()
 
     cout << "AllArgList's Num is " << i << endl;
 
-    s_allArgList.clear();
+    s_allExpList.clear();
 }
 
 
@@ -257,16 +257,7 @@ void ItmCode::printOperand(ofstream& ofs_t, OperandType opType_t, void *op_t)
         }
         case OPR_ARGLIST: {
             ofs_t << "ARGLIST(";
-            /*vector<Symbol *> *lop_t = (vector<Symbol *>*)op_t;
-            if (NULL != lop_t) {
-                vector<Symbol *>::iterator itr;
-                for (itr = (*lop_t).begin(); itr != (*lop_t).end(); ++itr) {
-                    if (NULL != *itr) {
-                        ofs_t << (*itr)->getSymbolName() << "("
-                        << (*itr)->getSymbolId() << ")--";
-                    }
-                }
-            }*/
+
             ofs_t << ")";
             break;
         }

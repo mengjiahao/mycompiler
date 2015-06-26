@@ -11,7 +11,7 @@ bool ArgExpListAst::processAssgExp(NodeType nodeType_t)
         switch(s_context->tmpOpType) {
         case ItmCode::OPR_SYMBOL: {
             if (NULL != s_context->tmpExpSymbol) {
-                s_context->addToArgExpList(s_context->tmpExpSymbol);
+                s_context->addToExpList(s_context->tmpExpSymbol);
                 s_context->tmpOpType = ItmCode::OPR_ARGLIST;
             } else {
                 std::cout << "error in ArgExpListAst(" << nodeType_t
@@ -37,10 +37,10 @@ bool ArgExpListAst::processAssgExp(NodeType nodeType_t)
                     delete m;
                     return false;
                 } else {
-                    s_context->addToArgExpList(m);
+                    s_context->addToExpList(m);
                     s_context->tmpOpType = ItmCode::OPR_ARGLIST;
 
-                    genCode(s_context->tmpExpReg, m);
+                    //genCode(s_context->tmpExpReg, m);
                 }
 
             } else {
@@ -123,7 +123,8 @@ void ArgExpListAst::walk()
 void ArgExpListAst::genCode(Reg *reg_t, Symbol *symbol_t)
 {
     if (NULL == symbol_t || NULL == reg_t) {
-        std::cout << "error in ArgExpListAst: exist member of genCode()'s params is NULL" << std::endl;
+        //std::cout << "error in ArgExpListAst: exist member of genCode()'s params is NULL" << std::endl;
+        LogiMsg::logi("error in ArgExpListAst: exist member of genCode()'s params is NULL");
     }
     ItmCode *newCode = new ItmCode(ItmCode::IR_ASSIGN_OP,
     ItmCode::OPR_REGISTER, reg_t,

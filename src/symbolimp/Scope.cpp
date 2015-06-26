@@ -945,9 +945,35 @@ Scope* Scope::resolveClassFuncScope(Scope* classScope_t, const string& scopeName
 
     if ( (NULL != scope_t) && (Scope::SCOPE_CLASSFUNC == scope_t->getScopeType()) ) {
         return scope_t;
+    } else {
+        if (NULL != classScope_t->superClass) {
+            scope_t = resolveClassFuncScope(classScope_t->superClass, scopeName_t);
+            if (NULL != scope_t) {
+                return scope_t;
+            }
+        }
+
     }
     return NULL;
 }
+
+Scope* Scope::resolveGlobalFuncScope(const string& scopeName_t)
+{
+    if (NULL != s_globalScope) {
+        Scope *scope_t = s_globalScope->searchChildName(scopeName_t);
+        if ( (NULL != scope_t) ) {
+            if ( (scope_t->getScopeType() == Scope::SCOPE_GLOBALFUNC)
+            || (scope_t->getScopeType() == Scope::SCOPE_GLOBALFUNCDECL)
+            || (scope_t->getScopeType() == Scope::SCOPE_GLOBALFUNCCHAN) ) {
+                return scope_t;
+            }
+        }
+    }
+
+    return NULL;
+
+}
+
 
 
 void Scope::printScopeTree()
