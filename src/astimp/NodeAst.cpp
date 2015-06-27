@@ -760,7 +760,7 @@ Reg* NodeAst::processChildOperand(int side_t)
             Symbol *sb = s_context->tmpExpSymbol;
 
             if (NULL == sb) {
-                string errorStr = (0 == side_t) ? "left" : "rigiht";
+                string errorStr = (0 == side_t) ? "right" : "left";
 
                 errorStr = "error in processChildOperand(): "
                 + errorStr + " side, s_context->tmpExpSymbol is NULL";
@@ -779,7 +779,7 @@ Reg* NodeAst::processChildOperand(int side_t)
         case ItmCode::OPR_CLASS_REFLIST: {
 
             if (s_context->tmpExpList.empty()) {
-                string errorStr = (0 == side_t) ? "left" : "rigiht";
+                string errorStr = (0 == side_t) ? "right" : "left";
 
                 errorStr = "error in processChildOperand(): "
                 + errorStr + " side, s_context->tmpExpList is empty";
@@ -810,7 +810,7 @@ Reg* NodeAst::processChildOperand(int side_t)
         case ItmCode::OPR_REGISTER: {
             Reg *rr = s_context->tmpExpReg;
             if (NULL == rr) {
-                string errorStr = (0 == side_t) ? "left" : "rigiht";
+                string errorStr = (0 == side_t) ? "right" : "left";
 
                 errorStr = "error in processChildOperand(): "
                 + errorStr + " side, s_context->tmpExpReg is NULL";

@@ -902,8 +902,12 @@ Symbol* Scope::resolveSymbol(const string& symbolName_t, Symbol::SymbolType symb
 
 Symbol* Scope::resolveSymbolMemVar(Scope* classScope_t, const string &symbolName_t)
 {
-    if (NULL == classScope_t || Scope::SCOPE_CLASS != classScope_t->scopeType) {
+    if (NULL == classScope_t ) {
         return NULL;
+    }
+    while(Scope::SCOPE_CLASS != classScope_t->scopeType)
+    {
+        classScope_t=classScope_t->getParent();
     }
 
     Symbol *result = classScope_t->searchSymbolVarMap(symbolName_t);
@@ -938,9 +942,11 @@ Scope* Scope::resolveScope(const string& scopeName_t, Scope::ScopeType scopeType
 
 Scope* Scope::resolveClassFuncScope(Scope* classScope_t, const string& scopeName_t)
 {
-    if (NULL == classScope_t || Scope::SCOPE_CLASS != classScope_t->getScopeType()) {
+    if (NULL == classScope_t ) {
         return NULL;
     }
+    while (Scope::SCOPE_CLASS != classScope_t->getScopeType())
+        classScope_t=classScope_t->getParent();
 
     Scope *scope_t = classScope_t->searchChildName(scopeName_t);
 

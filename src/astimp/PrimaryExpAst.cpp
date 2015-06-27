@@ -20,18 +20,24 @@ void PrimaryExpAst::walk()
             return ;
         }
 
-        Symbol *tmpSymbol=NULL;
-        tmpSymbol=Scope::s_curScope->resolveSymbol(s_context->tmpIdenName, Symbol::SYMBOL_VAR);
-        if (!tmpSymbol)
+        if ((parent->nodeType != NodeAst::T_CPOSTEXP_POSTEXP_CALL_VOID) &&
+            (parent->nodeType != NodeAst::T_CPOSTEXP_POSTEXP_CALL_ARGEXPLIST))
         {
-            std::cout << "error: in T_CTERMINATE_CPRIMEXP_ID there is no symbol named "
-            << s_context->tmpIdenName << "at line " << getLineno() << std::endl;
-            stopWalk();
-            return ;
+
+            Symbol *tmpSymbol=NULL;
+            tmpSymbol=Scope::s_curScope->resolveSymbol(s_context->tmpIdenName, Symbol::SYMBOL_VAR);
+            if (!tmpSymbol)
+            {
+                std::cout << "error: in T_CTERMINATE_CPRIMEXP_ID there is no symbol named "
+                << s_context->tmpIdenName << "at line " << getLineno() << std::endl;
+                stopWalk();
+                return ;
+            }
+            s_context->clearContext();
+            s_context->tmpOpType = ItmCode::OPR_SYMBOL;
+            s_context->tmpExpSymbol = tmpSymbol;
+
         }
-        s_context->clearContext();
-        s_context->tmpOpType = ItmCode::OPR_SYMBOL;
-        s_context->tmpExpSymbol = tmpSymbol;
 
         //Symbol *rst = s_context->tmpExpSymbol;
 

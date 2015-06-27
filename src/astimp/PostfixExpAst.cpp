@@ -23,15 +23,51 @@ void PostfixExpAst::walk()
 
     case T_CPOSTEXP_POSTEXP_CALL_VOID: {
         std::cout << "walk in T_CPOSTEXP_POSTEXP_CALL_VOID" << endl;
-
-        Scope *s = processPostfixBeforeCall(nodeType);
-        if (NULL == s) {
-            stopWalk();
-            return;
-
-        } else {
-            //genCode
+        childs.at(0)->walk();
+        if (checkIsNotWalking()) {
+            return ;
         }
+        if (s_context->tmpOpType==ItmCode::OPR_CLASS_REFLIST)
+        {
+            Reg *result=Reg::getReg(0, ((Scope *)s_context->getExpListLast())->getReturnTypeClass()->getTypeSfType());
+            vector<void* >* refList = ItmCode::copyVectorToAllExpList(s_context->tmpExpList);
+            ItmCode *tmpCode=new ItmCode(ItmCode::IR_CALLCLASSFUNC, ItmCode::OPR_CLASS_REFLIST,(void *)refList, ItmCode::OPR_INVALID, NULL, ItmCode::OPR_REGISTER, result);
+            Scope::s_curScope->addItemCode(tmpCode);
+            s_context->clearContext();
+            s_context->tmpOpType=ItmCode::OPR_REGISTER;
+            s_context->tmpExpReg=result;
+
+        }
+        else
+        {
+            Scope *tmpScope=NULL;
+            if (tmpScope=Scope::s_curScope->resolveGlobalFuncScope(s_context->tmpIdenName))
+            {
+                Reg *result=Reg::getReg(0, tmpScope->getReturnTypeClass()->getTypeSfType());
+                ItmCode *tmpCode=new ItmCode(ItmCode::IR_CALLFUNC, ItmCode::OPR_SCOPE ,(void *)tmpScope, ItmCode::OPR_INVALID, NULL, ItmCode::OPR_REGISTER, result);
+                Scope::s_curScope->addItemCode(tmpCode);
+                s_context->clearContext();
+                s_context->tmpOpType=ItmCode::OPR_REGISTER;
+                s_context->tmpExpReg=result;
+            }
+            else if (tmpScope=Scope::resolveClassFuncScope(Scope::s_curScope, s_context->tmpIdenName))
+            {
+                Reg *result=Reg::getReg(0, tmpScope->getReturnTypeClass()->getTypeSfType());
+                ItmCode *tmpCode=new ItmCode(ItmCode::IR_CALLCLASSFUNC, ItmCode::OPR_SCOPE ,(void *)tmpScope, ItmCode::OPR_INVALID, NULL, ItmCode::OPR_REGISTER, result);
+                Scope::s_curScope->addItemCode(tmpCode);
+                s_context->clearContext();
+                s_context->tmpOpType=ItmCode::OPR_REGISTER;
+                s_context->tmpExpReg=result;
+            }
+            else
+            {
+                std::cout << "error: in T_CPOSTEXP_POSTEXP_CALL_VOID the func " << s_context->tmpIdenName << "is not exist" << std::endl;
+                stopWalk();
+                return;
+            }
+        }
+
+
 
         break;
     }
@@ -39,50 +75,72 @@ void PostfixExpAst::walk()
     case T_CPOSTEXP_POSTEXP_CALL_ARGEXPLIST: {
         std::cout << "walk in T_CPOSTEXP_POSTEXP_CALL_ARGEXPLIST"<< std::endl;
 
-        Scope *s = processPostfixBeforeCall(nodeType);
-        if (NULL == s) {
-            stopWalk();
-            return;
-
-        }
-
-        childs.at(1)->walk();
+        childs.at(0)->walk();
         if (checkIsNotWalking()) {
             return ;
         }
-
-        if (ItmCode::OPR_ARGLIST == s_context->tmpOpType) {
-            if (s->symbolSeqList.size() != s_context->tmpExpList.size()) {
-
-                std::cout << "error in T_CPOSTEXP_POSTEXP_CALL_ARGEXPLIST: the func "
-                << s->getScopeName() << "params's num mismatch at line " << getLineno() << std::endl;
-                stopWalk();
+        if (s_context->tmpOpType==ItmCode::OPR_CLASS_REFLIST)
+        {
+            Reg *result=Reg::getReg(0, ((Scope *)s_context->getExpListLast())->getReturnTypeClass()->getTypeSfType());
+            vector<void* >* refList = ItmCode::copyVectorToAllExpList(s_context->tmpExpList);
+            childs.at(1)->walk();
+            if (checkIsNotWalking()) {
                 return ;
             }
 
-            list<Symbol *>::iterator itr1;
-            vector<void *>::iterator itr2;
+            vector<void* >* arguList = ItmCode::copyVectorToAllExpList(s_context->tmpExpList);
 
-            for(itr1 = s->symbolSeqList.begin(), itr2 = s_context->tmpExpList.begin();
-                itr1 != s->symbolSeqList.end() && itr2 != s_context->tmpExpList.end();
-                ++itr1, ++itr2) {
-                if ( false == TypeClass::compare((*itr1)->getTypeClass(),
-                    ((Symbol *)*itr2)->getTypeClass()) ) {
-                    std::cout << "error in T_CPOSTEXP_POSTEXP_CALL_ARGEXPLIST: the func "
-                    << s->getScopeName() << "params's type mismatch at line " << getLineno() << std::endl;
-                    stopWalk();
+
+            ItmCode *tmpCode=new ItmCode(ItmCode::IR_CALLCLASSFUNC, ItmCode::OPR_CLASS_REFLIST,(void *)refList, ItmCode::OPR_ARGLIST, (void *)arguList, ItmCode::OPR_REGISTER, result);
+            Scope::s_curScope->addItemCode(tmpCode);
+            s_context->clearContext();
+            s_context->tmpOpType=ItmCode::OPR_REGISTER;
+            s_context->tmpExpReg=result;
+
+        }
+        else
+        {
+            Scope *tmpScope=NULL;
+            if (tmpScope=Scope::s_curScope->resolveGlobalFuncScope(s_context->tmpIdenName))
+            {
+                Reg *result=Reg::getReg(0, tmpScope->getReturnTypeClass()->getTypeSfType());
+                childs.at(1)->walk();
+                if (checkIsNotWalking()) {
                     return ;
                 }
+
+                vector<void* >* arguList = ItmCode::copyVectorToAllExpList(s_context->tmpExpList);
+
+                ItmCode *tmpCode=new ItmCode(ItmCode::IR_CALLFUNC, ItmCode::OPR_SCOPE ,(void *)tmpScope, ItmCode::OPR_ARGLIST, (void *)arguList, ItmCode::OPR_REGISTER, result);
+                Scope::s_curScope->addItemCode(tmpCode);
+                s_context->clearContext();
+                s_context->tmpOpType=ItmCode::OPR_REGISTER;
+                s_context->tmpExpReg=result;
             }
+            else if (tmpScope=Scope::resolveClassFuncScope(Scope::s_curScope, s_context->tmpIdenName))
+            {
+                Reg *result=Reg::getReg(0, tmpScope->getReturnTypeClass()->getTypeSfType());
+                childs.at(1)->walk();
+                if (checkIsNotWalking()) {
+                    return ;
+                }
 
-            //genCodeCallArgExpList(s, ItmCode::copyVectorToAllExpList(s_context->tmpExpList));
+                vector<void* >* arguList = ItmCode::copyVectorToAllExpList(s_context->tmpExpList);
 
-        } else {
-            std::cout << "error in T_CPOSTEXP_POSTEXP_CALL_ARGEXPLIST: the func "
-            << s_context->tmpIdenName << "doesn't has argExpList " << getLineno() << std::endl;
-            stopWalk();
-            return ;
+                ItmCode *tmpCode=new ItmCode(ItmCode::IR_CALLCLASSFUNC, ItmCode::OPR_SCOPE ,(void *)tmpScope, ItmCode::OPR_ARGLIST, (void *)arguList, ItmCode::OPR_REGISTER, result);
+                Scope::s_curScope->addItemCode(tmpCode);
+                s_context->clearContext();
+                s_context->tmpOpType=ItmCode::OPR_REGISTER;
+                s_context->tmpExpReg=result;
+            }
+            else
+            {
+                std::cout << "error: in T_CPOSTEXP_POSTEXP_CALL_ARGEXPLIST the func " << s_context->tmpIdenName << "is not exist" << std::endl;
+                stopWalk();
+                return;
+            }
         }
+
 
         break;
     }
@@ -94,41 +152,55 @@ void PostfixExpAst::walk()
         if (checkIsNotWalking()) {
             return ;
         }
-
-        if (ItmCode::OPR_ID == s_context->tmpOpType) {
-            Scope *s = Scope::resolveScope(s_context->tmpIdenName, Scope::SCOPE_CLASS);
-            if (NULL != s) {
-                childs.at(1)->walk();
-                if (checkIsNotWalking()) {
-                    return ;
-                }
-
-                Symbol *t = Scope::resolveSymbolMemVar(s, s_context->tmpIdenName);
-                if (NULL != t) {
-                    s_context->tmpClassScope = s;
-                    //s_context->tmpIdenName;
-                    s_context->isMemVar = true;
-
-                    s_context->tmpOpType = ItmCode::OPR_CLASS_REFLIST;
-                    s_context->addToExpList(s);
-                    s_context->addToExpList(t);
-                }
-
-            }
-
-        } else if (ItmCode::OPR_CLASS_REFLIST == s_context->tmpOpType) {
-
-
-        } else {
-            //error
+        if (s_context->tmpExpSymbol->typeClass.scopeType==NULL)
+        {
+            std::cout << "error in T_CPOSTEXP_POSTEXP_REF_ID the id " << s_context->tmpExpSymbol->getSymbolName() << "is not a class type " << std::endl;
+            stopWalk();
+            return;
         }
+        Symbol *tmpSymbol=s_context->tmpExpSymbol;
+        childs.at(1)->walk();
+        if (checkIsNotWalking()) {
+            return ;
+        }
+        if (parent->nodeType==NodeAst::T_CPOSTEXP_POSTEXP_CALL_ARGEXPLIST
+            || parent->nodeType==NodeAst::T_CPOSTEXP_POSTEXP_CALL_VOID)
+        {
+            Scope *tmpScope=Scope::resolveClassFuncScope(tmpSymbol->typeClass.scopeType, s_context->tmpIdenName);
+            if (tmpScope==NULL)
+            {
+                std::cout << "error: there is no func named " << s_context->tmpIdenName << "at line " << getLineno() <<std::endl;
+                stopWalk();
+                return;
+            }
+            s_context->clearContext();
+            s_context->addToExpList((void *)tmpSymbol);
+            s_context->addToExpList((void *)tmpScope);
+            s_context->tmpOpType=ItmCode::OPR_CLASS_REFLIST;
 
+        }
+        else
+        {
+            Symbol *tmpMemSymbol=Scope::resolveSymbolMemVar(tmpSymbol->typeClass.scopeType, s_context->tmpIdenName);
+            if (tmpMemSymbol==NULL)
+            {
+                std::cout << "error: there is no var named " << s_context->tmpIdenName << "at line " << getLineno() <<std::endl;
+                stopWalk();
+                return;
+            }
+            s_context->clearContext();
+            s_context->addToExpList((void *)tmpSymbol);
+            s_context->addToExpList((void *)tmpMemSymbol);
+            s_context->tmpOpType=ItmCode::OPR_CLASS_REFLIST;
+        }
 
 
         break;
     }
 
     case T_CPOSTEXP_POSTEXP_INC_OP: {
+
+
         break;
     }
 
@@ -148,92 +220,6 @@ void PostfixExpAst::walk()
 }
 
 
-Scope* PostfixExpAst::processPostfixBeforeCall(NodeAst::NodeType nodeType_t)
-{
-        switch(childs.at(0)->getNodeType()) {
-        case T_CPRIMEXP_ID: {
-
-            childs.at(0)->walk();
-            if (checkIsNotWalking()) {
-                return NULL;
-            }
-
-            Scope *s = Scope::s_curScope->resolveGlobalFuncScope(s_context->tmpIdenName);
-
-            if (NULL != s) {
-                //genCode
-
-            } else {
-                std::cout << "error in processPostfixBeforeCall(" << nodeType_t << "): the func "
-                << s_context->tmpIdenName << "doesn't exist at line " << getLineno() << std::endl;
-                stopWalk();
-                return NULL;
-            }
-
-            break;
-        }
-
-        case T_CPOSTEXP_POSTEXP_REF_ID: {
-            childs.at(0)->walk();
-            if (checkIsNotWalking()) {
-                return NULL;
-            }
-
-            if (ItmCode::OPR_CLASS_REFLIST == s_context->tmpOpType) {
-                if (NULL != s_context->tmpClassScope) {
-
-                    Scope *s = Scope::s_curScope->resolveClassFuncScope(s_context->tmpClassScope,
-                    s_context->tmpIdenName);
-
-                    if (NULL != s) {
-                        //genCode
-                    } else {
-                    }
-                }
-            }
-
-            break;
-        }
-
-        default: {
-            break;
-        }
-
-        }
-
-        return NULL;
-}
-
-
-void PostfixExpAst::genCodeCallVoid(Scope* func_t)
-{
-    if (NULL == func_t) {
-        std::cout << "error in PostfixExpAst: exist one member of genCodeCallVoid()'s params is NULL"
-        << std::endl;
-        return ;
-    }
-
-    ItmCode *newCode = new ItmCode(ItmCode::IR_CALLFUNC,
-    ItmCode::OPR_SCOPE, func_t);
-
-    ItmCode::addToAllItmCode(newCode);
-
-}
-
-void PostfixExpAst::genCodeCallArgExpList(Scope* func_t, vector<void* >* argExpList_t)
-{
-    if (NULL == func_t || NULL == argExpList_t) {
-        std::cout << "error in PostfixExpAst: exist one member of genCodeArgExpList()'s params is NULL"
-        << std::endl;
-        return ;
-    }
-
-    ItmCode *newCode = new ItmCode(ItmCode::IR_CALLFUNC,
-    ItmCode::OPR_SCOPE, func_t,
-    ItmCode::OPR_ARGLIST, argExpList_t);
-
-    ItmCode::addToAllItmCode(newCode);
-}
 
 
 
