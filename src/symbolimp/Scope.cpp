@@ -1080,7 +1080,7 @@ Scope*  Scope::resolveMemFunByOffset(int funcOffset_t)
 
 void Scope::addItemCode(ItmCode *itmcode_t)
 {
-    itmcode_t->setItmNo(ItmCode::getTotalItemNo());
+    itmcode_t->setCodeId();
     ItmCode::addToAllItmCode(itmcode_t);
     itemcodeVec.push_back(itmcode_t);
 

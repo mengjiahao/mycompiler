@@ -1,6 +1,7 @@
 #include "../../include/symbol/ItmCode.h"
 #include "../../include/symbol/Symbol.h"
 #include "../../include/symbol/Scope.h"
+#include "../../include/LogiMsg.h"
 
 
 #include <iostream>
@@ -12,7 +13,7 @@
 using namespace std;
 
 /***********************************Reg**********************************************/
-set<Reg, RegSortComp> Reg::s_regs;
+Reg Reg::s_regs[4][16];
 
 void Reg::setRegIndex(int regIndex_t)
 {
@@ -34,6 +35,88 @@ int Reg::getTypeSfType()
     return typeSfType;
 }
 
+int Reg::convSfTypeToIndex(int typeSfType_t)
+{
+    int index = 0;
+
+    switch(typeSfType_t) {
+    case TypeClass::SF_INVALID: {
+        index = 0;
+        break;
+    }
+    case TypeClass::SF_VOID: {
+        index = 1;
+        break;
+    }
+    case TypeClass::SF_CHAR: {
+        index = 2;
+        break;
+    }
+    case TypeClass::SF_CHAR | TypeClass::SF_SIGNED: {
+        index = 3;
+        break;
+    }
+    case TypeClass::SF_CHAR | TypeClass::SF_UNSIGNED: {
+        index = 4;
+        break;
+    }
+    case TypeClass::SF_SHORT: {
+        index = 5;
+        break;
+    }
+    case TypeClass::SF_SHORT | TypeClass::SF_SIGNED: {
+        index = 6;
+        break;
+    }
+    case TypeClass::SF_SHORT | TypeClass::SF_UNSIGNED: {
+        index = 7;
+        break;
+    }
+    case TypeClass::SF_INT: {
+        index = 8;
+        break;
+    }
+    case TypeClass::SF_INT | TypeClass::SF_SIGNED: {
+        index = 9;
+        break;
+    }
+    case TypeClass::SF_INT | TypeClass::SF_UNSIGNED: {
+        index = 10;
+        break;
+    }
+    case TypeClass::SF_LONG: {
+        index = 11;
+        break;
+    }
+    case TypeClass::SF_LONG | TypeClass::SF_SIGNED: {
+        index = 12;
+        break;
+    }
+    case TypeClass::SF_LONG | TypeClass::SF_UNSIGNED: {
+        index = 13;
+        break;
+    }
+    case TypeClass::SF_FLOAT: {
+        index = 14;
+        break;
+    }
+    case TypeClass::SF_DOUBLE: {
+        index = 15;
+        break;
+    }
+    default: {
+        LogiMsg::logi("error in Reg::convSfTypeToIndex(): typeSfType_t is invalid");
+        index = 0;
+        break;
+    }
+    }
+
+    if (index < 0 || index >= 16) {
+        index = 0;
+    }
+
+    return index;
+}
 
 
 void Reg::initRegs()
@@ -48,76 +131,65 @@ void Reg::initRegs()
         tmpReg.setRegIndex(i);
 
         tmpReg.setTypeSfType(TypeClass::SF_INVALID);
-        s_regs.insert(tmpReg);
+        s_regs[i][convSfTypeToIndex(TypeClass::SF_INVALID)] = tmpReg;
 
         tmpReg.setTypeSfType(TypeClass::SF_VOID);
-        s_regs.insert(tmpReg);
+        s_regs[i][convSfTypeToIndex(TypeClass::SF_VOID)] = tmpReg;
 
         tmpReg.setTypeSfType(TypeClass::SF_CHAR);
-        s_regs.insert(tmpReg);
+        s_regs[i][convSfTypeToIndex(TypeClass::SF_CHAR)] = tmpReg;
 
-        tmpReg.setTypeSfType(TypeClass::SF_CHAR & TypeClass::SF_SIGNED);
-        s_regs.insert(tmpReg);
+        tmpReg.setTypeSfType(TypeClass::SF_CHAR | TypeClass::SF_SIGNED);
+        s_regs[i][convSfTypeToIndex(TypeClass::SF_CHAR | TypeClass::SF_SIGNED)] = tmpReg;
 
-        tmpReg.setTypeSfType(TypeClass::SF_CHAR & TypeClass::SF_UNSIGNED);
-        s_regs.insert(tmpReg);
+        tmpReg.setTypeSfType(TypeClass::SF_CHAR | TypeClass::SF_UNSIGNED);
+        s_regs[i][convSfTypeToIndex(TypeClass::SF_CHAR | TypeClass::SF_UNSIGNED)] = tmpReg;
 
         tmpReg.setTypeSfType(TypeClass::SF_SHORT);
-        s_regs.insert(tmpReg);
+        s_regs[i][convSfTypeToIndex(TypeClass::SF_SHORT)] = tmpReg;
 
-        tmpReg.setTypeSfType(TypeClass::SF_SHORT & TypeClass::SF_SIGNED);
-        s_regs.insert(tmpReg);
+        tmpReg.setTypeSfType(TypeClass::SF_SHORT | TypeClass::SF_SIGNED);
+        s_regs[i][convSfTypeToIndex(TypeClass::SF_SHORT | TypeClass::SF_SIGNED)] = tmpReg;
 
-        tmpReg.setTypeSfType(TypeClass::SF_SHORT & TypeClass::SF_UNSIGNED);
-        s_regs.insert(tmpReg);
+        tmpReg.setTypeSfType(TypeClass::SF_SHORT | TypeClass::SF_UNSIGNED);
+        s_regs[i][convSfTypeToIndex(TypeClass::SF_SHORT | TypeClass::SF_UNSIGNED)] = tmpReg;
 
         tmpReg.setTypeSfType(TypeClass::SF_INT);
-        s_regs.insert(tmpReg);
+        s_regs[i][convSfTypeToIndex(TypeClass::SF_INT)] = tmpReg;
 
-        tmpReg.setTypeSfType(TypeClass::SF_INT & TypeClass::SF_SIGNED);
-        s_regs.insert(tmpReg);
+        tmpReg.setTypeSfType(TypeClass::SF_INT | TypeClass::SF_SIGNED);
+        s_regs[i][convSfTypeToIndex(TypeClass::SF_INT | TypeClass::SF_SIGNED)] = tmpReg;
 
-        tmpReg.setTypeSfType(TypeClass::SF_INT & TypeClass::SF_UNSIGNED);
-        s_regs.insert(tmpReg);
+        tmpReg.setTypeSfType(TypeClass::SF_INT | TypeClass::SF_UNSIGNED);
+        s_regs[i][convSfTypeToIndex(TypeClass::SF_INT | TypeClass::SF_UNSIGNED)] = tmpReg;
 
         tmpReg.setTypeSfType(TypeClass::SF_LONG);
-        s_regs.insert(tmpReg);
+        s_regs[i][convSfTypeToIndex(TypeClass::SF_LONG)] = tmpReg;
 
-        tmpReg.setTypeSfType(TypeClass::SF_LONG & TypeClass::SF_SIGNED);
-        s_regs.insert(tmpReg);
+        tmpReg.setTypeSfType(TypeClass::SF_LONG | TypeClass::SF_SIGNED);
+        s_regs[i][convSfTypeToIndex(TypeClass::SF_LONG | TypeClass::SF_SIGNED)] = tmpReg;
 
-        tmpReg.setTypeSfType(TypeClass::SF_LONG & TypeClass::SF_UNSIGNED);
-        s_regs.insert(tmpReg);
+        tmpReg.setTypeSfType(TypeClass::SF_LONG | TypeClass::SF_UNSIGNED);
+        s_regs[i][convSfTypeToIndex(TypeClass::SF_LONG | TypeClass::SF_UNSIGNED)] = tmpReg;
 
         tmpReg.setTypeSfType(TypeClass::SF_FLOAT);
-        s_regs.insert(tmpReg);
+        s_regs[i][convSfTypeToIndex(TypeClass::SF_FLOAT)] = tmpReg;
 
         tmpReg.setTypeSfType(TypeClass::SF_DOUBLE);
-        s_regs.insert(tmpReg);
-
+        s_regs[i][convSfTypeToIndex(TypeClass::SF_DOUBLE)] = tmpReg;
     }
 }
 
 
 
 
-const Reg* Reg::getReg(int regIndex_t, int sf_t) {
-
-    Reg tmpReg;
-    set<Reg, RegSortComp>::iterator itr;
-
-    tmpReg.setRegIndex(regIndex_t);
-    tmpReg.setTypeSfType(sf_t);
-
-    itr = s_regs.find(tmpReg);
-    if (s_regs.end() == itr) {
-        cout << "error in getReg(): can not find regIndex"
-        << regIndex_t << " of " << sf_t << endl;
-        return NULL;
+Reg* Reg::getReg(int regIndex_t, int sf_t)
+{
+    if (0 <= regIndex_t && regIndex_t < 4) {
+        return &(s_regs[regIndex_t][convSfTypeToIndex(sf_t)]);
     }
 
-    const Reg *rst = &(*itr);
-    return rst;
+    return NULL;
 }
 
 
@@ -138,7 +210,7 @@ ItmCode::ItmCode()
     v2 = NULL;
     t3 = ItmCode::OPR_INVALID;
     v3 = NULL;
-    ItmNo=0;
+    ItmNo = 0;
 }
 
 ItmCode::ItmCode(IRtype iRType_t,
@@ -154,8 +226,9 @@ OperandType t3_t, void* v3_t)
     v2 = v2_t;
     t3 = t3_t;
     v3 = v3_t;
-    ItmNo=0;
+    ItmNo = 0;
 }
+
 
 ItmCode::~ItmCode()
 {
@@ -167,6 +240,7 @@ ItmCode::~ItmCode()
     v2 = NULL;
     t3 = ItmCode::OPR_INVALID;
     v3 = NULL;
+    ItmNo = 0;
 }
 
 void ItmCode::setCodeId()
@@ -219,6 +293,7 @@ void ItmCode::freeAllExpList()
 
     s_allExpList.clear();
 }
+
 
 
 void ItmCode::addToAllItmCode(ItmCode* itmCode_t)
@@ -338,3 +413,55 @@ int ItmCode::getItmNo()
 {
     return ItmNo;
 }
+
+void ItmCode::genCode(IRtype iRType_t,
+OperandType t1_t, void* v1_t,
+OperandType t2_t, void* v2_t,
+OperandType t3_t, void* v3_t)
+{
+
+}
+
+void ItmCode::genCodeMoveRegToReg(Reg* opReg_t, Reg* rstReg_t)
+{
+    ItmCode *newCode = new ItmCode(ItmCode::IR_ASSIGN_OP,
+    ItmCode::OPR_REGISTER, opReg_t,
+    ItmCode::OPR_INVALID, NULL,
+    ItmCode::OPR_REGISTER, rstReg_t);
+
+    Scope::s_curScope->addItemCode(newCode);
+
+}
+
+void ItmCode::genCodeMoveSymbolToReg(Symbol* symbol_t, Reg* rstReg_t)
+{
+    ItmCode *newCode = new ItmCode(ItmCode::IR_ASSIGN_OP,
+    ItmCode::OPR_SYMBOL, symbol_t,
+    ItmCode::OPR_INVALID, NULL,
+    ItmCode::OPR_REGISTER, rstReg_t);
+
+    Scope::s_curScope->addItemCode(newCode);
+}
+
+void ItmCode::genCodeMoveRefListToReg(vector<void* >* refList_t, Reg *rstReg_t)
+{
+    ItmCode *newCode = new ItmCode(ItmCode::IR_ASSIGN_OP,
+    ItmCode::OPR_CLASS_REFLIST, refList_t,
+    ItmCode::OPR_INVALID, NULL,
+    ItmCode::OPR_REGISTER, rstReg_t);
+
+    Scope::s_curScope->addItemCode(newCode);
+}
+
+void ItmCode::genCodeRegBinOpRegToReg(IRtype iRType_t, Reg* reg1_t, Reg* reg2_t, Reg* rstReg_t)
+{
+    ItmCode *newCode = new ItmCode(iRType_t,
+    ItmCode::OPR_REGISTER, reg1_t,
+    ItmCode::OPR_REGISTER, reg2_t,
+    ItmCode::OPR_REGISTER, rstReg_t);
+
+    Scope::s_curScope->addItemCode(newCode);
+}
+
+
+

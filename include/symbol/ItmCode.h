@@ -26,7 +26,7 @@ public:
     int regIndex;
     int typeSfType;
 
-    static set<Reg, RegSortComp> s_regs;
+    static Reg s_regs[4][16];
 
 
 public:
@@ -37,9 +37,12 @@ public:
     virtual void setTypeSfType(int typeSfType_t);
     virtual int getTypeSfType();
 
+
     static void initRegs();
 
-    static const Reg* getReg(int regIndex_t, int sf_t);
+    static int convSfTypeToIndex(int typeSfType_t);
+
+    static Reg* getReg(int regIndex_t, int sf_t);
 
 };
 
@@ -136,6 +139,15 @@ OperandType t3_t = ItmCode::OPR_INVALID, void* v3_t = NULL);
 
     virtual void setItmNo(int itmNo_t);
     virtual int getItmNo();
+
+    static void genCode(IRtype iRType_t = ItmCode::IR_INVALID,
+OperandType t1_t = ItmCode::OPR_INVALID, void* v1_t = NULL,
+OperandType t2_t = ItmCode::OPR_INVALID, void* v2_t = NULL,
+OperandType t3_t = ItmCode::OPR_INVALID, void* v3_t = NULL);
+    static void genCodeMoveRegToReg(Reg *opReg_t, Reg *rstReg_t);
+    static void genCodeMoveSymbolToReg(Symbol *symbol_t, Reg *rstReg_t);
+    static void genCodeMoveRefListToReg(vector<void *> *refList_t, Reg *rstReg_t);
+    static void genCodeRegBinOpRegToReg(IRtype iRType_t, Reg *reg1_t, Reg *reg2_t, Reg *rstReg_t);
 
 
 };

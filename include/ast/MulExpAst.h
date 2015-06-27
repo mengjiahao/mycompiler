@@ -9,6 +9,8 @@ class  MulExpAst: public NodeAst {
 	public:
 		MulExpAst(NodeAst::NodeType nodeType_t);
 
+		virtual void walk();
+
 };
 
 #endif

@@ -3,3 +3,84 @@
 EqualExpAst::EqualExpAst(NodeAst::NodeType nodeType_t) : NodeAst(nodeType_t) {
 
 }
+
+void EqualExpAst::walk()
+{
+    if (checkIsNotWalking()) {
+        return ;
+    }
+
+    switch(nodeType) {
+    case T_CEQUALEXP_EQUALEXP_EQ_OP_RELEXP: {
+        LogiMsg::logi("walk in T_CEQUALEXP_EQUALEXP_EQ_OP_RELEXP");
+
+        childs.at(0)->walk();
+        if (checkIsNotWalking()) {
+            return ;
+        }
+        Reg *r1 = processChildOperand(1);
+        if (NULL == r1) {
+            LogiMsg::logi("error in T_CEQUALEXP_EQUALEXP_EQ_OP_RELEXP: left operand is invalid");
+            stopWalk();
+            return ;
+        }
+
+        childs.at(1)->walk();
+        if (checkIsNotWalking()) {
+            return ;
+        }
+        Reg *r2 = processChildOperand(0);
+        if (NULL == r2) {
+            LogiMsg::logi("error in T_CEQUALEXP_EQUALEXP_EQ_OP_RELEXP: right operand is invalid");
+            stopWalk();
+            return ;
+        }
+
+        Reg *r3 = Reg::getReg(0, TypeClass::promoteType(r1->getTypeSfType(), r2->getTypeSfType()));
+
+        ItmCode::genCodeRegBinOpRegToReg(ItmCode::IR_EQ_OP, r1, r2, r3);
+
+
+        break;
+    }
+
+    case T_CEQUALEXP_EQUALEXP_NE_OP_RELEXP: {
+        LogiMsg::logi("walk in T_CEQUALEXP_EQUALEXP_NE_OP_RELEXP");
+
+        childs.at(0)->walk();
+        if (checkIsNotWalking()) {
+            return ;
+        }
+        Reg *r1 = processChildOperand(1);
+        if (NULL == r1) {
+            LogiMsg::logi("error in T_CEQUALEXP_EQUALEXP_NE_OP_RELEXP: left operand is invalid");
+            stopWalk();
+            return ;
+        }
+
+        childs.at(1)->walk();
+        if (checkIsNotWalking()) {
+            return ;
+        }
+        Reg *r2 = processChildOperand(0);
+        if (NULL == r2) {
+            LogiMsg::logi("error in T_CEQUALEXP_EQUALEXP_NE_OP_RELEXP: right operand is invalid");
+            stopWalk();
+            return ;
+        }
+
+        Reg *r3 = Reg::getReg(0, TypeClass::promoteType(r1->getTypeSfType(), r2->getTypeSfType()));
+
+        ItmCode::genCodeRegBinOpRegToReg(ItmCode::IR_NE_OP, r1, r2, r3);
+
+        break;
+    }
+
+    default: {
+        LogiMsg::logi("error in EqualExpAst: nodeType is invalid");
+        stopWalk();
+        return ;
+        break;
+    }
+    }
+}

@@ -24,7 +24,8 @@ void PrimaryExpAst::walk()
         tmpSymbol=Scope::s_curScope->resolveSymbol(s_context->tmpIdenName, Symbol::SYMBOL_VAR);
         if (!tmpSymbol)
         {
-            std::cout << "error: in T_CTERMINATE_CPRIMEXP_ID there is no symbol named " << s_context->tmpIdenName << "at line " << getLineno() << std::endl;
+            std::cout << "error: in T_CTERMINATE_CPRIMEXP_ID there is no symbol named "
+            << s_context->tmpIdenName << "at line " << getLineno() << std::endl;
             stopWalk();
             return ;
         }

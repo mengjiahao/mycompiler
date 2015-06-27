@@ -7,6 +7,7 @@ class  AddExpAst: public NodeAst {
 	public:
 	public:
 		AddExpAst(NodeAst::NodeType nodeType_t);
+		virtual void walk();
 
 };
 

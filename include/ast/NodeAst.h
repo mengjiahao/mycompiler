@@ -424,6 +424,9 @@ class NodeAst {
 		virtual void walk();
 
 
+		virtual Reg* processChildOperand(int side_t);
+
+
 };
 
 

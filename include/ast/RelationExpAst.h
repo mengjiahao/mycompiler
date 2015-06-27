@@ -9,6 +9,8 @@ class  RelationExpAst: public NodeAst {
 	public:
 		RelationExpAst(NodeAst::NodeType nodeType_t);
 
+		virtual void walk();
+
 };
 
 #endif

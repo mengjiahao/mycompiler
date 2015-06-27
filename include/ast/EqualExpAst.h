@@ -9,6 +9,8 @@ class  EqualExpAst: public NodeAst {
 	public:
 		EqualExpAst(NodeAst::NodeType nodeType_t);
 
+		virtual void walk();
+
 };
 
 

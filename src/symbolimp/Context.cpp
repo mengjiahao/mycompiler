@@ -87,4 +87,14 @@ void Context::addToExpList(void* m)
     }
 }
 
+void* Context::getExpListLast()
+{
+    if (tmpExpList.empty()) {
+        return NULL;
+    }
+
+    return tmpExpList.back();
+}
+
+
 
