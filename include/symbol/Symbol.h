@@ -96,6 +96,7 @@ public:
     int offset;
     unsigned int byteSize;
 
+    bool isglobal;
 
 
 public:

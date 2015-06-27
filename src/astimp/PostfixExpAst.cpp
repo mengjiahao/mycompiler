@@ -15,10 +15,7 @@ void PostfixExpAst::walk()
 
     switch(nodeType) {
     case T_CPOSTEXP_POSTEXP_ARRAY_EXP: {
-        std::cout << "error in T_CPOSTEXP_POSTEXP_ARRAY_EXP: array is not support at line "
-        << getLineno() << std::endl;
-        stopWalk();
-        return ;
+
 
 
         break;

@@ -66,7 +66,7 @@ public:
 class ItmCode {
 public:
     enum IRtype {IR_INVALID,
-    IR_PUSHVAR, IR_POPVAR,
+    IR_PUSHVAR, IR_POPVAR, IR_MOVVAR,
     IR_EMITVAR, IR_EMITFUNC, IR_EMITLABEL,
     IR_CALLFUNC, IR_CALLCLASSFUNC,
     IR_FETCHARRAY,
@@ -105,6 +105,8 @@ public:
 
     static list< vector<void *> * > s_allExpList;
     static vector<ItmCode *> s_allItmCode;
+    static int totalItmNo;
+    int ItmNo;
 
 
 public:
@@ -129,6 +131,11 @@ OperandType t3_t = ItmCode::OPR_INVALID, void* v3_t = NULL);
     static void freeAllItmCode();
 
     static void printAllItmCode();
+
+    static int getTotalItemNo();
+
+    virtual void setItmNo(int itmNo_t);
+    virtual int getItmNo();
 
 
 };

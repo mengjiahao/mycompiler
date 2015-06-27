@@ -34,6 +34,7 @@ Scope::Scope()
     returnTypeClass = NULL;
 
     symbolsNo = 0;
+    itemcodeVec.clear();
     //paraTypeNum=0;
     //paraType.clear();
 
@@ -1075,6 +1076,15 @@ Scope*  Scope::resolveMemFunByOffset(int funcOffset_t)
 
 
 
+
+
+void Scope::addItemCode(ItmCode *itmcode_t)
+{
+    itmcode_t->setItmNo(ItmCode::getTotalItemNo());
+    ItmCode::addToAllItmCode(itmcode_t);
+    itemcodeVec.push_back(itmcode_t);
+
+}
 
 
 /*void Scope::addParaType(TypeClass *type_t)

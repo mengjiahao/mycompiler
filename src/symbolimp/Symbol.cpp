@@ -477,6 +477,8 @@ Symbol::Symbol()
     offset = 0;
     byteSize = 0;
 
+    isglobal=false;
+
 }
 
 Symbol::Symbol(Symbol::SymbolType symbolType_t)
@@ -486,6 +488,8 @@ Symbol::Symbol(Symbol::SymbolType symbolType_t)
 
     offset = 0;
     byteSize = 0;
+
+    isglobal=false;
 }
 
 
@@ -627,7 +631,10 @@ void Symbol::computeByteSize()
         break;
     }
     case SYMBOL_VAR: {
-        byteSize = typeClass.getTypeByteSize();
+        if (typeClass.isArray)
+            byteSize=4;
+        else
+            byteSize = typeClass.getTypeByteSize();
         break;
     }
     case SYMBOL_PARAMVAR: {
@@ -643,11 +650,17 @@ void Symbol::computeByteSize()
         break;
     }
     case SYMBOL_TEMPVAR: {
-        byteSize = typeClass.getTypeByteSize();
+        if (typeClass.isArray)
+            byteSize=4;
+        else
+            byteSize = typeClass.getTypeByteSize();
         break;
     }
     case SYMBOL_CLASSMEMVAR: {
-        byteSize = typeClass.getTypeByteSize();
+        if (typeClass.isArray)
+            byteSize=4;
+        else
+            byteSize = typeClass.getTypeByteSize();
         break;
     }
     case SYMBOL_LABEL: {

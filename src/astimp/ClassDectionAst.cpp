@@ -45,6 +45,14 @@ void ClassDectionAst::walk()
                 tmpsymbol->symbolName = s_context->tmpIdenName;
                 tmpsymbol->typeClass.clone(&tmpType);*/
 
+                if (Scope::s_curScope->resolveMemFunByName(s_context->tmpIdenName))
+                {
+                    std::cout << "error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST: ClassDectionAst  var "
+                    << s_context->tmpIdenName << " has the same name with func at line " << getLineno() << std::endl;
+                    stopWalk();
+                    return ;
+                }
+
                 if (NULL != Scope::s_curScope->searchSymbolVarMap(s_context->tmpIdenName)) {
                     std::cout << "error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST: ClassDectionAst duplicate var "
                     << s_context->tmpIdenName << " at line " << getLineno() << std::endl;
@@ -101,6 +109,13 @@ void ClassDectionAst::walk()
                 << getLineno() << std::endl;
                 delete tmpScope;
 
+                stopWalk();
+                return ;
+            }
+            if (Scope::resolveSymbolMemVar(Scope::s_curScope, s_context->tmpIdenName))
+            {
+                std::cout << "error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST: ClassDectionAst  func "
+                << s_context->tmpIdenName << " has the same name with var at line " << getLineno() << std::endl;
                 stopWalk();
                 return ;
             }
@@ -196,6 +211,14 @@ void ClassDectionAst::walk()
             {
                 std::cout << "error in T_CCLASSDECTION_CLASSDECTORLIST_COMPSTM: ClassDectionAst should have a func at line "
                 << getLineno() << std::endl;
+                stopWalk();
+                return ;
+            }
+
+            if (Scope::resolveSymbolMemVar(Scope::s_curScope, s_context->tmpIdenName))
+            {
+                std::cout << "error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST: ClassDectionAst  func "
+                << s_context->tmpIdenName << " has the same name with var at line " << getLineno() << std::endl;
                 stopWalk();
                 return ;
             }

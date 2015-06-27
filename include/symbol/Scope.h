@@ -9,6 +9,7 @@
 #include <string>
 #include <stack>
 #include "Symbol.h"
+#include "ItmCode.h"
 
 using namespace std;
 
@@ -58,6 +59,9 @@ public:
     static Scope *s_globalScope;
 
     static Scope *s_curScope;
+
+    vector<ItmCode *> itemcodeVec;
+
 
     //int paraTypeNum;
     //vector<TypeClass> paraType;
@@ -173,6 +177,8 @@ public:
 
     static void printScopeTree();
     virtual void printScope(ofstream &ofs_t);
+
+    void addItemCode(ItmCode *itmcode_t);
 
     //virtual void addParaType(TypeClass *type_t);
 

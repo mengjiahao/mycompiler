@@ -43,16 +43,17 @@ void TerminateAst::walk()
     case T_CTERMINATE_CCONSTVAR_INT_CONST: {
         std::cout << "walk in T_CTERMINATE_CCONSTVAR_INT_CONST" << endl;
 
-        Symbol *rst = Scope::s_curScope->resolveSymbol(token, Symbol::SYMBOL_INTEGER_CONSTANT);
+        Symbol *rst = Scope::s_globalScope->resolveSymbol(token, Symbol::SYMBOL_INTEGER_CONSTANT);
 
         if (NULL == rst) {
             rst = new Symbol(Symbol::SYMBOL_INTEGER_CONSTANT);
             rst->setSymbolName(token);
             rst->addSymbolValue(token);
 
-            rst = (0 == Scope::s_curScope->defineSymbol(rst)) ? NULL : rst;
+            rst = (0 == Scope::s_globalScope->defineSymbol(rst)) ? NULL : rst;
 
         }
+        s_context->clearContext();
         s_context->tmpOpType = ItmCode::OPR_SYMBOL;
         s_context->tmpExpSymbol = rst;
 
@@ -61,19 +62,20 @@ void TerminateAst::walk()
     case T_CTERMINATE_CCONSTVAR_CHAR_CONST: {
         std::cout << "walk in T_CTERMINATE_CCONSTVAR_CHAR_CONST" << endl;
 
-        Symbol *rst = Scope::s_curScope->resolveSymbol(token, Symbol::SYMBOL_CHARACTER_CONSTANT);
+        Symbol *rst = Scope::s_globalScope->resolveSymbol(token, Symbol::SYMBOL_CHARACTER_CONSTANT);
 
         if (NULL == rst) {
             rst = new Symbol(Symbol::SYMBOL_CHARACTER_CONSTANT);
             rst->setSymbolName(token);
-            string charValue = token.substr(1, 1);
-            rst->addSymbolValue(charValue);
+            //string charValue = token.substr(1, 1);
+            rst->addSymbolValue(token);
 
-            cout << "!" << rst->getFirstSymbolValue() << endl;
+            //cout << "!" << rst->getFirstSymbolValue() << endl;
 
-            rst = (0 == Scope::s_curScope->defineSymbol(rst)) ? NULL : rst;
+            rst = (0 == Scope::s_globalScope->defineSymbol(rst)) ? NULL : rst;
 
         }
+        s_context->clearContext();
         s_context->tmpOpType = ItmCode::OPR_SYMBOL;
         s_context->tmpExpSymbol = rst;
 
@@ -82,16 +84,17 @@ void TerminateAst::walk()
     case T_CTERMINATE_CCONSTVAR_FLOAT_CONST: {
         std::cout << "walk in T_CTERMINATE_CCONSTVAR_FLOAT_CONST" << endl;
 
-        Symbol *rst = Scope::s_curScope->resolveSymbol(token, Symbol::SYMBOL_FLOATING_CONSTANT);
+        Symbol *rst = Scope::s_globalScope->resolveSymbol(token, Symbol::SYMBOL_FLOATING_CONSTANT);
 
         if (NULL == rst) {
             rst = new Symbol(Symbol::SYMBOL_FLOATING_CONSTANT);
             rst->setSymbolName(token);
             rst->addSymbolValue(token);
 
-            rst = (0 == Scope::s_curScope->defineSymbol(rst)) ? NULL : rst;
+            rst = (0 == Scope::s_globalScope->defineSymbol(rst)) ? NULL : rst;
 
         }
+        s_context->clearContext();
         s_context->tmpOpType = ItmCode::OPR_SYMBOL;
         s_context->tmpExpSymbol = rst;
 
@@ -102,6 +105,7 @@ void TerminateAst::walk()
     case T_CTERMINATE_CPRIMEXP_ID: {
         std::cout << "walk in T_CTERMINATE_CPRIMEXP_ID" << endl;
 
+        s_context->clearContext();
         s_context->tmpOpType = ItmCode::OPR_ID;
         s_context->tmpIdenName = token;
 
@@ -110,15 +114,15 @@ void TerminateAst::walk()
     case T_CTERMINATE_CPRIMEXP_STR: {
         std::cout << "walk in T_CTERMINATE_CPRIMEXP_STR" << endl;
 
-        Symbol *rst = Scope::s_curScope->resolveSymbol(token, Symbol::SYMBOL_STRING_LITERAL);
+        Symbol *rst = Scope::s_globalScope->resolveSymbol(token, Symbol::SYMBOL_STRING_LITERAL);
 
         if (NULL == rst) {
             rst = new Symbol(Symbol::SYMBOL_STRING_LITERAL);
             rst->setSymbolName(token);
-            string strValue = token.substr(1, token.size() - 2);
-            rst->addSymbolValue(strValue);
+            //string strValue = token.substr(1, token.size() - 2);
+            rst->addSymbolValue(token);
 
-            cout << "!" << rst->getFirstSymbolValue() << endl;
+           // cout << "!" << rst->getFirstSymbolValue() << endl;
 
             rst = (0 == Scope::s_curScope->defineSymbol(rst)) ? NULL : rst;
 

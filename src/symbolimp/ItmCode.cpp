@@ -125,6 +125,7 @@ const Reg* Reg::getReg(RegType regType_t, int sf_t) {
 /*********************************ItmCode********************************************/
 list< vector<void *>* > ItmCode::s_allExpList;
 vector<ItmCode *> ItmCode::s_allItmCode;
+int ItmCode::totalItmNo=0;
 
 ItmCode::ItmCode()
 {
@@ -136,6 +137,7 @@ ItmCode::ItmCode()
     v2 = NULL;
     t3 = ItmCode::OPR_INVALID;
     v3 = NULL;
+    ItmNo=0;
 }
 
 ItmCode::ItmCode(IRtype iRType_t,
@@ -151,6 +153,7 @@ OperandType t3_t, void* v3_t)
     v2 = v2_t;
     t3 = t3_t;
     v3 = v3_t;
+    ItmNo=0;
 }
 
 ItmCode::~ItmCode()
@@ -221,6 +224,7 @@ void ItmCode::addToAllItmCode(ItmCode* itmCode_t)
 {
     if (NULL != itmCode_t) {
         s_allItmCode.push_back(itmCode_t);
+        totalItmNo++;
     }
 }
 
@@ -316,4 +320,20 @@ void ItmCode::printAllItmCode()
 
 
     ofs.close();
+}
+
+
+int ItmCode::getTotalItemNo()
+{
+    return totalItmNo;
+}
+
+void ItmCode::setItmNo(int itmNo_t)
+{
+    ItmNo=itmNo_t;
+}
+
+int ItmCode::getItmNo()
+{
+    return ItmNo;
 }

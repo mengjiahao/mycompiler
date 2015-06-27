@@ -70,6 +70,12 @@ void DectionAst::walk()
                 tmpScope->setReturnTypeClass(&tmpType);
                 tmpScope->setScopeName(s_context->tmpIdenName);
                 tmpScope->setScopeType(Scope::SCOPE_GLOBALFUNCDECL);*/
+                if (NULL != Scope::s_curScope->searchSymbolVarMap(s_context->tmpIdenName)) {
+                    std::cout<<"error in T_CDECTION_DECTIONSFS_INITDECTORLIST: duplicate func "
+                    << s_context->tmpIdenName << " has the same name with var at line " << getLineno() << std::endl;
+                    stopWalk();
+                    return ;
+                }
 
                 if (Scope::resolveScope(s_context->tmpIdenName, Scope::SCOPE_GLOBALFUNC))
                 {
@@ -134,6 +140,13 @@ void DectionAst::walk()
                 /*Symbol *tmpsymbol = new Symbol(Symbol::SYMBOL_VAR);
                 tmpsymbol->symbolName = s_context->tmpIdenName;
                 tmpsymbol->typeClass.clone(&tmpType);*/
+                if (Scope::resolveScope(s_context->tmpIdenName, Scope::SCOPE_GLOBALFUNC) || Scope::resolveScope(s_context->tmpIdenName, Scope::SCOPE_GLOBALFUNCDECL) || Scope::resolveScope(s_context->tmpIdenName, Scope::GLOBALFUNCCHAN))
+                {
+                    std::cout<<"error in FuncDefAst: the var"
+                    << s_context->tmpIdenName << " has the same name with func  at line "<<getLineno()<<std::endl;
+                    stopWalk();
+                    return ;
+                }
 
                 if (NULL != Scope::s_curScope->searchSymbolVarMap(s_context->tmpIdenName)) {
                     std::cout<<"error in T_CDECTION_DECTIONSFS_INITDECTORLIST: duplicate var "
@@ -153,10 +166,14 @@ void DectionAst::walk()
 
                 tmpsymbol->setSymbolName(s_context->tmpIdenName);
                 tmpsymbol->setTypeClass(&tmpType);
-                if (Scope::s_curScope!=Scope::s_globalScope)
+                if (Scope::s_curScope!=Scope::s_globalScope && !(tmpType.storageType&TypeClass::STOR_STATIC))
                 {
                     tmpsymbol->setOffset(Scope::s_curScope->getTotalByteSize());
                     Scope::s_curScope->incTotalByteSize(tmpsymbol->getByteSize());
+                }
+                if (Scope::s_curScope==Scope::s_globalScope)
+                {
+                    tmpsymbol->isglobal=true;
                 }
 
                 /*if (Scope::s_curScope->symbolVarMap.find(tmpsymbol->symbolName) != Scope::s_curScope->symbolVarMap.end())
