@@ -22,7 +22,7 @@ public:
     REG_ST0, REG_ST1, REG_ST2, REG_ST3, REG_ST4, REG_ST5, REG_ST6, REG_ST7};
 
 
-    int regType;
+    //int regType;
     int typeSfType;
 
     static set<Reg, RegSortComp> s_regs;
@@ -30,15 +30,15 @@ public:
 
 public:
 
-    virtual void setRegType(int regType_t);
-    virtual int getRegType();
+    //virtual void setRegType(int regType_t);
+    //virtual int getRegType();
 
     virtual void setTypeSfType(int typeSfType_t);
     virtual int getTypeSfType();
 
     static void initRegs();
 
-    static const Reg* getReg(RegType regType_t, int sf_t);
+    static const Reg* getReg(int sf_t);
 
 };
 
@@ -46,14 +46,9 @@ class RegSortComp {
 public:
 
     bool operator() (const Reg &a, const Reg &b) const {
-        if (a.regType < b.regType ) {
-            return true;
-        } else if (a.regType == b.regType) {
-
             if (a.typeSfType < b.typeSfType) {
                 return true;
             }
-        }
 
         return false;
     }

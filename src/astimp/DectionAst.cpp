@@ -140,7 +140,9 @@ void DectionAst::walk()
                 /*Symbol *tmpsymbol = new Symbol(Symbol::SYMBOL_VAR);
                 tmpsymbol->symbolName = s_context->tmpIdenName;
                 tmpsymbol->typeClass.clone(&tmpType);*/
-                if (Scope::resolveScope(s_context->tmpIdenName, Scope::SCOPE_GLOBALFUNC) || Scope::resolveScope(s_context->tmpIdenName, Scope::SCOPE_GLOBALFUNCDECL) || Scope::resolveScope(s_context->tmpIdenName, Scope::GLOBALFUNCCHAN))
+                if (Scope::resolveScope(s_context->tmpIdenName, Scope::SCOPE_GLOBALFUNC)
+                || Scope::resolveScope(s_context->tmpIdenName, Scope::SCOPE_GLOBALFUNCDECL)
+                || Scope::resolveScope(s_context->tmpIdenName, Scope::SCOPE_GLOBALFUNCCHAN))
                 {
                     std::cout<<"error in FuncDefAst: the var"
                     << s_context->tmpIdenName << " has the same name with func  at line "<<getLineno()<<std::endl;

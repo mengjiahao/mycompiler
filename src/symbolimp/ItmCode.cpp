@@ -14,7 +14,7 @@ using namespace std;
 /***********************************Reg**********************************************/
 set<Reg, RegSortComp> Reg::s_regs;
 
-void Reg::setRegType(int regType_t)
+/*void Reg::setRegType(int regType_t)
 {
     regType = regType_t;
 }
@@ -22,7 +22,7 @@ void Reg::setRegType(int regType_t)
 int Reg::getRegType()
 {
     return regType;
-}
+}*/
 
 void Reg::setTypeSfType(int typeSfType_t)
 {
@@ -40,12 +40,12 @@ void Reg::initRegs()
 {
     Reg tmpReg;
 
-    static int s_regTypeNo = 13;
+   // static int s_regTypeNo = 13;
 
-    int i;
-    for (i = 0; i < s_regTypeNo; ++i) {
+    //int i;
+    //for (i = 0; i < s_regTypeNo; ++i) {
 
-        tmpReg.setRegType(i);
+        //tmpReg.setRegType(i);
 
         tmpReg.setTypeSfType(TypeClass::SF_INVALID);
         s_regs.insert(tmpReg);
@@ -94,24 +94,23 @@ void Reg::initRegs()
 
         tmpReg.setTypeSfType(TypeClass::SF_DOUBLE);
         s_regs.insert(tmpReg);
-    }
 }
 
 
 
 
-const Reg* Reg::getReg(RegType regType_t, int sf_t) {
+const Reg* Reg::getReg(int sf_t) {
 
     Reg tmpReg;
     set<Reg, RegSortComp>::iterator itr;
 
-    tmpReg.setRegType(regType_t);
+    //tmpReg.setRegType(regType_t);
     tmpReg.setTypeSfType(sf_t);
 
     itr = s_regs.find(tmpReg);
     if (s_regs.end() == itr) {
         cout << "error in getReg(): can not find regType of "
-        << regType_t << " , " << sf_t << endl;
+       << sf_t << endl;
         return NULL;
     }
 
@@ -267,7 +266,7 @@ void ItmCode::printOperand(ofstream& ofs_t, OperandType opType_t, void *op_t)
         }
         case OPR_REGISTER: {
             ofs_t << "Reg(";
-            ofs_t << ((Reg *)op_t)->getRegType();
+            //ofs_t << ((Reg *)op_t)->getRegType();
             ofs_t << "): " << ((Reg *)op_t)->getTypeSfType();
             break;
         }
