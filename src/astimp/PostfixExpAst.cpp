@@ -151,7 +151,7 @@ void PostfixExpAst::walk()
 Scope* PostfixExpAst::processPostfixBeforeCall(NodeAst::NodeType nodeType_t)
 {
         switch(childs.at(0)->getNodeType()) {
-        case T_CTERMINATE_CPRIMEXP_ID: {
+        case T_CPRIMEXP_ID: {
 
             childs.at(0)->walk();
             if (checkIsNotWalking()) {
@@ -173,7 +173,7 @@ Scope* PostfixExpAst::processPostfixBeforeCall(NodeAst::NodeType nodeType_t)
             break;
         }
 
-        case T_CTERMINATE_CPOSTEXP_POSTEXP_REF_ID: {
+        case T_CPOSTEXP_POSTEXP_REF_ID: {
             childs.at(0)->walk();
             if (checkIsNotWalking()) {
                 return NULL;
