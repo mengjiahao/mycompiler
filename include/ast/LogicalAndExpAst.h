@@ -8,6 +8,8 @@ class  LogicalAndExpAst: public NodeAst {
 	public:
 		LogicalAndExpAst(NodeAst::NodeType nodeType_t);
 
+		virtual void walk();
+
 };
 
 

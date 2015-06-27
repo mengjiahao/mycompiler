@@ -9,6 +9,8 @@ class  LogicalOrExpAst: public NodeAst {
 	public:
 		LogicalOrExpAst(NodeAst::NodeType nodeType_t);
 
+		virtual void walk();
+
 };
 
 

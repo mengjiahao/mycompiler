@@ -20,8 +20,6 @@ Context::Context()
     tmpExpReg = NULL;
     tmpExpSymbol = NULL;
 
-    tmpTrueLabel = NULL;
-    tmpFalseLabel = NULL;
 
 
 }
@@ -42,8 +40,8 @@ Context::~Context()
     tmpExpReg = NULL;
     tmpExpSymbol = NULL;
 
-    tmpTrueLabel = NULL;
-    tmpFalseLabel = NULL;
+    tmpTrueLabelList.clear();
+    tmpFalseLabelList.clear();
 }
 
 void Context::clearContext()
@@ -57,13 +55,6 @@ void Context::clearContext()
     isFunc = false;
 
     tmpClassScope = NULL;
-
-    tmpOpType = ItmCode::OPR_INVALID;
-    tmpExpReg = NULL;
-    tmpExpSymbol = NULL;
-
-    tmpTrueLabel = NULL;
-    tmpFalseLabel = NULL;
 
 }
 
@@ -95,6 +86,67 @@ void* Context::getExpListLast()
 
     return tmpExpList.back();
 }
+
+
+void Context::clearExpList()
+{
+    tmpExpList.clear();
+
+    tmpOpType = ItmCode::OPR_INVALID;
+}
+
+void Context::clearSingleOperand()
+{
+    tmpExpReg = NULL;
+    tmpExpSymbol = NULL;
+    tmpExpListPointer = NULL;
+
+    tmpOpType = ItmCode::OPR_INVALID;
+}
+
+void Context::addToTrueLabelList(ItmCode* newCode_t)
+{
+    if (NULL != newCode_t) {
+        tmpTrueLabelList.push_back(newCode_t);
+
+    }
+
+}
+
+void Context::addToFalseLabelList(ItmCode* newCode_t)
+{
+    if (NULL != newCode_t) {
+        tmpFalseLabelList.push_back(newCode_t);
+    }
+}
+
+void Context::clearLabelList()
+{
+    tmpTrueLabelList.clear();
+    tmpFalseLabelList.clear();
+}
+
+void Context::backFillTrueLabelList(Symbol* trueLabel_t)
+{
+    list<ItmCode *>::iterator itr;
+    for (itr = tmpTrueLabelList.begin(); itr != tmpTrueLabelList.end(); ++itr) {
+        (*itr)->setTargetLabel(trueLabel_t);
+    }
+    tmpTrueLabelList.clear();
+}
+
+void Context::backFillFalseLabelList(Symbol* falseLabel_t)
+{
+    list<ItmCode *>::iterator itr;
+    for (itr = tmpFalseLabelList.begin(); itr != tmpFalseLabelList.end(); ++itr) {
+        (*itr)->setTargetLabel(falseLabel_t);
+    }
+    tmpFalseLabelList.clear();
+}
+
+
+
+
 
 
 

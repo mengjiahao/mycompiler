@@ -12,7 +12,7 @@ void AddExpAst::walk()
 
     switch(nodeType) {
     case T_CADDEXP_ADDEXP_ADD_OP_MULEXP: {
-        LogiMsg::logi("walk in T_CADDEXP_ADDEXP_ADD_OP_MULEXP");
+        LogiMsg::logi("walk in T_CADDEXP_ADDEXP_ADD_OP_MULEXP", getLineno());
 
         childs.at(0)->walk();
         if (checkIsNotWalking()) {
@@ -20,7 +20,7 @@ void AddExpAst::walk()
         }
         Reg *r1 = processChildOperand(1);
         if (NULL == r1) {
-            LogiMsg::logi("error in T_CADDEXP_ADDEXP_ADD_OP_MULEXP: left operand is invalid");
+            LogiMsg::logi("error in T_CADDEXP_ADDEXP_ADD_OP_MULEXP: left operand is invalid", getLineno());
             stopWalk();
             return ;
         }
@@ -31,12 +31,15 @@ void AddExpAst::walk()
         }
         Reg *r2 = processChildOperand(0);
         if (NULL == r2) {
-            LogiMsg::logi("error in T_CADDEXP_ADDEXP_ADD_OP_MULEXP: right operand is invalid");
+            LogiMsg::logi("error in T_CADDEXP_ADDEXP_ADD_OP_MULEXP: right operand is invalid", getLineno());
             stopWalk();
             return ;
         }
 
         Reg *r3 = Reg::getReg(0, TypeClass::promoteType(r1->getTypeSfType(), r2->getTypeSfType()));
+
+        s_context->tmpExpReg = r3;
+        s_context->tmpOpType = ItmCode::OPR_REGISTER;
 
         ItmCode::genCodeRegBinOpRegToReg(ItmCode::IR_ADD_OP, r1, r2, r3);
 
@@ -45,7 +48,7 @@ void AddExpAst::walk()
     }
 
     case T_CADDEXP_ADDEXP_SUB_OP_MULEXP: {
-        LogiMsg::logi("walk in T_CADDEXP_ADDEXP_SUB_OP_MULEXP");
+        LogiMsg::logi("walk in T_CADDEXP_ADDEXP_SUB_OP_MULEXP", getLineno());
 
         childs.at(0)->walk();
         if (checkIsNotWalking()) {
@@ -53,7 +56,7 @@ void AddExpAst::walk()
         }
         Reg *r1 = processChildOperand(1);
         if (NULL == r1) {
-            LogiMsg::logi("error in T_CADDEXP_ADDEXP_SUB_OP_MULEXP: left operand is invalid");
+            LogiMsg::logi("error in T_CADDEXP_ADDEXP_SUB_OP_MULEXP: left operand is invalid", getLineno());
             stopWalk();
             return ;
         }
@@ -64,12 +67,15 @@ void AddExpAst::walk()
         }
         Reg *r2 = processChildOperand(0);
         if (NULL == r2) {
-            LogiMsg::logi("error in T_CADDEXP_ADDEXP_SUB_OP_MULEXP: right operand is invalid");
+            LogiMsg::logi("error in T_CADDEXP_ADDEXP_SUB_OP_MULEXP: right operand is invalid", getLineno());
             stopWalk();
             return ;
         }
 
         Reg *r3 = Reg::getReg(0, TypeClass::promoteType(r1->getTypeSfType(), r2->getTypeSfType()));
+
+        s_context->tmpExpReg = r3;
+        s_context->tmpOpType = ItmCode::OPR_REGISTER;
 
         ItmCode::genCodeRegBinOpRegToReg(ItmCode::IR_SUB_OP, r1, r2, r3);
 
@@ -77,7 +83,7 @@ void AddExpAst::walk()
     }
 
     default: {
-        LogiMsg::logi("error in AddExpAst: nodeType is invalid");
+        LogiMsg::logi("error in AddExpAst: nodeType is invalid", getLineno());
         stopWalk();
         return ;
         break;

@@ -32,18 +32,17 @@ public:
     Scope *tmpClassScope;
 
     /*enum OperandType {OPR_INVALID, OPR_ID, OPR_SYMBOL, OPR_SCOPE, OPR_REGISTER,
-    OPR_ARGLIST, OPR_CLASS_REFLIST, OPR_ARRAY_ELEMLIST};*/
+    OPR_ARGLIST, OPR_CLASS_REFLIST, OPR_ARRAY_ELEMLIST, OPR_CLASS_REFLIST_POINTER};*/
     ItmCode::OperandType tmpOpType;
     Reg *tmpExpReg;
     Symbol *tmpExpSymbol;
 
     vector<void *> tmpExpList;
+    vector<void *> *tmpExpListPointer;
     int tmpExpNum;
 
-    Symbol *tmpTrueLabel;
-    Symbol *tmpFalseLabel;
-
-    //Symbol *tmpGotoBeginLabel;
+    list<ItmCode *> tmpTrueLabelList;
+    list<ItmCode *> tmpFalseLabelList;
 
 
 public:
@@ -57,6 +56,15 @@ public:
 
     void addToExpList(void *m);
     void* getExpListLast();
+    void clearExpList();
+
+    void addToTrueLabelList(ItmCode *newCode_t);
+    void addToFalseLabelList(ItmCode *newCode_t);
+    void clearLabelList();
+    void backFillTrueLabelList(Symbol *trueLabel_t);
+    void backFillFalseLabelList(Symbol *falseLabel_t);
+
+    void clearSingleOperand();
 
 
 

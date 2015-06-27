@@ -765,11 +765,13 @@ Reg* NodeAst::processChildOperand(int side_t)
                 errorStr = "error in processChildOperand(): "
                 + errorStr + " side, s_context->tmpExpSymbol is NULL";
 
-                LogiMsg::logi(errorStr);
+                LogiMsg::logi(errorStr, getLineno());
                 return NULL;
             }
 
             Reg *r = Reg::getReg(side_t, sb->getTypeClass()->getTypeSfType());
+
+            s_context->clearSingleOperand();
 
             ItmCode::genCodeMoveSymbolToReg(sb, r);
             return r;
@@ -784,7 +786,7 @@ Reg* NodeAst::processChildOperand(int side_t)
                 errorStr = "error in processChildOperand(): "
                 + errorStr + " side, s_context->tmpExpList is empty";
 
-                LogiMsg::logi(errorStr);
+                LogiMsg::logi(errorStr, getLineno());
                 return NULL;
             }
 
@@ -796,11 +798,13 @@ Reg* NodeAst::processChildOperand(int side_t)
                 errorStr = "error in processChildOperand(): "
                 + errorStr + " side, refList's elem is NULL";
 
-                LogiMsg::logi(errorStr);
+                LogiMsg::logi(errorStr, getLineno());
                 return NULL;
             }
 
             Reg *r = Reg::getReg(side_t, ((Symbol *)(refList->back()))->getTypeClass()->getTypeSfType());
+
+            s_context->clearExpList();
 
             ItmCode::genCodeMoveRefListToReg(refList, r);
             return r;
@@ -815,12 +819,14 @@ Reg* NodeAst::processChildOperand(int side_t)
                 errorStr = "error in processChildOperand(): "
                 + errorStr + " side, s_context->tmpExpReg is NULL";
 
-                LogiMsg::logi(errorStr);
+                LogiMsg::logi(errorStr, getLineno());
                 return NULL;
             }
 
             if (side_t != rr->getRegIndex()) {
                 Reg *rl = Reg::getReg(side_t, rr->getTypeSfType());
+
+                s_context->clearContext();
 
                 ItmCode::genCodeMoveRegToReg(rl, rr);
                 return rl;
@@ -831,12 +837,58 @@ Reg* NodeAst::processChildOperand(int side_t)
         }
 
         default: {
-            break;
+            LogiMsg::logi("error in processChildOperand(): s_context->tmpOpType is invalid", getLineno());
             return NULL;
+            break;
         }
     }
 
     return NULL;
+}
+
+void* NodeAst::processUnaryChildOperand()
+{
+
+        switch(s_context->tmpOpType) {
+        case ItmCode::OPR_SYMBOL: {
+            Symbol *sb = s_context->tmpExpSymbol;
+
+            if (NULL == sb) {
+                LogiMsg::logi("error in processUnaryChildOperand(): s_context->tmpExpSymbol is NULL", getLineno());
+                return NULL;
+            }
+
+            return sb;
+
+            break;
+        }
+
+        case ItmCode::OPR_CLASS_REFLIST: {
+            if (s_context->tmpExpList.empty()) {
+
+                LogiMsg::logi("error in processUnaryChildOperand(): s_context->tmpExpList is empty", getLineno());
+                return NULL;
+            }
+
+            vector<void* >* refList = ItmCode::copyVectorToAllExpList(s_context->tmpExpList);
+
+            if (NULL == refList->back()) {
+                LogiMsg::logi("error in processUnaryChildOperand(): s_context->tmpExpList's elem is NULL", getLineno());
+                return NULL;
+            }
+
+            return refList;
+            break;
+        }
+
+        default: {
+            LogiMsg::logi("error in processUnaryChildOperand(): s_context->tmpOpType is invalid", getLineno());
+            break;
+        }
+        }
+
+        return NULL;
+
 }
 
 

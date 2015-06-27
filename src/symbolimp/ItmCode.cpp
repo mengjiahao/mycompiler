@@ -254,6 +254,12 @@ unsigned long ItmCode::getCodeId()
     return codeId;
 }
 
+void ItmCode::setTargetLabel(Symbol* label_t)
+{
+    v3 = label_t;
+}
+
+
 vector<void* >* ItmCode::copyVectorToAllExpList(vector<void* > &vargList_t)
 {
     vector<void* > *newArgList = new vector<void* >();
@@ -446,7 +452,7 @@ void ItmCode::genCodeMoveSymbolToReg(Symbol* symbol_t, Reg* rstReg_t)
 void ItmCode::genCodeMoveRefListToReg(vector<void* >* refList_t, Reg *rstReg_t)
 {
     ItmCode *newCode = new ItmCode(ItmCode::IR_ASSIGN_OP,
-    ItmCode::OPR_CLASS_REFLIST, refList_t,
+    ItmCode::OPR_CLASS_REFLIST_POINTER, refList_t,
     ItmCode::OPR_INVALID, NULL,
     ItmCode::OPR_REGISTER, rstReg_t);
 
@@ -462,6 +468,73 @@ void ItmCode::genCodeRegBinOpRegToReg(IRtype iRType_t, Reg* reg1_t, Reg* reg2_t,
 
     Scope::s_curScope->addItemCode(newCode);
 }
+
+void ItmCode::genCodeRegIsTrueAssign(Reg* reg_t)
+{
+    ItmCode *newCode = new ItmCode(ItmCode::IR_REG_ISTRUE_ASSIGN,
+    ItmCode::OPR_REGISTER, reg_t,
+    ItmCode::OPR_INVALID, NULL,
+    ItmCode::OPR_REGISTER, reg_t);
+
+    Scope::s_curScope->addItemCode(newCode);
+}
+
+
+ItmCode* ItmCode::genCodeRegIfNotGotoLabel(Reg* reg_t, Symbol* label_t)
+{
+    ItmCode *newCode = new ItmCode(ItmCode::IR_IF_NOT_GOTO,
+    ItmCode::OPR_REGISTER, reg_t,
+    ItmCode::OPR_INVALID, NULL,
+    ItmCode::OPR_SYMBOL, label_t);
+
+    Scope::s_curScope->addItemCode(newCode);
+    return newCode;
+}
+
+ItmCode* ItmCode::genCodeRegIfGotoLabel(Reg* reg_t, Symbol* label_t)
+{
+    ItmCode *newCode = new ItmCode(ItmCode::IR_IF_GOTO,
+    ItmCode::OPR_REGISTER, reg_t,
+    ItmCode::OPR_INVALID, NULL,
+    ItmCode::OPR_SYMBOL, label_t);
+
+    Scope::s_curScope->addItemCode(newCode);
+    return newCode;
+}
+
+
+void ItmCode::genCodeEmitLabel(Symbol* label_t)
+{
+    ItmCode *newCode = new ItmCode(ItmCode::IR_EMITLABEL,
+    ItmCode::OPR_INVALID, NULL,
+    ItmCode::OPR_INVALID, NULL,
+    ItmCode::OPR_SYMBOL, label_t);
+
+    Scope::s_curScope->addItemCode(newCode);
+}
+
+void ItmCode::genCodeUnaryOpClassRefList(IRtype iRType_t, vector<void* >* refList_t)
+{
+    ItmCode *newCode = new ItmCode(iRType_t,
+    ItmCode::OPR_CLASS_REFLIST_POINTER, refList_t,
+    ItmCode::OPR_INVALID, NULL,
+    ItmCode::OPR_CLASS_REFLIST_POINTER, refList_t);
+
+    Scope::s_curScope->addItemCode(newCode);
+}
+
+void ItmCode::genCodeUnaryOpSymbol(IRtype iRType_t, Symbol* symbol_t)
+{
+    ItmCode *newCode = new ItmCode(iRType_t,
+    ItmCode::OPR_SYMBOL, symbol_t,
+    ItmCode::OPR_INVALID, NULL,
+    ItmCode::OPR_SYMBOL, symbol_t);
+
+    Scope::s_curScope->addItemCode(newCode);
+}
+
+
+
 
 
 

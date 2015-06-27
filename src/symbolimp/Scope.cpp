@@ -730,6 +730,7 @@ int Scope::defineSymbol(Symbol* symbol_t)
 
         case Symbol::SYMBOL_TEMPVAR: {
             symbol_t->setSymbolId();
+
             string tmpVarName(".t");
             stringstream ss;
             string tmpStrId;
@@ -827,6 +828,7 @@ int Scope::defineSymbol(Symbol* symbol_t)
 
         case Symbol::SYMBOL_LABEL: {
             symbol_t->setSymbolId();
+
             string labelVarName(".l");
             stringstream ss;
             string tmpStrId;

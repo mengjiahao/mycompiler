@@ -9,6 +9,8 @@ class AssignExpAst: public NodeAst {
 	public:
 		AssignExpAst(NodeAst::NodeType nodeType_t);
 
+		virtual void walk();
+
 };
 
 #endif

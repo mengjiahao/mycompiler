@@ -78,17 +78,19 @@ public:
     IR_ADD_ASSIGN, IR_SUB_ASSIGN,
     IR_LEFT_ASSIGN, IR_RIGHT_ASSIGN,
     IR_AND_ASSIGN, IR_XOR_ASSIGN, IR_OR_ASSIGN,
-    IR_LOGOR_OP, IR_LOGAND_OP,
+    IR_REG_ISTRUE_ASSIGN,
+    IR_LOG_OR_OP, IR_LOG_AND_OP,
     IR_EQ_OP, IR_NE_OP, IR_L_OP, IR_G_OP, IR_LE_OP, IR_GE_OP,
     IR_LEFT_OP, IR_RIGHT_OP,
     IR_ADD_OP, IR_SUB_OP, IR_MUL_OP, IR_DIV_OP, IR_MOD_OP,
     IR_INC_OP, IR_DEC_OP, IR_SIZEOF,
+    IR_INC_OP_POST, IR_DEC_OP_POST,
     IR_UAND_OP, IR_UREF_OP, IR_UADD_OP, IR_USUB_OP, IR_UCOMP_OP, IR_UNOT_OP,
     IR_GOTO, IR_IF_GOTO, IR_IF_NOT_GOTO,
     IR_RETURN};
 
     enum OperandType {OPR_INVALID, OPR_ID, OPR_SYMBOL, OPR_SCOPE, OPR_REGISTER,
-    OPR_ARGLIST, OPR_CLASS_REFLIST, OPR_ARRAY_ELEMLIST};
+    OPR_ARGLIST, OPR_CLASS_REFLIST, OPR_ARRAY_ELEMLIST, OPR_CLASS_REFLIST_POINTER};
 
     /*union OperandValue{
         Symbol *v1;
@@ -123,8 +125,12 @@ OperandType t3_t = ItmCode::OPR_INVALID, void* v3_t = NULL);
     virtual void setCodeId();
     virtual unsigned long getCodeId();
 
+    virtual void setTargetLabel(Symbol *label_t);
+
     virtual void printOperand(ofstream &ofs_t, OperandType opType_t, void *op_t);
     virtual void printItmCode(ofstream &ofs_t);
+
+
 
     static vector<void* >* copyVectorToAllExpList(vector<void *> &vargList_t);
     static void addToAllExpList(vector<void *> *expList_t);
@@ -148,6 +154,12 @@ OperandType t3_t = ItmCode::OPR_INVALID, void* v3_t = NULL);
     static void genCodeMoveSymbolToReg(Symbol *symbol_t, Reg *rstReg_t);
     static void genCodeMoveRefListToReg(vector<void *> *refList_t, Reg *rstReg_t);
     static void genCodeRegBinOpRegToReg(IRtype iRType_t, Reg *reg1_t, Reg *reg2_t, Reg *rstReg_t);
+    static void genCodeRegIsTrueAssign(Reg *reg_t);
+    static ItmCode* genCodeRegIfNotGotoLabel(Reg *reg_t, Symbol* label_t);
+    static ItmCode* genCodeRegIfGotoLabel(Reg *reg_t, Symbol* label_t);
+    static void genCodeEmitLabel(Symbol *label_t);
+    static void genCodeUnaryOpClassRefList(IRtype iRType_t, vector<void *> *refList_t);
+    static void genCodeUnaryOpSymbol(IRtype iRType_t, Symbol *symbol_t);
 
 
 };

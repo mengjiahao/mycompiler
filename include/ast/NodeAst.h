@@ -426,6 +426,8 @@ class NodeAst {
 
 		virtual Reg* processChildOperand(int side_t);
 
+		virtual void* processUnaryChildOperand();
+
 
 };
 
