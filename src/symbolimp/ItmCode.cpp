@@ -14,15 +14,15 @@ using namespace std;
 /***********************************Reg**********************************************/
 set<Reg, RegSortComp> Reg::s_regs;
 
-/*void Reg::setRegType(int regType_t)
+void Reg::setRegIndex(int regIndex_t)
 {
-    regType = regType_t;
+    regIndex = regIndex_t;
 }
 
-int Reg::getRegType()
+int Reg::getRegIndex()
 {
-    return regType;
-}*/
+    return regIndex;
+}
 
 void Reg::setTypeSfType(int typeSfType_t)
 {
@@ -40,12 +40,12 @@ void Reg::initRegs()
 {
     Reg tmpReg;
 
-   // static int s_regTypeNo = 13;
+    static int s_regNo = 4;
 
-    //int i;
-    //for (i = 0; i < s_regTypeNo; ++i) {
+    int i;
+    for (i = 0; i < s_regNo; ++i) {
 
-        //tmpReg.setRegType(i);
+        tmpReg.setRegIndex(i);
 
         tmpReg.setTypeSfType(TypeClass::SF_INVALID);
         s_regs.insert(tmpReg);
@@ -94,23 +94,25 @@ void Reg::initRegs()
 
         tmpReg.setTypeSfType(TypeClass::SF_DOUBLE);
         s_regs.insert(tmpReg);
+
+    }
 }
 
 
 
 
-const Reg* Reg::getReg(int sf_t) {
+const Reg* Reg::getReg(int regIndex_t, int sf_t) {
 
     Reg tmpReg;
     set<Reg, RegSortComp>::iterator itr;
 
-    //tmpReg.setRegType(regType_t);
+    tmpReg.setRegIndex(regIndex_t);
     tmpReg.setTypeSfType(sf_t);
 
     itr = s_regs.find(tmpReg);
     if (s_regs.end() == itr) {
-        cout << "error in getReg(): can not find regType of "
-       << sf_t << endl;
+        cout << "error in getReg(): can not find regIndex"
+        << regIndex_t << " of " << sf_t << endl;
         return NULL;
     }
 
