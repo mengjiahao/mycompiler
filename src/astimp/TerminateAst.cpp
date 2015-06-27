@@ -127,6 +127,7 @@ void TerminateAst::walk()
             rst = (0 == Scope::s_curScope->defineSymbol(rst)) ? NULL : rst;
 
         }
+        s_context->clearContext();
         s_context->tmpOpType = ItmCode::OPR_SYMBOL;
         s_context->tmpExpSymbol = rst;
 
@@ -137,7 +138,7 @@ void TerminateAst::walk()
     //postfix_expression
     case T_CTERMINATE_CPOSTEXP_POSTEXP_REF_ID: {
         std::cout << "walk in T_CTERMINATE_CPOSTEXP_POSTEXP_REF_ID" << endl;
-
+        s_context->clearContext();
         s_context->tmpOpType = ItmCode::OPR_ID;
         s_context->tmpIdenName = token;
 
