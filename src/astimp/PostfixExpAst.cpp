@@ -225,8 +225,8 @@ void PostfixExpAst::walk()
         }
         else
         {
-            std::cout "error in T_CPOSTEXP_POSTEXP_INC_OP: the op is not left value at line " << getLineno() <<std::endl;
-            stopWalk()
+            std::cout << "error in T_CPOSTEXP_POSTEXP_INC_OP: the op is not left value at line " << getLineno() <<std::endl;
+            stopWalk();
             return;
         }
         s_context->clearContext();
@@ -261,8 +261,8 @@ void PostfixExpAst::walk()
         }
         else
         {
-            std::cout "error in T_CPOSTEXP_POSTEXP_INC_OP: the op is not left value at line " << getLineno() <<std::endl;
-            stopWalk()
+            std::cout << "error in T_CPOSTEXP_POSTEXP_INC_OP: the op is not left value at line " << getLineno() <<std::endl;
+            stopWalk();
             return;
         }
         s_context->clearContext();
