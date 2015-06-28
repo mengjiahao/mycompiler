@@ -29,7 +29,7 @@ void PostfixExpAst::walk()
         }
         if (s_context->tmpOpType==ItmCode::OPR_CLASS_REFLIST)
         {
-            Reg *result=Reg::getReg(0, ((Scope *)s_context->getExpListLast())->getReturnTypeClass()->getTypeSfType());
+            Reg *result=Reg::getReg(0, ((Scope *)(s_context->getExpListLast()))->getReturnTypeClass()->getTypeSfType());
             vector<void* >* refList = ItmCode::copyVectorToAllExpList(s_context->tmpExpList);
             ItmCode *tmpCode=new ItmCode(ItmCode::IR_CALLCLASSFUNC, ItmCode::OPR_CLASS_REFLIST,(void *)refList, ItmCode::OPR_INVALID, NULL, ItmCode::OPR_REGISTER, result);
             Scope::s_curScope->addItemCode(tmpCode);
@@ -81,7 +81,7 @@ void PostfixExpAst::walk()
         }
         if (s_context->tmpOpType==ItmCode::OPR_CLASS_REFLIST)
         {
-            Reg *result=Reg::getReg(0, ((Scope *)s_context->getExpListLast())->getReturnTypeClass()->getTypeSfType());
+            Reg *result=Reg::getReg(0, ((Scope *)(s_context->getExpListLast()))->getReturnTypeClass()->getTypeSfType());
             vector<void* >* refList = ItmCode::copyVectorToAllExpList(s_context->tmpExpList);
             childs.at(1)->walk();
             if (checkIsNotWalking()) {
@@ -200,11 +200,73 @@ void PostfixExpAst::walk()
 
     case T_CPOSTEXP_POSTEXP_INC_OP: {
 
+        childs.at(0)->walk();
+        if (checkIsNotWalking()) {
+            return ;
+        }
+        Reg *tmpReg=processChildOperand(1);
+        if (s_context->tmpOpType == ItmCode::OPR_SYMBOL)
+        {
+            ItmCode *tmpCode = new ItmCode(ItmCode::IR_INC_OP,
+                                       ItmCode::OPR_REGISTER, (void *)tmpReg,
+                                       ItmCode::OPR_INVALID, NULL,
+                                       ItmCode::OPR_SYMBOL, (void *)(s_context->tmpExpSymbol));
+            Scope::s_curScope->addItemCode(tmpCode);
+        }
+        else if (s_context->tmpOpType == ItmCode::OPR_CLASS_REFLIST)
+        {
+            vector<void* >* refList = ItmCode::copyVectorToAllExpList(s_context->tmpExpList);
+            ItmCode *tmpCode = new ItmCode(ItmCode::IR_INC_OP,
+                                       ItmCode::OPR_REGISTER, (void *)tmpReg,
+                                       ItmCode::OPR_INVALID, NULL,
+                                       ItmCode::OPR_CLASS_REFLIST, (void *)(refList));
+            Scope::s_curScope->addItemCode(tmpCode);
+        }
+        else
+        {
+            std::cout "error in T_CPOSTEXP_POSTEXP_INC_OP: the op is not left value at line " << getLineno() <<std::endl;
+            stopWalk()
+            return;
+        }
+        s_context->clearContext();
+        s_context->tmpOpType = ItmCode::OPR_REGISTER;
+        s_context->tmpExpReg = tmpReg;
 
         break;
     }
 
     case T_CPOSTEXP_POSTEXP_DEC_OP: {
+        childs.at(0)->walk();
+        if (checkIsNotWalking()) {
+            return ;
+        }
+        Reg *tmpReg=processChildOperand(1);
+        if (s_context->tmpOpType == ItmCode::OPR_SYMBOL)
+        {
+            ItmCode *tmpCode = new ItmCode(ItmCode::IR_DEC_OP,
+                                       ItmCode::OPR_REGISTER, (void *)tmpReg,
+                                       ItmCode::OPR_INVALID, NULL,
+                                       ItmCode::OPR_SYMBOL, (void *)(s_context->tmpExpSymbol));
+            Scope::s_curScope->addItemCode(tmpCode);
+        }
+        else if (s_context->tmpOpType == ItmCode::OPR_CLASS_REFLIST)
+        {
+            vector<void* >* refList = ItmCode::copyVectorToAllExpList(s_context->tmpExpList);
+            ItmCode *tmpCode = new ItmCode(ItmCode::IR_DEC_OP,
+                                       ItmCode::OPR_REGISTER, (void *)tmpReg,
+                                       ItmCode::OPR_INVALID, NULL,
+                                       ItmCode::OPR_CLASS_REFLIST, (void *)(refList));
+            Scope::s_curScope->addItemCode(tmpCode);
+        }
+        else
+        {
+            std::cout "error in T_CPOSTEXP_POSTEXP_INC_OP: the op is not left value at line " << getLineno() <<std::endl;
+            stopWalk()
+            return;
+        }
+        s_context->clearContext();
+        s_context->tmpOpType = ItmCode::OPR_REGISTER;
+        s_context->tmpExpReg = tmpReg;
         break;
     }
 
