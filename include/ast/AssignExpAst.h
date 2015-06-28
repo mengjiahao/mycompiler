@@ -11,6 +11,9 @@ class AssignExpAst: public NodeAst {
 
 		virtual void walk();
 
+		bool genCodeAssignChildOperand(NodeAst::NodeType nodeType_t, ItmCode::OperandType opType_t,
+		void *u, Reg *r);
+
 };
 
 #endif

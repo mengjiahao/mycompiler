@@ -772,6 +772,8 @@ Reg* NodeAst::processChildOperand(int side_t)
             Reg *r = Reg::getReg(side_t, sb->getTypeClass()->getTypeSfType());
 
             s_context->clearSingleOperand();
+            s_context->tmpExpReg = r;
+            s_context->tmpOpType = ItmCode::OPR_REGISTER;
 
             ItmCode::genCodeMoveSymbolToReg(sb, r);
             return r;
@@ -805,10 +807,36 @@ Reg* NodeAst::processChildOperand(int side_t)
             Reg *r = Reg::getReg(side_t, ((Symbol *)(refList->back()))->getTypeClass()->getTypeSfType());
 
             s_context->clearExpList();
+            s_context->tmpExpReg = r;
+            s_context->tmpOpType = ItmCode::OPR_REGISTER;
 
             ItmCode::genCodeMoveRefListToReg(refList, r);
             return r;
             break;
+        }
+
+
+        case ItmCode::OPR_CLASS_REFLIST_POINTER: {
+            vector<void *> *p = s_context->tmpExpListPointer;
+            if (NULL == p) {
+                string errorStr = (0 == side_t) ? "left" : "rigiht";
+
+                errorStr = "error in processChildOperand(): "
+                + errorStr + " side, s_context->tmpExpListPointer is NULL";
+
+                LogiMsg::logi(errorStr, getLineno());
+                return NULL;
+            }
+
+            Reg *r = Reg::getReg(side_t, ((Symbol *)(p->back()))->getTypeClass()->getTypeSfType());
+
+            s_context->clearSingleOperand();
+            s_context->tmpExpReg = r;
+            s_context->tmpOpType = ItmCode::OPR_REGISTER;
+
+            ItmCode::genCodeMoveRefListToReg(p, r);
+
+            return r;
         }
 
         case ItmCode::OPR_REGISTER: {
@@ -827,6 +855,8 @@ Reg* NodeAst::processChildOperand(int side_t)
                 Reg *rl = Reg::getReg(side_t, rr->getTypeSfType());
 
                 s_context->clearContext();
+                s_context->tmpExpReg = rl;
+                s_context->tmpOpType = ItmCode::OPR_REGISTER;
 
                 ItmCode::genCodeMoveRegToReg(rl, rr);
                 return rl;
@@ -881,8 +911,19 @@ void* NodeAst::processUnaryChildOperand()
             break;
         }
 
+        case ItmCode::OPR_CLASS_REFLIST_POINTER: {
+            vector<void *> *p = s_context->tmpExpListPointer;
+            if (NULL == p) {
+                LogiMsg::logi("error in processUnaryChildOperand(): s_context->tmpExpListPointer is NULL", getLineno());
+                return NULL;
+            }
+
+            return p;
+        }
+
         default: {
             LogiMsg::logi("error in processUnaryChildOperand(): s_context->tmpOpType is invalid", getLineno());
+            return NULL;
             break;
         }
         }

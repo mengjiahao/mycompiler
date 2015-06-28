@@ -10,6 +10,8 @@ class  ExpAst: public NodeAst {
 	public:
 		ExpAst(NodeAst::NodeType nodeType_t);
 
+		virtual void walk();
+
 };
 
 

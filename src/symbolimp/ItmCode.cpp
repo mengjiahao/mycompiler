@@ -533,6 +533,70 @@ void ItmCode::genCodeUnaryOpSymbol(IRtype iRType_t, Symbol* symbol_t)
     Scope::s_curScope->addItemCode(newCode);
 }
 
+void ItmCode::genCodeAssignRegToSymbol(IRtype iRType_t, Reg* reg_t, Symbol* symbol_t)
+{
+    ItmCode *newCode = new ItmCode(iRType_t,
+    ItmCode::OPR_REGISTER, reg_t,
+    ItmCode::OPR_INVALID, NULL,
+    ItmCode::OPR_SYMBOL, symbol_t);
+
+    Scope::s_curScope->addItemCode(newCode);
+}
+
+void ItmCode::genCodeAssignRegToRefList(IRtype iRType_t, Reg* reg_t, vector<void* >* refList_t)
+{
+    ItmCode *newCode = new ItmCode(iRType_t,
+    ItmCode::OPR_REGISTER, reg_t,
+    ItmCode::OPR_INVALID, NULL,
+    ItmCode::OPR_CLASS_REFLIST_POINTER, refList_t);
+
+    Scope::s_curScope->addItemCode(newCode);
+}
+
+void ItmCode::genCodeNewClassIdToReg(Reg* reg_t)
+{
+    ItmCode *newCode = new ItmCode(IR_NEW_OP,
+    ItmCode::OPR_INVALID, NULL,
+    ItmCode::OPR_INVALID, NULL,
+    ItmCode::OPR_REGISTER, reg_t);
+
+    Scope::s_curScope->addItemCode(newCode);
+}
+
+void ItmCode::genCodeDeleteClassRefId(Symbol* symboL_t)
+{
+    ItmCode *newCode = new ItmCode(IR_DELETE_OP,
+    ItmCode::OPR_SYMBOL, symboL_t,
+    ItmCode::OPR_INVALID, NULL,
+    ItmCode::OPR_INVALID, NULL);
+
+    Scope::s_curScope->addItemCode(newCode);
+}
+
+void ItmCode::genCodeReturnVoid()
+{
+    ItmCode *newCode = new ItmCode(IR_RETURN_VOID,
+    ItmCode::OPR_INVALID, NULL,
+    ItmCode::OPR_INVALID, NULL,
+    ItmCode::OPR_INVALID, NULL);
+
+    Scope::s_curScope->addItemCode(newCode);
+}
+
+void ItmCode::genCodeReturnReg(Reg *reg_t)
+{
+    ItmCode *newCode = new ItmCode(IR_RETURN_REG,
+    ItmCode::OPR_INVALID, NULL,
+    ItmCode::OPR_INVALID, NULL,
+    ItmCode::OPR_REGISTER, reg_t);
+
+    Scope::s_curScope->addItemCode(newCode);
+}
+
+
+
+
+
 
 
 

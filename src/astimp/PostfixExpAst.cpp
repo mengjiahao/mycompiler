@@ -41,7 +41,8 @@ void PostfixExpAst::walk()
         else
         {
             Scope *tmpScope=NULL;
-            if (tmpScope=Scope::s_curScope->resolveGlobalFuncScope(s_context->tmpIdenName))
+
+            if (NULL != (tmpScope=Scope::s_curScope->resolveGlobalFuncScope(s_context->tmpIdenName)))
             {
                 Reg *result=Reg::getReg(0, tmpScope->getReturnTypeClass()->getTypeSfType());
                 ItmCode *tmpCode=new ItmCode(ItmCode::IR_CALLFUNC, ItmCode::OPR_SCOPE ,(void *)tmpScope, ItmCode::OPR_INVALID, NULL, ItmCode::OPR_REGISTER, result);
@@ -50,7 +51,7 @@ void PostfixExpAst::walk()
                 s_context->tmpOpType=ItmCode::OPR_REGISTER;
                 s_context->tmpExpReg=result;
             }
-            else if (tmpScope=Scope::resolveClassFuncScope(Scope::s_curScope, s_context->tmpIdenName))
+            else if (NULL != (tmpScope=Scope::resolveClassFuncScope(Scope::s_curScope, s_context->tmpIdenName)))
             {
                 Reg *result=Reg::getReg(0, tmpScope->getReturnTypeClass()->getTypeSfType());
                 ItmCode *tmpCode=new ItmCode(ItmCode::IR_CALLCLASSFUNC, ItmCode::OPR_SCOPE ,(void *)tmpScope, ItmCode::OPR_INVALID, NULL, ItmCode::OPR_REGISTER, result);
@@ -101,7 +102,7 @@ void PostfixExpAst::walk()
         else
         {
             Scope *tmpScope=NULL;
-            if (tmpScope=Scope::s_curScope->resolveGlobalFuncScope(s_context->tmpIdenName))
+            if (NULL != (tmpScope=Scope::s_curScope->resolveGlobalFuncScope(s_context->tmpIdenName)))
             {
                 Reg *result=Reg::getReg(0, tmpScope->getReturnTypeClass()->getTypeSfType());
                 childs.at(1)->walk();
@@ -117,7 +118,7 @@ void PostfixExpAst::walk()
                 s_context->tmpOpType=ItmCode::OPR_REGISTER;
                 s_context->tmpExpReg=result;
             }
-            else if (tmpScope=Scope::resolveClassFuncScope(Scope::s_curScope, s_context->tmpIdenName))
+            else if (NULL != (tmpScope=Scope::resolveClassFuncScope(Scope::s_curScope, s_context->tmpIdenName)))
             {
                 Reg *result=Reg::getReg(0, tmpScope->getReturnTypeClass()->getTypeSfType());
                 childs.at(1)->walk();

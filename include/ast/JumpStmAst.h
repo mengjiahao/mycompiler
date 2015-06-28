@@ -9,6 +9,8 @@ class  JumpStmAst: public NodeAst {
 	public:
 		JumpStmAst(NodeAst::NodeType nodeType_t);
 
+		virtual void walk();
+
 };
 
 

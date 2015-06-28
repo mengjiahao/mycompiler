@@ -58,6 +58,15 @@ void Context::clearContext()
 
 }
 
+void Context::clearAllContext()
+{
+    clearContext();
+    clearSingleOperand();
+    clearExpList();
+    clearLabelList();
+}
+
+
 void Context::addParawithid(Symbol m)
 {
     tmpParaWithIdList.push_back(m);
@@ -103,6 +112,35 @@ void Context::clearSingleOperand()
 
     tmpOpType = ItmCode::OPR_INVALID;
 }
+
+void Context::resetSingleOperand(void *p, ItmCode::OperandType tmpOpType_t)
+{
+    switch(tmpOpType) {
+    case ItmCode::OPR_SYMBOL: {
+        tmpOpType = tmpOpType_t;
+        tmpExpSymbol = (Symbol *)p;
+        break;
+    }
+
+    case ItmCode::OPR_REGISTER: {
+        tmpOpType = tmpOpType_t;
+        tmpExpReg = (Reg *)p;
+        break;
+    }
+
+    case ItmCode::OPR_CLASS_REFLIST_POINTER: {
+        tmpOpType = tmpOpType_t;
+        tmpExpListPointer = (vector<void *> *)p;
+        break;
+    }
+
+    default: {
+        //clearSingleOperand();
+        break;
+    }
+    }
+}
+
 
 void Context::addToTrueLabelList(ItmCode* newCode_t)
 {

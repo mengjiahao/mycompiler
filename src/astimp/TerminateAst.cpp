@@ -243,10 +243,14 @@ void TerminateAst::walk()
     case T_CTERMINATE_CASSIGNEXP_NEW_ID_VOID: {
         std::cout << "walk in T_CTERMINATE_CASSIGNEXP_NEW_ID_VOID" << endl;
 
+        s_context->tmpIdenName = token;
+
         break;
     }
     case T_CTERMINATE_CASSIGNEXP_DELETE_ID: {
         std::cout << "walk in T_CTERMINATE_CASSIGNEXP_DELETE_ID" << endl;
+
+        s_context->tmpIdenName = token;
 
         break;
     }

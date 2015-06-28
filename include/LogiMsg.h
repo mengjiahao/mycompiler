@@ -18,6 +18,10 @@ class LogiMsg {
             std::cout << msg_t << " at line " << line_t << std::endl;
         }
 
+        inline static void logi(const string &msg_t, const string &str_t, int line_t) {
+            std::cout << msg_t << " " << str_t << " at line " << line_t << std::endl;
+        }
+
 };
 
 #endif

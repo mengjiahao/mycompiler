@@ -9,6 +9,8 @@ class  IterationStmAst: public NodeAst {
 	public:
 		IterationStmAst(NodeAst::NodeType nodeType_t);
 
+		virtual void walk();
+
 };
 
 #endif

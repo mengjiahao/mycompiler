@@ -8,6 +8,8 @@ class  SelectionStmAst: public NodeAst {
 	public:
 		SelectionStmAst(NodeAst::NodeType nodeType_t);
 
+		virtual void walk();
+
 };
 
 #endif

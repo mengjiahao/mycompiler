@@ -51,12 +51,16 @@ public:
 
     void clearContext();
 
+    void clearAllContext();
+
     void addParawithoutid(TypeClass m);
     void addParawithid(Symbol m);
 
     void addToExpList(void *m);
     void* getExpListLast();
     void clearExpList();
+
+
 
     void addToTrueLabelList(ItmCode *newCode_t);
     void addToFalseLabelList(ItmCode *newCode_t);
@@ -65,6 +69,7 @@ public:
     void backFillFalseLabelList(Symbol *falseLabel_t);
 
     void clearSingleOperand();
+    void resetSingleOperand(void *p, ItmCode::OperandType tmpOpType_t);
 
 
 

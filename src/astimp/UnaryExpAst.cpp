@@ -136,7 +136,8 @@ bool UnaryExpAst::genCodeUnaryChildOperand(NodeAst::NodeType nodeType_t, ItmCode
             break;
         }
 
-        case ItmCode::OPR_CLASS_REFLIST: {
+        case ItmCode::OPR_CLASS_REFLIST:
+        case ItmCode::OPR_CLASS_REFLIST_POINTER: {
 
             ItmCode::genCodeUnaryOpClassRefList(codeType, (vector<void *>*)t);
 

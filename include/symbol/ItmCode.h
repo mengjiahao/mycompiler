@@ -87,7 +87,7 @@ public:
     IR_INC_OP_POST, IR_DEC_OP_POST,
     IR_UAND_OP, IR_UREF_OP, IR_UADD_OP, IR_USUB_OP, IR_UCOMP_OP, IR_UNOT_OP,
     IR_GOTO, IR_IF_GOTO, IR_IF_NOT_GOTO,
-    IR_RETURN};
+    IR_RETURN_VOID, IR_RETURN_REG};
 
     enum OperandType {OPR_INVALID, OPR_ID, OPR_SYMBOL, OPR_SCOPE, OPR_REGISTER,
     OPR_ARGLIST, OPR_CLASS_REFLIST, OPR_ARRAY_ELEMLIST, OPR_CLASS_REFLIST_POINTER};
@@ -160,6 +160,12 @@ OperandType t3_t = ItmCode::OPR_INVALID, void* v3_t = NULL);
     static void genCodeEmitLabel(Symbol *label_t);
     static void genCodeUnaryOpClassRefList(IRtype iRType_t, vector<void *> *refList_t);
     static void genCodeUnaryOpSymbol(IRtype iRType_t, Symbol *symbol_t);
+    static void genCodeAssignRegToSymbol(IRtype iRType_t, Reg *reg_t, Symbol *symbol_t);
+    static void genCodeAssignRegToRefList(IRtype iRType_t, Reg *reg_t, vector<void *> *refList_t);
+    static void genCodeNewClassIdToReg(Reg *reg_t);
+    static void genCodeDeleteClassRefId(Symbol *symboL_t);
+    static void genCodeReturnVoid();
+    static void genCodeReturnReg(Reg *reg_t);
 
 
 };

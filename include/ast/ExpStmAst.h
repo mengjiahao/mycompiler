@@ -9,6 +9,8 @@ class  ExpStmAst: public NodeAst {
 	public:
 		ExpStmAst(NodeAst::NodeType nodeType_t);
 
+		virtual void walk();
+
 };
 
 #endif
