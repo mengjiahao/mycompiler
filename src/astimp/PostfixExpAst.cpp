@@ -205,10 +205,10 @@ void PostfixExpAst::walk()
         if (checkIsNotWalking()) {
             return ;
         }
-        Reg *tmpReg=processChildOperand(1);
+        Reg *tmpReg=processChildOperand(0);
         if (s_context->tmpOpType == ItmCode::OPR_SYMBOL)
         {
-            ItmCode *tmpCode = new ItmCode(ItmCode::IR_INC_OP,
+            ItmCode *tmpCode = new ItmCode(ItmCode::IR_INC_OP_POST,
                                        ItmCode::OPR_REGISTER, (void *)tmpReg,
                                        ItmCode::OPR_INVALID, NULL,
                                        ItmCode::OPR_SYMBOL, (void *)(s_context->tmpExpSymbol));
@@ -217,7 +217,7 @@ void PostfixExpAst::walk()
         else if (s_context->tmpOpType == ItmCode::OPR_CLASS_REFLIST)
         {
             vector<void* >* refList = ItmCode::copyVectorToAllExpList(s_context->tmpExpList);
-            ItmCode *tmpCode = new ItmCode(ItmCode::IR_INC_OP,
+            ItmCode *tmpCode = new ItmCode(ItmCode::IR_INC_OP_POST,
                                        ItmCode::OPR_REGISTER, (void *)tmpReg,
                                        ItmCode::OPR_INVALID, NULL,
                                        ItmCode::OPR_CLASS_REFLIST, (void *)(refList));
@@ -241,10 +241,10 @@ void PostfixExpAst::walk()
         if (checkIsNotWalking()) {
             return ;
         }
-        Reg *tmpReg=processChildOperand(1);
+        Reg *tmpReg=processChildOperand(0);
         if (s_context->tmpOpType == ItmCode::OPR_SYMBOL)
         {
-            ItmCode *tmpCode = new ItmCode(ItmCode::IR_DEC_OP,
+            ItmCode *tmpCode = new ItmCode(ItmCode::IR_DEC_OP_POST,
                                        ItmCode::OPR_REGISTER, (void *)tmpReg,
                                        ItmCode::OPR_INVALID, NULL,
                                        ItmCode::OPR_SYMBOL, (void *)(s_context->tmpExpSymbol));
@@ -253,7 +253,7 @@ void PostfixExpAst::walk()
         else if (s_context->tmpOpType == ItmCode::OPR_CLASS_REFLIST)
         {
             vector<void* >* refList = ItmCode::copyVectorToAllExpList(s_context->tmpExpList);
-            ItmCode *tmpCode = new ItmCode(ItmCode::IR_DEC_OP,
+            ItmCode *tmpCode = new ItmCode(ItmCode::IR_DEC_OP_POST,
                                        ItmCode::OPR_REGISTER, (void *)tmpReg,
                                        ItmCode::OPR_INVALID, NULL,
                                        ItmCode::OPR_CLASS_REFLIST, (void *)(refList));
