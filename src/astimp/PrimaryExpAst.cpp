@@ -12,8 +12,8 @@ void PrimaryExpAst::walk()
     }
 
     switch(nodeType) {
-    case T_CTERMINATE_CPRIMEXP_ID: {
-        std::cout << "walk in T_CTERMINATE_CPRIMEXP_ID" << endl;
+    case T_CPRIMEXP_ID: {
+        std::cout << "walk in T_CPRIMEXP_ID" << endl;
 
         childs.at(0)->walk();
         if (checkIsNotWalking()) {
@@ -28,7 +28,7 @@ void PrimaryExpAst::walk()
             tmpSymbol=Scope::s_curScope->resolveSymbol(s_context->tmpIdenName, Symbol::SYMBOL_VAR);
             if (!tmpSymbol)
             {
-                std::cout << "error: in T_CTERMINATE_CPRIMEXP_ID there is no symbol named "
+                std::cout << "error: in T_CPRIMEXP_ID there is no symbol named "
                 << s_context->tmpIdenName << "at line " << getLineno() << std::endl;
                 stopWalk();
                 return ;
@@ -55,8 +55,8 @@ void PrimaryExpAst::walk()
         break;
     }
 
-    case T_CTERMINATE_CPRIMEXP_STR: {
-        std::cout << "walk in T_CTERMINATE_CPRIMEXP_STR" << endl;
+    case T_CPRIMEXP_STR: {
+        std::cout << "walk in T_CPRIMEXP_STR" << endl;
 
         childs.at(0)->walk();
         if (checkIsNotWalking()) {
