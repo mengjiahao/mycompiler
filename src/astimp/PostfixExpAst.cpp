@@ -175,6 +175,7 @@ void PostfixExpAst::walk()
                 return;
             }
             s_context->clearContext();
+            s_context->clearExpList();
             s_context->addToExpList((void *)tmpSymbol);
             s_context->addToExpList((void *)tmpScope);
             s_context->tmpOpType=ItmCode::OPR_CLASS_REFLIST;
@@ -190,6 +191,7 @@ void PostfixExpAst::walk()
                 return;
             }
             s_context->clearContext();
+            s_context->clearExpList();
             s_context->addToExpList((void *)tmpSymbol);
             s_context->addToExpList((void *)tmpMemSymbol);
             s_context->tmpOpType=ItmCode::OPR_CLASS_REFLIST;

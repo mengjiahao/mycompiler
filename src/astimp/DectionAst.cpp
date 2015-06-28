@@ -187,6 +187,9 @@ void DectionAst::walk()
                 }*/
 
                 Scope::s_curScope->defineSymbol(tmpsymbol);
+
+                Reg *r = processChildOperand(0);
+                ItmCode::genCodeAssignRegToSymbol(ItmCode::IR_ASSIGN_OP, r, tmpsymbol);
             }
 
             //delete tmpType;

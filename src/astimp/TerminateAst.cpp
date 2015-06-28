@@ -123,7 +123,11 @@ void TerminateAst::walk()
 
         if (NULL == rst) {
             rst = new Symbol(Symbol::SYMBOL_STRING_LITERAL);
-            rst->setSymbolName(token);
+            static int s_string=0;
+            string tmpName = ".S";
+            tmpName+=s_string;
+            s_string++;
+            rst->setSymbolName(tmpName);
             //string strValue = token.substr(1, token.size() - 2);
             rst->addSymbolValue(token);
 
