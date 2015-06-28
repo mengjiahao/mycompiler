@@ -1767,6 +1767,7 @@ int main() {
    NodeAst::setContext(NodeAst::getSingletonContext());
 
 
+
    if (NULL != NodeAst::s_root) {
 		NodeAst::s_root->walk();
    }

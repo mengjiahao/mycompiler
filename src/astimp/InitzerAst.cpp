@@ -17,5 +17,9 @@ void InitzerAst::walk()
             break;
         }
 
+        default: {
+            break;
+        }
+
     }
 }

@@ -632,8 +632,8 @@ Context* NodeAst::getSingletonContext()
 void NodeAst::setContext(Context* context_t)
 {
     s_context = context_t;
+    Reg::initRegs();
 }
-
 
 
 void NodeAst::dotBfsNodeTree(NodeAst* root_t)
