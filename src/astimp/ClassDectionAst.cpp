@@ -15,7 +15,8 @@ void ClassDectionAst::walk()
             std::cout << "walk in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST" << endl;
 
             if (2 != childs.size()) {
-                std::cout << "error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST: doesn't have 2 children at line " << getLineno() << std::endl;
+                std::cout << "error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST: doesn't have 2 children at line "
+                << getLineno() << std::endl;
                 //exit(0);
                 stopWalk();
                 return ;
@@ -74,6 +75,8 @@ void ClassDectionAst::walk()
                 }*/
 
                 Scope::s_curScope->defineSymbol(tmpsymbol);
+
+                //ItmCode::genCodeEmitClassMemVar(tmpsymbol);
             }
             break;
         }
@@ -139,6 +142,8 @@ void ClassDectionAst::walk()
             Scope::pushScope(Scope::s_curScope,tmpScope);
             Scope::setCurScope(tmpScope);
 
+            //ItmCode::genCodeEmitClassFunc(tmpScope);
+
             if (s_context->tmpParaWithoutIdNum)
             {
                 std::cout << "error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST_COMPSTM: ClassDectionAst-func's argument list do not have identifier"
@@ -178,6 +183,8 @@ void ClassDectionAst::walk()
 
 
                     Scope::s_curScope->defineSymbol(tmpsymbol);
+
+                    //ItmCode::genCodeEmitVar(tmpsymbol);
                 }
                 list<Symbol *>::reverse_iterator r_itr;
                 for (r_itr= Scope::s_curScope->symbolSeqList.rbegin(); r_itr!=Scope::s_curScope->symbolSeqList.rend(); r_itr++)
@@ -232,6 +239,8 @@ void ClassDectionAst::walk()
             Scope::pushScope(Scope::s_curScope, tmpScope);
             Scope::setCurScope(tmpScope);
 
+            //ItmCode::genCodeEmitClassFunc(tmpScope);
+
             if (s_context->tmpParaWithoutIdNum)
             {
                 std::cout << "error in T_CCLASSDECTION_CLASSDECTORLIST_COMPSTM: ClassDectionAst-func's argument list do not have identifier"
@@ -268,6 +277,8 @@ void ClassDectionAst::walk()
                     }*/
 
                     Scope::s_curScope->defineSymbol(tmpsymbol);
+
+                    //ItmCode::genCodeEmitVar(tmpsymbol);
                 }
                 list<Symbol *>::reverse_iterator r_itr;
                 for (r_itr= Scope::s_curScope->symbolSeqList.rbegin(); r_itr!=Scope::s_curScope->symbolSeqList.rend(); r_itr++)

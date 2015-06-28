@@ -21,8 +21,6 @@ public:
     enum RegType {REG_INVALID, REG_EAX, REG_EBX, REG_ECX, REG_EDX,
     REG_ST0, REG_ST1, REG_ST2, REG_ST3, REG_ST4, REG_ST5, REG_ST6, REG_ST7};
 
-
-    //int regType;
     int regIndex;
     int typeSfType;
 
@@ -70,7 +68,7 @@ class ItmCode {
 public:
     enum IRtype {IR_INVALID,
     IR_PUSHVAR, IR_POPVAR, IR_MOVVAR,
-    IR_EMITVAR, IR_EMITFUNC, IR_EMITLABEL,
+    IR_EMITVAR, IR_EMITCLASSMEMVAR, IR_EMITCLASS, IR_EMITCLASSFUNC, IR_EMITFUNC, IR_EMITLABEL,
     IR_CALLFUNC, IR_CALLCLASSFUNC,
     IR_FETCHARRAY,
     IR_NEW_OP, IR_DELETE_OP,
@@ -110,6 +108,7 @@ public:
 
     static list< vector<void *> * > s_allExpList;
     static vector<ItmCode *> s_allItmCode;
+
     static int totalItmNo;
     int ItmNo;
 
@@ -129,8 +128,6 @@ OperandType t3_t = ItmCode::OPR_INVALID, void* v3_t = NULL);
 
     virtual void printOperand(ofstream &ofs_t, OperandType opType_t, void *op_t);
     virtual void printItmCode(ofstream &ofs_t);
-
-
 
     static vector<void* >* copyVectorToAllExpList(vector<void *> &vargList_t);
     static void addToAllExpList(vector<void *> *expList_t);
@@ -166,6 +163,11 @@ OperandType t3_t = ItmCode::OPR_INVALID, void* v3_t = NULL);
     static void genCodeDeleteClassRefId(Symbol *symboL_t);
     static void genCodeReturnVoid();
     static void genCodeReturnReg(Reg *reg_t);
+    static void genCodeEmitVar(Symbol *symbol_t);
+    static void genCodeEmitClassMemVar(Symbol *symbol_t);
+    static void genCodeEmitGlobalFunc(Scope *scope_t);
+    static void genCodeEmitClassFunc(Scope *scope_t);
+    static void genCodeEmitClass(Scope *scope_t);
 
 
 };

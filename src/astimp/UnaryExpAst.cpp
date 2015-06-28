@@ -11,10 +11,21 @@ void UnaryExpAst::walk()
         return ;
     }
 
+    //do not clear s_context
+
     switch(nodeType) {
     case T_CUNARYEXP_INC_OP_UNARAYEXP: {
+        LogiMsg::logi("T_CUNARYEXP_INC_OP_UNARAYEXP", getLineno());
+
         childs.at(0)->walk();
         if (checkIsNotWalking()) {
+            return ;
+        }
+        if ( T_CPOSTEXP_POSTEXP_CALL_VOID == childs.at(0)->getNodeType()
+            || T_CPOSTEXP_POSTEXP_CALL_ARGEXPLIST == childs.at(0)->getNodeType() ) {
+            LogiMsg::logi("error in T_CUNARYEXP_INC_OP_UNARAYEXP: cannot use the func return value in UnaryExpAst",
+            getLineno());
+            stopWalk();
             return ;
         }
 
@@ -37,8 +48,18 @@ void UnaryExpAst::walk()
     }
 
     case T_CUNARYEXP_DEC_OP_UNARYEXP: {
+        LogiMsg::logi("T_CUNARYEXP_DEC_OP_UNARYEXP", getLineno());
+
         childs.at(0)->walk();
         if (checkIsNotWalking()) {
+            return ;
+        }
+
+        if ( T_CPOSTEXP_POSTEXP_CALL_VOID == childs.at(0)->getNodeType()
+            || T_CPOSTEXP_POSTEXP_CALL_ARGEXPLIST == childs.at(0)->getNodeType() ) {
+            LogiMsg::logi("error in T_CUNARYEXP_INC_OP_UNARAYEXP: cannot use the func return value in UnaryExpAst",
+            getLineno());
+            stopWalk();
             return ;
         }
 
@@ -58,10 +79,21 @@ void UnaryExpAst::walk()
     }
 
     case T_CUNARYEXP_UNARY_OP_CASTEXP: {
+        LogiMsg::logi("T_CUNARYEXP_UNARY_OP_CASTEXP", getLineno());
+
+
         NodeType uopNodeType = childs.at(0)->getNodeType();
 
         childs.at(1)->walk();
         if (checkIsNotWalking()) {
+            return ;
+        }
+
+        if ( T_CPOSTEXP_POSTEXP_CALL_VOID == childs.at(1)->getNodeType()
+            || T_CPOSTEXP_POSTEXP_CALL_ARGEXPLIST == childs.at(1)->getNodeType() ) {
+            LogiMsg::logi("error in T_CUNARYEXP_INC_OP_UNARAYEXP: cannot use the func return value in UnaryExpAst",
+            getLineno());
+            stopWalk();
             return ;
         }
 
@@ -71,7 +103,7 @@ void UnaryExpAst::walk()
         }
 
         if (false == genCodeUnaryChildOperand(uopNodeType, s_context->tmpOpType, t)) {
-            LogiMsg::logi("error in T_CUNARYEXP_UNARY_OP_CASTEXP: the return value of genCodeUnaryChildOperand() is invalid",
+            LogiMsg::logi("error in T_CUNARYEXP_UNARY_OP_CASTEXP: genCodeUnaryChildOperand() is invalid",
             getLineno());
             stopWalk();
             return ;
@@ -136,7 +168,6 @@ bool UnaryExpAst::genCodeUnaryChildOperand(NodeAst::NodeType nodeType_t, ItmCode
             break;
         }
 
-        case ItmCode::OPR_CLASS_REFLIST:
         case ItmCode::OPR_CLASS_REFLIST_POINTER: {
 
             ItmCode::genCodeUnaryOpClassRefList(codeType, (vector<void *>*)t);

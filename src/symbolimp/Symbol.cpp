@@ -1,5 +1,6 @@
 #include "../../include/symbol/Symbol.h"
 #include "../../include/symbol/Scope.h"
+#include "../../include/LogiMsg.h"
 
 #include <iostream>
 #include <fstream>
@@ -14,6 +15,7 @@ TypeClass::TypeClass()
     storageType = TypeClass::STOR_INVALID;
     typeSfType = TypeClass::SF_INVALID;
     typeQfType = TypeClass::QF_INVALID;
+
     scopeType = NULL;
     isArray = false;
 
@@ -24,6 +26,7 @@ TypeClass::~TypeClass()
     storageType = TypeClass::STOR_INVALID;
     typeSfType = TypeClass::SF_INVALID;
     typeQfType = TypeClass::QF_INVALID;
+
     scopeType = NULL;
     isArray = false;
     dimensions.clear();
@@ -34,6 +37,7 @@ void TypeClass::clearTypeClass()
     storageType = TypeClass::STOR_INVALID;
     typeSfType = TypeClass::SF_INVALID;
     typeQfType = TypeClass::QF_INVALID;
+
     scopeType = NULL;
     isArray = false;
     dimensions.clear();
@@ -44,7 +48,7 @@ void TypeClass::initRegTypeClass(int typeSfType_t)
 {
     storageType = TypeClass::STOR_REGISTER;
     typeSfType = typeSfType_t;
-    typeQfType = TypeClass::QF_VOLATILE;
+    //typeQfType = TypeClass::QF_VOLATILE;
     scopeType = NULL;
     isArray = false;
     dimensions.clear();
@@ -59,6 +63,7 @@ void TypeClass::clone(TypeClass *typeClass_t)
     storageType = typeClass_t->getStorageType();
     typeSfType = typeClass_t->getTypeSfType();
     typeQfType = typeClass_t->getTypeQfType();
+
     scopeType = typeClass_t->scopeType;
     isArray = typeClass_t->getIsArray();
     dimensions = typeClass_t->getDimensions();
@@ -108,7 +113,6 @@ Scope* TypeClass::getScopeType()
 }
 
 
-
 void TypeClass::setIsArray(bool isArray_t)
 {
     isArray = isArray_t;
@@ -139,10 +143,9 @@ unsigned int TypeClass::getTypeByteSize()
 {
     unsigned int elemSize = 0;
 
-    if (scopeType){
-        elemSize=4;
-    }
-      else if (typeSfType & SF_CHAR) {
+    if (NULL != scopeType) {
+        elemSize = 4;
+    } else if (typeSfType & SF_CHAR) {
         elemSize = 1;
     } else if (typeSfType & SF_SHORT) {
         elemSize = 2;
@@ -186,7 +189,9 @@ void TypeClass::printTypeClass(ofstream& ofs_t)
         }
 
     } else {
-        std::cout << "error in printTypeClass(): SymbolTable.txt is not open" << std::endl;
+        /*std::cout << "error in printTypeClass(): SymbolTable.txt is not open" << std::endl;*/
+
+        LogiMsg::logi("error in TypeClass::printTypeClass(): SymbolTable.txt is not open");
     }
 }
 
@@ -198,8 +203,13 @@ bool TypeClass::compare(TypeClass* a, TypeClass* b)
         return false;
     }
 
+    if (a->getScopeType() != b->getScopeType()) {
+        return false;
+    }
+
     if ( (a->getStorageType() == b->getStorageType())
-    && (a->getTypeQfType() == b->getTypeQfType()) ) {
+        && (a->getTypeQfType() == b->getTypeQfType()) ) {
+
         if( a->getTypeSfType() == b->getTypeSfType() ) {
             return true;
         }
@@ -249,7 +259,6 @@ static int getSfTypeMatrixNo(int sf_t)
 
     if (sf_t & TypeClass::SF_UNSIGNED) {
         no += 6;
-    } else {
     }
 
     return no;
@@ -263,53 +272,48 @@ int TypeClass::promoteType(int sf_a, int sf_b)
      SF_INVALID, SF_INVALID, SF_INVALID, SF_INVALID, SF_INVALID, SF_INVALID},
 
         //SF_VOID
-     {SF_INVALID, SF_VOID, SF_VOID, SF_VOID, SF_VOID, SF_VOID,
-     SF_VOID, SF_VOID, SF_VOID, SF_VOID, SF_VOID, SF_VOID},
+     {SF_INVALID, SF_VOID, SF_INVALID, SF_INVALID, SF_INVALID, SF_INVALID,
+     SF_INVALID, SF_INVALID, SF_INVALID, SF_INVALID, SF_INVALID, SF_INVALID},
 
         //SF_CHAR
-     {SF_INVALID, SF_VOID, SF_CHAR, SF_SHORT, SF_INT, SF_LONG, SF_FLOAT, SF_DOUBLE,
-     SF_CHAR, SF_SHORT, SF_INT, SF_LONG},
+     {SF_INVALID, SF_INVALID, SF_CHAR, SF_SHORT, SF_INT, SF_LONG,
+     SF_FLOAT, SF_DOUBLE, SF_CHAR, SF_SHORT, SF_INT, SF_LONG},
 
         //SF_SHORT
-     {SF_INVALID, SF_VOID, SF_SHORT, SF_SHORT, SF_INT, SF_LONG, SF_FLOAT, SF_DOUBLE,
-     SF_SHORT, SF_SHORT, SF_INT, SF_LONG},
+     {SF_INVALID, SF_INVALID, SF_SHORT, SF_SHORT, SF_INT, SF_LONG,
+     SF_FLOAT, SF_DOUBLE, SF_SHORT, SF_SHORT, SF_INT, SF_LONG},
 
         //SF_INT
-     {SF_INVALID, SF_VOID, SF_INT, SF_INT, SF_INT, SF_LONG, SF_FLOAT, SF_DOUBLE,
-     SF_INT, SF_INT, SF_INT, SF_LONG},
+     {SF_INVALID, SF_INVALID, SF_INT, SF_INT, SF_INT, SF_LONG,
+     SF_FLOAT, SF_DOUBLE, SF_INT, SF_INT, SF_INT, SF_LONG},
 
         //SF_LONG
-     {SF_INVALID, SF_VOID, SF_LONG, SF_LONG, SF_LONG, SF_LONG, SF_FLOAT, SF_DOUBLE,
-     SF_LONG, SF_LONG, SF_LONG, SF_LONG},
+     {SF_INVALID, SF_INVALID, SF_LONG, SF_LONG, SF_LONG, SF_LONG,
+     SF_FLOAT, SF_DOUBLE, SF_LONG, SF_LONG, SF_LONG, SF_LONG},
 
         //SF_FLOAT
-     {SF_INVALID, SF_VOID, SF_FLOAT, SF_FLOAT, SF_FLOAT, SF_FLOAT, SF_FLOAT, SF_DOUBLE,
-     SF_FLOAT, SF_FLOAT, SF_FLOAT, SF_FLOAT},
+     {SF_INVALID, SF_INVALID, SF_FLOAT, SF_FLOAT, SF_FLOAT, SF_FLOAT,
+     SF_FLOAT, SF_DOUBLE, SF_FLOAT, SF_FLOAT, SF_FLOAT, SF_FLOAT},
 
         //SF_DOUBLE
-     {SF_INVALID, SF_VOID, SF_DOUBLE, SF_DOUBLE, SF_DOUBLE, SF_DOUBLE, SF_DOUBLE, SF_DOUBLE,
-     SF_DOUBLE, SF_DOUBLE, SF_DOUBLE, SF_DOUBLE},
+     {SF_INVALID, SF_INVALID, SF_DOUBLE, SF_DOUBLE, SF_DOUBLE, SF_DOUBLE,
+     SF_DOUBLE, SF_DOUBLE, SF_DOUBLE, SF_DOUBLE, SF_DOUBLE, SF_DOUBLE},
 
         //SF_CHAR & SF_UNSIGNED
-     {SF_INVALID, SF_VOID, SF_CHAR, SF_SHORT, SF_INT, SF_LONG, SF_FLOAT, SF_DOUBLE,
-     SF_CHAR | SF_UNSIGNED, SF_SHORT | SF_UNSIGNED, SF_INT | SF_UNSIGNED,
-     SF_LONG | SF_UNSIGNED},
+     {SF_INVALID, SF_INVALID, SF_CHAR, SF_SHORT, SF_INT, SF_LONG,
+     SF_FLOAT, SF_DOUBLE, SF_CHAR | SF_UNSIGNED, SF_SHORT | SF_UNSIGNED, SF_INT | SF_UNSIGNED, SF_LONG | SF_UNSIGNED},
 
         //SF_SHORT & SF_UNSIGNED
-     {SF_INVALID, SF_VOID, SF_SHORT | SF_UNSIGNED, SF_SHORT, SF_INT, SF_LONG, SF_FLOAT, SF_DOUBLE,
-     SF_SHORT | SF_UNSIGNED, SF_SHORT | SF_UNSIGNED, SF_INT | SF_UNSIGNED,
-     SF_LONG | SF_UNSIGNED},
+     {SF_INVALID, SF_INVALID, SF_SHORT, SF_SHORT, SF_INT, SF_LONG,
+     SF_FLOAT, SF_DOUBLE, SF_SHORT | SF_UNSIGNED, SF_SHORT | SF_UNSIGNED, SF_INT | SF_UNSIGNED, SF_LONG | SF_UNSIGNED},
 
         //SF_INT & SF_UNSIGNED
-     {SF_INVALID, SF_VOID, SF_INT | SF_UNSIGNED, SF_INT | SF_UNSIGNED, SF_INT, SF_LONG, SF_FLOAT, SF_DOUBLE,
-     SF_INT | SF_UNSIGNED, SF_INT | SF_UNSIGNED, SF_INT | SF_UNSIGNED,
-     SF_LONG | SF_UNSIGNED},
+     {SF_INVALID, SF_VOID, SF_INT, SF_INT, SF_INT, SF_LONG,
+     SF_FLOAT, SF_DOUBLE, SF_INT | SF_UNSIGNED, SF_INT | SF_UNSIGNED, SF_INT | SF_UNSIGNED, SF_LONG | SF_UNSIGNED},
 
         //SF_LONG & SF_UNSIGNED
-     {SF_INVALID, SF_VOID, SF_LONG | SF_UNSIGNED, SF_LONG | SF_UNSIGNED, SF_LONG | SF_UNSIGNED,
-     SF_LONG, SF_FLOAT, SF_DOUBLE,
-     SF_LONG | SF_UNSIGNED, SF_LONG | SF_UNSIGNED, SF_LONG | SF_UNSIGNED,
-     SF_LONG | SF_UNSIGNED},
+     {SF_INVALID, SF_VOID, SF_LONG, SF_LONG, SF_LONG, SF_LONG,
+     SF_FLOAT, SF_DOUBLE, SF_LONG | SF_UNSIGNED, SF_LONG | SF_UNSIGNED, SF_LONG | SF_UNSIGNED, SF_LONG | SF_UNSIGNED},
 
     };
 
@@ -320,9 +324,6 @@ int TypeClass::promoteType(int sf_a, int sf_b)
 
 
 }
-
-
-
 
 
 bool TypeClass::judgeType(TypeClass *type1_t,TypeClass *type2_t, int lineno)
@@ -336,14 +337,17 @@ bool TypeClass::judgeType(TypeClass *type1_t,TypeClass *type2_t, int lineno)
     || type2_t->getTypeSfType() != TypeClass::SF_INVALID
     || type2_t->getTypeQfType() != TypeClass::QF_INVALID) {
 
-        std::cout<<"error in TypeClass: class type should not be used with other type at line "
-        <<lineno<<std::endl;
+        /*std::cout<<"error in TypeClass: class type should not be used with other type at line "
+        <<lineno<<std::endl;*/
+
+        LogiMsg::logi("error in TypeClass: class type should not be used with other type", lineno);
         return false;
     }
 
     if ((type1_t->getStorageType()!=TypeClass::STOR_INVALID) && (type2_t->getStorageType()!=TypeClass::STOR_INVALID))
     {
-        std::cout<<"error in TypeClass: redundant storage type at line "<<lineno<<std::endl;
+        /*std::cout<<"error in TypeClass: redundant storage type at line "<<lineno<<std::endl;*/
+        LogiMsg::logi("error in TypeClass: redundant storage type", lineno);
         return false;
     }
 
@@ -358,6 +362,7 @@ bool TypeClass::judgeType(TypeClass *type1_t,TypeClass *type2_t, int lineno)
            std::cout<<"error in TypeClass: specifier type "
            <<  type1_t->getTypeSfType() << " & " << type2_t->getTypeSfType()
            << " are conflict at line "<<lineno<<std::endl;
+           LogiMsg::logi("error in TypeClass: specifier type 2 are conflict", lineno);
            return false;
         }
     }
@@ -372,6 +377,7 @@ bool TypeClass::judgeType(TypeClass *type1_t,TypeClass *type2_t, int lineno)
            std::cout<<"error in TypeClass: specifier type "
            <<  type1_t->getTypeSfType() << " & " << type2_t->getTypeSfType()
            << " are conflict at line "<<lineno<<std::endl;
+           LogiMsg::logi("error in TypeClass: specifier type 1 are conflict", lineno);
            return false;
         }
     }
@@ -379,8 +385,9 @@ bool TypeClass::judgeType(TypeClass *type1_t,TypeClass *type2_t, int lineno)
     {
         if (type2_t->getTypeSfType()!=TypeClass::SF_INVALID)
         {
-           std::cout<<"error in TypeClass: specifier type is redefined with float or double at line "
-           <<lineno<<std::endl;
+           /*std::cout<<"error in TypeClass: specifier type is redefined with float or double at line "
+           <<lineno<<std::endl;*/
+           LogiMsg::logi("error in TypeClass: specifier type 2 is redefined with float or double", lineno);
            return false;
         }
     }
@@ -388,8 +395,9 @@ bool TypeClass::judgeType(TypeClass *type1_t,TypeClass *type2_t, int lineno)
     {
         if (type1_t->getTypeSfType()!=TypeClass::SF_INVALID)
         {
-           std::cout<<"error in TypeClass: specifier type is redefined with float or double at line "
-           <<lineno<<std::endl;
+           /*std::cout<<"error in TypeClass: specifier type is redefined with float or double at line "
+           <<lineno<<std::endl;*/
+           LogiMsg::logi("error in TypeClass: specifier type 1 is redefined with float or double", lineno);
            return false;
         }
     }
@@ -397,8 +405,9 @@ bool TypeClass::judgeType(TypeClass *type1_t,TypeClass *type2_t, int lineno)
     {
         if (type2_t->getTypeSfType()!=TypeClass::SF_INVALID)
         {
-           std::cout<<"error in TypeClass: specifier type is redefined with void at line "
-           <<lineno<<std::endl;
+           /*std::cout<<"error in TypeClass: specifier type is redefined with void at line "
+           <<lineno<<std::endl;*/
+           LogiMsg::logi("error in TypeClass: specifier type 2 is redefined with void", lineno);
            return false;
         }
     }
@@ -406,8 +415,9 @@ bool TypeClass::judgeType(TypeClass *type1_t,TypeClass *type2_t, int lineno)
     {
         if (type1_t->getTypeSfType()!=TypeClass::SF_INVALID)
         {
-           std::cout<<"error in TypeClass: specifier type is redefined with void at line "
-           <<lineno<<std::endl;
+           /*std::cout<<"error in TypeClass: specifier type is redefined with void at line "
+           <<lineno<<std::endl;*/
+           LogiMsg::logi("error in TypeClass: specifier type 1 is redefined with void", lineno);
            return false;
         }
     }
@@ -415,8 +425,9 @@ bool TypeClass::judgeType(TypeClass *type1_t,TypeClass *type2_t, int lineno)
     {
         if (type2_t->getTypeSfType()&TypeClass::SF_SHORT)
         {
-           std::cout<<"error in TypeClass: specifier type long and short are conflict at line "
-           <<lineno<<std::endl;
+           /*std::cout<<"error in TypeClass: specifier type long and short are conflict at line "
+           <<lineno<<std::endl;*/
+           LogiMsg::logi("error in TypeClass: specifier type 2 long and short are conflict", lineno);
            return false;
         }
     }
@@ -424,8 +435,9 @@ bool TypeClass::judgeType(TypeClass *type1_t,TypeClass *type2_t, int lineno)
     {
         if (type1_t->getTypeSfType()&TypeClass::SF_SHORT)
         {
-           std::cout<<"error in TypeClass: specifier type long and short are conflict at line "
-           <<lineno<<std::endl;
+           /*std::cout<<"error in TypeClass: specifier type long and short are conflict at line "
+           <<lineno<<std::endl;*/
+           LogiMsg::logi("error in TypeClass: specifier type 1 long and short are conflict", lineno);
            return false;
         }
     }
@@ -435,8 +447,10 @@ bool TypeClass::judgeType(TypeClass *type1_t,TypeClass *type2_t, int lineno)
         || (type2_t->getTypeSfType()&TypeClass::SF_LONG)
         || (type2_t->getTypeSfType()&TypeClass::SF_INT))
         {
-            std::cout<<"error in TypeClass: specifier type char and integer(short, int, long) are conflict at line "
-            <<lineno<<std::endl;
+            /*std::cout<<"error in TypeClass: specifier type char and integer(short, int, long) are conflict at line "
+            <<lineno<<std::endl;*/
+            LogiMsg::logi("error in TypeClass: specifier type 2 char and integer(short, int, long) are conflict",
+            lineno);
             return false;
         }
     }
@@ -446,20 +460,24 @@ bool TypeClass::judgeType(TypeClass *type1_t,TypeClass *type2_t, int lineno)
         || (type1_t->getTypeSfType()&TypeClass::SF_LONG)
         || (type1_t->getTypeSfType()&TypeClass::SF_INT))
         {
-            std::cout<<"error in TypeClass: specifier type char and integer(short, int, long) are conflict at line "
-            <<lineno<<std::endl;
+            /*std::cout<<"error in TypeClass: specifier type char and integer(short, int, long) are conflict at line "
+            <<lineno<<std::endl;*/
+            LogiMsg::logi("error in TypeClass: specifier type 1 char and integer(short, int, long) are conflict",
+            lineno);
             return false;
         }
     }
     if (type1_t->getTypeSfType() & type2_t->getTypeSfType())
     {
-        std::cout<<"error in TypeClass: redundant specifier type at line: "<<lineno<<std::endl;
+        /*std::cout<<"error in TypeClass: redundant specifier type at line: "<<lineno<<std::endl;*/
+        LogiMsg::logi("error in TypeClass: redundant specifier type", lineno);
         return false;
     }
 
     if (type1_t->getTypeQfType() & type2_t->getTypeQfType())
     {
-        std::cout<<"error in TypeClass: redundant qualifier type at line: "<<lineno<<std::endl;
+        /*std::cout<<"error in TypeClass: redundant qualifier type at line: "<<lineno<<std::endl;*/
+        LogiMsg::logi("error in TypeClass: redundant qualifier type", lineno);
         return false;
     }
 
@@ -473,11 +491,14 @@ Symbol::Symbol()
 {
     symbolId = 0;
     symbolType = Symbol::SYMBOL_INVALID;
+    symbolName = "";
+
+    refScope = NULL;
 
     offset = 0;
     byteSize = 0;
 
-    isglobal=false;
+    isglobal = false;
 
 }
 
@@ -485,36 +506,51 @@ Symbol::Symbol(Symbol::SymbolType symbolType_t)
 {
     symbolId = 0;
     symbolType = symbolType_t;
+    symbolName = "";
+
+    refScope = NULL;
 
     offset = 0;
     byteSize = 0;
 
-    isglobal=false;
+    isglobal = false;
 }
 
 
 Symbol::~Symbol()
 {
     symbolId = 0;
-    symbolValue.clear();
     symbolType = Symbol::SYMBOL_INVALID;
+    symbolName = "";
+
+    symbolValue.clear();
+
+    refScope = NULL;
 
     typeClass.clearTypeClass();
 
     offset = 0;
     byteSize = 0;
+
+    isglobal = false;
 }
 
 void Symbol::clearSymbol()
 {
     symbolId = 0;
-    symbolValue.clear();
     symbolType = Symbol::SYMBOL_INVALID;
+    symbolName = "";
+
+    symbolValue.clear();
+
+    refScope = NULL;
 
     typeClass.clearTypeClass();
 
     offset = 0;
     byteSize = 0;
+
+    isglobal = false;
 }
 
 void Symbol::setSymbolId()
@@ -551,8 +587,8 @@ string Symbol::getSymbolName()
 
 void Symbol::addSymbolValue(const string &symbolValue_t)
 {
-    if ( ( (0 == symbolValue.size()) && (false == typeClass.getIsArray()) )
-    || (true == typeClass.getIsArray()) ) {
+    if ( ((0 == symbolValue.size()) && (false == typeClass.getIsArray()))
+        || (true == typeClass.getIsArray()) ) {
         symbolValue.push_back(symbolValue_t);
     }
 }
@@ -614,12 +650,12 @@ void Symbol::setByteSize(unsigned int byteSize_t)
 void Symbol::computeByteSize()
 {
     switch(symbolType) {
-    case SYMBOL_INTEGER_CONSTANT: {
-        byteSize = 4;
-        break;
-    }
     case SYMBOL_CHARACTER_CONSTANT: {
         byteSize = 1;
+        break;
+    }
+    case SYMBOL_INTEGER_CONSTANT: {
+        byteSize = 4;
         break;
     }
     case SYMBOL_FLOATING_CONSTANT: {
@@ -631,8 +667,8 @@ void Symbol::computeByteSize()
         break;
     }
     case SYMBOL_VAR: {
-        if (typeClass.isArray)
-            byteSize=4;
+        if (typeClass.isArray)  //array is reference?
+            byteSize = 4;
         else
             byteSize = typeClass.getTypeByteSize();
         break;
@@ -651,14 +687,14 @@ void Symbol::computeByteSize()
     }
     case SYMBOL_TEMPVAR: {
         if (typeClass.isArray)
-            byteSize=4;
+            byteSize = 4;
         else
             byteSize = typeClass.getTypeByteSize();
         break;
     }
     case SYMBOL_CLASSMEMVAR: {
         if (typeClass.isArray)
-            byteSize=4;
+            byteSize = 4;
         else
             byteSize = typeClass.getTypeByteSize();
         break;
@@ -686,18 +722,19 @@ void Symbol::printSymbol(ofstream& ofs_t)
 {
     if (ofs_t.is_open()) {
         ofs_t << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n";
-        ofs_t << "@Symbol: " << symbolId << " " << symbolType << " " << symbolName <<" " << offset<<"\n";
+        ofs_t << "@Symbol: " << symbolId << " " << symbolType << " " << symbolName << "\n";
+        ofs_t << "@offset&byteSize: " << offset << " " << byteSize << "\n";
         ofs_t << "@SymbolValue: ";
         for(int i = 0; i < symbolValue.size(); ++i) {
             ofs_t << symbolValue[i] << " ";
         }
         ofs_t << "\n";
-        ofs_t << "@offset&&byteSize: " << offset << " " << byteSize << "\n";
         typeClass.printTypeClass(ofs_t);
         ofs_t << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n";
 
     } else {
-        std::cout << "error in printSymbol(): SymbolTable.txt is not open" << std::endl;
+        /*std::cout << "error in printSymbol(): SymbolTable.txt is not open" << std::endl;*/
+        LogiMsg::logi("error in printSymbol(): SymbolTable.txt is not open");
     }
 }
 

@@ -12,6 +12,10 @@ void LogicalAndExpAst::walk()
 
     switch(nodeType) {
     case T_CLOGANDEXP_LOGANDEXP_AND_OP_EQUALEXP: {
+        LogiMsg::logi("walk in T_CLOGANDEXP_LOGANDEXP_AND_OP_EQUALEXP", getLineno());
+
+        list<ItmCode *> trueLableList = s_context->tmpTrueLabelList;
+        s_context->tmpTrueLabelList.clear();
 
         childs.at(0)->walk();
         if (checkIsNotWalking()) {
@@ -25,15 +29,15 @@ void LogicalAndExpAst::walk()
         }
 
         ItmCode::genCodeRegIsTrueAssign(r1);
+        ItmCode *newCode = ItmCode::genCodeRegIfNotGotoLabel(r1, NULL);
+        s_context->addToFalseLabelList(newCode);
 
         Symbol *trueLabel = new Symbol(Symbol::SYMBOL_LABEL);
         Scope::s_curScope->defineSymbol(trueLabel);
-
         ItmCode::genCodeEmitLabel(trueLabel);
-        s_context->backFillTrueLabelList(trueLabel);
 
-        ItmCode *newCode = ItmCode::genCodeRegIfNotGotoLabel(r1, NULL);
-        s_context->addToFalseLabelList(newCode);
+        s_context->backFillTrueLabelList(trueLabel);
+        s_context->tmpTrueLabelList  = trueLableList;
 
 
         childs.at(1)->walk();
@@ -46,6 +50,7 @@ void LogicalAndExpAst::walk()
             stopWalk();
             return ;
         }
+
         ItmCode::genCodeRegIsTrueAssign(r2);
 
         Reg *r3 = Reg::getReg(0, TypeClass::promoteType(r1->getTypeSfType(), r2->getTypeSfType()));

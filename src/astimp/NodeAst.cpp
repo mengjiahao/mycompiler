@@ -732,7 +732,8 @@ void NodeAst::walk()
         return ;
     }
 
-    std::cout << "walk in NodeAst" << endl;
+    //std::cout << "walk in NodeAst" << endl;
+    LogiMsg::logi("walk in NodeAst", getLineno());
 
 
 
@@ -762,7 +763,7 @@ Reg* NodeAst::processChildOperand(int side_t)
             if (NULL == sb) {
                 string errorStr = (0 == side_t) ? "right" : "left";
 
-                errorStr = "error in processChildOperand(): "
+                errorStr = "error in NodeAst::processChildOperand(): "
                 + errorStr + " side, s_context->tmpExpSymbol is NULL";
 
                 LogiMsg::logi(errorStr, getLineno());
@@ -785,7 +786,7 @@ Reg* NodeAst::processChildOperand(int side_t)
             if (s_context->tmpExpList.empty()) {
                 string errorStr = (0 == side_t) ? "right" : "left";
 
-                errorStr = "error in processChildOperand(): "
+                errorStr = "error in NodeAst::processChildOperand(): "
                 + errorStr + " side, s_context->tmpExpList is empty";
 
                 LogiMsg::logi(errorStr, getLineno());
@@ -797,7 +798,7 @@ Reg* NodeAst::processChildOperand(int side_t)
             if (NULL == refList->back()) {
                 string errorStr = (0 == side_t) ? "left" : "rigiht";
 
-                errorStr = "error in processChildOperand(): "
+                errorStr = "error in NodeAst::processChildOperand(): "
                 + errorStr + " side, refList's elem is NULL";
 
                 LogiMsg::logi(errorStr, getLineno());
@@ -807,6 +808,7 @@ Reg* NodeAst::processChildOperand(int side_t)
             Reg *r = Reg::getReg(side_t, ((Symbol *)(refList->back()))->getTypeClass()->getTypeSfType());
 
             s_context->clearExpList();
+            s_context->clearSingleOperand();
             s_context->tmpExpReg = r;
             s_context->tmpOpType = ItmCode::OPR_REGISTER;
 
@@ -818,10 +820,11 @@ Reg* NodeAst::processChildOperand(int side_t)
 
         case ItmCode::OPR_CLASS_REFLIST_POINTER: {
             vector<void *> *p = s_context->tmpExpListPointer;
+
             if (NULL == p) {
                 string errorStr = (0 == side_t) ? "left" : "rigiht";
 
-                errorStr = "error in processChildOperand(): "
+                errorStr = "error in NodeAst::processChildOperand(): "
                 + errorStr + " side, s_context->tmpExpListPointer is NULL";
 
                 LogiMsg::logi(errorStr, getLineno());
@@ -841,10 +844,11 @@ Reg* NodeAst::processChildOperand(int side_t)
 
         case ItmCode::OPR_REGISTER: {
             Reg *rr = s_context->tmpExpReg;
+
             if (NULL == rr) {
                 string errorStr = (0 == side_t) ? "right" : "left";
 
-                errorStr = "error in processChildOperand(): "
+                errorStr = "error in NodeAst::processChildOperand(): "
                 + errorStr + " side, s_context->tmpExpReg is NULL";
 
                 LogiMsg::logi(errorStr, getLineno());
@@ -854,11 +858,11 @@ Reg* NodeAst::processChildOperand(int side_t)
             if (side_t != rr->getRegIndex()) {
                 Reg *rl = Reg::getReg(side_t, rr->getTypeSfType());
 
-                s_context->clearContext();
+                s_context->clearSingleOperand();
                 s_context->tmpExpReg = rl;
                 s_context->tmpOpType = ItmCode::OPR_REGISTER;
 
-                ItmCode::genCodeMoveRegToReg(rl, rr);
+                ItmCode::genCodeMoveRegToReg(rr, rl);
                 return rl;
             }
 
@@ -867,7 +871,7 @@ Reg* NodeAst::processChildOperand(int side_t)
         }
 
         default: {
-            LogiMsg::logi("error in processChildOperand(): s_context->tmpOpType is invalid", getLineno());
+            LogiMsg::logi("error in NodeAst::processChildOperand(): s_context->tmpOpType is invalid", getLineno());
             return NULL;
             break;
         }
@@ -884,7 +888,7 @@ void* NodeAst::processUnaryChildOperand()
             Symbol *sb = s_context->tmpExpSymbol;
 
             if (NULL == sb) {
-                LogiMsg::logi("error in processUnaryChildOperand(): s_context->tmpExpSymbol is NULL", getLineno());
+                LogiMsg::logi("error in NodeAst::processUnaryChildOperand(): s_context->tmpExpSymbol is NULL", getLineno());
                 return NULL;
             }
 
@@ -896,16 +900,19 @@ void* NodeAst::processUnaryChildOperand()
         case ItmCode::OPR_CLASS_REFLIST: {
             if (s_context->tmpExpList.empty()) {
 
-                LogiMsg::logi("error in processUnaryChildOperand(): s_context->tmpExpList is empty", getLineno());
+                LogiMsg::logi("error in NodeAst::processUnaryChildOperand(): s_context->tmpExpList is empty", getLineno());
                 return NULL;
             }
 
             vector<void* >* refList = ItmCode::copyVectorToAllExpList(s_context->tmpExpList);
 
             if (NULL == refList->back()) {
-                LogiMsg::logi("error in processUnaryChildOperand(): s_context->tmpExpList's elem is NULL", getLineno());
+                LogiMsg::logi("error in NodeAst::processUnaryChildOperand(): s_context->tmpExpList's elem is NULL", getLineno());
                 return NULL;
             }
+
+            s_context->tmpExpListPointer = refList;
+            s_context->tmpOpType = ItmCode::OPR_CLASS_REFLIST_POINTER;
 
             return refList;
             break;
@@ -913,16 +920,19 @@ void* NodeAst::processUnaryChildOperand()
 
         case ItmCode::OPR_CLASS_REFLIST_POINTER: {
             vector<void *> *p = s_context->tmpExpListPointer;
+
             if (NULL == p) {
-                LogiMsg::logi("error in processUnaryChildOperand(): s_context->tmpExpListPointer is NULL", getLineno());
+                LogiMsg::logi("error in NodeAst::processUnaryChildOperand(): s_context->tmpExpListPointer is NULL", getLineno());
                 return NULL;
             }
 
             return p;
+            break;
         }
 
         default: {
-            LogiMsg::logi("error in processUnaryChildOperand(): s_context->tmpOpType is invalid", getLineno());
+            //when reg comes to
+            LogiMsg::logi("error in NodeAst::processUnaryChildOperand(): s_context->tmpOpType is invalid", getLineno());
             return NULL;
             break;
         }

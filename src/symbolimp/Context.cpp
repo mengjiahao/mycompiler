@@ -8,6 +8,7 @@ Context::Context()
 {
     tmpDeclType.clearTypeClass();
     tmpIdenName = "";
+
     tmpParaTypeList.clear();
     tmpParaWithIdList.clear();
     tmpParaWithIdNum = 0;
@@ -16,9 +17,12 @@ Context::Context()
 
     tmpClassScope = NULL;
 
+
     tmpOpType = ItmCode::OPR_INVALID;
+
     tmpExpReg = NULL;
     tmpExpSymbol = NULL;
+    tmpExpListPointer = NULL;
 
 
 
@@ -37,8 +41,10 @@ Context::~Context()
     tmpClassScope = NULL;
 
     tmpOpType = ItmCode::OPR_INVALID;
+
     tmpExpReg = NULL;
     tmpExpSymbol = NULL;
+    tmpExpListPointer = NULL;
 
     tmpTrueLabelList.clear();
     tmpFalseLabelList.clear();
@@ -55,6 +61,8 @@ void Context::clearContext()
     isFunc = false;
 
     tmpClassScope = NULL;
+
+    tmpOpType = ItmCode::OPR_INVALID;
 
 }
 
@@ -83,7 +91,6 @@ void Context::addToExpList(void* m)
 {
     if (NULL != m) {
         tmpExpList.push_back(m);
-        ++tmpExpNum;
     }
 }
 
@@ -100,8 +107,6 @@ void* Context::getExpListLast()
 void Context::clearExpList()
 {
     tmpExpList.clear();
-
-    tmpOpType = ItmCode::OPR_INVALID;
 }
 
 void Context::clearSingleOperand()
@@ -166,6 +171,9 @@ void Context::clearLabelList()
 
 void Context::backFillTrueLabelList(Symbol* trueLabel_t)
 {
+    if (NULL == trueLabel_t)
+        return ;
+
     list<ItmCode *>::iterator itr;
     for (itr = tmpTrueLabelList.begin(); itr != tmpTrueLabelList.end(); ++itr) {
         (*itr)->setTargetLabel(trueLabel_t);
@@ -175,6 +183,9 @@ void Context::backFillTrueLabelList(Symbol* trueLabel_t)
 
 void Context::backFillFalseLabelList(Symbol* falseLabel_t)
 {
+    if (NULL == falseLabel_t)
+        return ;
+
     list<ItmCode *>::iterator itr;
     for (itr = tmpFalseLabelList.begin(); itr != tmpFalseLabelList.end(); ++itr) {
         (*itr)->setTargetLabel(falseLabel_t);

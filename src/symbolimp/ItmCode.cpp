@@ -187,6 +187,8 @@ Reg* Reg::getReg(int regIndex_t, int sf_t)
 {
     if (0 <= regIndex_t && regIndex_t < 4) {
         return &(s_regs[regIndex_t][convSfTypeToIndex(sf_t)]);
+    } else {
+        LogiMsg::logi("error in Reg::getReg(): the regIndex_t is out of range");
     }
 
     return NULL;
@@ -198,7 +200,7 @@ Reg* Reg::getReg(int regIndex_t, int sf_t)
 /*********************************ItmCode********************************************/
 list< vector<void *>* > ItmCode::s_allExpList;
 vector<ItmCode *> ItmCode::s_allItmCode;
-int ItmCode::totalItmNo=0;
+int ItmCode::totalItmNo = 0;
 
 ItmCode::ItmCode()
 {
@@ -210,6 +212,7 @@ ItmCode::ItmCode()
     v2 = NULL;
     t3 = ItmCode::OPR_INVALID;
     v3 = NULL;
+
     ItmNo = 0;
 }
 
@@ -226,6 +229,7 @@ OperandType t3_t, void* v3_t)
     v2 = v2_t;
     t3 = t3_t;
     v3 = v3_t;
+
     ItmNo = 0;
 }
 
@@ -240,6 +244,7 @@ ItmCode::~ItmCode()
     v2 = NULL;
     t3 = ItmCode::OPR_INVALID;
     v3 = NULL;
+
     ItmNo = 0;
 }
 
@@ -263,6 +268,7 @@ void ItmCode::setTargetLabel(Symbol* label_t)
 vector<void* >* ItmCode::copyVectorToAllExpList(vector<void* > &vargList_t)
 {
     vector<void* > *newArgList = new vector<void* >();
+
     vector<void* >::iterator itr;
     for(itr = vargList_t.begin(); vargList_t.end() != itr; ++itr) {
         newArgList->push_back(*itr);
@@ -283,15 +289,12 @@ void ItmCode::addToAllExpList(vector<void* >* expList_t)
 void ItmCode::freeAllExpList()
 {
     list< vector<void* >* >::iterator itr;
-
     int i;
-
     for(i = 0, itr = s_allExpList.begin(); itr != s_allExpList.end(); ++itr) {
         if ( NULL != (*itr) ) {
             (*itr)->clear();
             delete(*itr);
         }
-
         ++i;
     }
 
@@ -347,9 +350,21 @@ void ItmCode::printOperand(ofstream& ofs_t, OperandType opType_t, void *op_t)
             ofs_t << ")";
             break;
         }
+        case OPR_CLASS_REFLIST: {
+            ofs_t << "OPR_CLASS_REFLIST(";
+
+            ofs_t << ")";
+            break;
+        }
+        case OPR_CLASS_REFLIST_POINTER: {
+            ofs_t << "OPR_CLASS_REFLIST_POINTER(";
+
+            ofs_t << ")";
+            break;
+        }
         case OPR_REGISTER: {
             ofs_t << "Reg(";
-            //ofs_t << ((Reg *)op_t)->getRegType();
+            ofs_t << ((Reg *)op_t)->getRegIndex();
             ofs_t << "): " << ((Reg *)op_t)->getTypeSfType();
             break;
         }
@@ -363,7 +378,8 @@ void ItmCode::printOperand(ofstream& ofs_t, OperandType opType_t, void *op_t)
 
 
     } else {
-        cout << "error in printOperand(): IR.txt is not open" << endl;
+        /*cout << "error in printOperand(): IR.txt is not open" << endl;*/
+        LogiMsg::logi("error in ItmCode::printOperand(): IR.txt is not open");
     }
 }
 
@@ -372,7 +388,7 @@ void ItmCode::printItmCode(ofstream &ofs_t)
 {
     if (ofs_t.is_open()) {
 
-        ofs_t << codeId << ": { " << iRType << " , ";
+        ofs_t << codeId << "#{ " << iRType << " , ";
         printOperand(ofs_t, t1, v1);
         ofs_t << " , ";
         printOperand(ofs_t, t2, v2);
@@ -381,7 +397,8 @@ void ItmCode::printItmCode(ofstream &ofs_t)
         ofs_t << " }\n";
 
     } else {
-        cout << "error in printItmCode(): IR.txt is not open" << endl;
+        /*cout << "error in printItmCode(): IR.txt is not open" << endl;*/
+        LogiMsg::logi("error in ItmCode::printItmCode(): IR.txt is not open");
     }
 }
 
@@ -389,7 +406,8 @@ void ItmCode::printItmCode(ofstream &ofs_t)
 void ItmCode::printAllItmCode()
 {
     ofstream ofs;
-    cout << ">>>printItmCode in IR.txt" << endl;
+    /*cout << ">>>printItmCode in IR.txt" << endl;*/
+    LogiMsg::logi(">>>printItmCode in IR.txt");
 
     ofs.open("IR.txt");
 
@@ -412,7 +430,7 @@ int ItmCode::getTotalItemNo()
 
 void ItmCode::setItmNo(int itmNo_t)
 {
-    ItmNo=itmNo_t;
+    ItmNo = itmNo_t;
 }
 
 int ItmCode::getItmNo()
@@ -592,6 +610,58 @@ void ItmCode::genCodeReturnReg(Reg *reg_t)
 
     Scope::s_curScope->addItemCode(newCode);
 }
+
+void ItmCode::genCodeEmitVar(Symbol* symbol_t)
+{
+    ItmCode *newCode = new ItmCode(IR_EMITVAR,
+    ItmCode::OPR_INVALID, NULL,
+    ItmCode::OPR_INVALID, NULL,
+    ItmCode::OPR_SYMBOL, symbol_t);
+
+    Scope::s_curScope->addItemCode(newCode);
+}
+
+void ItmCode::genCodeEmitClassMemVar(Symbol* symbol_t)
+{
+    ItmCode *newCode = new ItmCode(IR_EMITCLASSMEMVAR,
+    ItmCode::OPR_INVALID, NULL,
+    ItmCode::OPR_INVALID, NULL,
+    ItmCode::OPR_SYMBOL, symbol_t);
+
+    Scope::s_curScope->addItemCode(newCode);
+}
+
+
+void ItmCode::genCodeEmitGlobalFunc(Scope* scope_t)
+{
+    ItmCode *newCode = new ItmCode(IR_EMITFUNC,
+    ItmCode::OPR_INVALID, NULL,
+    ItmCode::OPR_INVALID, NULL,
+    ItmCode::OPR_SCOPE, scope_t);
+
+    Scope::s_curScope->addItemCode(newCode);
+}
+
+void ItmCode::genCodeEmitClassFunc(Scope* scope_t)
+{
+    ItmCode *newCode = new ItmCode(IR_EMITCLASSFUNC,
+    ItmCode::OPR_INVALID, NULL,
+    ItmCode::OPR_INVALID, NULL,
+    ItmCode::OPR_SCOPE, scope_t);
+
+    Scope::s_curScope->addItemCode(newCode);
+}
+
+void ItmCode::genCodeEmitClass(Scope* scope_t)
+{
+    ItmCode *newCode = new ItmCode(IR_EMITCLASS,
+    ItmCode::OPR_INVALID, NULL,
+    ItmCode::OPR_INVALID, NULL,
+    ItmCode::OPR_SCOPE, scope_t);
+
+    Scope::s_curScope->addItemCode(newCode);
+}
+
 
 
 

@@ -13,7 +13,8 @@ void PrimaryExpAst::walk()
 
     switch(nodeType) {
     case T_CPRIMEXP_ID: {
-        std::cout << "walk in T_CPRIMEXP_ID" << endl;
+        //std::cout << "walk in T_CPRIMEXP_ID" << endl;
+        LogiMsg::logi("walk in T_CPRIMEXP_ID", getLineno());
 
         childs.at(0)->walk();
         if (checkIsNotWalking()) {
@@ -28,8 +29,9 @@ void PrimaryExpAst::walk()
             tmpSymbol=Scope::s_curScope->resolveSymbol(s_context->tmpIdenName, Symbol::SYMBOL_VAR);
             if (!tmpSymbol)
             {
-                std::cout << "error: in T_CPRIMEXP_ID there is no symbol named "
-                << s_context->tmpIdenName << "at line " << getLineno() << std::endl;
+                /*std::cout << "error: in T_CPRIMEXP_ID there is no symbol named "
+                << s_context->tmpIdenName << "at line " << getLineno() << std::endl;*/
+                LogiMsg::logi("error: in T_CPRIMEXP_ID there is no symbol named", s_context->tmpIdenName, getLineno());
                 stopWalk();
                 return ;
             }
@@ -45,7 +47,8 @@ void PrimaryExpAst::walk()
     }
 
     case T_CPRIMEXP_CONST: {
-        std::cout << "walk in T_CPRIMEXP_CONST" << endl;
+        //std::cout << "walk in T_CPRIMEXP_CONST" << endl;
+        LogiMsg::logi("walk in T_CPRIMEXP_CONST", getLineno());
 
         childs.at(0)->walk();
         if (checkIsNotWalking()) {
@@ -56,7 +59,8 @@ void PrimaryExpAst::walk()
     }
 
     case T_CPRIMEXP_STR: {
-        std::cout << "walk in T_CPRIMEXP_STR" << endl;
+        //std::cout << "walk in T_CPRIMEXP_STR" << endl;
+        LogiMsg::logi("walk in T_CPRIMEXP_STR", getLineno());
 
         childs.at(0)->walk();
         if (checkIsNotWalking()) {
@@ -67,7 +71,8 @@ void PrimaryExpAst::walk()
     }
 
     case T_CPRIMEXP_EXP: {
-        std::cout << "walk in T_CPRIMEXP_EXP" << endl;
+        //std::cout << "walk in T_CPRIMEXP_EXP" << endl;
+        LogiMsg::logi("walk in T_CPRIMEXP_EXP", getLineno());
 
         childs.at(0)->walk();
         if (checkIsNotWalking()) {
@@ -78,7 +83,8 @@ void PrimaryExpAst::walk()
     }
 
     default: {
-        std::cout << "error in PrimaryExpAst: nodeType is invalid" << std::endl;
+        //std::cout << "error in PrimaryExpAst: nodeType is invalid" << std::endl;
+        LogiMsg::logi("error in PrimaryExpAst: nodeType is invalid", getLineno());
         break;
     }
     }

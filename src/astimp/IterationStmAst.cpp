@@ -16,8 +16,10 @@ void IterationStmAst::walk()
 
         Symbol *trueLabel = new Symbol(Symbol::SYMBOL_LABEL);
         Scope::s_curScope->defineSymbol(trueLabel);
-
         ItmCode::genCodeEmitLabel(trueLabel);
+
+        list<ItmCode *> trueLabelList = s_context->tmpTrueLabelList;
+        s_context->tmpTrueLabelList.clear();
 
         childs.at(0)->walk();
         if (checkIsNotWalking()) {
@@ -32,12 +34,13 @@ void IterationStmAst::walk()
 
         ItmCode::genCodeRegIsTrueAssign(r);
         ItmCode *newCode = ItmCode::genCodeRegIfNotGotoLabel(r, NULL);
-
         s_context->addToFalseLabelList(newCode);
 
         s_context->backFillTrueLabelList(trueLabel);
+        s_context->tmpTrueLabelList = trueLabelList;
 
         list<ItmCode *> falseLabelList = s_context->tmpFalseLabelList;
+        s_context->tmpFalseLabelList.clear();
 
         childs.at(1)->walk();
         if (checkIsNotWalking()) {
@@ -46,16 +49,11 @@ void IterationStmAst::walk()
 
         Symbol *falseLabel = new Symbol(Symbol::SYMBOL_LABEL);
         Scope::s_curScope->defineSymbol(falseLabel);
-
         ItmCode::genCodeEmitLabel(falseLabel);
 
-        s_context->tmpFalseLabelList = falseLabelList;
-        s_context->backFillFalseLabelList(falseLabel);
 
-        childs.at(2)->walk();
-        if (checkIsNotWalking()) {
-            return ;
-        }
+        s_context->backFillFalseLabelList(falseLabel);
+        s_context->tmpFalseLabelList = falseLabelList;
 
     }
 

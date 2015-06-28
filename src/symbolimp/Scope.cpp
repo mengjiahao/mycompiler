@@ -1,5 +1,6 @@
 #include "../../include/symbol/Scope.h"
 #include "../../include/symbol/Symbol.h"
+#include "../../include/LogiMsg.h"
 
 #include <iostream>
 #include <fstream>
@@ -21,6 +22,7 @@ Scope::Scope()
 {
     scopeId = 0;
     scopeType = SCOPE_INVALID;
+    scopeName = "";
 
     parent = NULL;
     superClass = NULL;
@@ -29,11 +31,12 @@ Scope::Scope()
     curStartOffset = 0;
     totalByteSize = 0;
     funcOffset = -1;
-    totalFuncByteSize=0;
+    totalFuncByteSize = 0;
 
     returnTypeClass = NULL;
 
     symbolsNo = 0;
+
     itemcodeVec.clear();
     //paraTypeNum=0;
     //paraType.clear();
@@ -52,7 +55,7 @@ Scope::~Scope()
     level = -1;
     curStartOffset = 0;
     totalByteSize = 0;
-    funcOffset = 0;
+    funcOffset = -1;
 
     if (NULL != returnTypeClass) {
         delete returnTypeClass;
@@ -172,12 +175,12 @@ int Scope::getFuncOffset()
 
 void Scope::setTotalFuncByteSize(int totalFuncByteSize_t)
 {
-    totalFuncByteSize=totalFuncByteSize_t;
+    totalFuncByteSize = totalFuncByteSize_t;
 }
 
 void Scope::incTotalFuncByteSize(int incByteSize_t)
 {
-    totalFuncByteSize+=incByteSize_t;
+    totalFuncByteSize += incByteSize_t;
 }
 
 int Scope::getTotalFuncByteSize()
@@ -188,9 +191,7 @@ int Scope::getTotalFuncByteSize()
 void Scope::setReturnTypeClass(TypeClass* typeClass_t)
 {
     if (NULL == returnTypeClass) {
-
         returnTypeClass = new TypeClass();
-
         returnTypeClass->clone(typeClass_t);
     }
 }
@@ -276,6 +277,7 @@ Symbol* Scope::searchDownUpSymbolVarMap(Scope *curScope_t, const string& symbolN
     if (NULL == result) {
 
         if ( (Scope::SCOPE_CLASS == curScope_t->scopeType) && (NULL != curScope_t->superClass) ) {
+
             result = searchDownUpSymbolVarMap(curScope_t->superClass, symbolName_t);
             if (NULL != result) {
                 return result;
@@ -283,6 +285,7 @@ Symbol* Scope::searchDownUpSymbolVarMap(Scope *curScope_t, const string& symbolN
         }
 
         if (NULL != curScope_t->parent) {
+
             result = searchDownUpSymbolVarMap(curScope_t->parent, symbolName_t);
             if (NULL != result) {
                 return result;
@@ -411,6 +414,7 @@ Symbol* Scope::searchTempVarMap(const string& tempVarName_t)
 int Scope::addToAllSymbolMap(Symbol* symbol_t)
 {
     if (NULL != symbol_t) {
+
         pair< map<unsigned long, Symbol *>::iterator, bool > insertFlag;
         insertFlag = s_allSymbolMap.insert( pair<unsigned long, Symbol *>(symbol_t->getSymbolId(), symbol_t) );
         if (true == insertFlag.second) {
@@ -615,10 +619,10 @@ Scope* Scope::pushScope(Scope* curScope_t, Scope* newScope_t)
             goto then_push;
 
         } else if ( NULL != curScope_t && (Scope::SCOPE_GLOBAL == curScope_t->getScopeType())
-        && ( (Scope::SCOPE_CLASS == newScope_t->getScopeType()) ||
-        (Scope::SCOPE_GLOBALFUNC == newScope_t->getScopeType()) ||
-        (Scope::SCOPE_GLOBALFUNCDECL == newScope_t->getScopeType()) ||
-        (Scope::SCOPE_GLOBALFUNCCHAN == newScope_t->getScopeType()) ) ) {
+        && ( (Scope::SCOPE_CLASS == newScope_t->getScopeType())
+        || (Scope::SCOPE_GLOBALFUNC == newScope_t->getScopeType())
+        || (Scope::SCOPE_GLOBALFUNCDECL == newScope_t->getScopeType())
+        || (Scope::SCOPE_GLOBALFUNCCHAN == newScope_t->getScopeType()) ) ) {
 
             goto then_push;
 
@@ -656,18 +660,13 @@ then_push:
 
         if (NULL != curScope_t) {
 
-            if (NULL == curScope_t->searchChildName(newScope_t->getScopeName())) {
-                curScope_t->addChild(newScope_t);
-
-                newScope_t->setParent(curScope_t);
-                newScope_t->setLevel(curScope_t->getlevel() + 1);
-
-            } else {
-                return NULL;
-            }
+            //guarantee no func or class has the same name with others
+            curScope_t->addChild(newScope_t);
+            newScope_t->setParent(curScope_t);
+            newScope_t->setLevel(curScope_t->getlevel() + 1);
 
 
-        } else {  //global
+        } else {  //globalScope init
 
             newScope_t->setParent(NULL);
             newScope_t->setLevel(0);
@@ -724,6 +723,7 @@ int Scope::defineSymbol(Symbol* symbol_t)
 
             addToSymbolSeqList(symbol_t);
 
+            addToAllSymbolMap(symbol_t);
             addToAllSymbolList(symbol_t);
             break;
         }
@@ -731,7 +731,7 @@ int Scope::defineSymbol(Symbol* symbol_t)
         case Symbol::SYMBOL_TEMPVAR: {
             symbol_t->setSymbolId();
 
-            string tmpVarName(".t");
+            string tmpVarName("@t");
             stringstream ss;
             string tmpStrId;
             ss << symbol_t->getSymbolId();
@@ -744,6 +744,7 @@ int Scope::defineSymbol(Symbol* symbol_t)
             addToSymbolTempVarMap(symbol_t);
 
             addToTempVarMap(symbol_t);
+
             addToAllSymbolMap(symbol_t);
             addToAllSymbolList(symbol_t);
 
@@ -790,6 +791,7 @@ int Scope::defineSymbol(Symbol* symbol_t)
             symbol_t->setSymbolId();
 
             addToConstantMap(symbol_t);
+
             addToAllSymbolMap(symbol_t);
             addToAllSymbolList(symbol_t);
 
@@ -800,6 +802,7 @@ int Scope::defineSymbol(Symbol* symbol_t)
             symbol_t->setSymbolId();
 
             addToConstantMap(symbol_t);
+
             addToAllSymbolMap(symbol_t);
             addToAllSymbolList(symbol_t);
 
@@ -810,6 +813,7 @@ int Scope::defineSymbol(Symbol* symbol_t)
             symbol_t->setSymbolId();
 
             addToConstantMap(symbol_t);
+
             addToAllSymbolMap(symbol_t);
             addToAllSymbolList(symbol_t);
 
@@ -820,6 +824,7 @@ int Scope::defineSymbol(Symbol* symbol_t)
             symbol_t->setSymbolId();
 
             addToConstantMap(symbol_t);
+
             addToAllSymbolMap(symbol_t);
             addToAllSymbolList(symbol_t);
 
@@ -839,6 +844,7 @@ int Scope::defineSymbol(Symbol* symbol_t)
             symbol_t->setSymbolName(labelVarName);
 
             addToLabelMap(symbol_t);
+
             addToAllSymbolMap(symbol_t);
             addToAllSymbolList(symbol_t);
 
@@ -847,7 +853,8 @@ int Scope::defineSymbol(Symbol* symbol_t)
 
         default: {
 
-            std::cout<<"error in defineSymbol(): SymbolType is invalid"<<std::endl;
+            /*std::cout<<"error in defineSymbol(): SymbolType is invalid"<<std::endl;*/
+            LogiMsg::logi("error in Scope::defineSymbol(): SymbolType is invalid");
             return 0;
         }
 
@@ -891,7 +898,8 @@ Symbol* Scope::resolveSymbol(const string& symbolName_t, Symbol::SymbolType symb
         break;
     }
     default: {
-        std::cout<<"error in resolveSymbol(): SymbolType is invalid"<<std::endl;
+        /*std::cout<<"error in resolveSymbol(): SymbolType is invalid"<<std::endl;*/
+        LogiMsg::logi("error in resolveSymbol(): SymbolType is invalid");
         return NULL;
     }
 
@@ -907,10 +915,11 @@ Symbol* Scope::resolveSymbolMemVar(Scope* classScope_t, const string &symbolName
     if (NULL == classScope_t ) {
         return NULL;
     }
-    while(Scope::SCOPE_CLASS != classScope_t->scopeType)
+
+    /*while(Scope::SCOPE_CLASS != classScope_t->scopeType)
     {
-        classScope_t=classScope_t->getParent();
-    }
+        classScope_t = classScope_t->getParent();
+    }*/
 
     Symbol *result = classScope_t->searchSymbolVarMap(symbolName_t);
 
@@ -947,8 +956,10 @@ Scope* Scope::resolveClassFuncScope(Scope* classScope_t, const string& scopeName
     if (NULL == classScope_t ) {
         return NULL;
     }
-    while (Scope::SCOPE_CLASS != classScope_t->getScopeType())
-        classScope_t=classScope_t->getParent();
+
+    while (Scope::SCOPE_CLASS != classScope_t->getScopeType()) {
+        classScope_t = classScope_t->getParent();
+    }  //for class member func
 
     Scope *scope_t = classScope_t->searchChildName(scopeName_t);
 
@@ -988,7 +999,8 @@ Scope* Scope::resolveGlobalFuncScope(const string& scopeName_t)
 void Scope::printScopeTree()
 {
     ofstream ofs;
-    cout << ">>>printScopeTree in SymbolTable.txt" << endl;
+    /*cout << ">>>printScopeTree in SymbolTable.txt" << endl;*/
+    LogiMsg::logi(">>>printScopeTree in SymbolTable.txt");
 
     ofs.open("SymbolTable.txt");
 
@@ -1007,7 +1019,8 @@ void Scope::printScope(ofstream &ofs_t)
     if (ofs_t.is_open()) {
         ofs_t << "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n";
         ofs_t << "$Scope: " << scopeId << " " << scopeType << " " << scopeName << "\n";
-        ofs_t << "$level: " << level << " " << curStartOffset << " " << totalByteSize << " " << funcOffset<<"\n";
+        ofs_t << "$level: " << level << " " << curStartOffset << " " << totalByteSize << " "
+        << funcOffset << " " << totalFuncByteSize << "\n";
         ofs_t << "$returnTypeClass:\n";
         if (NULL != returnTypeClass) {
             returnTypeClass->printTypeClass(ofs_t);
@@ -1036,7 +1049,8 @@ void Scope::printScope(ofstream &ofs_t)
 
 
     } else {
-        std::cout << "error in printScope(): SymbolTable.txt is not open" << std::endl;
+        /*std::cout << "error in printScope(): SymbolTable.txt is not open" << std::endl;*/
+        LogiMsg::logi("error in printScope(): SymbolTable.txt is not open");
 
     }
 

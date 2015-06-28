@@ -12,6 +12,10 @@ void LogicalOrExpAst::walk()
 
     switch(nodeType) {
     case T_CLOGOREXP_LOGOREXP_OR_OP_LOGANDEXP: {
+        LogiMsg::logi("walk in T_CLOGOREXP_LOGOREXP_OR_OP_LOGANDEXP", getLineno());
+
+        list<ItmCode *> falseLableList = s_context->tmpFalseLabelList;
+        s_context->tmpFalseLabelList.clear();
 
         childs.at(0)->walk();
         if (checkIsNotWalking()) {
@@ -25,16 +29,15 @@ void LogicalOrExpAst::walk()
         }
 
         ItmCode::genCodeRegIsTrueAssign(r1);
-
-        Symbol *falseLabel = new Symbol(Symbol::SYMBOL_LABEL);
-        Scope::s_curScope->defineSymbol(falseLabel);
-
-        ItmCode::genCodeEmitLabel(falseLabel);
-        s_context->backFillFalseLabelList(falseLabel);
-
         ItmCode *newCode = ItmCode::genCodeRegIfGotoLabel(r1, NULL);
         s_context->addToTrueLabelList(newCode);
 
+        Symbol *falseLabel = new Symbol(Symbol::SYMBOL_LABEL);
+        Scope::s_curScope->defineSymbol(falseLabel);
+        ItmCode::genCodeEmitLabel(falseLabel);
+
+        s_context->backFillFalseLabelList(falseLabel);
+        s_context->tmpFalseLabelList = falseLableList;
 
         childs.at(1)->walk();
         if (checkIsNotWalking()) {

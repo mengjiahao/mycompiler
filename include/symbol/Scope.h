@@ -47,6 +47,8 @@ public:
     map<string, Symbol *> symbolTempVarMap;
     list<Symbol *> symbolSeqList;  //sequencialVar
 
+    vector<ItmCode *> itemcodeVec;
+
     static map<string, Symbol *> s_labelMap;
     static map<string, Symbol *> s_constMap;
     static map<string, Symbol *> s_tempVarMap;
@@ -60,7 +62,7 @@ public:
 
     static Scope *s_curScope;
 
-    vector<ItmCode *> itemcodeVec;
+
 
 
     //int paraTypeNum;

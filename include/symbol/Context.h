@@ -16,7 +16,6 @@ using namespace std;
 class Context {
 
 public:
-    int state;
 
     TypeClass tmpDeclType;
     string tmpIdenName;
@@ -39,7 +38,6 @@ public:
 
     vector<void *> tmpExpList;
     vector<void *> *tmpExpListPointer;
-    int tmpExpNum;
 
     list<ItmCode *> tmpTrueLabelList;
     list<ItmCode *> tmpFalseLabelList;
