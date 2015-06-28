@@ -10,10 +10,10 @@ public:
 public:
 		ArgExpListAst(NodeAst::NodeType nodeType_t);
 
-		virtual bool processAssgExp(NodeType nodeType_t);
+		//virtual bool processAssgExp(NodeType nodeType_t);
 		virtual void walk();
 
-		virtual void genCode(Reg *reg_t, Symbol *symbol_t);
+		//virtual void genCode(Reg *reg_t, Symbol *symbol_t);
 };
 
 

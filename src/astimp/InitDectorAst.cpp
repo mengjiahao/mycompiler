@@ -26,6 +26,21 @@ void InitDectorAst::walk()
         case T_CINITDECTOR_ASSGIN_INITZER:{
             std::cout << "walk in T_CINITDECTOR_ASSGIN_INITZER" << endl;
 
+            childs.at(0)->walk();
+            if (checkIsNotWalking()) {
+                return ;
+            }
+            string tmpName = s_context->tmpIdenName;
+
+            childs.at(1)->walk();
+            if (checkIsNotWalking()) {
+                return ;
+            }
+            s_context->tmpIdenName=tmpName;
+            s_context->isFunc = false;
+
+
+
             break;
         }
         default:{

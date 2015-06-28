@@ -8,7 +8,7 @@ class  InitzerAst: public NodeAst {
 
 	public:
 		InitzerAst(NodeAst::NodeType nodeType_t);
-
+        virtual void walk();
 };
 
 #endif
