@@ -733,7 +733,7 @@ void NodeAst::walk()
     }
 
     //std::cout << "walk in NodeAst" << endl;
-    LogiMsg::logi("walk in NodeAst", getLineno());
+    LogiMsg::logi("walk in", getToken(), getLineno());
 
 
 
@@ -856,6 +856,7 @@ Reg* NodeAst::processChildOperand(int side_t)
             }
 
             if (side_t != rr->getRegIndex()) {
+
                 Reg *rl = Reg::getReg(side_t, rr->getTypeSfType());
 
                 s_context->clearSingleOperand();
@@ -941,6 +942,23 @@ void* NodeAst::processUnaryChildOperand()
         return NULL;
 
 }
+
+bool NodeAst::checkNodeTypeReturnValueIsBool(NodeAst::NodeType nodeType_t)
+{
+    if (T_CLOGOREXP_LOGOREXP_OR_OP_LOGANDEXP == nodeType_t
+        || T_CLOGANDEXP_LOGANDEXP_AND_OP_EQUALEXP == nodeType_t
+        || T_CEQUALEXP_EQUALEXP_EQ_OP_RELEXP == nodeType_t
+        || T_CEQUALEXP_EQUALEXP_NE_OP_RELEXP == nodeType_t
+        || T_CRELEXP_RELEXP_L_OP_ADDEXP == nodeType_t
+        || T_CRELEXP_RELEXP_G_OP_ADDEXP == nodeType_t
+        || T_CRELEXP_RELEXP_LE_OP_ADDEXP == nodeType_t
+        || T_CRELEXP_RELEXP_GE_OP_ADDEXP == nodeType_t) {
+            return true;
+    }
+    return false;
+
+}
+
 
 
 

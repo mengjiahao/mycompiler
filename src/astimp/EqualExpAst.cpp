@@ -36,7 +36,8 @@ void EqualExpAst::walk()
             return ;
         }
 
-        Reg *r3 = Reg::getReg(0, TypeClass::promoteType(r1->getTypeSfType(), r2->getTypeSfType()));
+        //Reg *r3 = Reg::getReg(0, TypeClass::promoteType(r1->getTypeSfType(), r2->getTypeSfType()));
+        Reg *r3 = Reg::getReg(0, TypeClass::SF_INT);
 
         s_context->tmpExpReg = r3;
         s_context->tmpOpType = ItmCode::OPR_REGISTER;
@@ -72,7 +73,8 @@ void EqualExpAst::walk()
             return ;
         }
 
-        Reg *r3 = Reg::getReg(0, TypeClass::promoteType(r1->getTypeSfType(), r2->getTypeSfType()));
+        //Reg *r3 = Reg::getReg(0, TypeClass::promoteType(r1->getTypeSfType(), r2->getTypeSfType()));
+        Reg *r3 = Reg::getReg(0, TypeClass::SF_INT);
 
         s_context->tmpExpReg = r3;
         s_context->tmpOpType = ItmCode::OPR_REGISTER;

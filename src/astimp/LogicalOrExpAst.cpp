@@ -14,7 +14,8 @@ void LogicalOrExpAst::walk()
     case T_CLOGOREXP_LOGOREXP_OR_OP_LOGANDEXP: {
         LogiMsg::logi("walk in T_CLOGOREXP_LOGOREXP_OR_OP_LOGANDEXP", getLineno());
 
-        list<ItmCode *> falseLableList = s_context->tmpFalseLabelList;
+        list<ItmCode *> falseLableList;
+        ItmCode::copyLabelList(falseLableList, s_context->tmpFalseLabelList);
         s_context->tmpFalseLabelList.clear();
 
         childs.at(0)->walk();
@@ -28,7 +29,19 @@ void LogicalOrExpAst::walk()
             return ;
         }
 
-        ItmCode::genCodeRegIsTrueAssign(r1);
+        //ItmCode::genCodeRegIsTrueAssign(r1);
+        if (checkNodeTypeReturnValueIsBool(childs.at(0)->getNodeType())) {
+
+        } else {
+
+             r1 = ItmCode::genCodeRegIsTrueAssign(r1);
+             if (NULL == r1) {
+                stopWalk();
+                return ;
+             }
+             s_context->tmpExpReg = r1;
+        }
+
         ItmCode *newCode = ItmCode::genCodeRegIfGotoLabel(r1, NULL);
         s_context->addToTrueLabelList(newCode);
 
@@ -37,7 +50,8 @@ void LogicalOrExpAst::walk()
         ItmCode::genCodeEmitLabel(falseLabel);
 
         s_context->backFillFalseLabelList(falseLabel);
-        s_context->tmpFalseLabelList = falseLableList;
+        ItmCode::copyLabelList(s_context->tmpFalseLabelList, falseLableList);
+
 
         childs.at(1)->walk();
         if (checkIsNotWalking()) {
@@ -49,15 +63,27 @@ void LogicalOrExpAst::walk()
             stopWalk();
             return ;
         }
-        ItmCode::genCodeRegIsTrueAssign(r2);
 
-        Reg *r3 = Reg::getReg(0, TypeClass::promoteType(r1->getTypeSfType(), r2->getTypeSfType()));
+
+        //ItmCode::genCodeRegIsTrueAssign(r2);
+        if (checkNodeTypeReturnValueIsBool(childs.at(1)->getNodeType())) {
+
+        } else {
+             r2 = ItmCode::genCodeRegIsTrueAssign(r2);
+             if (NULL == r2) {
+                stopWalk();
+                return ;
+             }
+             s_context->tmpExpReg = r2;
+        }
+
+        //Reg *r3 = Reg::getReg(0, TypeClass::promoteType(r1->getTypeSfType(), r2->getTypeSfType()));
+        /*Reg *r3 = Reg::getReg(0, TypeClass::SF_INT);
 
         s_context->tmpExpReg = r3;
         s_context->tmpOpType = ItmCode::OPR_REGISTER;
 
-
-        ItmCode::genCodeRegBinOpRegToReg(ItmCode::IR_LOG_OR_OP, r1, r2, r3);
+        ItmCode::genCodeRegBinOpRegToReg(ItmCode::IR_LOG_OR_OP, r1, r2, r3);*/
 
 
         break;

@@ -19,7 +19,7 @@ void AssignExpAst::walk()
         if (checkIsNotWalking()) {
             return ;
         }
-        Reg *r = processChildOperand(0);
+        Reg *r = processChildOperand(0);   //must convert to reg
         if (NULL == r) {
             LogiMsg::logi("error in T_CASSIGNEXP_CONDITIONALEXP: assigment operand is invalid", getLineno());
             stopWalk();

@@ -261,8 +261,24 @@ unsigned long ItmCode::getCodeId()
 
 void ItmCode::setTargetLabel(Symbol* label_t)
 {
+    if (NULL == label_t) {
+        LogiMsg::logi("error in ItmCode::setTargetLabel(): label_t is NULL");
+        return ;
+    }
     v3 = label_t;
 }
+
+void ItmCode::copyLabelList(list<ItmCode* >& a, list<ItmCode *>& b)
+{
+    a.clear();
+
+    list<ItmCode *>::iterator itrb;
+    for(itrb = b.begin(); b.end() != itrb; ++itrb) {
+        a.push_back(*itrb);
+    }
+
+}
+
 
 
 vector<void* >* ItmCode::copyVectorToAllExpList(vector<void* > &vargList_t)
@@ -277,6 +293,8 @@ vector<void* >* ItmCode::copyVectorToAllExpList(vector<void* > &vargList_t)
     addToAllExpList(newArgList);
     return newArgList;
 }
+
+
 
 
 void ItmCode::addToAllExpList(vector<void* >* expList_t)
@@ -335,34 +353,54 @@ void ItmCode::printOperand(ofstream& ofs_t, OperandType opType_t, void *op_t)
 
         switch(opType_t) {
         case OPR_SYMBOL: {
+        if (NULL == op_t) {
+            cout << "!sb" << endl;
+        }
+
             ofs_t << "Symbol(" << ((Symbol *)op_t)->getSymbolId()
-            << "): " << ((Symbol *)op_t)->getSymbolName();
+            << "): " << ((Symbol *)op_t)->getTypeClass()->getTypeSfType()
+            << " " << ((Symbol *)op_t)->getSymbolName();
             break;
         }
         case OPR_SCOPE: {
+        if (NULL == op_t) {
+            cout << "!sc" << endl;
+        }
             ofs_t << "Scope(" << ((Scope *)op_t)->getScopeId()
             << "): " << ((Scope *)op_t)->getScopeId();
             break;
         }
         case OPR_ARGLIST: {
+        if (NULL == op_t) {
+            cout << "!ar" << endl;
+        }
             ofs_t << "ARGLIST(";
 
             ofs_t << ")";
             break;
         }
         case OPR_CLASS_REFLIST: {
+        if (NULL == op_t) {
+            cout << "!cr" << endl;
+        }
             ofs_t << "OPR_CLASS_REFLIST(";
 
             ofs_t << ")";
             break;
         }
         case OPR_CLASS_REFLIST_POINTER: {
+        if (NULL == op_t) {
+            cout << "!crp" << endl;
+        }
             ofs_t << "OPR_CLASS_REFLIST_POINTER(";
 
             ofs_t << ")";
             break;
         }
         case OPR_REGISTER: {
+        if (NULL == op_t) {
+            cout << "!r" << endl;
+        }
             ofs_t << "Reg(";
             ofs_t << ((Reg *)op_t)->getRegIndex();
             ofs_t << "): " << ((Reg *)op_t)->getTypeSfType();
@@ -402,14 +440,169 @@ void ItmCode::printItmCode(ofstream &ofs_t)
     }
 }
 
+void ItmCode::printSymboLSeqListItmCode(Scope* root_t, ofstream& ofs_t)
+{
+    if (NULL == root_t) {
+        LogiMsg::logi("error in printSymboLSeqListItmCode(): root_t is NULL");
+    }
+
+    if (!ofs_t.is_open()) {
+       LogiMsg::logi("error in printSymboLSeqListItmCode(): cannot open IR1.txt");
+       return ;
+    }
+
+    list<Symbol *>::iterator itr;
+    for(itr = root_t->symbolSeqList.begin(); root_t->symbolSeqList.end() != itr; ++itr) {
+        ofs_t << "{ emit, " << (*itr)->getSymbolName()
+         << "(" << (*itr)->getSymbolId() << ")}\n";
+    }
+
+    vector<ItmCode *>::iterator vitr;
+    for(vitr = root_t->itemcodeVec.begin(); root_t->itemcodeVec.end() != vitr; ++vitr) {
+        (*vitr)->printItmCode(ofs_t);
+    }
+
+}
+
+
+void ItmCode::printScopeItmCode(Scope *root_t, ofstream &ofs_t)
+{
+    if (NULL == root_t) {
+        LogiMsg::logi("error in printAllItmCode(): root_t is NULL");
+    }
+
+
+    if (!ofs_t.is_open()) {
+       LogiMsg::logi("error in printAllItmCode(): cannot open IR1.txt");
+       return ;
+    }
+
+    switch(root_t->getScopeType()) {
+    case Scope::SCOPE_GLOBAL: {
+        ofs_t << ".global_scope\n";
+        printSymboLSeqListItmCode(root_t, ofs_t);
+
+        vector<Scope *>::iterator itr;
+        for(itr = root_t->childs.begin(); root_t->childs.end() != itr; ++itr) {
+            printScopeItmCode((*itr), ofs_t);
+        }
+        break ;
+    }
+
+    case Scope::SCOPE_CLASS: {
+        ofs_t << ".class_scope " << root_t->getScopeName() << "\n";
+        printSymboLSeqListItmCode(root_t, ofs_t);
+
+        vector<Scope *>::iterator itr;
+        for(itr = root_t->childs.begin(); root_t->childs.end() != itr; ++itr) {
+            printScopeItmCode((*itr), ofs_t);
+        }
+        break ;
+    }
+
+    case Scope::SCOPE_GLOBALFUNC: {
+        ofs_t << ".global_func_scope " << root_t->getScopeName() << "\n";
+        printSymboLSeqListItmCode(root_t, ofs_t);
+
+        vector<Scope *>::iterator itr;
+        for(itr = root_t->childs.begin(); root_t->childs.end() != itr; ++itr) {
+            printScopeItmCode((*itr), ofs_t);
+        }
+        break ;
+    }
+
+    case Scope::SCOPE_GLOBALFUNCDECL: {
+        ofs_t << ".global_func_decl_scope " << root_t->getScopeName() << "\n";
+        printSymboLSeqListItmCode(root_t, ofs_t);
+
+        vector<Scope *>::iterator itr;
+        for(itr = root_t->childs.begin(); root_t->childs.end() != itr; ++itr) {
+            printScopeItmCode((*itr), ofs_t);
+        }
+        break ;
+    }
+
+    case Scope::SCOPE_GLOBALFUNCCHAN: {
+        ofs_t << ".global_func_change_scope " << root_t->getScopeName() << "\n";
+        printSymboLSeqListItmCode(root_t, ofs_t);
+
+        vector<Scope *>::iterator itr;
+        for(itr = root_t->childs.begin(); root_t->childs.end() != itr; ++itr) {
+            printScopeItmCode((*itr), ofs_t);
+        }
+        break;
+    }
+
+    case Scope::SCOPE_CLASSFUNC: {
+        ofs_t << ".class_func_scope " << root_t->getScopeName() << "\n";
+        printSymboLSeqListItmCode(root_t, ofs_t);
+
+        vector<Scope *>::iterator itr;
+        for(itr = root_t->childs.begin(); root_t->childs.end() != itr; ++itr) {
+            printScopeItmCode((*itr), ofs_t);
+        }
+        break;
+    }
+
+    case Scope::SCOPE_LOCAL: {
+        ofs_t << ".local_scope " << "\n";
+        printSymboLSeqListItmCode(root_t, ofs_t);
+
+        vector<Scope *>::iterator itr;
+        for(itr = root_t->childs.begin(); root_t->childs.end() != itr; ++itr) {
+            printScopeItmCode((*itr), ofs_t);
+        }
+        break;
+    }
+
+    default: {
+        LogiMsg::logi("error in ItmCode::printScopeItmCode: root_t->getScopeType() is invalid");
+        break;
+    }
+    }
+
+
+
+
+}
+
+void ItmCode::printSymbolTableItmCode(Scope* root_t)
+{
+
+    if (NULL == root_t) {
+        LogiMsg::logi("error in printTreeItmCode(): root_t is NULL");
+    }
+
+    ofstream ofs;
+    LogiMsg::logi(">>>printItmCode in IR1.txt");
+
+    ofs.open("IR1.txt");
+
+
+    if (!ofs.is_open()) {
+       LogiMsg::logi("error in printAllItmCode(): cannot open IR1.txt");
+       ofs.close();
+       return ;
+    }
+
+    printScopeItmCode(root_t, ofs);
+
+    ofs.close();
+}
 
 void ItmCode::printAllItmCode()
 {
     ofstream ofs;
-    /*cout << ">>>printItmCode in IR.txt" << endl;*/
-    LogiMsg::logi(">>>printItmCode in IR.txt");
+    LogiMsg::logi(">>>printItmCode in IR2.txt");
 
-    ofs.open("IR.txt");
+    ofs.open("IR2.txt");
+
+
+    if (!ofs.is_open()) {
+       LogiMsg::logi("error in printAllItmCode(): cannot open IR2.txt");
+       ofs.close();
+       return ;
+    }
 
     vector<ItmCode *>::iterator itr;
     for (itr = s_allItmCode.begin(); itr != s_allItmCode.end(); ++itr) {
@@ -418,9 +611,10 @@ void ItmCode::printAllItmCode()
         }
     }
 
-
     ofs.close();
 }
+
+
 
 
 int ItmCode::getTotalItemNo()
@@ -443,11 +637,15 @@ OperandType t1_t, void* v1_t,
 OperandType t2_t, void* v2_t,
 OperandType t3_t, void* v3_t)
 {
-
+    LogiMsg::logi("error in genCode(): the func is invalid");
 }
 
 void ItmCode::genCodeMoveRegToReg(Reg* opReg_t, Reg* rstReg_t)
 {
+    if (NULL == opReg_t || NULL == rstReg_t) {
+        LogiMsg::logi("error in genCodeMoveRegToReg(): exist one of params is NULL");
+    }
+
     ItmCode *newCode = new ItmCode(ItmCode::IR_ASSIGN_OP,
     ItmCode::OPR_REGISTER, opReg_t,
     ItmCode::OPR_INVALID, NULL,
@@ -459,6 +657,10 @@ void ItmCode::genCodeMoveRegToReg(Reg* opReg_t, Reg* rstReg_t)
 
 void ItmCode::genCodeMoveSymbolToReg(Symbol* symbol_t, Reg* rstReg_t)
 {
+    if (NULL == symbol_t || NULL == rstReg_t) {
+        LogiMsg::logi("error in genCodeMoveSymbolToReg(): exist one of params is NULL");
+    }
+
     ItmCode *newCode = new ItmCode(ItmCode::IR_ASSIGN_OP,
     ItmCode::OPR_SYMBOL, symbol_t,
     ItmCode::OPR_INVALID, NULL,
@@ -469,6 +671,10 @@ void ItmCode::genCodeMoveSymbolToReg(Symbol* symbol_t, Reg* rstReg_t)
 
 void ItmCode::genCodeMoveRefListToReg(vector<void* >* refList_t, Reg *rstReg_t)
 {
+    if (NULL == refList_t || NULL == rstReg_t) {
+        LogiMsg::logi("error in genCodeMoveRefListToReg(): exist one of params is NULL");
+    }
+
     ItmCode *newCode = new ItmCode(ItmCode::IR_ASSIGN_OP,
     ItmCode::OPR_CLASS_REFLIST_POINTER, refList_t,
     ItmCode::OPR_INVALID, NULL,
@@ -479,6 +685,10 @@ void ItmCode::genCodeMoveRefListToReg(vector<void* >* refList_t, Reg *rstReg_t)
 
 void ItmCode::genCodeRegBinOpRegToReg(IRtype iRType_t, Reg* reg1_t, Reg* reg2_t, Reg* rstReg_t)
 {
+    if (NULL == reg1_t || NULL == reg2_t || NULL == rstReg_t) {
+        LogiMsg::logi("error in genCodeRegBinOpRegToReg(): exist one of params is NULL");
+    }
+
     ItmCode *newCode = new ItmCode(iRType_t,
     ItmCode::OPR_REGISTER, reg1_t,
     ItmCode::OPR_REGISTER, reg2_t,
@@ -487,19 +697,33 @@ void ItmCode::genCodeRegBinOpRegToReg(IRtype iRType_t, Reg* reg1_t, Reg* reg2_t,
     Scope::s_curScope->addItemCode(newCode);
 }
 
-void ItmCode::genCodeRegIsTrueAssign(Reg* reg_t)
+Reg* ItmCode::genCodeRegIsTrueAssign(Reg* reg_t)
 {
+    if (NULL == reg_t) {
+        LogiMsg::logi("error in genCodeRegIsTrueAssign(): exist one of params is NULL");
+        return NULL;
+    }
+
+    Reg *boolReg = Reg::getReg(reg_t->getRegIndex(), TypeClass::SF_INT);
+
     ItmCode *newCode = new ItmCode(ItmCode::IR_REG_ISTRUE_ASSIGN,
     ItmCode::OPR_REGISTER, reg_t,
     ItmCode::OPR_INVALID, NULL,
-    ItmCode::OPR_REGISTER, reg_t);
+    ItmCode::OPR_REGISTER, boolReg);
 
     Scope::s_curScope->addItemCode(newCode);
+
+    return boolReg;
+
 }
 
 
 ItmCode* ItmCode::genCodeRegIfNotGotoLabel(Reg* reg_t, Symbol* label_t)
 {
+    if (NULL == reg_t) {
+        LogiMsg::logi("error in genCodeRegIfNotGotoLabel(): exist one of params is NULL");
+    }
+
     ItmCode *newCode = new ItmCode(ItmCode::IR_IF_NOT_GOTO,
     ItmCode::OPR_REGISTER, reg_t,
     ItmCode::OPR_INVALID, NULL,
@@ -511,6 +735,10 @@ ItmCode* ItmCode::genCodeRegIfNotGotoLabel(Reg* reg_t, Symbol* label_t)
 
 ItmCode* ItmCode::genCodeRegIfGotoLabel(Reg* reg_t, Symbol* label_t)
 {
+    if (NULL == reg_t) {
+        LogiMsg::logi("error in genCodeRegIfGotoLabel(): exist one of params is NULL");
+    }
+
     ItmCode *newCode = new ItmCode(ItmCode::IR_IF_GOTO,
     ItmCode::OPR_REGISTER, reg_t,
     ItmCode::OPR_INVALID, NULL,
@@ -523,6 +751,10 @@ ItmCode* ItmCode::genCodeRegIfGotoLabel(Reg* reg_t, Symbol* label_t)
 
 void ItmCode::genCodeEmitLabel(Symbol* label_t)
 {
+    if (NULL == label_t) {
+        LogiMsg::logi("error in genCodeRegIfGotoLabel(): exist one of params is NULL");
+    }
+
     ItmCode *newCode = new ItmCode(ItmCode::IR_EMITLABEL,
     ItmCode::OPR_INVALID, NULL,
     ItmCode::OPR_INVALID, NULL,
@@ -531,8 +763,27 @@ void ItmCode::genCodeEmitLabel(Symbol* label_t)
     Scope::s_curScope->addItemCode(newCode);
 }
 
+void ItmCode::genCodeGotoBeginLabel(Symbol* label_t)
+{
+    if (NULL == label_t) {
+        LogiMsg::logi("error in genCodeGotoBeginLabel(): exist one of params is NULL");
+    }
+
+    ItmCode *newCode = new ItmCode(ItmCode::IR_GOTO,
+    ItmCode::OPR_INVALID, NULL,
+    ItmCode::OPR_INVALID, NULL,
+    ItmCode::OPR_SYMBOL, label_t);
+
+    Scope::s_curScope->addItemCode(newCode);
+}
+
+
 void ItmCode::genCodeUnaryOpClassRefList(IRtype iRType_t, vector<void* >* refList_t)
 {
+    if (NULL == refList_t) {
+        LogiMsg::logi("error in genCodeUnaryOpClassRefList(): exist one of params is NULL");
+    }
+
     ItmCode *newCode = new ItmCode(iRType_t,
     ItmCode::OPR_CLASS_REFLIST_POINTER, refList_t,
     ItmCode::OPR_INVALID, NULL,
@@ -543,6 +794,10 @@ void ItmCode::genCodeUnaryOpClassRefList(IRtype iRType_t, vector<void* >* refLis
 
 void ItmCode::genCodeUnaryOpSymbol(IRtype iRType_t, Symbol* symbol_t)
 {
+    if (NULL == symbol_t) {
+        LogiMsg::logi("error in genCodeUnaryOpSymbol(): exist one of params is NULL");
+    }
+
     ItmCode *newCode = new ItmCode(iRType_t,
     ItmCode::OPR_SYMBOL, symbol_t,
     ItmCode::OPR_INVALID, NULL,
@@ -553,6 +808,10 @@ void ItmCode::genCodeUnaryOpSymbol(IRtype iRType_t, Symbol* symbol_t)
 
 void ItmCode::genCodeAssignRegToSymbol(IRtype iRType_t, Reg* reg_t, Symbol* symbol_t)
 {
+    if (NULL == reg_t || NULL == symbol_t) {
+        LogiMsg::logi("error in genCodeAssignRegToSymbol(): exist one of params is NULL");
+    }
+
     ItmCode *newCode = new ItmCode(iRType_t,
     ItmCode::OPR_REGISTER, reg_t,
     ItmCode::OPR_INVALID, NULL,
@@ -563,6 +822,10 @@ void ItmCode::genCodeAssignRegToSymbol(IRtype iRType_t, Reg* reg_t, Symbol* symb
 
 void ItmCode::genCodeAssignRegToRefList(IRtype iRType_t, Reg* reg_t, vector<void* >* refList_t)
 {
+    if (NULL == reg_t || NULL == refList_t) {
+        LogiMsg::logi("error in genCodeAssignRegToRefList(): exist one of params is NULL");
+    }
+
     ItmCode *newCode = new ItmCode(iRType_t,
     ItmCode::OPR_REGISTER, reg_t,
     ItmCode::OPR_INVALID, NULL,
@@ -573,6 +836,10 @@ void ItmCode::genCodeAssignRegToRefList(IRtype iRType_t, Reg* reg_t, vector<void
 
 void ItmCode::genCodeNewClassIdToReg(Reg* reg_t)
 {
+    if (NULL == reg_t) {
+        LogiMsg::logi("error in genCodeNewClassIdToReg(): exist one of params is NULL");
+    }
+
     ItmCode *newCode = new ItmCode(IR_NEW_OP,
     ItmCode::OPR_INVALID, NULL,
     ItmCode::OPR_INVALID, NULL,
@@ -583,6 +850,10 @@ void ItmCode::genCodeNewClassIdToReg(Reg* reg_t)
 
 void ItmCode::genCodeDeleteClassRefId(Symbol* symboL_t)
 {
+    if (NULL == symboL_t) {
+        LogiMsg::logi("error in genCodeDeleteClassRefId(): exist one of params is NULL");
+    }
+
     ItmCode *newCode = new ItmCode(IR_DELETE_OP,
     ItmCode::OPR_SYMBOL, symboL_t,
     ItmCode::OPR_INVALID, NULL,
@@ -603,6 +874,10 @@ void ItmCode::genCodeReturnVoid()
 
 void ItmCode::genCodeReturnReg(Reg *reg_t)
 {
+    if (NULL == reg_t) {
+        LogiMsg::logi("error in genCodeReturnReg(): exist one of params is NULL");
+    }
+
     ItmCode *newCode = new ItmCode(IR_RETURN_REG,
     ItmCode::OPR_INVALID, NULL,
     ItmCode::OPR_INVALID, NULL,

@@ -15,7 +15,7 @@ void UnaryExpAst::walk()
 
     switch(nodeType) {
     case T_CUNARYEXP_INC_OP_UNARAYEXP: {
-        LogiMsg::logi("T_CUNARYEXP_INC_OP_UNARAYEXP", getLineno());
+        LogiMsg::logi("walk in T_CUNARYEXP_INC_OP_UNARAYEXP", getLineno());
 
         childs.at(0)->walk();
         if (checkIsNotWalking()) {
@@ -48,7 +48,7 @@ void UnaryExpAst::walk()
     }
 
     case T_CUNARYEXP_DEC_OP_UNARYEXP: {
-        LogiMsg::logi("T_CUNARYEXP_DEC_OP_UNARYEXP", getLineno());
+        LogiMsg::logi("walk in T_CUNARYEXP_DEC_OP_UNARYEXP", getLineno());
 
         childs.at(0)->walk();
         if (checkIsNotWalking()) {
@@ -79,7 +79,7 @@ void UnaryExpAst::walk()
     }
 
     case T_CUNARYEXP_UNARY_OP_CASTEXP: {
-        LogiMsg::logi("T_CUNARYEXP_UNARY_OP_CASTEXP", getLineno());
+        LogiMsg::logi("walk in T_CUNARYEXP_UNARY_OP_CASTEXP", getLineno());
 
 
         NodeType uopNodeType = childs.at(0)->getNodeType();

@@ -156,6 +156,12 @@ void Context::addToTrueLabelList(ItmCode* newCode_t)
 
 }
 
+void Context::clearLabelList()
+{
+    tmpTrueLabelList.clear();
+    tmpFalseLabelList.clear();
+}
+
 void Context::addToFalseLabelList(ItmCode* newCode_t)
 {
     if (NULL != newCode_t) {
@@ -163,11 +169,7 @@ void Context::addToFalseLabelList(ItmCode* newCode_t)
     }
 }
 
-void Context::clearLabelList()
-{
-    tmpTrueLabelList.clear();
-    tmpFalseLabelList.clear();
-}
+
 
 void Context::backFillTrueLabelList(Symbol* trueLabel_t)
 {

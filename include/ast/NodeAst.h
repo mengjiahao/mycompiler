@@ -419,14 +419,15 @@ class NodeAst {
 		static void dotBfsNodeTree(NodeAst *root_t);
 
 		virtual void stopWalk();
-		virtual bool checkIsNotWalking();
+		static bool checkIsNotWalking();
 
 		virtual void walk();
-
 
 		virtual Reg* processChildOperand(int side_t);
 
 		virtual void* processUnaryChildOperand();
+
+		virtual bool checkNodeTypeReturnValueIsBool(NodeAst::NodeType nodeType_t);
 
 
 };

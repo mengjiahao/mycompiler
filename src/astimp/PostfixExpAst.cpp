@@ -155,7 +155,7 @@ void PostfixExpAst::walk()
         }
         if (s_context->tmpExpSymbol->typeClass.scopeType==NULL)
         {
-            std::cout << "error in T_CPOSTEXP_POSTEXP_REF_ID the id " << s_context->tmpExpSymbol->getSymbolName() << "is not a class type " << std::endl;
+            std::cout << "error in T_CPOSTEXP_POSTEXP_REF_ID the id " << s_context->tmpExpSymbol->getSymbolName() << " is not a class type " << std::endl;
             stopWalk();
             return;
         }

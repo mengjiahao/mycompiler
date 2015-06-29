@@ -125,9 +125,7 @@ OperandType t3_t = ItmCode::OPR_INVALID, void* v3_t = NULL);
     virtual unsigned long getCodeId();
 
     virtual void setTargetLabel(Symbol *label_t);
-
-    virtual void printOperand(ofstream &ofs_t, OperandType opType_t, void *op_t);
-    virtual void printItmCode(ofstream &ofs_t);
+    static void copyLabelList(list<ItmCode *> &a, list<ItmCode *> &b);
 
     static vector<void* >* copyVectorToAllExpList(vector<void *> &vargList_t);
     static void addToAllExpList(vector<void *> *expList_t);
@@ -136,6 +134,12 @@ OperandType t3_t = ItmCode::OPR_INVALID, void* v3_t = NULL);
     static void addToAllItmCode(ItmCode *itmCode_t);
     static void freeAllItmCode();
 
+
+    virtual void printOperand(ofstream &ofs_t, OperandType opType_t, void *op_t);
+    virtual void printItmCode(ofstream &ofs_t);
+    static void printSymboLSeqListItmCode(Scope *root_t, ofstream &ofs_t);
+    static void printScopeItmCode(Scope *root_t, ofstream &ofs_t);
+    static void printSymbolTableItmCode(Scope *root_t);
     static void printAllItmCode();
 
     static int getTotalItemNo();
@@ -151,10 +155,11 @@ OperandType t3_t = ItmCode::OPR_INVALID, void* v3_t = NULL);
     static void genCodeMoveSymbolToReg(Symbol *symbol_t, Reg *rstReg_t);
     static void genCodeMoveRefListToReg(vector<void *> *refList_t, Reg *rstReg_t);
     static void genCodeRegBinOpRegToReg(IRtype iRType_t, Reg *reg1_t, Reg *reg2_t, Reg *rstReg_t);
-    static void genCodeRegIsTrueAssign(Reg *reg_t);
+    static Reg* genCodeRegIsTrueAssign(Reg *reg_t);
     static ItmCode* genCodeRegIfNotGotoLabel(Reg *reg_t, Symbol* label_t);
     static ItmCode* genCodeRegIfGotoLabel(Reg *reg_t, Symbol* label_t);
     static void genCodeEmitLabel(Symbol *label_t);
+    static void genCodeGotoBeginLabel(Symbol *label_t);
     static void genCodeUnaryOpClassRefList(IRtype iRType_t, vector<void *> *refList_t);
     static void genCodeUnaryOpSymbol(IRtype iRType_t, Symbol *symbol_t);
     static void genCodeAssignRegToSymbol(IRtype iRType_t, Reg *reg_t, Symbol *symbol_t);

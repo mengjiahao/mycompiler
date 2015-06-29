@@ -14,7 +14,6 @@ void ExpStmAst::walk()
     case T_CEXPSTM_VOID: {
         LogiMsg::logi("walk in T_CEXPSTM_VOID", getLineno());
 
-        s_context->clearAllContext();
         break;
     }
 
@@ -25,8 +24,6 @@ void ExpStmAst::walk()
         if (checkIsNotWalking()) {
             return ;
         }
-
-        s_context->clearAllContext();
 
         break;
     }
