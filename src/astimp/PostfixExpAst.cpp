@@ -44,19 +44,20 @@ void PostfixExpAst::walk()
         {
             Scope *tmpScope=NULL;
 
-            if (NULL != (tmpScope=Scope::s_curScope->resolveGlobalFuncScope(s_context->tmpIdenName)))
+
+            if (NULL != (tmpScope=Scope::resolveClassFuncScope(Scope::s_curScope, s_context->tmpIdenName)))
             {
                 Reg *result=Reg::getReg(0, tmpScope->getReturnTypeClass()->getTypeSfType());
-                ItmCode *tmpCode=new ItmCode(ItmCode::IR_CALLFUNC, ItmCode::OPR_SCOPE ,(void *)tmpScope, ItmCode::OPR_INVALID, NULL, ItmCode::OPR_REGISTER, result);
+                ItmCode *tmpCode=new ItmCode(ItmCode::IR_CALLCLASSFUNC, ItmCode::OPR_SCOPE ,(void *)tmpScope, ItmCode::OPR_INVALID, NULL, ItmCode::OPR_REGISTER, result);
                 Scope::s_curScope->addItemCode(tmpCode);
                 s_context->clearContext();
                 s_context->tmpOpType=ItmCode::OPR_REGISTER;
                 s_context->tmpExpReg=result;
             }
-            else if (NULL != (tmpScope=Scope::resolveClassFuncScope(Scope::s_curScope, s_context->tmpIdenName)))
+            else if (NULL != (tmpScope=Scope::s_curScope->resolveGlobalFuncScope(s_context->tmpIdenName)))
             {
                 Reg *result=Reg::getReg(0, tmpScope->getReturnTypeClass()->getTypeSfType());
-                ItmCode *tmpCode=new ItmCode(ItmCode::IR_CALLCLASSFUNC, ItmCode::OPR_SCOPE ,(void *)tmpScope, ItmCode::OPR_INVALID, NULL, ItmCode::OPR_REGISTER, result);
+                ItmCode *tmpCode=new ItmCode(ItmCode::IR_CALLFUNC, ItmCode::OPR_SCOPE ,(void *)tmpScope, ItmCode::OPR_INVALID, NULL, ItmCode::OPR_REGISTER, result);
                 Scope::s_curScope->addItemCode(tmpCode);
                 s_context->clearContext();
                 s_context->tmpOpType=ItmCode::OPR_REGISTER;
@@ -109,23 +110,8 @@ void PostfixExpAst::walk()
         else
         {
             Scope *tmpScope=NULL;
-            if (NULL != (tmpScope=Scope::s_curScope->resolveGlobalFuncScope(s_context->tmpIdenName)))
-            {
-                Reg *result=Reg::getReg(0, tmpScope->getReturnTypeClass()->getTypeSfType());
-                childs.at(1)->walk();
-                if (checkIsNotWalking()) {
-                    return ;
-                }
 
-                vector<void* >* arguList = ItmCode::copyVectorToAllExpList(s_context->tmpExpList);
-
-                ItmCode *tmpCode=new ItmCode(ItmCode::IR_CALLFUNC, ItmCode::OPR_SCOPE ,(void *)tmpScope, ItmCode::OPR_ARGLIST, (void *)arguList, ItmCode::OPR_REGISTER, result);
-                Scope::s_curScope->addItemCode(tmpCode);
-                s_context->clearContext();
-                s_context->tmpOpType=ItmCode::OPR_REGISTER;
-                s_context->tmpExpReg=result;
-            }
-            else if (NULL != (tmpScope=Scope::resolveClassFuncScope(Scope::s_curScope, s_context->tmpIdenName)))
+            if (NULL != (tmpScope=Scope::resolveClassFuncScope(Scope::s_curScope, s_context->tmpIdenName)))
             {
                 Reg *result=Reg::getReg(0, tmpScope->getReturnTypeClass()->getTypeSfType());
                 childs.at(1)->walk();
@@ -136,6 +122,22 @@ void PostfixExpAst::walk()
                 vector<void* >* arguList = ItmCode::copyVectorToAllExpList(s_context->tmpExpList);
 
                 ItmCode *tmpCode=new ItmCode(ItmCode::IR_CALLCLASSFUNC, ItmCode::OPR_SCOPE ,(void *)tmpScope, ItmCode::OPR_ARGLIST, (void *)arguList, ItmCode::OPR_REGISTER, result);
+                Scope::s_curScope->addItemCode(tmpCode);
+                s_context->clearContext();
+                s_context->tmpOpType=ItmCode::OPR_REGISTER;
+                s_context->tmpExpReg=result;
+            }
+            else if (NULL != (tmpScope=Scope::s_curScope->resolveGlobalFuncScope(s_context->tmpIdenName)))
+            {
+                Reg *result=Reg::getReg(0, tmpScope->getReturnTypeClass()->getTypeSfType());
+                childs.at(1)->walk();
+                if (checkIsNotWalking()) {
+                    return ;
+                }
+
+                vector<void* >* arguList = ItmCode::copyVectorToAllExpList(s_context->tmpExpList);
+
+                ItmCode *tmpCode=new ItmCode(ItmCode::IR_CALLFUNC, ItmCode::OPR_SCOPE ,(void *)tmpScope, ItmCode::OPR_ARGLIST, (void *)arguList, ItmCode::OPR_REGISTER, result);
                 Scope::s_curScope->addItemCode(tmpCode);
                 s_context->clearContext();
                 s_context->tmpOpType=ItmCode::OPR_REGISTER;
@@ -231,22 +233,31 @@ void PostfixExpAst::walk()
         if (checkIsNotWalking()) {
             return ;
         }
-        Reg *tmpReg=processChildOperand(0);
+
+
+        Symbol *tmpSymbol = NULL;
+        vector<void* >* tmpRefList = NULL;
+
+
         if (s_context->tmpOpType == ItmCode::OPR_SYMBOL)
         {
+            tmpSymbol = s_context->tmpExpSymbol;
+
+            Reg *tmpReg=processChildOperand(0);
             ItmCode *tmpCode = new ItmCode(ItmCode::IR_INC_OP_POST,
                                        ItmCode::OPR_REGISTER, (void *)tmpReg,
                                        ItmCode::OPR_INVALID, NULL,
-                                       ItmCode::OPR_SYMBOL, (void *)(s_context->tmpExpSymbol));
+                                       ItmCode::OPR_SYMBOL, (void *)(tmpSymbol));
             Scope::s_curScope->addItemCode(tmpCode);
         }
         else if (s_context->tmpOpType == ItmCode::OPR_CLASS_REFLIST)
         {
-            vector<void* >* refList = ItmCode::copyVectorToAllExpList(s_context->tmpExpList);
+            tmpRefList = ItmCode::copyVectorToAllExpList(s_context->tmpExpList);
+            Reg *tmpReg=processChildOperand(0);
             ItmCode *tmpCode = new ItmCode(ItmCode::IR_INC_OP_POST,
                                        ItmCode::OPR_REGISTER, (void *)tmpReg,
                                        ItmCode::OPR_INVALID, NULL,
-                                       ItmCode::OPR_CLASS_REFLIST, (void *)(refList));
+                                       ItmCode::OPR_CLASS_REFLIST, (void *)(tmpRefList));
             Scope::s_curScope->addItemCode(tmpCode);
         }
         else
@@ -257,9 +268,6 @@ void PostfixExpAst::walk()
             stopWalk();
             return;
         }
-        s_context->clearContext();
-        s_context->tmpOpType = ItmCode::OPR_REGISTER;
-        s_context->tmpExpReg = tmpReg;
 
         break;
     }
@@ -269,22 +277,31 @@ void PostfixExpAst::walk()
         if (checkIsNotWalking()) {
             return ;
         }
-        Reg *tmpReg=processChildOperand(0);
+
+
+        Symbol *tmpSymbol = NULL;
+        vector<void* >* tmpRefList = NULL;
+
+
         if (s_context->tmpOpType == ItmCode::OPR_SYMBOL)
         {
+            tmpSymbol = s_context->tmpExpSymbol;
+
+            Reg *tmpReg=processChildOperand(0);
             ItmCode *tmpCode = new ItmCode(ItmCode::IR_DEC_OP_POST,
                                        ItmCode::OPR_REGISTER, (void *)tmpReg,
                                        ItmCode::OPR_INVALID, NULL,
-                                       ItmCode::OPR_SYMBOL, (void *)(s_context->tmpExpSymbol));
+                                       ItmCode::OPR_SYMBOL, (void *)(tmpSymbol));
             Scope::s_curScope->addItemCode(tmpCode);
         }
         else if (s_context->tmpOpType == ItmCode::OPR_CLASS_REFLIST)
         {
-            vector<void* >* refList = ItmCode::copyVectorToAllExpList(s_context->tmpExpList);
+            tmpRefList = ItmCode::copyVectorToAllExpList(s_context->tmpExpList);
+            Reg *tmpReg=processChildOperand(0);
             ItmCode *tmpCode = new ItmCode(ItmCode::IR_DEC_OP_POST,
                                        ItmCode::OPR_REGISTER, (void *)tmpReg,
                                        ItmCode::OPR_INVALID, NULL,
-                                       ItmCode::OPR_CLASS_REFLIST, (void *)(refList));
+                                       ItmCode::OPR_CLASS_REFLIST, (void *)(tmpRefList));
             Scope::s_curScope->addItemCode(tmpCode);
         }
         else
@@ -295,9 +312,8 @@ void PostfixExpAst::walk()
             stopWalk();
             return;
         }
-        s_context->clearContext();
-        s_context->tmpOpType = ItmCode::OPR_REGISTER;
-        s_context->tmpExpReg = tmpReg;
+
+
         break;
     }
 

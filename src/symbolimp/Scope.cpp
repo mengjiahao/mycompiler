@@ -958,7 +958,11 @@ Scope* Scope::resolveClassFuncScope(Scope* classScope_t, const string& scopeName
     }
 
     while (Scope::SCOPE_CLASS != classScope_t->getScopeType()) {
+
         classScope_t = classScope_t->getParent();
+
+        if (classScope_t == s_globalScope)
+            return NULL;
     }  //for class member func
 
     Scope *scope_t = classScope_t->searchChildName(scopeName_t);
