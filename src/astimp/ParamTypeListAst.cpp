@@ -12,7 +12,8 @@ void ParamTypeListAst::walk()
 
     if (nodeType == T_CPARAMLIST_PARAMLIST_PARAMDECTION)
     {
-        std::cout << "walk in T_CPARAMLIST_PARAMLIST_PARAMDECTION" << endl;
+        //std::cout << "walk in T_CPARAMLIST_PARAMLIST_PARAMDECTION" << endl;
+        LogiMsg::logi("walk in T_CPARAMLIST_PARAMLIST_PARAMDECTION", getLineno());
 
         childs.at(1)->walk();
         if (checkIsNotWalking()) {
@@ -44,8 +45,9 @@ void ParamTypeListAst::walk()
 
             s_context->addParawithid(tmpsymbol);
         } else {
-            std::cout<<"error in T_CPARAMDECTION_DECTIONSFS_DECTOR: nodetype is not T_CPARAMLIST_PARAMLIST_PARAMDECTION"
-            <<std::endl;
+            /*std::cout<<"error in T_CPARAMDECTION_DECTIONSFS_DECTOR: nodetype is not T_CPARAMLIST_PARAMLIST_PARAMDECTION"
+            <<std::endl;*/
+            LogiMsg::logi("error in T_CPARAMDECTION_DECTIONSFS_DECTOR: nodetype is not T_CPARAMLIST_PARAMLIST_PARAMDECTION", getLineno());
             stopWalk();
             return ;
         }
@@ -53,7 +55,8 @@ void ParamTypeListAst::walk()
     }
     else
     {
-        std::cout<<"error in ParamTypeListAst: nodetype is invalid"<<std::endl;
+        //std::cout<<"error in ParamTypeListAst: nodetype is invalid"<<std::endl;
+        LogiMsg::logi("error in ParamTypeListAst: nodetype is invalid", getLineno());
         stopWalk();
         return ;
     }

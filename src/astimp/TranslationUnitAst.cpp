@@ -10,7 +10,8 @@ void TranslationUnitAst::walk()
         return ;
     }
 
-    std::cout << "walk in TranslationUnitAst" << std::endl;
+    //std::cout << "walk in TranslationUnitAst" << std::endl;
+    LogiMsg::logi("walk in TranslationUnitAst", getLineno());
 
     for (int i = 0; i < childs.size(); ++i) {
         if (NULL != childs.at(i)) {

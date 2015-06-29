@@ -13,7 +13,8 @@ void InitDectorAst::walk()
 
     switch (nodeType){
         case T_CINITDECTOR_DECTOR:{
-            std::cout << "walk in T_CINITDECTOR_DECTOR" << endl;
+            //std::cout << "walk in T_CINITDECTOR_DECTOR" << endl;
+            LogiMsg::logi("walk in T_CINITDECTOR_DECTOR", getLineno());
 
             childs.at(0)->walk();
             if (checkIsNotWalking()) {
@@ -24,7 +25,8 @@ void InitDectorAst::walk()
             break;
         }
         case T_CINITDECTOR_ASSGIN_INITZER:{
-            std::cout << "walk in T_CINITDECTOR_ASSGIN_INITZER" << endl;
+            //std::cout << "walk in T_CINITDECTOR_ASSGIN_INITZER" << endl;
+            LogiMsg::logi("walk in T_CINITDECTOR_ASSGIN_INITZER", getLineno());
 
             childs.at(0)->walk();
             if (checkIsNotWalking()) {
@@ -44,7 +46,8 @@ void InitDectorAst::walk()
             break;
         }
         default:{
-            std::cout<<"error in InitDectorAst: nodetype is invalid"<<std::endl;
+            //std::cout<<"error in InitDectorAst: nodetype is invalid"<<std::endl;
+            LogiMsg::logi("error in InitDectorAst: nodetype is invalid", getLineno());
             stopWalk();
             return ;
         }

@@ -10,7 +10,8 @@ void SpeciQualiFierListAst::walk()
         return ;
     }
 
-    std::cout << "walk in SpeciQualiFierListAst" << endl;
+    //std::cout << "walk in SpeciQualiFierListAst" << endl;
+    LogiMsg::logi("walk in SpeciQualiFierListAst", getLineno());
 
     TypeClass *tmp[getChildsNo()];
     for (int i = 0; i < getChildsNo(); i++)
@@ -24,8 +25,9 @@ void SpeciQualiFierListAst::walk()
     }
 
     if (2 != getChildsNo()) {
-        std::cout<<"error in SpeciQualiFierListAst: SpeciQualiFierListAst doesn't have 2 children"
-        << std::endl;
+        /*std::cout<<"error in SpeciQualiFierListAst: SpeciQualiFierListAst doesn't have 2 children"
+        << std::endl;*/
+        LogiMsg::logi("error in SpeciQualiFierListAst: SpeciQualiFierListAst doesn't have 2 children", getLineno());
         stopWalk();
         return ;
     }

@@ -12,11 +12,13 @@ void CompoundStmAst::walk()
 
     switch (nodeType){
         case T_CCOMPSTM_VOID:{
-            std::cout << "walk in T_CCOMPSTM_VOID" << endl;
+            //std::cout << "walk in T_CCOMPSTM_VOID" << endl;
+            LogiMsg::logi("walk in T_CCOMPSTM_VOID", getLineno());
             break;
         }
         case T_CCOMPSTM_STMLIST: {
-            std::cout << "walk in T_CCOMPSTM_STMLIST" << endl;
+            //std::cout << "walk in T_CCOMPSTM_STMLIST" << endl;
+            LogiMsg::logi("walk in T_CCOMPSTM_STMLIST", getLineno());
 
             Scope *tmpScope = new Scope();
             tmpScope->setScopeType(Scope::SCOPE_LOCAL);
@@ -36,7 +38,8 @@ void CompoundStmAst::walk()
             break;
         }
         case T_CCOMPSTM_DECTION_LIST:{
-            std::cout << "walk in T_CCOMPSTM_DECTION_LIST" << endl;
+            //std::cout << "walk in T_CCOMPSTM_DECTION_LIST" << endl;
+            LogiMsg::logi("walk in T_CCOMPSTM_DECTION_LIST", getLineno());
 
             Scope *tmpScope = new Scope();
             tmpScope->setScopeType(Scope::SCOPE_LOCAL);
@@ -56,7 +59,8 @@ void CompoundStmAst::walk()
             break;
         }
         case T_CCOMPSTM_DECTIONLIST_STMLIST:{
-            std::cout << "walk in T_CCOMPSTM_DECTIONLIST_STMLIST" << endl;
+            //std::cout << "walk in T_CCOMPSTM_DECTIONLIST_STMLIST" << endl;
+            LogiMsg::logi("walk in T_CCOMPSTM_DECTIONLIST_STMLIST", getLineno());
 
             Scope *tmpScope = new Scope();
             tmpScope->setScopeType(Scope::SCOPE_LOCAL);
@@ -82,7 +86,10 @@ void CompoundStmAst::walk()
             break;
         }
         default:{
-            std::cout << "error in CompoundStmAst: nodeType is invalid" << std::endl;
+            //std::cout << "error in CompoundStmAst: nodeType is invalid" << std::endl;
+            LogiMsg::logi("error in CompoundStmAst: nodeType is invalid", getLineno());
+            stopWalk();
+            return ;
 
             break;
         }

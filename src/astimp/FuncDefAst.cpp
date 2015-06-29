@@ -13,17 +13,20 @@ void FuncDefAst::walk()
 
     if (nodeType != T_CFUNCDEF_DECTIONSFS_DECTOR_COMPSTM)
     {
-        std::cout<<"error: nodetype error in FuncDefAst"<<std::endl;
+        //std::cout<<"error: nodetype error in FuncDefAst"<<std::endl;
+        LogiMsg::logi("error: nodetype error in FuncDefAst", getLineno());
         stopWalk();
         return ;
     }
-    std::cout << "walk in T_CFUNCDEF_DECTIONSFS_DECTOR_COMPSTM" << endl;
+    //std::cout << "walk in T_CFUNCDEF_DECTIONSFS_DECTOR_COMPSTM" << endl;
+    LogiMsg::logi("walk in T_CFUNCDEF_DECTIONSFS_DECTOR_COMPSTM", getLineno());
 
     if ((childs.at(1)->nodeType != T_CDIRDECTOR_DIRDECTOR_CALL_PARAMTYPELIST)
     && (childs.at(1)->nodeType != T_CDIRDECTOR_DIRDECTOR_CALL_VOID))
     {
-        std::cout<<"error in FuncDefAst: the children's type of function is not param either void at line "
-        <<getLineno()<<std::endl;
+        /*std::cout<<"error in FuncDefAst: the children's type of function is not param either void at line "
+        <<getLineno()<<std::endl;*/
+        LogiMsg::logi("error in FuncDefAst: the children's type of function is not param either void", getLineno());
         stopWalk();
         return ;
     }
@@ -47,16 +50,22 @@ void FuncDefAst::walk()
 
     if (Scope::resolveScope(tmpScope->scopeName, Scope::SCOPE_GLOBALFUNC))
     {
-        std::cout<<"error in FuncDefAst: the function"
-        << tmpScope->scopeName << " has been defined at line "<<getLineno()<<std::endl;
+        /*std::cout<<"error in FuncDefAst: the function"
+        << tmpScope->scopeName << " has been defined at line "<<getLineno()<<std::endl;*/
+        string erroStr = "error in FuncDefAst: the function"
+        + tmpScope->scopeName + " has been defined";
+        LogiMsg::logi(erroStr, getLineno());
         delete tmpScope;
         stopWalk();
         return ;
     }
     if (Scope::resolveScope(tmpScope->scopeName, Scope::SCOPE_GLOBALFUNCCHAN))
     {
-        std::cout<<"error in FuncDefAst: the function"
-        << tmpScope->scopeName << " has been defined at line "<<getLineno()<<std::endl;
+        /*std::cout<<"error in FuncDefAst: the function"
+        << tmpScope->scopeName << " has been defined at line "<<getLineno()<<std::endl;*/
+        string erroStr = "error in FuncDefAst: the function"
+        + tmpScope->scopeName + " has been defined";
+        LogiMsg::logi(erroStr, getLineno());
         delete tmpScope;
         stopWalk();
         return ;
@@ -87,7 +96,8 @@ void FuncDefAst::walk()
 
     if (s_context->tmpParaWithoutIdNum)
     {
-        std::cout<<"error in FuncDefAst: argument list do not have identifier"<<std::endl;
+        //std::cout<<"error in FuncDefAst: argument list do not have identifier"<<std::endl;
+        LogiMsg::logi("error in FuncDefAst: argument list do not have identifier", getLineno());
         stopWalk();
         return ;
     }
@@ -101,8 +111,11 @@ void FuncDefAst::walk()
             tmpsymbol->typeClass.clone(&(s_context->tmpParaWithIdList.at(i).typeClass));*/
 
             if (NULL != Scope::s_curScope->searchSymbolVarMap(s_context->tmpParaWithIdList.at(i).symbolName)) {
-                std::cout << "error in FuncDefAst: duplicate argument "
-                << s_context->tmpParaWithIdList.at(i).symbolName << " at line " << getLineno() << std::endl;
+                /*std::cout << "error in FuncDefAst: duplicate argument "
+                << s_context->tmpParaWithIdList.at(i).symbolName << " at line " << getLineno() << std::endl;*/
+                string errorStr = "error in FuncDefAst: duplicate argument "
+                + s_context->tmpParaWithIdList.at(i).symbolName;
+                LogiMsg::logi(errorStr, getLineno());
                 stopWalk();
                 return ;
             }

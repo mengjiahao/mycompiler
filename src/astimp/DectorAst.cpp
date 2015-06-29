@@ -10,7 +10,8 @@ void DectorAst::walk()
         return ;
     }
 
-    std::cout << "error in DectorAst: we do not support '*' at line " << getLineno() << std::endl;
+    //std::cout << "error in DectorAst: we do not support '*' at line " << getLineno() << std::endl;
+    LogiMsg::logi("error in DectorAst: we do not support '*'", getLineno());
     stopWalk();
 
 }

@@ -10,7 +10,8 @@ void ExtDectionAst::walk()
         return ;
     }
 
-    std::cout << "walk in ExtDectionAst" << endl;
+    //std::cout << "walk in ExtDectionAst" << endl;
+    LogiMsg::logi("walk in ExtDectionAst", getLineno());
 
     for(int i = 0; i < childs.size(); ++i) {
 

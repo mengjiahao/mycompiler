@@ -12,12 +12,15 @@ void ClassDectionListAst::walk()
 
     if (nodeType != T_CCLASSDECTIONLIST_CLASSDECTIONLIST_CLASSDECTION)
     {
-        std::cout << "error: nodetype is not T_CCLASSDECTIONLIST_CLASSDECTIONLIST_CLASSDECTION in ClassDectionListAst"
-        << std::endl;
+        /*std::cout << "error: nodetype is not T_CCLASSDECTIONLIST_CLASSDECTIONLIST_CLASSDECTION in ClassDectionListAst"
+        << std::endl;*/
+        LogiMsg::logi("error: nodetype is not T_CCLASSDECTIONLIST_CLASSDECTIONLIST_CLASSDECTION in ClassDectionListAst",
+        getLineno());
         stopWalk();
         return ;
     }
-    std::cout << "walk in T_CCLASSDECTIONLIST_CLASSDECTIONLIST_CLASSDECTION" << endl;
+    //std::cout << "walk in T_CCLASSDECTIONLIST_CLASSDECTIONLIST_CLASSDECTION" << endl;
+    LogiMsg::logi("walk in T_CCLASSDECTIONLIST_CLASSDECTIONLIST_CLASSDECTION", getLineno());
 
     childs.at(0)->walk();
     if (checkIsNotWalking()) {

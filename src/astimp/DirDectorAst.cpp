@@ -12,7 +12,8 @@ void DirDectorAst::walk()
 
     switch(nodeType){
         case T_CDIRDECTOR_ID:{
-            std::cout << "walk in T_CDIRDECTOR_ID" << endl;
+            //std::cout << "walk in T_CDIRDECTOR_ID" << endl;
+            LogiMsg::logi("walk in T_CDIRDECTOR_ID", getLineno());
 
             childs.at(0)->walk();
             if (checkIsNotWalking()) {
@@ -22,22 +23,28 @@ void DirDectorAst::walk()
             break;
         }
         case T_CDIRDECTOR_DIRDECTOR_ARRAY_CONSTEXP:{
-            std::cout << "walk in T_CDIRDECTOR_DIRDECTOR_ARRAY_CONSTEXP" << endl;
+            //std::cout << "walk in T_CDIRDECTOR_DIRDECTOR_ARRAY_CONSTEXP" << endl;
+            LogiMsg::logi("walk in T_CDIRDECTOR_DIRDECTOR_ARRAY_CONSTEXP", getLineno());
 
             break;
         }
         case T_CDIRDECTOR_DIRDECTOR_ARRAY_VOID:{
-            std::cout << "walk in T_CDIRDECTOR_DIRDECTOR_ARRAY_VOID" << endl;
+            //std::cout << "walk in T_CDIRDECTOR_DIRDECTOR_ARRAY_VOID" << endl;
+            LogiMsg::logi("walk in T_CDIRDECTOR_DIRDECTOR_ARRAY_VOID", getLineno());
+
 
             break;
         }
         case T_CDIRDECTOR_DIRDECTOR_CALL_PARAMTYPELIST:{
-            std::cout << "walk in T_CDIRDECTOR_DIRDECTOR_CALL_PARAMTYPELIST" << endl;
+            //std::cout << "walk in T_CDIRDECTOR_DIRDECTOR_CALL_PARAMTYPELIST" << endl;
+            LogiMsg::logi("walk in T_CDIRDECTOR_DIRDECTOR_CALL_PARAMTYPELIST", getLineno());
 
             if (childs.at(0)->nodeType != T_CDIRDECTOR_ID)
             {
-                std::cout<<"error in T_CDIRDECTOR_DIRDECTOR_CALL_PARAMTYPELIST: the children's type is not T_CDIRDECTOR_ID at line "
-                <<getLineno()<<std::endl;
+                /*std::cout<<"error in T_CDIRDECTOR_DIRDECTOR_CALL_PARAMTYPELIST: the children's type is not T_CDIRDECTOR_ID at line "
+                <<getLineno()<<std::endl;*/
+                LogiMsg::logi("error in T_CDIRDECTOR_DIRDECTOR_CALL_PARAMTYPELIST: the children's type is not T_CDIRDECTOR_ID",
+                getLineno());
                 stopWalk();
                 return ;
             }
@@ -59,17 +66,21 @@ void DirDectorAst::walk()
             break;
         }
         case T_CDIRDECTOR_DIRDECTOR_CALL_EXP:{
-            std::cout << "walk in T_CDIRDECTOR_DIRDECTOR_CALL_EXP" << endl;
+            //std::cout << "walk in T_CDIRDECTOR_DIRDECTOR_CALL_EXP" << endl;
+            LogiMsg::logi("walk in T_CDIRDECTOR_DIRDECTOR_CALL_EXP", getLineno());
 
             break;
         }
         case T_CDIRDECTOR_DIRDECTOR_CALL_VOID:{
-            std::cout << "walk in T_CDIRDECTOR_DIRDECTOR_CALL_VOID" << endl;
+            //std::cout << "walk in T_CDIRDECTOR_DIRDECTOR_CALL_VOID" << endl;
+            LogiMsg::logi("walk in T_CDIRDECTOR_DIRDECTOR_CALL_VOID", getLineno());
 
             if (childs.at(0)->nodeType != T_CDIRDECTOR_ID)
             {
-                std::cout<<"error in T_CDIRDECTOR_DIRDECTOR_CALL_VOID: the children's type is not T_CDIRDECTOR_ID at line "
-                <<getLineno()<<std::endl;
+                /*std::cout<<"error in T_CDIRDECTOR_DIRDECTOR_CALL_VOID: the children's type is not T_CDIRDECTOR_ID at line "
+                <<getLineno()<<std::endl;*/
+                LogiMsg::logi("error in T_CDIRDECTOR_DIRDECTOR_CALL_VOID: the children's type is not T_CDIRDECTOR_ID",
+                getLineno());
                 stopWalk();
                 return ;
             }
@@ -86,7 +97,8 @@ void DirDectorAst::walk()
             break;
         }
         default:{
-            std::cout<<"error in DirDectorAst: nodetype is invalid"<<std::endl;
+            //std::cout<<"error in DirDectorAst: nodetype is invalid"<<std::endl;
+            LogiMsg::logi("error in DirDectorAst: nodetype is invalid", getLineno());
             stopWalk();
             return ;
         }

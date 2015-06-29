@@ -15,7 +15,8 @@ void ArgExpListAst::walk()
 
     switch(nodeType) {
         case NodeAst::T_CARGEXPLIST_ASSGEXP: {
-            std::cout << "walk in T_CARGEXPLIST_ASSGEXP" << endl;
+            //std::cout << "walk in T_CARGEXPLIST_ASSGEXP" << endl;
+            LogiMsg::logi("walk in T_CARGEXPLIST_ASSGEXP", getLineno());
 
             childs.at(0)->walk();
             if (checkIsNotWalking()) {
@@ -26,13 +27,16 @@ void ArgExpListAst::walk()
             Symbol *tmpsymbol = new Symbol(Symbol::SYMBOL_TEMPVAR);
             tmpsymbol->typeClass.typeSfType = tmpReg->getTypeSfType();
             tmpsymbol->setOffset(Scope::s_curScope->getTotalByteSize());
+
             Scope::s_curScope->incTotalByteSize(tmpsymbol->getByteSize());
             Scope::s_curScope->defineSymbol(tmpsymbol);
-            ItmCode *tmpCode = new ItmCode(ItmCode::IR_ASSIGN_OP,
+            /*ItmCode *tmpCode = new ItmCode(ItmCode::IR_ASSIGN_OP,
                                             ItmCode::OPR_REGISTER, tmpReg,
                                             ItmCode::OPR_INVALID, NULL,
                                             ItmCode::OPR_SYMBOL, tmpsymbol);
-            Scope::s_curScope->addItemCode(tmpCode);
+            Scope::s_curScope->addItemCode(tmpCode);*/
+
+            ItmCode::genCodeAssignRegToSymbol(ItmCode::IR_ASSIGN_OP, tmpReg, tmpsymbol);
             s_context->clearContext();
             s_context->clearExpList();
             s_context->addToExpList((void *)tmpsymbol);
@@ -43,7 +47,8 @@ void ArgExpListAst::walk()
         }
 
         case NodeAst::T_CARGEXPLIST_ARGEXPLIST_ASSGEXP: {
-            std::cout << "walk in T_CARGEXPLIST_ARGEXPLIST_ASSGEXP" << endl;
+            //std::cout << "walk in T_CARGEXPLIST_ARGEXPLIST_ASSGEXP" << endl;
+            LogiMsg::logi("walk in T_CARGEXPLIST_ARGEXPLIST_ASSGEXP", getLineno());
 
             childs.at(1)->walk();
             if (checkIsNotWalking()) {
@@ -54,13 +59,15 @@ void ArgExpListAst::walk()
             Symbol *tmpsymbol = new Symbol(Symbol::SYMBOL_TEMPVAR);
             tmpsymbol->typeClass.typeSfType = tmpReg->getTypeSfType();
             tmpsymbol->setOffset(Scope::s_curScope->getTotalByteSize());
+
             Scope::s_curScope->incTotalByteSize(tmpsymbol->getByteSize());
             Scope::s_curScope->defineSymbol(tmpsymbol);
-            ItmCode *tmpCode = new ItmCode(ItmCode::IR_ASSIGN_OP,
+            /*ItmCode *tmpCode = new ItmCode(ItmCode::IR_ASSIGN_OP,
                                             ItmCode::OPR_REGISTER, tmpReg,
                                             ItmCode::OPR_INVALID, NULL,
                                             ItmCode::OPR_SYMBOL, tmpsymbol);
-            Scope::s_curScope->addItemCode(tmpCode);
+            Scope::s_curScope->addItemCode(tmpCode);*/
+            ItmCode::genCodeAssignRegToSymbol(ItmCode::IR_ASSIGN_OP, tmpReg, tmpsymbol);
 
 
             childs.at(0)->walk();
@@ -77,7 +84,8 @@ void ArgExpListAst::walk()
         }
 
         default: {
-            std::cout << "error in ArgExpListAst: nodeType is invalid" << std::endl;
+            //std::cout << "error in ArgExpListAst: nodeType is invalid" << std::endl;
+            LogiMsg::logi("error in ArgExpListAst: nodeType is invalid", getLineno());
             stopWalk();
             return ;
             break;

@@ -12,7 +12,8 @@ void ClassSpecifierAst::walk()
 
     switch (nodeType){
         case T_CCLASSSF_CLASS_ID_CLASSDECTIONLIST:{
-            std::cout << "walk in T_CCLASSSF_CLASS_ID_CLASSDECTIONLIST" << endl;
+            //std::cout << "walk in T_CCLASSSF_CLASS_ID_CLASSDECTIONLIST" << endl;
+            LogiMsg::logi("walk in T_CCLASSSF_CLASS_ID_CLASSDECTIONLIST", getLineno());
 
             childs.at(0)->walk();
             if (checkIsNotWalking()) {
@@ -22,8 +23,11 @@ void ClassSpecifierAst::walk()
             //Scope *tmpScope = new Scope();
             if (Scope::resolveScope(s_context->tmpIdenName, Scope::SCOPE_CLASS))
             {
-                std::cout << "error in T_CCLASSSF_CLASS_ID_CLASSDECTIONLIST: " << s_context->tmpIdenName
-                << " has been defined at line " << getLineno() << std::endl;
+                /*std::cout << "error in T_CCLASSSF_CLASS_ID_CLASSDECTIONLIST: " << s_context->tmpIdenName
+                << " has been defined at line " << getLineno() << std::endl;*/
+                string errorStr = "error in T_CCLASSSF_CLASS_ID_CLASSDECTIONLIST: "
+                + s_context->tmpIdenName + " has been defined";
+                LogiMsg::logi(errorStr, getLineno());
                 stopWalk();
                 return ;
             }
@@ -52,7 +56,9 @@ void ClassSpecifierAst::walk()
             break;
         }
         case T_CCLASSSF_CLASS_ID_IDLIST_CLASSDECTIONLIST:{
-            std::cout << "walk in T_CCLASSSF_CLASS_ID_IDLIST_CLASSDECTIONLIST" << endl;
+            //std::cout << "walk in T_CCLASSSF_CLASS_ID_IDLIST_CLASSDECTIONLIST" << endl;
+            LogiMsg::logi("walk in T_CCLASSSF_CLASS_ID_IDLIST_CLASSDECTIONLIST", getLineno());
+
 
             childs.at(0)->walk();
             if (checkIsNotWalking()) {
@@ -62,8 +68,12 @@ void ClassSpecifierAst::walk()
             //Scope *tmpScope = new Scope();
             if (Scope::resolveScope(s_context->tmpIdenName, Scope::SCOPE_CLASS))
             {
-                std::cout << "error in T_CCLASSSF_CLASS_ID_IDLIST_CLASSDECTIONLIST: "
-                << s_context->tmpIdenName << " has been defined at line " << getLineno() << std::endl;
+                /*std::cout << "error in T_CCLASSSF_CLASS_ID_IDLIST_CLASSDECTIONLIST: "
+                << s_context->tmpIdenName << " has been defined at line " << getLineno() << std::endl;*/
+                string errorStr = "error in T_CCLASSSF_CLASS_ID_IDLIST_CLASSDECTIONLIST: "
+                + s_context->tmpIdenName + " has been defined";
+                LogiMsg::logi(errorStr, getLineno());
+
                 stopWalk();
                 return ;
             }
@@ -72,8 +82,10 @@ void ClassSpecifierAst::walk()
 
             if (childs.at(1)->nodeType!=T_CTERMINATE_CIDLIST_ID)
             {
-                std::cout << "sorry in T_CCLASSSF_CLASS_ID_IDLIST_CLASSDECTIONLIST: our compiler do not support multiple inheritance at line "
-                << getLineno() << std::endl;
+                /*std::cout << "sorry in T_CCLASSSF_CLASS_ID_IDLIST_CLASSDECTIONLIST: our compiler do not support multiple inheritance at line "
+                << getLineno() << std::endl;*/
+                LogiMsg::logi("sorry in T_CCLASSSF_CLASS_ID_IDLIST_CLASSDECTIONLIST: our compiler do not support multiple inheritance",
+                getLineno());
                 stopWalk();
                 return ;
             }
@@ -91,8 +103,11 @@ void ClassSpecifierAst::walk()
 
             if (!superScope)
             {
-                std::cout<<"error in T_CCLASSSF_CLASS_ID_IDLIST_CLASSDECTIONLIST: the super class "
-                << s_context->tmpIdenName << " does not exit at line " << getLineno() << std::endl;
+                /*std::cout<<"error in T_CCLASSSF_CLASS_ID_IDLIST_CLASSDECTIONLIST: the super class "
+                << s_context->tmpIdenName << " does not exit at line " << getLineno() << std::endl;*/
+                string errorStr = "error in T_CCLASSSF_CLASS_ID_IDLIST_CLASSDECTIONLIST: the super class "
+                + s_context->tmpIdenName + " does not exit";
+                LogiMsg::logi(errorStr, getLineno());
                 delete tmpScope;
 
                 stopWalk();
@@ -120,7 +135,8 @@ void ClassSpecifierAst::walk()
             break;
         }
         case T_CCLASSSF_CLASS_ID:{
-            std::cout << "walk in T_CCLASSSF_CLASS_ID" << endl;
+            //std::cout << "walk in T_CCLASSSF_CLASS_ID" << endl;
+            LogiMsg::logi("walk in T_CCLASSSF_CLASS_ID", getLineno());
 
             childs.at(0)->walk();
             if (checkIsNotWalking()) {
@@ -130,8 +146,11 @@ void ClassSpecifierAst::walk()
             Scope *tmpScope = Scope::resolveScope(s_context->tmpIdenName,Scope::SCOPE_CLASS);
             if (!tmpScope)
             {
-                std::cout<<"error in T_CCLASSSF_CLASS_ID: the super class "
-                << s_context->tmpIdenName << " does not exit at line "<<getLineno()<<std::endl;
+                /*std::cout<<"error in T_CCLASSSF_CLASS_ID: the super class "
+                << s_context->tmpIdenName << " does not exit at line "<<getLineno()<<std::endl;*/
+                string errorStr = "error in T_CCLASSSF_CLASS_ID: the super class "
+                + s_context->tmpIdenName + " does not exit";
+                LogiMsg::logi(errorStr, getLineno());
                 stopWalk();
                 return ;
             }
@@ -144,7 +163,8 @@ void ClassSpecifierAst::walk()
             break;
         }
         default:{
-            std::cout << "error in ClassSpecifierAst: nodeType is invalid" << std::endl;
+            //std::cout << "error in ClassSpecifierAst: nodeType is invalid" << std::endl;
+            LogiMsg::logi("error in ClassSpecifierAst: nodeType is invalid", getLineno());
             stopWalk();
             return ;
             break;

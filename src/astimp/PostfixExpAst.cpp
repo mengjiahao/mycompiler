@@ -15,14 +15,16 @@ void PostfixExpAst::walk()
 
     switch(nodeType) {
     case T_CPOSTEXP_POSTEXP_ARRAY_EXP: {
-
+        LogiMsg::logi("walk in T_CPOSTEXP_POSTEXP_ARRAY_EXP", getLineno());
 
 
         break;
     }
 
     case T_CPOSTEXP_POSTEXP_CALL_VOID: {
-        std::cout << "walk in T_CPOSTEXP_POSTEXP_CALL_VOID" << endl;
+        //std::cout << "walk in T_CPOSTEXP_POSTEXP_CALL_VOID" << endl;
+        LogiMsg::logi("walk in T_CPOSTEXP_POSTEXP_CALL_VOID", getLineno());
+
         childs.at(0)->walk();
         if (checkIsNotWalking()) {
             return ;
@@ -62,7 +64,11 @@ void PostfixExpAst::walk()
             }
             else
             {
-                std::cout << "error: in T_CPOSTEXP_POSTEXP_CALL_VOID the func " << s_context->tmpIdenName << "is not exist" << std::endl;
+                /*std::cout << "error: in T_CPOSTEXP_POSTEXP_CALL_VOID the func "
+                << s_context->tmpIdenName << "is not exist" << std::endl;*/
+                string errorStr = "error: in T_CPOSTEXP_POSTEXP_CALL_VOID the func "
+                + s_context->tmpIdenName + "is not exist";
+                LogiMsg::logi(errorStr, getLineno());
                 stopWalk();
                 return;
             }
@@ -74,7 +80,8 @@ void PostfixExpAst::walk()
     }
 
     case T_CPOSTEXP_POSTEXP_CALL_ARGEXPLIST: {
-        std::cout << "walk in T_CPOSTEXP_POSTEXP_CALL_ARGEXPLIST"<< std::endl;
+        //std::cout << "walk in T_CPOSTEXP_POSTEXP_CALL_ARGEXPLIST"<< std::endl;
+        LogiMsg::logi("walk in T_CPOSTEXP_POSTEXP_CALL_ARGEXPLIST", getLineno());
 
         childs.at(0)->walk();
         if (checkIsNotWalking()) {
@@ -136,7 +143,11 @@ void PostfixExpAst::walk()
             }
             else
             {
-                std::cout << "error: in T_CPOSTEXP_POSTEXP_CALL_ARGEXPLIST the func " << s_context->tmpIdenName << "is not exist" << std::endl;
+                /*std::cout << "error: in T_CPOSTEXP_POSTEXP_CALL_ARGEXPLIST the func "
+                << s_context->tmpIdenName << "is not exist" << std::endl;*/
+                string errorStr = "error: in T_CPOSTEXP_POSTEXP_CALL_ARGEXPLIST the func "
+                + s_context->tmpIdenName + "is not exist";
+                LogiMsg::logi(errorStr, getLineno());
                 stopWalk();
                 return;
             }
@@ -147,7 +158,8 @@ void PostfixExpAst::walk()
     }
 
     case T_CPOSTEXP_POSTEXP_REF_ID: {
-        std::cout << "walk in T_CPOSTEXP_POSTEXP_REF_ID" << endl;
+        //std::cout << "walk in T_CPOSTEXP_POSTEXP_REF_ID" << endl;
+        LogiMsg::logi("walk in T_CPOSTEXP_POSTEXP_REF_ID", getLineno());
 
         childs.at(0)->walk();
         if (checkIsNotWalking()) {
@@ -155,7 +167,11 @@ void PostfixExpAst::walk()
         }
         if (s_context->tmpExpSymbol->typeClass.scopeType==NULL)
         {
-            std::cout << "error in T_CPOSTEXP_POSTEXP_REF_ID the id " << s_context->tmpExpSymbol->getSymbolName() << " is not a class type " << std::endl;
+            /*std::cout << "error in T_CPOSTEXP_POSTEXP_REF_ID the id "
+            << s_context->tmpExpSymbol->getSymbolName() << " is not a class type " << std::endl;*/
+            string errorStr = "error in T_CPOSTEXP_POSTEXP_REF_ID the id "
+            + s_context->tmpExpSymbol->getSymbolName() + " is not a class type ";
+            LogiMsg::logi(errorStr, getLineno());
             stopWalk();
             return;
         }
@@ -170,7 +186,11 @@ void PostfixExpAst::walk()
             Scope *tmpScope=Scope::resolveClassFuncScope(tmpSymbol->typeClass.scopeType, s_context->tmpIdenName);
             if (tmpScope==NULL)
             {
-                std::cout << "error: there is no func named " << s_context->tmpIdenName << "at line " << getLineno() <<std::endl;
+                /*std::cout << "error: there is no func named "
+                << s_context->tmpIdenName << "at line " << getLineno() <<std::endl;*/
+                string errorStr = "error: there is no func named "
+                + s_context->tmpIdenName;
+                LogiMsg::logi(errorStr, getLineno());
                 stopWalk();
                 return;
             }
@@ -186,7 +206,11 @@ void PostfixExpAst::walk()
             Symbol *tmpMemSymbol=Scope::resolveSymbolMemVar(tmpSymbol->typeClass.scopeType, s_context->tmpIdenName);
             if (tmpMemSymbol==NULL)
             {
-                std::cout << "error: there is no var named " << s_context->tmpIdenName << "at line " << getLineno() <<std::endl;
+                /*std::cout << "error: there is no var named "
+                << s_context->tmpIdenName << "at line " << getLineno() <<std::endl;*/
+                string errorStr = "error: there is no var named "
+                + s_context->tmpIdenName;
+                LogiMsg::logi(errorStr, getLineno());
                 stopWalk();
                 return;
             }
@@ -227,7 +251,9 @@ void PostfixExpAst::walk()
         }
         else
         {
-            std::cout << "error in T_CPOSTEXP_POSTEXP_INC_OP: the op is not left value at line " << getLineno() <<std::endl;
+            /*std::cout << "error in T_CPOSTEXP_POSTEXP_INC_OP: the op is not left value at line "
+            << getLineno() <<std::endl;*/
+            LogiMsg::logi("error in T_CPOSTEXP_POSTEXP_INC_OP: the op is not left value", getLineno());
             stopWalk();
             return;
         }
@@ -263,7 +289,9 @@ void PostfixExpAst::walk()
         }
         else
         {
-            std::cout << "error in T_CPOSTEXP_POSTEXP_INC_OP: the op is not left value at line " << getLineno() <<std::endl;
+            /*std::cout << "error in T_CPOSTEXP_POSTEXP_INC_OP: the op is not left value at line "
+            << getLineno() <<std::endl;*/
+            LogiMsg::logi("error in T_CPOSTEXP_POSTEXP_INC_OP: the op is not left value", getLineno());
             stopWalk();
             return;
         }
@@ -274,10 +302,12 @@ void PostfixExpAst::walk()
     }
 
     default: {
-        std::cout << "error in PostfixExpAst: nodeType is invalid" << std::endl;
-        break;
+        //std::cout << "error in PostfixExpAst: nodeType is invalid" << std::endl;
+        LogiMsg::logi("error in PostfixExpAst: nodeType is invalid", getLineno());
+
         stopWalk();
         return ;
+        break;
     }
 
 

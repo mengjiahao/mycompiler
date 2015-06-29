@@ -12,12 +12,15 @@ void ClassDectionAst::walk()
 
     switch (nodeType){
         case T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST:{
-            std::cout << "walk in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST" << endl;
+            //std::cout << "walk in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST" << endl;
+            LogiMsg::logi("walk in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST", getLineno());
 
             if (2 != childs.size()) {
-                std::cout << "error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST: doesn't have 2 children at line "
-                << getLineno() << std::endl;
+                /*std::cout << "error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST: doesn't have 2 children at line "
+                << getLineno() << std::endl;*/
                 //exit(0);
+                LogiMsg::logi("error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST: doesn't have 2 children",
+                getLineno());
                 stopWalk();
                 return ;
             }
@@ -36,8 +39,10 @@ void ClassDectionAst::walk()
             }
 
             if (s_context->isFunc) {
-                std::cout << "error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST: ClassDectionAst scope should not have func declaration at line "
-                << getLineno() << std::endl;
+                /*std::cout << "error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST: ClassDectionAst scope should not have func declaration at line "
+                << getLineno() << std::endl;*/
+                LogiMsg::logi("error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST: ClassDectionAst scope should not have func declaration",
+                getLineno());
                 stopWalk();
                 return ;
             } else {
@@ -48,15 +53,21 @@ void ClassDectionAst::walk()
 
                 if (Scope::s_curScope->resolveMemFunByName(s_context->tmpIdenName))
                 {
-                    std::cout << "error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST: ClassDectionAst  var "
-                    << s_context->tmpIdenName << " has the same name with func at line " << getLineno() << std::endl;
+                    /*std::cout << "error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST: ClassDectionAst  var "
+                    << s_context->tmpIdenName << " has the same name with func at line " << getLineno() << std::endl;*/
+                    string errorStr = "error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST: ClassDectionAst var"
+                    + s_context->tmpIdenName + " has the same name with func";
+                    LogiMsg::logi(errorStr, getLineno());
                     stopWalk();
                     return ;
                 }
 
                 if (NULL != Scope::s_curScope->searchSymbolVarMap(s_context->tmpIdenName)) {
-                    std::cout << "error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST: ClassDectionAst duplicate var "
-                    << s_context->tmpIdenName << " at line " << getLineno() << std::endl;
+                    /*std::cout << "error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST: ClassDectionAst duplicate var "
+                    << s_context->tmpIdenName << " at line " << getLineno() << std::endl;*/
+                    string errorStr = "error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST: ClassDectionAst duplicate var "
+                    + s_context->tmpIdenName;
+                    LogiMsg::logi(errorStr, getLineno());
                     stopWalk();
                     return ;
                 }
@@ -82,11 +93,14 @@ void ClassDectionAst::walk()
         }
 
         case T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST_COMPSTM:{
-            std::cout << "walk in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST_COMPSTM" << endl;
+            //std::cout << "walk in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST_COMPSTM" << endl;
+            LogiMsg::logi("walk in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST_COMPSTM", getLineno());
 
             if (3 != childs.size()) {
-                std::cout << "error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST_COMPSTM:  doesn't have 3 children at line "
-                << getLineno() << std::endl;
+                /*std::cout << "error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST_COMPSTM:  doesn't have 3 children at line "
+                << getLineno() << std::endl;*/
+                LogiMsg::logi("error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST_COMPSTM:  doesn't have 3 children",
+                getLineno());
                 stopWalk();
                 return ;
             }
@@ -108,8 +122,10 @@ void ClassDectionAst::walk()
 
             if (!s_context->isFunc)
             {
-                std::cout << "error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST_COMPSTM: ClassDectionAst should not have a func at line "
-                << getLineno() << std::endl;
+                /*std::cout << "error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST_COMPSTM: ClassDectionAst should not have a func at line "
+                << getLineno() << std::endl;*/
+                LogiMsg::logi("error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST_COMPSTM: ClassDectionAst should not have a func",
+                getLineno());
                 delete tmpScope;
 
                 stopWalk();
@@ -117,8 +133,11 @@ void ClassDectionAst::walk()
             }
             if (Scope::resolveSymbolMemVar(Scope::s_curScope, s_context->tmpIdenName))
             {
-                std::cout << "error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST: ClassDectionAst  func "
-                << s_context->tmpIdenName << " has the same name with var at line " << getLineno() << std::endl;
+                /*std::cout << "error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST: ClassDectionAst  func "
+                << s_context->tmpIdenName << " has the same name with var at line " << getLineno() << std::endl;*/
+                string errorStr = "error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST: ClassDectionAst  func "
+                + s_context->tmpIdenName + " has the same name with var";
+                LogiMsg::logi(errorStr, getLineno());
                 stopWalk();
                 return ;
             }
@@ -146,8 +165,9 @@ void ClassDectionAst::walk()
 
             if (s_context->tmpParaWithoutIdNum)
             {
-                std::cout << "error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST_COMPSTM: ClassDectionAst-func's argument list do not have identifier"
-                << std::endl;
+                /*std::cout << "error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST_COMPSTM: ClassDectionAst-func's argument list do not have identifier"
+                << std::endl;*/
+                LogiMsg::logi("error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST_COMPSTM: ClassDectionAst-func's argument list do not have identifier", getLineno());
                 stopWalk();
                 return ;
             }
@@ -161,8 +181,11 @@ void ClassDectionAst::walk()
                     tmpsymbol->typeClass.clone(&(s_context->tmpParaWithIdList.at(i).typeClass));*/
 
                     if (NULL != Scope::s_curScope->searchSymbolVarMap(s_context->tmpParaWithIdList.at(i).symbolName)) {
-                        std::cout << "error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST_COMPSTM: ClassDectionAst-func's duplicate argument "
-                        << s_context->tmpParaWithIdList.at(i).symbolName << " at line " << getLineno() << std::endl;
+                        /*std::cout << "error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST_COMPSTM: ClassDectionAst-func's duplicate argument "
+                        << s_context->tmpParaWithIdList.at(i).symbolName << " at line " << getLineno() << std::endl;*/
+                        string errorStr = "error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST_COMPSTM: ClassDectionAst-func's duplicate argument "
+                        + s_context->tmpParaWithIdList.at(i).symbolName;
+                        LogiMsg::logi(errorStr, getLineno());
                         stopWalk();
                         return ;
                     }
@@ -206,7 +229,8 @@ void ClassDectionAst::walk()
         }
 
         case T_CCLASSDECTION_CLASSDECTORLIST_COMPSTM:{
-            std::cout << "walk in T_CCLASSDECTION_CLASSDECTORLIST_COMPSTM" << endl;
+            //std::cout << "walk in T_CCLASSDECTION_CLASSDECTORLIST_COMPSTM" << endl;
+            LogiMsg::logi("walk in T_CCLASSDECTION_CLASSDECTORLIST_COMPSTM", getLineno());
 
             //Scope *tmpScope=new Scope();
             childs.at(0)->walk();
@@ -216,16 +240,20 @@ void ClassDectionAst::walk()
 
             if (!s_context->isFunc)
             {
-                std::cout << "error in T_CCLASSDECTION_CLASSDECTORLIST_COMPSTM: ClassDectionAst should have a func at line "
-                << getLineno() << std::endl;
+                /*std::cout << "error in T_CCLASSDECTION_CLASSDECTORLIST_COMPSTM: ClassDectionAst should have a func at line "
+                << getLineno() << std::endl;*/
+                LogiMsg::logi("error in T_CCLASSDECTION_CLASSDECTORLIST_COMPSTM: ClassDectionAst should have a func", getLineno());
                 stopWalk();
                 return ;
             }
 
             if (Scope::resolveSymbolMemVar(Scope::s_curScope, s_context->tmpIdenName))
             {
-                std::cout << "error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST: ClassDectionAst  func "
-                << s_context->tmpIdenName << " has the same name with var at line " << getLineno() << std::endl;
+                /*std::cout << "error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST: ClassDectionAst  func "
+                << s_context->tmpIdenName << " has the same name with var at line " << getLineno() << std::endl;*/
+                string errorStr = "error in T_CCLASSDECTION_SQFLIST_CLASSDECTORLIST: ClassDectionAst  func "
+                + s_context->tmpIdenName + " has the same name with var";
+                LogiMsg::logi(errorStr, getLineno());
                 stopWalk();
                 return ;
             }
@@ -243,8 +271,10 @@ void ClassDectionAst::walk()
 
             if (s_context->tmpParaWithoutIdNum)
             {
-                std::cout << "error in T_CCLASSDECTION_CLASSDECTORLIST_COMPSTM: ClassDectionAst-func's argument list do not have identifier"
-                << std::endl;
+                /*std::cout << "error in T_CCLASSDECTION_CLASSDECTORLIST_COMPSTM: ClassDectionAst-func's argument list do not have identifier"
+                << std::endl;*/
+                LogiMsg::logi("error in T_CCLASSDECTION_CLASSDECTORLIST_COMPSTM: ClassDectionAst-func's argument list do not have identifier",
+                getLineno());
                 stopWalk();
                 return ;
             }
@@ -258,8 +288,11 @@ void ClassDectionAst::walk()
                     tmpsymbol->typeClass.clone(&(s_context->tmpParaWithIdList.at(i).typeClass));*/
 
                     if (NULL != Scope::s_curScope->searchSymbolVarMap(s_context->tmpParaWithIdList.at(i).symbolName)) {
-                        std::cout << "error in T_CCLASSDECTION_CLASSDECTORLIST_COMPSTM: ClassDectionAst-func's duplicate argument "
-                        << s_context->tmpParaWithIdList.at(i).symbolName << " at line " << getLineno() << std::endl;
+                        /*std::cout << "error in T_CCLASSDECTION_CLASSDECTORLIST_COMPSTM: ClassDectionAst-func's duplicate argument "
+                        << s_context->tmpParaWithIdList.at(i).symbolName << " at line " << getLineno() << std::endl;*/
+                        string errorStr = "error in T_CCLASSDECTION_CLASSDECTORLIST_COMPSTM: ClassDectionAst-func's duplicate argument "
+                        + s_context->tmpParaWithIdList.at(i).symbolName;
+                        LogiMsg::logi(errorStr, getLineno());
                         stopWalk();
                         return ;
                     }
@@ -300,7 +333,10 @@ void ClassDectionAst::walk()
         }
         default:{
 
-            std::cout << "error in ClassDectionAst: nodeType is invalid" << std::endl;
+            //std::cout << "error in ClassDectionAst: nodeType is invalid" << std::endl;
+            LogiMsg::logi("error in ClassDectionAst: nodeType is invalid", getLineno());
+            stopWalk();
+            return ;
 
             break;
         }
