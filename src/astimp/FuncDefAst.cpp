@@ -137,8 +137,9 @@ void FuncDefAst::walk()
         list<Symbol *>::reverse_iterator r_itr;
         for (r_itr= Scope::s_curScope->symbolSeqList.rbegin(); r_itr!=Scope::s_curScope->symbolSeqList.rend(); r_itr++)
         {
-            (*r_itr)->setOffset(Scope::s_curScope->getTotalByteSize());
             Scope::s_curScope->incTotalByteSize((*r_itr)->getByteSize());
+            (*r_itr)->setOffset(Scope::s_curScope->getTotalByteSize());
+
         }
         Scope::s_curScope->incTotalByteSize(8);
     }
