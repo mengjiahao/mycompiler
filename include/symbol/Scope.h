@@ -38,6 +38,8 @@ public:
     int funcOffset;
     int totalFuncByteSize;
 
+    int startCodeNo;
+
     TypeClass *returnTypeClass;
 
     vector<Scope *> childs;

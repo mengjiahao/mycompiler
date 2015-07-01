@@ -252,6 +252,7 @@ void ItmCode::setCodeId()
 {
     static unsigned long s_codeId = 0;
     codeId = ++s_codeId;
+    totalItmNo=s_codeId;
 }
 
 unsigned long ItmCode::getCodeId()
@@ -834,14 +835,14 @@ void ItmCode::genCodeAssignRegToRefList(IRtype iRType_t, Reg* reg_t, vector<void
     Scope::s_curScope->addItemCode(newCode);
 }
 
-void ItmCode::genCodeNewClassIdToReg(Reg* reg_t)
+void ItmCode::genCodeNewClassIdToReg(Reg* reg_t, Scope *scope_t)
 {
     if (NULL == reg_t) {
         LogiMsg::logi("error in genCodeNewClassIdToReg(): exist one of params is NULL");
     }
 
     ItmCode *newCode = new ItmCode(IR_NEW_OP,
-    ItmCode::OPR_INVALID, NULL,
+    ItmCode::OPR_SCOPE, scope_t,
     ItmCode::OPR_INVALID, NULL,
     ItmCode::OPR_REGISTER, reg_t);
 

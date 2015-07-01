@@ -1,6 +1,6 @@
 
 #include "../../include/ast/TerminateAst.h"
-
+#include <sstream>
 using namespace std;
 
 TerminateAst::TerminateAst(NodeAst::NodeType nodeType_t, string *token_t) : NodeAst(nodeType_t)
@@ -50,6 +50,7 @@ void TerminateAst::walk()
             rst = new Symbol(Symbol::SYMBOL_INTEGER_CONSTANT);
             rst->setSymbolName(token);
             rst->addSymbolValue(token);
+            rst->typeClass.setTypeSfType(TypeClass::SF_INT);
 
             rst = (0 == Scope::s_globalScope->defineSymbol(rst)) ? NULL : rst;
 
@@ -71,6 +72,7 @@ void TerminateAst::walk()
             rst->setSymbolName(token);
             //string charValue = token.substr(1, 1);
             rst->addSymbolValue(token);
+            rst->typeClass.setTypeSfType(TypeClass::SF_CHAR);
 
             //cout << "!" << rst->getFirstSymbolValue() << endl;
 
@@ -93,6 +95,7 @@ void TerminateAst::walk()
             rst = new Symbol(Symbol::SYMBOL_FLOATING_CONSTANT);
             rst->setSymbolName(token);
             rst->addSymbolValue(token);
+            rst->typeClass.setTypeSfType(TypeClass::SF_DOUBLE);
 
             rst = (0 == Scope::s_globalScope->defineSymbol(rst)) ? NULL : rst;
 
@@ -124,12 +127,18 @@ void TerminateAst::walk()
         if (NULL == rst) {
             rst = new Symbol(Symbol::SYMBOL_STRING_LITERAL);
             static int s_string=0;
-            string tmpName = ".S";
-            tmpName+=s_string;
             s_string++;
+            string idString;
+            string tmpName = ".S";
+            stringstream ss;
+            ss << s_string;
+            ss >> idString;
+            tmpName +=idString;
+
             rst->setSymbolName(tmpName);
             //string strValue = token.substr(1, token.size() - 2);
             rst->addSymbolValue(token);
+            rst->typeClass.setTypeSfType(TypeClass::SF_INT);
 
            // cout << "!" << rst->getFirstSymbolValue() << endl;
 

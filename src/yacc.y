@@ -1861,6 +1861,7 @@ int main() {
    if (!NodeAst::checkIsNotWalking()) {
         ItmCode::printSymbolTableItmCode(Scope::s_globalScope);
         ItmCode::printAllItmCode();
+        Asm::printAsm();
     }
 
    ItmCode::freeAllItmCode();

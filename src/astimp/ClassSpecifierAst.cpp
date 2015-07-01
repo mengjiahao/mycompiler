@@ -51,6 +51,7 @@ void ClassSpecifierAst::walk()
             TypeClass tmp;
             //tmp.scopeType = tmpScope;
             tmp.setScopeType(tmpScope);
+            tmp.typeSfType = TypeClass::SF_INT;
             s_context->clearContext();
             s_context->tmpDeclType.clone(&tmp);
             break;
@@ -130,6 +131,7 @@ void ClassSpecifierAst::walk()
             TypeClass tmp;
             //tmp.scopeType = tmpScope;
             tmp.setScopeType(tmpScope);
+            tmp.typeSfType = TypeClass::SF_INT;
             s_context->clearContext();
             s_context->tmpDeclType.clone(&tmp);
             break;
@@ -158,6 +160,7 @@ void ClassSpecifierAst::walk()
             TypeClass tmp;
             //tmp.scopeType = tmpScope;
             tmp.setScopeType(tmpScope);
+            tmp.typeSfType = TypeClass::SF_INT;
             s_context->clearContext();
             s_context->tmpDeclType.clone(&tmp);
             break;

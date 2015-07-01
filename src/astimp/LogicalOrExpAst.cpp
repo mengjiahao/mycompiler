@@ -22,7 +22,7 @@ void LogicalOrExpAst::walk()
         if (checkIsNotWalking()) {
             return ;
         }
-        Reg *r1 = processChildOperand(1);
+        Reg *r1 = processChildOperand(0);
         if (NULL == r1) {
             LogiMsg::logi("error in T_CLOGOREXP_LOGOREXP_OR_OP_LOGANDEXP: left operand is invalid", getLineno());
             stopWalk();

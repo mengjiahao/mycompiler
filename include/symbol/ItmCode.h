@@ -164,7 +164,7 @@ OperandType t3_t = ItmCode::OPR_INVALID, void* v3_t = NULL);
     static void genCodeUnaryOpSymbol(IRtype iRType_t, Symbol *symbol_t);
     static void genCodeAssignRegToSymbol(IRtype iRType_t, Reg *reg_t, Symbol *symbol_t);
     static void genCodeAssignRegToRefList(IRtype iRType_t, Reg *reg_t, vector<void *> *refList_t);
-    static void genCodeNewClassIdToReg(Reg *reg_t);
+    static void genCodeNewClassIdToReg(Reg *reg_t, Scope *scope_t);
     static void genCodeDeleteClassRefId(Symbol *symboL_t);
     static void genCodeReturnVoid();
     static void genCodeReturnReg(Reg *reg_t);

@@ -97,7 +97,7 @@ void AssignExpAst::walk()
 
         Reg *r = Reg::getReg(0, TypeClass::SF_INT);
 
-        ItmCode::genCodeNewClassIdToReg(r);
+        ItmCode::genCodeNewClassIdToReg(r, s);
 
         s_context->clearSingleOperand();
         s_context->tmpOpType = ItmCode::OPR_REGISTER;
