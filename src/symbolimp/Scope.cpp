@@ -40,6 +40,8 @@ Scope::Scope()
     itemcodeVec.clear();
 
     startCodeNo=0;
+
+    className="";
     //paraTypeNum=0;
     //paraType.clear();
 

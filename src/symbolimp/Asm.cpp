@@ -495,7 +495,7 @@ void Asm::printExpAsm(ItmCode *code_t ,Scope *scope_t)
                     string b;
                     ss << i+tmpScope->totalByteSize;
                     ss >> b;
-                    a = "\tmovl $" + tmpScope->getScopeName() + "_"
+                    a = "\tmovl $" + tmpMemFunc->className + "_"
                     + tmpMemFunc->getScopeName() + ", " + b + "(%eax) \n";
                     addToTextSectionList(a);
 

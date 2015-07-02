@@ -29,6 +29,8 @@ public:
     ScopeType scopeType;
     string scopeName;
 
+    string className;
+
     Scope *parent;
     Scope *superClass;
 

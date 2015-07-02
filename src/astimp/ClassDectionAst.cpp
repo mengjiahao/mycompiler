@@ -156,6 +156,7 @@ void ClassDectionAst::walk()
             else
             {
                 tmpScope->setFuncOffest(Scope::s_curScope->getTotalFuncByteSize());
+                tmpScope->className = Scope::s_curScope->getScopeName();
                 Scope::s_curScope->incTotalFuncByteSize(4);
             }
             Scope::pushScope(Scope::s_curScope,tmpScope);
