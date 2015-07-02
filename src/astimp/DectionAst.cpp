@@ -197,8 +197,9 @@ void DectionAst::walk()
                 tmpsymbol->setTypeClass(&tmpType);
                 if (Scope::s_curScope!=Scope::s_globalScope && !(tmpType.storageType&TypeClass::STOR_STATIC))
                 {
-                    tmpsymbol->setOffset(Scope::s_curScope->getTotalByteSize());
                     Scope::s_curScope->incTotalByteSize(tmpsymbol->getByteSize());
+                    tmpsymbol->setOffset(Scope::s_curScope->getTotalByteSize());
+
                 }
                 if (Scope::s_curScope==Scope::s_globalScope)
                 {

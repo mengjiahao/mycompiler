@@ -894,14 +894,16 @@ string Asm::genSymbol(void *v1, Scope *scope_t)
                 return "";
             }
 
-            symStr = symbol_t->symbolValue.at(0);
+            symStr ="$";
+            symStr += symbol_t->symbolValue.at(0);
 
             break;
 
         }
         case Symbol::SYMBOL_STRING_LITERAL:{
 
-            symStr = symbol_t->getSymbolName();
+            symStr ="$";
+            symStr += symbol_t->getSymbolName();
             break;
         }
 
@@ -1215,6 +1217,7 @@ int Asm::genPushArgu(void *v1, bool isthis, Scope *scope_t, string thisstr)
                 string a = "\tpushb " + tmp + "\n";
                 addToTextSectionList(a);
                 byteSize+=1;
+
                 break;
             }
             case 2:{
@@ -1222,6 +1225,7 @@ int Asm::genPushArgu(void *v1, bool isthis, Scope *scope_t, string thisstr)
                 string a = "\tpushw " + tmp + "\n";
                 addToTextSectionList(a);
                 byteSize+=2;
+
                 break;
             }
             case 4:{
@@ -1245,6 +1249,7 @@ int Asm::genPushArgu(void *v1, bool isthis, Scope *scope_t, string thisstr)
                 addToTextSectionList(a);
 
                 byteSize += 8;
+
                 break;
             }
         }

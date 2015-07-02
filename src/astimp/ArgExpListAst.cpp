@@ -26,9 +26,10 @@ void ArgExpListAst::walk()
             Reg *tmpReg = processChildOperand(0);
             Symbol *tmpsymbol = new Symbol(Symbol::SYMBOL_TEMPVAR);
             tmpsymbol->typeClass.typeSfType = tmpReg->getTypeSfType();
-            tmpsymbol->setOffset(Scope::s_curScope->getTotalByteSize());
+
 
             Scope::s_curScope->incTotalByteSize(tmpsymbol->getByteSize());
+            tmpsymbol->setOffset(Scope::s_curScope->getTotalByteSize());
             Scope::s_curScope->defineSymbol(tmpsymbol);
             /*ItmCode *tmpCode = new ItmCode(ItmCode::IR_ASSIGN_OP,
                                             ItmCode::OPR_REGISTER, tmpReg,
@@ -58,9 +59,10 @@ void ArgExpListAst::walk()
             Reg *tmpReg = processChildOperand(0);
             Symbol *tmpsymbol = new Symbol(Symbol::SYMBOL_TEMPVAR);
             tmpsymbol->typeClass.typeSfType = tmpReg->getTypeSfType();
-            tmpsymbol->setOffset(Scope::s_curScope->getTotalByteSize());
+
 
             Scope::s_curScope->incTotalByteSize(tmpsymbol->getByteSize());
+            tmpsymbol->setOffset(Scope::s_curScope->getTotalByteSize());
             Scope::s_curScope->defineSymbol(tmpsymbol);
             /*ItmCode *tmpCode = new ItmCode(ItmCode::IR_ASSIGN_OP,
                                             ItmCode::OPR_REGISTER, tmpReg,
