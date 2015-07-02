@@ -29,6 +29,7 @@ void Asm::printScopeAsm(Scope *scope_t)
 {
     if (scope_t->scopeType == Scope::SCOPE_CLASS)
     {
+        std::cout << "!!!!!!!!!!!!!1zhufanzhufan!!!!!!!!!!!!!!!!!" << std::endl;
         vector<Scope *>::iterator childItr;
 
         for (childItr=scope_t->childs.begin(); childItr!=scope_t->childs.end(); childItr++)
@@ -74,7 +75,7 @@ void Asm::printScopeAsm(Scope *scope_t)
     }
     else if (scope_t->scopeType == Scope::SCOPE_CLASSFUNC)
     {
-        if (scope_t->superClass == NULL)
+        if (scope_t->parent == NULL)
         {
             LogiMsg::logi("error in printScopeAsm there is no class \n");
             //exit(0);
@@ -82,7 +83,7 @@ void Asm::printScopeAsm(Scope *scope_t)
         }
 
         //textSection << scope_t->superClass->getScopeName() << "_" << scope_t->getScopeName() << ":\n";
-        string a = scope_t->superClass->getScopeName() + "_" + scope_t->getScopeName() + ":\n";
+        string a = scope_t->parent->getScopeName() + "_" + scope_t->getScopeName() + ":\n";
         addToTextSectionList(a);
 
         vector<Scope *>::iterator childItr;
@@ -233,7 +234,7 @@ void Asm::printAllAsm()
     textSection << "\tpush %eax\n";
     textSection << "\tcall exit\n";*/
     addToTextSectionList("\tcall main\n");
-    addToTextSectionList("\tpush %eax\n");
+    addToTextSectionList("\tpushl %eax\n");
     addToTextSectionList("\tcall exit\n");
 
 
@@ -389,6 +390,12 @@ void Asm::printExpAsm(ItmCode *code_t ,Scope *scope_t)
             {
                 byteSize = Asm::genPushArgu(code_t->v2, true, scope_t, tmpThis);
             }
+            else
+            {
+                string a = "\tpushl " + tmpThis + "\n";
+                addToTextSectionList(a);
+                byteSize=4;
+            }
 
             /*textSection << "\tmovl %ebx, .bxbuff\n";
             textSection << "\tmovl " << tmpThis << ", %ecx\n";*/
@@ -412,7 +419,7 @@ void Asm::printExpAsm(ItmCode *code_t ,Scope *scope_t)
                     //exit(0);
                     return ;
                 }
-                offset = ((Scope *)(refList_t->at(1)))->funcOffset;
+                offset = ((Scope *)(refList_t->at(1)))->funcOffset+((Scope *)(refList_t->at(1)))->parent->totalByteSize;
             }
 
             //textSection << "\tcall *" << offset << "(%ecx)\n";
@@ -424,18 +431,18 @@ void Asm::printExpAsm(ItmCode *code_t ,Scope *scope_t)
             addToTextSectionList(a);
 
 
-            if (code_t->t2 == ItmCode::OPR_ARGLIST)
-            {
+
 
                 //textSection << "\taddl $" << byteSize << ", %esp\n";
-                string a;
+                //string a;
+                a="";
                 ss.clear();
-                string b;
+                b="";
                 ss << byteSize;
                 ss >> b;
                 a = "\taddl $" + b + ", %esp\n";
                 addToTextSectionList(a);
-            }
+
 
             //textSection << "\tmovl .bxbuff, %ebx\n";
             addToTextSectionList("\tmovl .bxbuff, %ebx\n");
@@ -862,7 +869,7 @@ void Asm::printExpAsm(ItmCode *code_t ,Scope *scope_t)
             string a = "\tmovl " + tmpReg + ", %eax\n";
             addToTextSectionList(a);
 
-            Asm::genFuncEnd(scope_t);
+           // Asm::genFuncEnd(scope_t);
 
             //textSection << "\tret\n";
             addToTextSectionList("\tret\n");
@@ -1214,7 +1221,7 @@ int Asm::genPushArgu(void *v1, bool isthis, Scope *scope_t, string thisstr)
         switch (((Symbol *)(*r_itr))->getByteSize()){
             case 1:{
                 //textSection << "\tpushb " << tmp << "\n";
-                string a = "\tpushb " + tmp + "\n";
+                string a = "\tpush " + tmp + "\n";
                 addToTextSectionList(a);
                 byteSize+=1;
 
@@ -1283,22 +1290,42 @@ void Asm::genJum(string jmp_t, ItmCode *code_t)
     textSection << "\t" << jmp_t << " .TM" <<tmpSymbol << "\n";
     textSection << "\tmovl $0, " << r3 << "\n";
     textSection << ".TM" << tmpSymbol << ":\n";*/
-    string a = "\tmovl $1, " + r3 + "\n";
-    addToTextSectionList(a);
-    a = "\tcmp " + r1 + ", " + r2 + "\n";
+    //string a = "\tmovl $1, " + r3 + "\n";
+    //addToTextSectionList(a);
+    string a = "\tcmp " + r2 + ", " + r1 + "\n";
     addToTextSectionList(a);
     stringstream ss;
     string b;
     ss << tmpSymbol;
     ss >> b;
     a = "\t" + jmp_t + " .TM" + b + "\n";
+    tmpSymbol++;
     addToTextSectionList(a);
     a = "\tmovl $0, " + r3 + "\n";
     addToTextSectionList(a);
-    a = ".TM" + b + ":\n";
+    b="";
+    ss.clear();
+    ss << tmpSymbol;
+    ss >> b;
+    a = "\t" + jmp_t + " .TM" + b + "\n";
+    addToTextSectionList(a);
+    tmpSymbol++;
+    b="";
+    ss.clear();
+    ss << tmpSymbol-2;
+    ss >> b;
+    a = ".T" + b + ":\n";
+    addToTextSectionList(a);
+    a = "\tmovl $1, " + r3 + "\n";
+    addToTextSectionList(a);
+    b="";
+    ss.clear();
+    ss << tmpSymbol-1;
+    ss >> b;
+    a = ".T" + b + ":\n";
     addToTextSectionList(a);
 
-    tmpSymbol++;
+
 }
 
 void Asm::genFLoatOpe(string ope_t, void *v1, void *v2, void *v3)
