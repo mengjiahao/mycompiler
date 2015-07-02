@@ -29,7 +29,7 @@ void ArgExpListAst::walk()
 
 
             Scope::s_curScope->incTotalByteSize(tmpsymbol->getByteSize());
-            tmpsymbol->setOffset(Scope::s_curScope->getTotalByteSize()-4);
+            tmpsymbol->setOffset(Scope::s_curScope->getTotalByteSize());
             Scope::s_curScope->defineSymbol(tmpsymbol);
             Scope::scopeOffsetChange(Scope::s_curScope, tmpsymbol->getByteSize());
             /*ItmCode *tmpCode = new ItmCode(ItmCode::IR_ASSIGN_OP,
@@ -63,7 +63,7 @@ void ArgExpListAst::walk()
 
 
             Scope::s_curScope->incTotalByteSize(tmpsymbol->getByteSize());
-            tmpsymbol->setOffset(Scope::s_curScope->getTotalByteSize()-4);
+            tmpsymbol->setOffset(Scope::s_curScope->getTotalByteSize());
             Scope::s_curScope->defineSymbol(tmpsymbol);
             Scope::scopeOffsetChange(Scope::s_curScope, tmpsymbol->getByteSize());
             /*ItmCode *tmpCode = new ItmCode(ItmCode::IR_ASSIGN_OP,
