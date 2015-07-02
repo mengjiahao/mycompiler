@@ -78,6 +78,7 @@ void ClassDectionAst::walk()
 
                 tmpsymbol->setOffset(Scope::s_curScope->getTotalByteSize());
                 Scope::s_curScope->incTotalByteSize(tmpsymbol->getByteSize());
+                Scope::scopeIncSuperTotalByte(Scope::s_curScope, tmpsymbol->getByteSize());
 
                 /*if (Scope::s_curScope->symbolVarMap.find(tmpsymbol->symbolName) != Scope::s_curScope->symbolVarMap.end())
                 {

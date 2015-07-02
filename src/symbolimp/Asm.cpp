@@ -597,6 +597,25 @@ void Asm::printExpAsm(ItmCode *code_t ,Scope *scope_t)
         }
         case ItmCode::IR_MUL_ASSIGN:{
 
+            string tmpOpr;
+            int tmpReg;
+            if (code_t->t3 == ItmCode::OPR_SYMBOL)
+            {
+                tmpOpr = Asm::genSymbol(code_t->v3, scope_t);
+                tmpReg = ((Symbol *)(code_t->v3))->getTypeClass()->getTypeSfType();
+            }
+            else if (code_t->t3 == ItmCode::OPR_CLASS_REFLIST_POINTER)
+            {
+                vector<void* >* refList_t = ( vector<void* >*)(code_t->v3);
+                if (refList_t->size() !=2 )
+                {
+                    LogiMsg::logi("error in ItmCode::IR_MUL_ASSIGN \n");
+                    exit(0);
+                }
+                tmpOpr = Asm::genRefList(code_t->v3, scope_t);
+                tmpReg = ((Symbol *)(refList_t->back()))->getTypeClass()->getTypeSfType();
+            }
+
             break;
         }
         case ItmCode::IR_DIV_ASSIGN:{

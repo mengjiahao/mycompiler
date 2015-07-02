@@ -1147,4 +1147,14 @@ void Scope::scopeOffsetChange(Scope *scope_t, int inc_t)
     }
 }
 
-
+ void Scope::scopeIncSuperTotalByte(Scope *scope_t, int inc_t)
+ {
+     if (scope_t)
+     {
+         if (scope_t->superClass)
+         {
+             scope_t->superClass->totalByteSize+=inc_t;
+             Scope::scopeIncSuperTotalByte(scope_t->superClass, inc_t);
+         }
+     }
+ }

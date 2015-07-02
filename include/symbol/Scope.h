@@ -188,6 +188,7 @@ public:
 
 
     static void scopeOffsetChange(Scope *scope_t, int inc_t);
+    static void scopeIncSuperTotalByte(Scope *scope_t, int inc_t);
 
     //virtual void addParaType(TypeClass *type_t);
 
