@@ -161,6 +161,7 @@ OperandType t3_t = ItmCode::OPR_INVALID, void* v3_t = NULL);
     static void genCodeEmitLabel(Symbol *label_t);
     static void genCodeGotoBeginLabel(Symbol *label_t);
     static ItmCode* genCodeGotoOutLabel(Symbol *label_t);
+    static void setGotoOutLabel(ItmCode *itmCode_t, Symbol *label_t);
     static void genCodeUnaryOpClassRefList(IRtype iRType_t, vector<void *> *refList_t);
     static void genCodeUnaryOpSymbol(IRtype iRType_t, Symbol *symbol_t);
     static void genCodeAssignRegToSymbol(IRtype iRType_t, Reg *reg_t, Symbol *symbol_t);

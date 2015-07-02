@@ -129,12 +129,7 @@ void SelectionStmAst::walk()
             return ;
         }
 
-        list<ItmCode *> outTrueLabelList;
-        ItmCode::copyLabelList(outTrueLabelList, s_context->tmpTrueLabelList);
-        s_context->tmpTrueLabelList.clear();
-
         ItmCode *outNewCode = ItmCode::genCodeGotoOutLabel(NULL);
-        s_context->addToTrueLabelList(outNewCode);
 
 
         Symbol *falseLabel = new Symbol(Symbol::SYMBOL_LABEL);
@@ -155,8 +150,7 @@ void SelectionStmAst::walk()
         Scope::s_curScope->defineSymbol(ifElseOutLabel);
         ItmCode::genCodeEmitLabel(ifElseOutLabel);
 
-        s_context->backFillTrueLabelList(ifElseOutLabel);
-        ItmCode::copyLabelList(s_context->tmpTrueLabelList, outTrueLabelList);
+        ItmCode::setGotoOutLabel(outNewCode, ifElseOutLabel);
 
 
 

@@ -790,6 +790,16 @@ ItmCode* ItmCode::genCodeGotoOutLabel(Symbol* label_t)
     return newCode;
 }
 
+void ItmCode::setGotoOutLabel(ItmCode* itmCode_t, Symbol* label_t)
+{
+    if (NULL == itmCode_t || NULL == label_t) {
+        LogiMsg::logi("error in setGotoOutLabel(): exist one of params is NULL");
+    }
+
+    itmCode_t->v3 = label_t;
+}
+
+
 
 
 
