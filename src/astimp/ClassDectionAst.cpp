@@ -152,6 +152,7 @@ void ClassDectionAst::walk()
             if (tmpVirFunc)
             {
                 tmpScope->setFuncOffest(tmpVirFunc->getFuncOffset());
+                tmpScope->className = Scope::s_curScope->getScopeName();
             }
             else
             {
