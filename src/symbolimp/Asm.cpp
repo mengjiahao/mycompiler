@@ -597,24 +597,8 @@ void Asm::printExpAsm(ItmCode *code_t ,Scope *scope_t)
         }
         case ItmCode::IR_MUL_ASSIGN:{
 
-            string tmpOpr;
-            int tmpReg;
-            if (code_t->t3 == ItmCode::OPR_SYMBOL)
-            {
-                tmpOpr = Asm::genSymbol(code_t->v3, scope_t);
-                tmpReg = ((Symbol *)(code_t->v3))->getTypeClass()->getTypeSfType();
-            }
-            else if (code_t->t3 == ItmCode::OPR_CLASS_REFLIST_POINTER)
-            {
-                vector<void* >* refList_t = ( vector<void* >*)(code_t->v3);
-                if (refList_t->size() !=2 )
-                {
-                    LogiMsg::logi("error in ItmCode::IR_MUL_ASSIGN \n");
-                    exit(0);
-                }
-                tmpOpr = Asm::genRefList(code_t->v3, scope_t);
-                tmpReg = ((Symbol *)(refList_t->back()))->getTypeClass()->getTypeSfType();
-            }
+            Asm::genAssign(code_t, "imull", scope_t);
+
 
             break;
         }
@@ -628,9 +612,13 @@ void Asm::printExpAsm(ItmCode *code_t ,Scope *scope_t)
         }
         case ItmCode::IR_ADD_ASSIGN:{
 
+             Asm::genAssign(code_t, "addl", scope_t);
+
             break;
         }
         case ItmCode::IR_SUB_ASSIGN:{
+
+             Asm::genAssign(code_t, "subl", scope_t);
 
             break;
         }
@@ -791,9 +779,13 @@ void Asm::printExpAsm(ItmCode *code_t ,Scope *scope_t)
         }
         case ItmCode::IR_INC_OP:{
 
+            Asm::genOne(code_t, "addl", scope_t);
+
+
             break;
         }
         case ItmCode::IR_DEC_OP:{
+            Asm::genOne(code_t, "subl", scope_t);
 
             break;
         }
@@ -802,10 +794,14 @@ void Asm::printExpAsm(ItmCode *code_t ,Scope *scope_t)
             break;
         }
         case ItmCode::IR_INC_OP_POST:{
+            Asm::genOne(code_t, "addl", scope_t);
+
+
 
             break;
         }
         case ItmCode::IR_DEC_OP_POST:{
+            Asm::genOne(code_t, "subl", scope_t);
 
             break;
         }
@@ -1442,4 +1438,57 @@ void Asm::printAsm()
     bssSection.close();*/
 
 
+}
+
+
+void Asm::genAssign(ItmCode *code_t, string opr, Scope * scope_t)
+{
+    string tmpOpr;
+    int tmpReg;
+    if (code_t->t3 == ItmCode::OPR_SYMBOL)
+    {
+        tmpOpr = Asm::genSymbol(code_t->v3, scope_t);
+        tmpReg = ((Symbol *)(code_t->v3))->getTypeClass()->getTypeSfType();
+    }
+    else if ((code_t->t3 == ItmCode::OPR_CLASS_REFLIST_POINTER) || (code_t->t3 == ItmCode::OPR_CLASS_REFLIST))
+    {
+        vector<void* >* refList_t = ( vector<void* >*)(code_t->v3);
+        if (refList_t->size() !=2 )
+        {
+            LogiMsg::logi("error in ItmCode::IR_MUL_ASSIGN \n");
+            exit(0);
+        }
+        tmpOpr = Asm::genRefList(code_t->v3, scope_t);
+        tmpReg = ((Symbol *)(refList_t->back()))->getTypeClass()->getTypeSfType();
+    }
+    Asm::genMovToReg(1, tmpReg, tmpOpr);
+    Reg *tmp = Reg::getReg(1, tmpReg);
+    Asm::genIntOpe(opr, (void *)tmp, code_t->v1, code_t->v1);
+    Asm::genRegMovTo(0, tmpReg, tmpReg, tmpOpr);
+
+
+}
+
+void Asm::genOne(ItmCode *code_t, string opr, Scope *scope_t)
+{
+    string tmpOpr;
+
+    if (code_t->t3 == ItmCode::OPR_SYMBOL)
+    {
+        tmpOpr = Asm::genSymbol(code_t->v3, scope_t);
+
+    }
+    else if ((code_t->t3 == ItmCode::OPR_CLASS_REFLIST_POINTER) || (code_t->t3 == ItmCode::OPR_CLASS_REFLIST))
+    {
+        vector<void* >* refList_t = ( vector<void* >*)(code_t->v3);
+        if (refList_t->size() !=2 )
+        {
+            LogiMsg::logi("error in ItmCode::IR_MUL_ASSIGN \n");
+            exit(0);
+        }
+        tmpOpr = Asm::genRefList(code_t->v3, scope_t);
+
+    }
+    string a ="\t" +opr+" $1, "+tmpOpr+"\n";
+    addToTextSectionList(a);
 }

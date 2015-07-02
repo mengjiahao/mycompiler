@@ -51,6 +51,9 @@ public:
     static void addToDataSectionList(const string &a);
     static void addToBssSectionList(const string &a);
     static void addToTextSectionList(const string &a);
+
+    static void genAssign(ItmCode *code_t, string opr, Scope * scope_t);
+    static void genOne(ItmCode *code_t, string opr, Scope *scope_t);
 };
 
 
