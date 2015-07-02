@@ -778,6 +778,21 @@ void ItmCode::genCodeGotoBeginLabel(Symbol* label_t)
     Scope::s_curScope->addItemCode(newCode);
 }
 
+ItmCode* ItmCode::genCodeGotoOutLabel(Symbol* label_t)
+{
+    ItmCode *newCode = new ItmCode(ItmCode::IR_GOTO,
+    ItmCode::OPR_INVALID, NULL,
+    ItmCode::OPR_INVALID, NULL,
+    ItmCode::OPR_SYMBOL, label_t);
+
+    Scope::s_curScope->addItemCode(newCode);
+
+    return newCode;
+}
+
+
+
+
 
 void ItmCode::genCodeUnaryOpClassRefList(IRtype iRType_t, vector<void* >* refList_t)
 {
