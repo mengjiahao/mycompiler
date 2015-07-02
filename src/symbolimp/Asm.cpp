@@ -1,7 +1,29 @@
 #include "../../include/symbol/Asm.h"
-ofstream Asm::dataSection;
+
+list<string> Asm::dataSectionList;
+list<string> Asm::bssSectionList;
+list<string> Asm::textSectionList;
+
+/*ofstream Asm::dataSection;
 ofstream Asm::bssSection;
-ofstream Asm::textSection;
+ofstream Asm::textSection;*/
+
+void Asm::addToDataSectionList(const string& a)
+{
+    dataSectionList.push_back(a);
+}
+
+void Asm::addToBssSectionList(const string& a)
+{
+    bssSectionList.push_back(a);
+}
+
+void Asm::addToTextSectionList(const string& a)
+{
+    textSectionList.push_back(a);
+}
+
+
 
 void Asm::printScopeAsm(Scope *scope_t)
 {
@@ -17,7 +39,9 @@ void Asm::printScopeAsm(Scope *scope_t)
     }
     else if (scope_t->scopeType == Scope::SCOPE_GLOBALFUNC)
     {
-        textSection << scope_t->getScopeName() << ":\n";
+        //textSection << scope_t->getScopeName() << ":\n";
+        string a = scope_t->getScopeName() + ":\n";
+        addToTextSectionList(a);
 
         vector<Scope *>::iterator childItr;
 
@@ -26,13 +50,15 @@ void Asm::printScopeAsm(Scope *scope_t)
             Asm::printScopeAsm(*childItr);
         }
 
-        textSection << "\tret\n";
-
+        //textSection << "\tret\n";
+        addToTextSectionList("\tret\n");
 
     }
     else if (scope_t->scopeType == Scope::SCOPE_GLOBALFUNCCHAN)
     {
-        textSection << scope_t->getScopeName() << ":\n";
+        //textSection << scope_t->getScopeName() << ":\n";
+        string a = scope_t->getScopeName() + ":\n";
+        addToTextSectionList(a);
 
 
         vector<Scope *>::iterator childItr;
@@ -42,7 +68,8 @@ void Asm::printScopeAsm(Scope *scope_t)
             Asm::printScopeAsm(*childItr);
         }
 
-        textSection << "\tret\n";
+        //textSection << "\tret\n";
+        addToTextSectionList("\tret\n");
 
     }
     else if (scope_t->scopeType == Scope::SCOPE_CLASSFUNC)
@@ -50,9 +77,13 @@ void Asm::printScopeAsm(Scope *scope_t)
         if (scope_t->superClass == NULL)
         {
             LogiMsg::logi("error in printScopeAsm there is no class \n");
-            exit(0);
+            //exit(0);
+            return ;
         }
-        textSection << scope_t->superClass->getScopeName() << "_" << scope_t->getScopeName() << ":\n";
+
+        //textSection << scope_t->superClass->getScopeName() << "_" << scope_t->getScopeName() << ":\n";
+        string a = scope_t->superClass->getScopeName() + "_" + scope_t->getScopeName() + ":\n";
+        addToTextSectionList(a);
 
         vector<Scope *>::iterator childItr;
 
@@ -61,7 +92,8 @@ void Asm::printScopeAsm(Scope *scope_t)
             Asm::printScopeAsm(*childItr);
         }
 
-        textSection << "\tret\n";
+        //textSection << "\tret\n";
+        addToTextSectionList("\tret\n");
 
     }
     else if (scope_t->scopeType == Scope::SCOPE_LOCAL)
@@ -70,11 +102,25 @@ void Asm::printScopeAsm(Scope *scope_t)
         Asm::genFuncStart(scope_t);
 
         list<Symbol *>::iterator staItr;
+        stringstream ss;
 
         for (staItr=scope_t->symbolSeqList.begin(); staItr!=scope_t->symbolSeqList.end(); staItr++ )
         {
-            if ((*staItr)->typeClass.storageType & TypeClass::STOR_STATIC)
-                bssSection << "\t.lcomm " << (*staItr)->getSymbolName() << ", " << (*staItr)->getByteSize() << "\n";
+            if ((*staItr)->typeClass.storageType & TypeClass::STOR_STATIC) {
+                //bssSection << "\t.lcomm " << (*staItr)->getSymbolName() << ", " << (*staItr)->getByteSize() << "\n";
+                string a;
+                ss.clear();
+                string b;
+                ss << (*staItr)->getByteSize();
+                ss >> b;
+                a = "\t.lcomm " + (*staItr)->getSymbolName() + ", " + b + "\n";
+
+                addToBssSectionList(a);
+
+            }
+
+
+
         }
 
         vector<Scope *>::iterator childItr;
@@ -113,23 +159,43 @@ void Asm::printScopeAsm(Scope *scope_t)
 
 
 
-void Asm::printAllAsm(ofstream &ofs_t)
+void Asm::printAllAsm()
 {
-    dataSection << ".section .data\n";
+    /*dataSection << ".section .data\n";
     bssSection << ".section .bss\n";
     bssSection << "\t.lcomm .st0buff, 8\n\t.lcomm .st1buff, 8\n\t.lcomm .bxbuff, 4\n";
     textSection << ".section .text\n";
     textSection << ".global _start\n";
     textSection << "_start:\n";
     textSection << "\tnop\n";
-    textSection << "\tfinit\n";
+    textSection << "\tfinit\n";*/
+    addToDataSectionList(".section .data\n");
+    addToBssSectionList(".section .bss\n");
+    addToBssSectionList("\t.lcomm .st0buff, 8\n\t.lcomm .st1buff, 8\n\t.lcomm .bxbuff, 4\n");
+    addToTextSectionList(".section .text\n");
+    addToTextSectionList(".global _start\n");
+    addToTextSectionList("_start:\n");
+    addToTextSectionList("\tnop\n");
+    addToTextSectionList("\tfinit\n");
+
+
 
 
     list<Symbol *>::iterator symItr;
+    stringstream ss;
 
     for (symItr=Scope::s_globalScope->symbolSeqList.begin(); symItr!=Scope::s_globalScope->symbolSeqList.end(); symItr++)
     {
-        bssSection << "\t.lcomm " << (*symItr)->getSymbolName() << ", " << (*symItr)->getByteSize() << "\n";
+        //bssSection << "\t.lcomm " << (*symItr)->getSymbolName() << ", " << (*symItr)->getByteSize() << "\n";
+        string a;
+        ss.clear();
+        string b;
+        ss << (*symItr)->getByteSize();
+        ss >> b;
+        a = "\t.lcomm " + (*symItr)->getSymbolName() + ", " + b + "\n";
+
+        addToBssSectionList(a);
+
     }
 
     map<string, Symbol *>::iterator constItr;
@@ -141,10 +207,16 @@ void Asm::printAllAsm(ofstream &ofs_t)
             if (constItr->second->symbolValue.size() != 1)
             {
                 LogiMsg::logi("error in printAllAsm, the size of symbolvalue is not 1\n");
-                exit(0);
+                //exit(0);
+                return ;
             }
-            dataSection << constItr->second->getSymbolName()
-            << ":\n\t.asciz " << constItr->second->symbolValue.at(0) << "\n";
+            /*dataSection << constItr->second->getSymbolName()
+            << ":\n\t.asciz " << constItr->second->symbolValue.at(0) << "\n";*/
+            string a = constItr->second->getSymbolName() + ":\n\t.asciz "
+            + constItr->second->symbolValue.at(0) + "\n";
+
+            addToDataSectionList(a);
+
 
         }
     }
@@ -157,9 +229,13 @@ void Asm::printAllAsm(ofstream &ofs_t)
     }
 
 
-    textSection << "\tcall main\n";
+    /*textSection << "\tcall main\n";
     textSection << "\tpush %eax\n";
-    textSection << "\tcall exit\n";
+    textSection << "\tcall exit\n";*/
+    addToTextSectionList("\tcall main\n");
+    addToTextSectionList("\tpush %eax\n");
+    addToTextSectionList("\tcall exit\n");
+
 
     vector<Scope *>::iterator childItr;
 
@@ -190,11 +266,13 @@ void Asm::printAllAsm(ofstream &ofs_t)
 
 void Asm::printExpAsm(ItmCode *code_t ,Scope *scope_t)
 {
+    addToTextSectionList("#***************************************#\n");
+
     switch (code_t->iRType){
         case ItmCode::IR_INVALID:{
-
-            std::cout << "error in printExpAsm the code is invalid " << std::endl;
-            exit(0);
+            LogiMsg::logi("error in printExpAsm the code is invalid");
+            //exit(0);
+            return ;
             break;
         }
         case ItmCode::IR_PUSHVAR:{
@@ -234,10 +312,13 @@ void Asm::printExpAsm(ItmCode *code_t ,Scope *scope_t)
             if (code_t->t3 != ItmCode::OPR_SYMBOL)
             {
                 LogiMsg::logi("error in IR_EMITLABEL\n");
-                exit(0);
+                //exit(0);
+                return ;
             }
             string tmp=Asm::genSymbol(code_t->v3, scope_t);
-            textSection << tmp  << ":\n";
+            //textSection << tmp  << ":\n";
+            string a = tmp + ":\n";
+            addToTextSectionList(a);
 
             break;
         }
@@ -246,7 +327,8 @@ void Asm::printExpAsm(ItmCode *code_t ,Scope *scope_t)
             if (code_t->t1 != ItmCode::OPR_SCOPE)
             {
                 LogiMsg::logi("error in IR_CALLFUNC\n");
-                exit(0);
+                //exit(0);
+                return ;
             }
 
             int byteSize=0;
@@ -255,18 +337,29 @@ void Asm::printExpAsm(ItmCode *code_t ,Scope *scope_t)
                 byteSize = Asm::genPushArgu(code_t->v2, false, scope_t, "");
             }
 
-            textSection << "\tmovl %ebx, .bxbuff\n";
-            textSection << "\tcall " << ((Scope *)(code_t->v1))->getScopeName() << "\n";
+            /*textSection << "\tmovl %ebx, .bxbuff\n";
+            textSection << "\tcall " << ((Scope *)(code_t->v1))->getScopeName() << "\n";*/
+            addToTextSectionList("\tmovl %ebx, .bxbuff\n");
+            string a = "\tcall " + ((Scope *)(code_t->v1))->getScopeName() + "\n";
+            addToTextSectionList(a);
+
+
             if (code_t->t2 == ItmCode::OPR_ARGLIST)
             {
+                //textSection << "\taddl $" << byteSize << ", %esp\n";
+                string a;
+                stringstream ss;
+                string b;
+                ss << byteSize;
+                ss >> b;
+                a = "\taddl $" + b + ", %esp\n";
 
-                textSection << "\taddl $" << byteSize << ", %esp\n";
+                addToTextSectionList(a);
 
             }
-            textSection << "\tmovl .bxbuff, %ebx\n";
 
-
-
+            //textSection << "\tmovl .bxbuff, %ebx\n";
+            addToTextSectionList("\tmovl .bxbuff, %ebx\n");
 
             break;
         }
@@ -286,7 +379,8 @@ void Asm::printExpAsm(ItmCode *code_t ,Scope *scope_t)
                 if (refList_t->size()!=2)
                 {
                     LogiMsg::logi("error in IR_CALLCLASSFUNC\n");
-                    exit(0);
+                    //exit(0);
+                    return ;
                 }
                 tmpThis = Asm::genSymbol(refList_t->at(0), scope_t);
             }
@@ -296,9 +390,11 @@ void Asm::printExpAsm(ItmCode *code_t ,Scope *scope_t)
                 byteSize = Asm::genPushArgu(code_t->v2, true, scope_t, tmpThis);
             }
 
-            textSection << "\tmovl %ebx, .bxbuff\n";
-
-            textSection << "\tmovl " << tmpThis << ", %ecx\n";
+            /*textSection << "\tmovl %ebx, .bxbuff\n";
+            textSection << "\tmovl " << tmpThis << ", %ecx\n";*/
+            addToTextSectionList("\tmovl %ebx, .bxbuff\n");
+            string a = "\tmovl " + tmpThis + ", %ecx\n";
+            addToTextSectionList(a);
 
             int offset=0;
 
@@ -313,26 +409,36 @@ void Asm::printExpAsm(ItmCode *code_t ,Scope *scope_t)
                 if (refList_t->size()!=2)
                 {
                     LogiMsg::logi("error in IR_CALLCLASSFUNC\n");
-                    exit(0);
+                    //exit(0);
+                    return ;
                 }
                 offset = ((Scope *)(refList_t->at(1)))->funcOffset;
             }
 
-            textSection << "\tcall *" << offset << "(%ecx)\n";
+            //textSection << "\tcall *" << offset << "(%ecx)\n";
+            stringstream ss;
+            string b;
+            ss << offset;
+            ss >> b;
+            a = "\tcall *" + b + "(%ecx)\n";
+            addToTextSectionList(a);
+
+
             if (code_t->t2 == ItmCode::OPR_ARGLIST)
             {
 
-                textSection << "\taddl $" << byteSize << ", %esp\n";
-
+                //textSection << "\taddl $" << byteSize << ", %esp\n";
+                string a;
+                ss.clear();
+                string b;
+                ss << byteSize;
+                ss >> b;
+                a = "\taddl $" + b + ", %esp\n";
+                addToTextSectionList(a);
             }
-            textSection << "\tmovl .bxbuff, %ebx\n";
 
-
-
-
-
-
-
+            //textSection << "\tmovl .bxbuff, %ebx\n";
+            addToTextSectionList("\tmovl .bxbuff, %ebx\n");
 
             break;
         }
@@ -345,20 +451,41 @@ void Asm::printExpAsm(ItmCode *code_t ,Scope *scope_t)
             if (code_t->t1 != ItmCode::OPR_SCOPE)
             {
                 LogiMsg::logi("error in IR_NEW_OP \n");
-                exit(0);
+                //exit(0);
+                return ;
             }
             Scope *tmpScope = (Scope *)(code_t->v1);
 
-            textSection << "\tpushl $" << tmpScope->totalByteSize+tmpScope->totalFuncByteSize << "\n";
+            /*textSection << "\tpushl $" << tmpScope->totalByteSize+tmpScope->totalFuncByteSize << "\n";
             textSection << "\tcall malloc\n";
-            textSection << "\taddl $4, %esp\n";
+            textSection << "\taddl $4, %esp\n";*/
+            string a;
+            stringstream ss;
+            string b;
+            ss << tmpScope->totalByteSize+tmpScope->totalFuncByteSize;
+            ss >> b;
+            a = "\tpushl $" + b + "\n";
+            addToTextSectionList(a);
+            addToTextSectionList("\tcall malloc\n");
+            addToTextSectionList("\taddl $4, %esp\n");
+
+
             for (int i=0; i < tmpScope->totalFuncByteSize; i+=4)
             {
                 Scope *tmpMemFunc = tmpScope->resolveMemFunByOffset(i);
                 if (tmpMemFunc)
                 {
-                    textSection << "\tmovl $" << tmpScope->getScopeName() << "_"
-                    << tmpMemFunc->getScopeName() << ", " << i+tmpScope->totalByteSize << "(%eax) \n";
+                    /*textSection << "\tmovl $" << tmpScope->getScopeName() << "_"
+                    << tmpMemFunc->getScopeName() << ", " << i+tmpScope->totalByteSize << "(%eax) \n";*/
+                    string a;
+                    ss.clear();
+                    string b;
+                    ss << i+tmpScope->totalByteSize;
+                    ss >> b;
+                    a = "\tmovl $" + tmpScope->getScopeName() + "_"
+                    + tmpMemFunc->getScopeName() + ", " + b + "(%eax) \n";
+                    addToTextSectionList(a);
+
                 }
             }
 
@@ -370,12 +497,19 @@ void Asm::printExpAsm(ItmCode *code_t ,Scope *scope_t)
             if (code_t->t1 != ItmCode::OPR_SYMBOL)
             {
                 LogiMsg::logi("error in IR_DELETE_OP\n");
-                exit(0);
+                //exit(0);
+                return ;
             }
             string tmp = Asm::genSymbol(code_t->v1, scope_t);
-            textSection << "\tpushl " << tmp << "\n";
+
+            /*textSection << "\tpushl " << tmp << "\n";
             textSection << "\tcall free\n";
-            textSection << "\taddl $4, %esp\n";
+            textSection << "\taddl $4, %esp\n";*/
+            string a = "\tpushl " + tmp + "\n";
+            addToTextSectionList(a);
+            addToTextSectionList("\tcall free\n");
+            addToTextSectionList("\taddl $4, %esp\n");
+
 
             break;
         }
@@ -409,7 +543,8 @@ void Asm::printExpAsm(ItmCode *code_t ,Scope *scope_t)
                     if (code_t->t1 != ItmCode::OPR_REGISTER)
                     {
                         LogiMsg::logi("error in IR_ASSIGN_OP ItmCode::OPR_SYMBOL\n");
-                        exit(0);
+                        //exit(0);
+                        return ;
                     }
                     string tmp;
                     tmp=Asm::genSymbol(code_t->v3, scope_t);
@@ -426,7 +561,8 @@ void Asm::printExpAsm(ItmCode *code_t ,Scope *scope_t)
                     if (code_t->t1 != ItmCode::OPR_REGISTER)
                     {
                         LogiMsg::logi("error in IR_ASSIGN_OP OPR_CLASS_REFLIST_POINTER\n");
-                        exit(0);
+                        //exit(0);
+                        return ;
                     }
                     string tmp;
                     vector<void* >* listTmp = (vector<void* >*)(code_t->v3);
@@ -603,11 +739,16 @@ void Asm::printExpAsm(ItmCode *code_t ,Scope *scope_t)
             else
             {
 
-                textSection << "\tmovl %ebx, %ecx\n";
+                /*textSection << "\tmovl %ebx, %ecx\n";
                 textSection << "\tmovl %eax, %ebx\n";
                 textSection << "\tmovl %ecx, %eax\n";
                 textSection << "\tmovl $0, %edx\n";
-                textSection << "\tidivl %ebx\n";
+                textSection << "\tidivl %ebx\n";*/
+                addToTextSectionList("\tmovl %ebx, %ecx\n");
+                addToTextSectionList("\tmovl %eax, %ebx\n");
+                addToTextSectionList("\tmovl %ecx, %eax\n");
+                addToTextSectionList("\tmovl $0, %edx\n");
+                addToTextSectionList("\tidivl %ebx\n");
             }
 
             break;
@@ -665,33 +806,50 @@ void Asm::printExpAsm(ItmCode *code_t ,Scope *scope_t)
             if (code_t->t3 != ItmCode::OPR_SYMBOL)
             {
                 LogiMsg::logi("error in IR_GOTO\n");
-                exit(0);
+                //exit(0);
+                return ;
             }
             string tmp =genSymbol(code_t->v3, scope_t);
-            textSection << "\tjmp " << tmp << "\n";
+            //textSection << "\tjmp " << tmp << "\n";
+            string a = "\tjmp " + tmp + "\n";
+            addToTextSectionList(a);
+
+
             break;
         }
         case ItmCode::IR_IF_GOTO:{
 
             string tmpReg =Asm::genReg(((Reg *)(code_t->v1))->regIndex, TypeClass::SF_INT);
             string tmp = genSymbol(code_t->v3, scope_t);
-            textSection << "\tcmp " <<"$0"<< ", " <<tmpReg  << "\n";
-            textSection << "\tjnz " << tmp  << "\n";
+
+            /*textSection << "\tcmp " <<"$0"<< ", " <<tmpReg  << "\n";
+            textSection << "\tjnz " << tmp  << "\n";*/
+            string a = "\tcmp $0, " + tmpReg  + "\n";
+            addToTextSectionList(a);
+            a = "\tjnz " + tmp + "\n";
+            addToTextSectionList(a);
 
             break;
         }
         case ItmCode::IR_IF_NOT_GOTO:{
             string tmpReg =Asm::genReg(((Reg *)(code_t->v1))->regIndex, TypeClass::SF_INT);
             string tmp = genSymbol(code_t->v3, scope_t);
-            textSection << "\tcmp " <<"$0"<< ", " <<tmpReg  << "\n";
-            textSection << "\tjz " << tmp << "\n";
+
+            /*textSection << "\tcmp " <<"$0"<< ", " <<tmpReg  << "\n";
+            textSection << "\tjz " << tmp << "\n";*/
+            string a = "\tcmp $0, " + tmpReg  + "\n";
+            addToTextSectionList(a);
+            a = "\tjz " + tmp + "\n";
+            addToTextSectionList(a);
 
             break;
         }
         case ItmCode::IR_RETURN_VOID:{
 
             Asm::genFuncEnd(scope_t);
-            textSection << "\tret\n";
+
+            //textSection << "\tret\n";
+            addToTextSectionList("\tret\n");
 
             break;
         }
@@ -700,10 +858,14 @@ void Asm::printExpAsm(ItmCode *code_t ,Scope *scope_t)
             Asm::genFuncEnd(scope_t);
 
             string tmpReg =Asm::genReg(((Reg *)(code_t->v3))->regIndex, TypeClass::SF_INT);
-            textSection <<  "\tmovl " << tmpReg << ", %eax\n";
+            //textSection <<  "\tmovl " << tmpReg << ", %eax\n";
+            string a = "\tmovl " + tmpReg + ", %eax\n";
+            addToTextSectionList(a);
 
             Asm::genFuncEnd(scope_t);
-            textSection << "\tret\n";
+
+            //textSection << "\tret\n";
+            addToTextSectionList("\tret\n");
 
             break;
         }
@@ -728,7 +890,8 @@ string Asm::genSymbol(void *v1, Scope *scope_t)
             if (symbol_t->symbolValue.size() != 1 )
             {
                 LogiMsg::logi("error in genSymbol\n");
-                exit(0);
+                //exit(0);
+                return "";
             }
 
             symStr = symbol_t->symbolValue.at(0);
@@ -779,7 +942,9 @@ string Asm::genSymbol(void *v1, Scope *scope_t)
 
         case Symbol::SYMBOL_CLASSMEMVAR:{
 
-            textSection << "\tmovl 8(%ebp), %ecx\n";
+            //textSection << "\tmovl 8(%ebp), %ecx\n";
+            addToTextSectionList("\tmovl 8(%ebp), %ecx\n");
+
             stringstream ss;
             ss << symbol_t->getOffset() << "(%ecx)" ;
             ss >> symStr;
@@ -795,7 +960,8 @@ string Asm::genSymbol(void *v1, Scope *scope_t)
         }
         default:{
             LogiMsg::logi("error in genSymbol\n");
-            exit(0);
+            //exit(0);
+            return "";
         }
 
 
@@ -811,16 +977,19 @@ string Asm::genRefList(void *v1, Scope *scope_t)
     if (refList_t->size()!=2)
     {
         LogiMsg::logi("error in genRefList\n");
-        exit(0);
+        //exit(0);
+        return "";
     }
 
     string tmp = Asm::genSymbol(refList_t->at(0), scope_t);
 
-    textSection << "\tmovl " << tmp << ", %ecx\n";
+    //textSection << "\tmovl " << tmp << ", %ecx\n";
+    string a = "\tmovl " + tmp + ", %ecx\n";
+    addToTextSectionList(a);
 
     stringstream ss;
     ss << ((Symbol *)(refList_t->at(1)))->getOffset() << "(%ecx)";
-    ss>>tmp;
+    ss >> tmp;
     return tmp;
 }
 
@@ -831,12 +1000,16 @@ void Asm::genMovToReg(int reg_t, int type_t, string opr)
 {
     if (type_t & TypeClass::SF_FLOAT)
     {
-        textSection << "\tflds " << opr <<"\n";
+        //textSection << "\tflds " << opr <<"\n";
+        string a = "\tflds " + opr + "\n";
+        addToTextSectionList(a);
 
     }
     else if (type_t & TypeClass::SF_DOUBLE)
     {
-        textSection << "\tfldl " << opr <<"\n";
+        //textSection << "\tfldl " << opr <<"\n";
+        string a = "\tfldl " + opr + "\n";
+        addToTextSectionList(a);
     }
     else
     {
@@ -846,12 +1019,14 @@ void Asm::genMovToReg(int reg_t, int type_t, string opr)
         {
             if (reg_t == 0)
             {
-                textSection << "\tmovl $0, %eax\n";
+                //textSection << "\tmovl $0, %eax\n";
+                addToTextSectionList("\tmovl $0, %eax\n");
                 regTmp = "%al";
             }
             else if (reg_t == 1)
             {
-                textSection << "\tmovl $0, %ebx\n";
+                //textSection << "\tmovl $0, %ebx\n";
+                addToTextSectionList("\tmovl $0, %ebx\n");
                 regTmp = "%bl";
             }
             movTmp = "movb";
@@ -869,7 +1044,10 @@ void Asm::genMovToReg(int reg_t, int type_t, string opr)
             }
             movTmp = "movl";
         }
-        textSection << "\t" << movTmp << " " << opr << ", " << regTmp <<"\n";
+
+        //textSection << "\t" << movTmp << " " << opr << ", " << regTmp <<"\n";
+        string a = "\t" + movTmp + " " + opr + ", " + regTmp + "\n";
+        addToTextSectionList(a);
     }
 }
 
@@ -879,21 +1057,29 @@ void Asm::genRegMovTo(int reg_t, int regtype_t, int othertype_t, string opr)
     {
         if (othertype_t & TypeClass::SF_FLOAT)
         {
-            textSection << "\tfsts " << opr <<"\n";
+            //textSection << "\tfsts " << opr <<"\n";
+            string a = "\tfsts " + opr + "\n";
+            addToTextSectionList(a);
         }
         else if (othertype_t & TypeClass::SF_DOUBLE)
         {
-            textSection << "\tfstl " << opr <<"\n";
+            //textSection << "\tfstl " << opr <<"\n";
+            string a = "\tfstl " + opr + "\n";
+            addToTextSectionList(a);
         }
         else if ((othertype_t & TypeClass::SF_INT))
         {
             if (regtype_t & TypeClass::SF_FLOAT)
             {
-                textSection << "\tfists " << opr <<"\n";
+                //textSection << "\tfists " << opr <<"\n";
+                string a = "\tfists " + opr + "\n";
+                addToTextSectionList(a);
             }
             else
             {
-                textSection << "\tfistl " << opr <<"\n";
+                //textSection << "\tfistl " << opr <<"\n";
+                string a = "\tfistl " + opr + "\n";
+                addToTextSectionList(a);
             }
         }
     }
@@ -906,7 +1092,10 @@ void Asm::genRegMovTo(int reg_t, int regtype_t, int othertype_t, string opr)
             string tmpMov;
             tmpReg = Asm::genReg(reg_t, othertype_t);
             tmpMov = Asm::genMov(othertype_t);
-            textSection << "\t" << tmpMov << " " << tmpReg << ", " << opr <<"\n";
+
+            //textSection << "\t" << tmpMov << " " << tmpReg << ", " << opr <<"\n";
+            string a = "\t" + tmpMov + " " + tmpReg + ", " + opr + "\n";
+            addToTextSectionList(a);
         }
 
 
@@ -920,21 +1109,31 @@ void Asm::genRegMovTo(int reg_t, int regtype_t, int othertype_t, string opr)
             string tmpMov;
             tmpReg = Asm::genReg(reg_t, othertype_t);
             tmpMov = Asm::genMov(othertype_t);
-            textSection << "\t" << tmpMov << " " << tmpReg << ", " << opr <<"\n";
+            //textSection << "\t" << tmpMov << " " << tmpReg << ", " << opr <<"\n";
+            string a = "\t" + tmpMov + " " + tmpReg + ", " + opr + "\n";
+            addToTextSectionList(a);
         }
         else if (othertype_t & TypeClass::SF_FLOAT)
         {
             string tmpReg;
             tmpReg = Asm::genReg(reg_t, regtype_t);
-            textSection << "\tfilds " << tmpReg << "\n";
-            textSection << "\tfsts " << opr << "\n";
+            //textSection << "\tfilds " << tmpReg << "\n";
+            //textSection << "\tfsts " << opr << "\n";
+            string a = "\tfilds " + tmpReg + "\n";
+            addToTextSectionList(a);
+            a = "\tfsts " + opr + "\n";
+            addToTextSectionList(a);
         }
         else if (othertype_t & TypeClass::SF_DOUBLE)
         {
             string tmpReg;
             tmpReg = Asm::genReg(reg_t, regtype_t);
-            textSection << "\tfildl " << tmpReg << "\n";
-            textSection << "\tfstl " << opr << "\n";
+            //textSection << "\tfildl " << tmpReg << "\n";
+            //textSection << "\tfstl " << opr << "\n";
+            string a = "\tfildl " + tmpReg + "\n";
+            addToTextSectionList(a);
+            a = "\tfstl " + opr + "\n";
+            addToTextSectionList(a);
         }
     }
 
@@ -964,15 +1163,26 @@ string Asm::genReg(int reg_t, int type_t)
 void Asm::genFuncStart(Scope *scope_t)
 {
 
-    textSection << "\tpushl %ebp\n";
-    textSection << "\tmovl %esp, %ebp\n";
-    textSection << "\tsubl $" << scope_t->totalByteSize-scope_t->curStartOffset << ", %esp\n";
+    //textSection << "\tpushl %ebp\n";
+    //textSection << "\tmovl %esp, %ebp\n";
+    //textSection << "\tsubl $" << scope_t->totalByteSize-scope_t->curStartOffset << ", %esp\n";
+    addToTextSectionList("\tpushl %ebp\n");
+    addToTextSectionList("\tmovl %esp, %ebp\n");
+    string a;
+    stringstream ss;
+    string b;
+    ss << scope_t->totalByteSize-scope_t->curStartOffset;
+    ss >> b;
+    a = "\tsubl $" + b + ", %esp\n";
+    addToTextSectionList(a);
 }
 
 void Asm::genFuncEnd(Scope *scope_t)
 {
-    textSection << "\tmovl %ebp, %esp\n";
-    textSection << "\tpopl %ebp\n";
+    /*textSection << "\tmovl %ebp, %esp\n";
+    textSection << "\tpopl %ebp\n";*/
+    addToTextSectionList("\tmovl %ebp, %esp\n");
+    addToTextSectionList("\tpopl %ebp\n");
 }
 
 string Asm::genMov(int type_t)
@@ -1001,22 +1211,41 @@ int Asm::genPushArgu(void *v1, bool isthis, Scope *scope_t, string thisstr)
 
         switch (((Symbol *)(*r_itr))->getByteSize()){
             case 1:{
-                textSection << "\tpushb " << tmp << "\n";
+                //textSection << "\tpushb " << tmp << "\n";
+                string a = "\tpushb " + tmp + "\n";
+                addToTextSectionList(a);
                 byteSize+=1;
+                break;
             }
             case 2:{
-                textSection << "\tpushw " << tmp << "\n";
+                //textSection << "\tpushw " << tmp << "\n";
+                string a = "\tpushw " + tmp + "\n";
+                addToTextSectionList(a);
                 byteSize+=2;
+                break;
             }
             case 4:{
-
-                textSection << "\tpushl " << tmp << "\n";
+                //textSection << "\tpushl " << tmp << "\n";
+                string a = "\tpushl " + tmp + "\n";
+                addToTextSectionList(a);
                 byteSize+=4;
+                break;
             }
             case 8:{
-                textSection << "\tpushl " << 4+scope_t->curStartOffset-((Symbol *)(*r_itr))->offset << "(%ebp)\n";
-                textSection << "\tpushl " << tmp << "\n";
-                byteSize+=8;
+                //textSection << "\tpushl " << 4+scope_t->curStartOffset-((Symbol *)(*r_itr))->offset << "(%ebp)\n";
+                //textSection << "\tpushl " << tmp << "\n";
+                string a;
+                stringstream ss;
+                string b;
+                ss << 4 + scope_t->curStartOffset-((Symbol *)(*r_itr))->offset;
+                ss >> b;
+                a = "\tpushl " + b + "(%ebp)\n";
+                addToTextSectionList(a);
+                a = "\tpushl " + tmp + "\n";
+                addToTextSectionList(a);
+
+                byteSize += 8;
+                break;
             }
         }
 
@@ -1024,7 +1253,10 @@ int Asm::genPushArgu(void *v1, bool isthis, Scope *scope_t, string thisstr)
     }
     if (isthis)
     {
-        textSection << "\tpushl " << thisstr << "\n";
+        //textSection << "\tpushl " << thisstr << "\n";
+        string a = "\tpushl " + thisstr + "\n";
+        addToTextSectionList(a);
+
         byteSize+=4;
     }
     return byteSize;
@@ -1040,11 +1272,27 @@ void Asm::genJum(string jmp_t, ItmCode *code_t)
     r1=Asm::genReg(((Reg *)(code_t->v1))->regIndex, TypeClass::SF_INT);
     r2=Asm::genReg(((Reg *)(code_t->v2))->regIndex, TypeClass::SF_INT);
     r3=Asm::genReg(((Reg *)(code_t->v3))->regIndex, TypeClass::SF_INT);
-    textSection << "\tmovl $1, " << r3 << "\n";
+
+    /*textSection << "\tmovl $1, " << r3 << "\n";
     textSection << "\tcmp " << r1 << ", " << r2 << "\n";
     textSection << "\t" << jmp_t << " .TM" <<tmpSymbol << "\n";
     textSection << "\tmovl $0, " << r3 << "\n";
-    textSection << ".TM" << tmpSymbol << ":\n";
+    textSection << ".TM" << tmpSymbol << ":\n";*/
+    string a = "\tmovl $1, " + r3 + "\n";
+    addToTextSectionList(a);
+    a = "\tcmp " + r1 + ", " + r2 + "\n";
+    addToTextSectionList(a);
+    stringstream ss;
+    string b;
+    ss << tmpSymbol;
+    ss >> b;
+    a = "\t" + jmp_t + " .TM" + b + "\n";
+    addToTextSectionList(a);
+    a = "\tmovl $0, " + r3 + "\n";
+    addToTextSectionList(a);
+    a = ".TM" + b + ":\n";
+    addToTextSectionList(a);
+
     tmpSymbol++;
 }
 
@@ -1054,15 +1302,22 @@ void Asm::genFLoatOpe(string ope_t, void *v1, void *v2, void *v3)
         (((Reg *)(v1))->typeSfType != TypeClass::SF_DOUBLE))
     {
         string tmp = Asm::genReg(((Reg *)(v1))->regIndex, TypeClass::SF_INT);
-        textSection << "\tfilds " << tmp << "\n";
+        //textSection << "\tfilds " << tmp << "\n";
+        string a = "\tfilds " + tmp + "\n";
+        addToTextSectionList(a);
     }
     if ((((Reg *)(v2))->typeSfType != TypeClass::SF_FLOAT) &&
         (((Reg *)(v2))->typeSfType != TypeClass::SF_DOUBLE))
     {
         string tmp = Asm::genReg(((Reg *)(v2))->regIndex, TypeClass::SF_INT);
-        textSection << "\tfilds " << tmp << "\n";
+        //textSection << "\tfilds " << tmp << "\n";
+        string a = "\tfilds " + tmp + "\n";
+        addToTextSectionList(a);
     }
-    textSection << "\t" << ope_t <<" %st(1), %st(0)\n";
+
+    //textSection << "\t" << ope_t <<" %st(1), %st(0)\n";
+    string a = "\t" + ope_t + " %st(1), %st(0)\n";
+    addToTextSectionList(a);
 }
 
 
@@ -1074,8 +1329,13 @@ void Asm::genIntOpe(string ope_t, void *v1, void *v2, void *v3)
     r1=Asm::genReg(((Reg *)(v1))->regIndex, TypeClass::SF_INT);
     r2=Asm::genReg(((Reg *)(v2))->regIndex, TypeClass::SF_INT);
     r3=Asm::genReg(((Reg *)(v3))->regIndex, TypeClass::SF_INT);
-    textSection << ope_t << " " << r2 << ", " << r1 <<"\n";
-    textSection << "movl " << r1 << ", " << r3 <<"\n";
+
+    //textSection << ope_t << " " << r2 << ", " << r1 <<"\n";
+    //textSection << "movl " << r1 << ", " << r3 <<"\n";
+    string a = ope_t + " " + r2 + ", " + r1 + "\n";
+    addToTextSectionList(a);
+    a = "movl " + r1 + ", " + r3 + "\n";
+    addToTextSectionList(a);
 
 }
 
@@ -1086,15 +1346,40 @@ void Asm::printAsm()
     /*cout << ">>>printScopeTree in SymbolTable.txt" << endl;*/
     LogiMsg::logi(">>>printAsm in out.s");
 
-    textSection.open("out1.s");
+    /*textSection.open("out1.s");
     dataSection.open("out2.s");
-    bssSection.open("out3.s");
-    printAllAsm(textSection);
-    bssSection << dataSection.rdbuf();
-    textSection << bssSection.rdbuf();
+    bssSection.open("out3.s");*/
+    ofstream ofs;
+    ofs.open("out.s");
 
+    if (ofs.is_open()) {
+
+        printAllAsm();
+
+        list<string>::iterator itr;
+
+        for(itr = dataSectionList.begin(); dataSectionList.end() != itr; ++itr) {
+            ofs << *itr;
+        }
+        for(itr = bssSectionList.begin(); bssSectionList.end() != itr; ++itr) {
+            ofs << *itr;
+        }
+        for(itr = textSectionList.begin(); textSectionList.end() != itr; ++itr) {
+            ofs << *itr;
+        }
+
+        ofs.close();
+
+
+    } else {
+        LogiMsg::logi("error in Asm::printAsm(): cannot open out.s");
+    }
+
+    /*bssSection << dataSection.rdbuf();
+    textSection << bssSection.rdbuf();
     textSection.close();
     dataSection.close();
-    bssSection.close();
-   // ofs.close();
+    bssSection.close();*/
+
+
 }

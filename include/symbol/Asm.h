@@ -15,13 +15,18 @@
 
 class Asm{
 public:
-    static ofstream dataSection;
+    static list<string> dataSectionList;
+    static list<string> bssSectionList;
+    static list<string> textSectionList;
+
+
+    /*static ofstream dataSection;
     static ofstream bssSection;
-    static ofstream textSection;
+    static ofstream textSection;*/
 
     static void printScopeAsm(Scope *scope_t);
     static void printExpAsm(ItmCode *code_t, Scope *scope_t);
-    static void printAllAsm(ofstream &ofs_t);
+    static void printAllAsm();
 
     static string genSymbol(void *v1, Scope *scope_t);
     static string genRefList(void *v1, Scope *scope_t);
@@ -42,6 +47,10 @@ public:
     static void genIntOpe(string ope_t, void *v1, void *v2, void *v3);
 
     static void printAsm();
+
+    static void addToDataSectionList(const string &a);
+    static void addToBssSectionList(const string &a);
+    static void addToTextSectionList(const string &a);
 };
 
 
