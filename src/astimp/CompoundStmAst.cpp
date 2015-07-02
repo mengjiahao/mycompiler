@@ -19,6 +19,7 @@ void CompoundStmAst::walk()
         case T_CCOMPSTM_STMLIST: {
             //std::cout << "walk in T_CCOMPSTM_STMLIST" << endl;
             LogiMsg::logi("walk in T_CCOMPSTM_STMLIST", getLineno());
+            Scope::s_curScope->incTotalByteSize(4);
 
             Scope *tmpScope = new Scope();
             tmpScope->setScopeType(Scope::SCOPE_LOCAL);
@@ -42,6 +43,7 @@ void CompoundStmAst::walk()
         case T_CCOMPSTM_DECTION_LIST:{
             //std::cout << "walk in T_CCOMPSTM_DECTION_LIST" << endl;
             LogiMsg::logi("walk in T_CCOMPSTM_DECTION_LIST", getLineno());
+            Scope::s_curScope->incTotalByteSize(4);
 
             Scope *tmpScope = new Scope();
             tmpScope->setScopeType(Scope::SCOPE_LOCAL);
@@ -65,6 +67,7 @@ void CompoundStmAst::walk()
         case T_CCOMPSTM_DECTIONLIST_STMLIST:{
             //std::cout << "walk in T_CCOMPSTM_DECTIONLIST_STMLIST" << endl;
             LogiMsg::logi("walk in T_CCOMPSTM_DECTIONLIST_STMLIST", getLineno());
+            Scope::s_curScope->incTotalByteSize(4);
 
             Scope *tmpScope = new Scope();
             tmpScope->setScopeType(Scope::SCOPE_LOCAL);

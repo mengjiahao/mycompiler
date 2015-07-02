@@ -216,7 +216,7 @@ void ClassDectionAst::walk()
                     (*r_itr)->setOffset(Scope::s_curScope->getTotalByteSize());
 
                 }
-                Scope::s_curScope->incTotalByteSize(12);
+                Scope::s_curScope->incTotalByteSize(8);
 
             }
 
@@ -321,7 +321,7 @@ void ClassDectionAst::walk()
                     (*r_itr)->setOffset(Scope::s_curScope->getTotalByteSize());
 
                 }
-                Scope::s_curScope->incTotalByteSize(12);
+                Scope::s_curScope->incTotalByteSize(8);
             }
 
             childs.at(1)->walk();

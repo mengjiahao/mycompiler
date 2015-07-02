@@ -141,7 +141,7 @@ void FuncDefAst::walk()
             (*r_itr)->setOffset(Scope::s_curScope->getTotalByteSize());
 
         }
-        Scope::s_curScope->incTotalByteSize(8);
+        Scope::s_curScope->incTotalByteSize(4);
     }
 
     childs.at(2)->walk();

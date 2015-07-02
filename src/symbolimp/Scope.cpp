@@ -1125,3 +1125,24 @@ void Scope::addItemCode(ItmCode *itmcode_t)
 
 
 
+void Scope::scopeOffsetChange(Scope *scope_t, int inc_t)
+{
+    if (scope_t)
+    {
+        vector<Scope *>::iterator childItr;
+        for (childItr=scope_t->childs.begin(); childItr!=scope_t->childs.end(); childItr++ )
+        {
+
+            (*childItr)->curStartOffset+=inc_t;
+            (*childItr)->totalByteSize+=inc_t;
+            list<Symbol *>::iterator symItr;
+            for (symItr=(*childItr)->symbolSeqList.begin(); symItr!=(*childItr)->symbolSeqList.end(); symItr++)
+            {
+                (*symItr)->offset+=inc_t;
+            }
+            Scope::scopeOffsetChange((*childItr), inc_t);
+        }
+    }
+}
+
+

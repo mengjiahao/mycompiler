@@ -184,6 +184,9 @@ public:
 
     void addItemCode(ItmCode *itmcode_t);
 
+
+    static void scopeOffsetChange(Scope *scope_t, int inc_t);
+
     //virtual void addParaType(TypeClass *type_t);
 
 

@@ -43,6 +43,7 @@ void Asm::printScopeAsm(Scope *scope_t)
         //textSection << scope_t->getScopeName() << ":\n";
         string a = scope_t->getScopeName() + ":\n";
         addToTextSectionList(a);
+        addToTextSectionList("\tpushl $0\n");
 
         vector<Scope *>::iterator childItr;
 
@@ -52,6 +53,7 @@ void Asm::printScopeAsm(Scope *scope_t)
         }
 
         //textSection << "\tret\n";
+        addToTextSectionList("\taddl $4, %esp\n");
         addToTextSectionList("\tret\n");
 
     }
@@ -60,6 +62,7 @@ void Asm::printScopeAsm(Scope *scope_t)
         //textSection << scope_t->getScopeName() << ":\n";
         string a = scope_t->getScopeName() + ":\n";
         addToTextSectionList(a);
+        addToTextSectionList("\tpushl $0\n");
 
 
         vector<Scope *>::iterator childItr;
@@ -70,6 +73,7 @@ void Asm::printScopeAsm(Scope *scope_t)
         }
 
         //textSection << "\tret\n";
+        addToTextSectionList("\taddl $4, %esp\n");
         addToTextSectionList("\tret\n");
 
     }
@@ -85,6 +89,7 @@ void Asm::printScopeAsm(Scope *scope_t)
         //textSection << scope_t->superClass->getScopeName() << "_" << scope_t->getScopeName() << ":\n";
         string a = scope_t->parent->getScopeName() + "_" + scope_t->getScopeName() + ":\n";
         addToTextSectionList(a);
+        addToTextSectionList("\tpushl $0\n");
 
         vector<Scope *>::iterator childItr;
 
@@ -94,6 +99,7 @@ void Asm::printScopeAsm(Scope *scope_t)
         }
 
         //textSection << "\tret\n";
+        addToTextSectionList("\taddl $4, %esp\n");
         addToTextSectionList("\tret\n");
 
     }
@@ -856,6 +862,7 @@ void Asm::printExpAsm(ItmCode *code_t ,Scope *scope_t)
             Asm::genFuncEnd(scope_t);
 
             //textSection << "\tret\n";
+            addToTextSectionList("\taddl $4, %esp\n");
             addToTextSectionList("\tret\n");
 
             break;
@@ -872,6 +879,7 @@ void Asm::printExpAsm(ItmCode *code_t ,Scope *scope_t)
            // Asm::genFuncEnd(scope_t);
 
             //textSection << "\tret\n";
+            addToTextSectionList("\taddl $4, %esp\n");
             addToTextSectionList("\tret\n");
 
             break;
@@ -1175,7 +1183,7 @@ void Asm::genFuncStart(Scope *scope_t)
     //textSection << "\tpushl %ebp\n";
     //textSection << "\tmovl %esp, %ebp\n";
     //textSection << "\tsubl $" << scope_t->totalByteSize-scope_t->curStartOffset << ", %esp\n";
-    addToTextSectionList("\tpushl %ebp\n");
+    addToTextSectionList("\tmovl %ebp, (%esp)\n");
     addToTextSectionList("\tmovl %esp, %ebp\n");
     string a;
     stringstream ss;
@@ -1192,6 +1200,7 @@ void Asm::genFuncEnd(Scope *scope_t)
     textSection << "\tpopl %ebp\n";*/
     addToTextSectionList("\tmovl %ebp, %esp\n");
     addToTextSectionList("\tpopl %ebp\n");
+    addToTextSectionList("\tsubl $4, %esp\n");
 }
 
 string Asm::genMov(int type_t)
@@ -1298,7 +1307,7 @@ void Asm::genJum(string jmp_t, ItmCode *code_t)
     string b;
     ss << tmpSymbol;
     ss >> b;
-    a = "\t" + jmp_t + " .TM" + b + "\n";
+    a = "\t" + jmp_t + " .T" + b + "\n";
     tmpSymbol++;
     addToTextSectionList(a);
     a = "\tmovl $0, " + r3 + "\n";
@@ -1307,7 +1316,7 @@ void Asm::genJum(string jmp_t, ItmCode *code_t)
     ss.clear();
     ss << tmpSymbol;
     ss >> b;
-    a = "\t" + jmp_t + " .TM" + b + "\n";
+    a = "\tjmp .T" + b + "\n";
     addToTextSectionList(a);
     tmpSymbol++;
     b="";
