@@ -874,7 +874,16 @@ void Asm::printExpAsm(ItmCode *code_t ,Scope *scope_t)
         }
         case ItmCode::IR_RETURN_VOID:{
 
-            Asm::genFuncEnd(scope_t);
+            while ((scope_t->scopeType != Scope::SCOPE_GLOBALFUNC) &&
+                (scope_t->scopeType != Scope::SCOPE_GLOBALFUNCCHAN) &&
+                (scope_t->scopeType != Scope::SCOPE_CLASSFUNC))
+            {
+
+                Asm::genFuncEnd(scope_t);
+                scope_t = scope_t->parent;
+
+            }
+            // Asm::genFuncEnd(scope_t);
 
             //textSection << "\tret\n";
            // addToTextSectionList("\taddl $4, %esp\n");
@@ -884,7 +893,17 @@ void Asm::printExpAsm(ItmCode *code_t ,Scope *scope_t)
         }
         case ItmCode::IR_RETURN_REG:{
 
-            Asm::genFuncEnd(scope_t);
+            while ((scope_t->scopeType != Scope::SCOPE_GLOBALFUNC) &&
+                (scope_t->scopeType != Scope::SCOPE_GLOBALFUNCCHAN) &&
+                (scope_t->scopeType != Scope::SCOPE_CLASSFUNC))
+            {
+
+                Asm::genFuncEnd(scope_t);
+                scope_t = scope_t->parent;
+
+            }
+
+          //  Asm::genFuncEnd(scope_t);
 
             string tmpReg =Asm::genReg(((Reg *)(code_t->v3))->regIndex, TypeClass::SF_INT);
             //textSection <<  "\tmovl " << tmpReg << ", %eax\n";
