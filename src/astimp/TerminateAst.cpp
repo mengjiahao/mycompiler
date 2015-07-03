@@ -23,6 +23,12 @@ TerminateAst::TerminateAst(NodeAst::NodeType nodeType_t, const string& token_t) 
 
 string TerminateAst::getDotToken()
 {
+    if (nodeType == NodeAst::T_CTERMINATE_CPRIMEXP_STR) {
+        string s = token;
+        s.replace(0, 1, "\\\"");
+        s.replace(s.length()-1, 1, "\\\"");
+        return s + " : " + s_nodeTypeString[nodeType];
+    }
     return token + " : " + s_nodeTypeString[nodeType];
 }
 

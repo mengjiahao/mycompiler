@@ -661,12 +661,14 @@ void NodeAst::dotBfsNodeTree(NodeAst* root_t)
         //print token in the dot
         s1 = node->getDotToken();
 
-        if (NodeAst::T_CTERMINATE_CPRIMEXP_STR == node->nodeType) {
+        /*if (NodeAst::T_CTERMINATE_CPRIMEXP_STR == node->nodeType) {
+           s1.replace(0, 1, "\\\"");
            s1.replace(s1.length()-1, 1, "\\\"");
-           ofs << node->getNodeId() << " [label=" << "\"\\" << s1 << "\"" << "]\n";
+           ofs << node->getNodeId() << " [label=" << "\"" << s1 << "\"" << "]\n";
         } else {
            ofs << node->getNodeId() << " [label=" << "\"" << s1 << "\"" <<"]\n";
-        }
+        }*/
+        ofs << node->getNodeId() << " [label=" << "\"" << s1 << "\"" <<"]\n";
 
 
         if ( (-1 == node->childsNo) || (0 == node->childsNo)
