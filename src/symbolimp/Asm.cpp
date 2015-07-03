@@ -899,6 +899,35 @@ void Asm::printExpAsm(ItmCode *code_t ,Scope *scope_t)
 
             break;
         }
+        case ItmCode::IR_PUSH_REG:{
+
+            if (code_t->t3 != ItmCode::OPR_REGISTER)
+            {
+                LogiMsg::logi("error in ItmCode::IR_PUSH_REG\n");
+                exit(0);
+            }
+
+            string tmpReg = Asm::genReg(((Reg *)(code_t->v3))->regIndex, TypeClass::SF_INT);
+
+            addToTextSectionList("\tpushl "+ tmpReg + "\n");
+
+            break;
+        }
+        case ItmCode::IR_POP_REG:{
+
+            if (code_t->t3 != ItmCode::OPR_REGISTER)
+            {
+                LogiMsg::logi("error in ItmCode::IR_PUSH_REG\n");
+                exit(0);
+            }
+
+            string tmpReg = Asm::genReg(((Reg *)(code_t->v3))->regIndex, TypeClass::SF_INT);
+
+            addToTextSectionList("\tpopl "+ tmpReg + "\n");
+
+
+            break;
+        }
 
 
     }
