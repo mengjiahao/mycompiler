@@ -85,7 +85,8 @@ public:
     IR_INC_OP_POST, IR_DEC_OP_POST,
     IR_UAND_OP, IR_UREF_OP, IR_UADD_OP, IR_USUB_OP, IR_UCOMP_OP, IR_UNOT_OP,
     IR_GOTO, IR_IF_GOTO, IR_IF_NOT_GOTO,
-    IR_RETURN_VOID, IR_RETURN_REG};
+    IR_RETURN_VOID, IR_RETURN_REG,
+    IR_PUSH_REG, IR_POP_REG};
 
     enum OperandType {OPR_INVALID, OPR_ID, OPR_SYMBOL, OPR_SCOPE, OPR_REGISTER,
     OPR_ARGLIST, OPR_CLASS_REFLIST, OPR_ARRAY_ELEMLIST, OPR_CLASS_REFLIST_POINTER};
@@ -175,6 +176,8 @@ OperandType t3_t = ItmCode::OPR_INVALID, void* v3_t = NULL);
     static void genCodeEmitGlobalFunc(Scope *scope_t);
     static void genCodeEmitClassFunc(Scope *scope_t);
     static void genCodeEmitClass(Scope *scope_t);
+    static void genCodePushReg(Reg *reg_t);
+    static void genCodePopReg(Reg *reg_t);
 
 
 };
