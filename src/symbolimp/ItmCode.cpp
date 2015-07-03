@@ -963,6 +963,35 @@ void ItmCode::genCodeEmitClass(Scope* scope_t)
     Scope::s_curScope->addItemCode(newCode);
 }
 
+void ItmCode::genCodePushReg(Reg* reg_t)
+{
+    if (NULL == reg_t) {
+        LogiMsg::logi("error in genCodePushReg(): exist one of params is NULL");
+    }
+
+    ItmCode *newCode = new ItmCode(IR_PUSH_REG,
+    ItmCode::OPR_INVALID, NULL,
+    ItmCode::OPR_INVALID, NULL,
+    ItmCode::OPR_REGISTER, reg_t);
+
+    Scope::s_curScope->addItemCode(newCode);
+}
+
+void ItmCode::genCodePopReg(Reg* reg_t)
+{
+    if (NULL == reg_t) {
+        LogiMsg::logi("error in genCodePopReg(): exist one of params is NULL");
+    }
+
+    ItmCode *newCode = new ItmCode(IR_POP_REG,
+    ItmCode::OPR_INVALID, NULL,
+    ItmCode::OPR_INVALID, NULL,
+    ItmCode::OPR_REGISTER, reg_t);
+
+    Scope::s_curScope->addItemCode(newCode);
+}
+
+
 
 
 

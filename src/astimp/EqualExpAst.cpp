@@ -25,6 +25,8 @@ void EqualExpAst::walk()
             return ;
         }
 
+        ItmCode::genCodePushReg(r1);
+
         childs.at(1)->walk();
         if (checkIsNotWalking()) {
             return ;
@@ -35,6 +37,8 @@ void EqualExpAst::walk()
             stopWalk();
             return ;
         }
+
+        ItmCode::genCodePopReg(r1);
 
         //Reg *r3 = Reg::getReg(0, TypeClass::promoteType(r1->getTypeSfType(), r2->getTypeSfType()));
         Reg *r3 = Reg::getReg(0, TypeClass::SF_INT);
@@ -62,6 +66,8 @@ void EqualExpAst::walk()
             return ;
         }
 
+        ItmCode::genCodePushReg(r1);
+
         childs.at(1)->walk();
         if (checkIsNotWalking()) {
             return ;
@@ -72,6 +78,8 @@ void EqualExpAst::walk()
             stopWalk();
             return ;
         }
+
+        ItmCode::genCodePopReg(r1);
 
         //Reg *r3 = Reg::getReg(0, TypeClass::promoteType(r1->getTypeSfType(), r2->getTypeSfType()));
         Reg *r3 = Reg::getReg(0, TypeClass::SF_INT);
